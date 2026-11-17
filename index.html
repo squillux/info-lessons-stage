@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[시범] 정보 개념 체험관</title>
+<meta name="description" content="중학교 정보 교과서 개념을 하나씩 직접 체험하는 인터랙티브 활동 모음">
+<link rel="stylesheet" href="assets/common.css">
+<style>
+main{max-width:1080px}
+.hero{display:flex;align-items:center;gap:18px;margin:10px 0 18px;flex-wrap:wrap}
+.logo{width:64px;height:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;flex:0 0 auto}
+.logo i{border-radius:3px;background:var(--line)}
+.logo i.b{background:var(--brand)}.logo i.m{background:var(--mint)}.logo i.y{background:var(--on)}.logo i.p{background:var(--pink)}
+.hero h1{margin:0}
+.hero h1::after{display:none}
+.hero p{margin:2px 0 0;color:var(--muted)}
+.units{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 8px;padding:6px;background:var(--bg);border-radius:16px}
+.live-chip{display:inline-block;margin-left:6px;font-size:.72rem;font-weight:800;color:#c2185b;background:var(--pink-soft);border-radius:999px;padding:1px 9px;vertical-align:middle}
+.tools-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:0 0 10px}
+.tools-row .seg{margin:0}
+.core-chip{display:inline-block;margin-left:6px;font-size:.72rem;font-weight:800;border-radius:999px;padding:1px 9px;vertical-align:middle}
+.core-chip.c{color:#8a5a00;background:var(--yellow-soft)}
+.core-chip.o{color:var(--muted);background:var(--bg)}
+.std{display:block;font-family:ui-monospace,Consolas,monospace;font-size:.75rem;color:var(--muted);margin-top:6px}
+#planBody ol{margin:6px 0;padding-left:1.4em;line-height:1.7}
+.unit-btn{border:0;background:none;border-radius:12px;padding:8px 14px;font-weight:700;color:var(--muted)}
+.unit-btn.on{background:var(--panel);color:var(--brand);box-shadow:0 2px 0 var(--line)}
+.unit-btn .n{font-family:ui-monospace,Consolas,monospace;margin-right:4px}
+.unit-desc{margin:14px 4px 18px;color:var(--muted)}
+.unit-desc b{font-family:var(--cute);font-weight:400;font-size:1.4rem;color:var(--ink);display:block}
+.sub-h{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:22px 4px 10px;font-weight:800;color:var(--ink)}
+.sub-h .mono{background:var(--ink);color:#7dffb0;border-radius:6px;padding:0 8px;font-size:.85rem;white-space:nowrap;flex:0 0 auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+a.card{display:block;margin:0;color:inherit;text-decoration:none;transition:transform .12s,border-color .12s}
+a.card:hover{transform:translateY(-3px);border-color:var(--brand)}
+a.card{position:relative;padding-top:18px}
+a.card .ic{position:absolute;right:16px;top:14px;width:52px;height:52px;border-radius:16px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.7rem;transition:transform .15s}
+a.card:hover .ic{transform:rotate(-8deg) scale(1.08)}
+a.card .num{font-family:ui-monospace,Consolas,monospace;font-size:.75rem;font-weight:800;color:var(--muted);display:block;margin-bottom:4px}
+a.card h2{font-family:var(--cute);font-weight:400;font-size:1.3rem;line-height:1.35;margin:8px 0 4px;word-break:keep-all;overflow-wrap:break-word}
+a.card .meta{padding-right:64px;min-height:52px}
+a.card .meta .badge{margin-top:2px}
+.sub-h .cnt{font-weight:600;color:var(--muted);font-size:.85rem;white-space:nowrap}
+details.guide{margin:0 4px 14px;background:var(--mint-soft);border-radius:14px;padding:10px 16px;font-size:.92rem}
+details.guide summary{cursor:pointer;font-weight:800;color:#0d7d71}
+details.guide ul{margin:8px 0 2px;padding-left:1.2em}
+details.guide li{margin:3px 0}
+a.card p{margin:0;color:var(--muted);font-size:.92rem}
+a.card .badge{font-size:.75rem}
+a.card.lesson{border-style:dashed;background:var(--yellow-soft);border-color:#f7dd8f}
+a.card.lesson .badge{background:#fff;color:#a06d00}
+a.card.lesson .badge::before{content:"⏱ "}
+.empty{padding:40px 16px;text-align:center;color:var(--muted);background:var(--bg);border-radius:var(--radius)}
+.empty b{display:block;font-family:var(--cute);font-weight:400;font-size:1.3rem;color:var(--ink)}
+footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:var(--muted)}
+.stage-note{margin:0 0 16px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,#e9efff,#e2f7f4);border:2px solid #d5e0fb;line-height:1.6}
+.stage-note b{font-family:var(--cute);font-weight:400;font-size:1.15rem}
+.stage-note a{color:var(--brand);font-weight:700}
+.stage-chip{display:inline-block;margin-left:6px;font-size:.72rem;font-weight:800;color:#fff;background:linear-gradient(90deg,#3b6cf6,#16b8a6);border-radius:999px;padding:1px 9px;vertical-align:middle}
+</style>
+</head>
+<body>
+<main>
+  <div class="hero">
+    <div class="logo" aria-hidden="true">
+      <i class="b"></i><i></i><i class="m"></i><i class="b"></i>
+      <i></i><i class="y"></i><i class="b"></i><i></i>
+      <i class="m"></i><i class="b"></i><i></i><i class="p"></i>
+      <i class="b"></i><i></i><i class="p"></i><i class="y"></i>
+    </div>
+    <div>
+      <h1>정보 개념 체험관</h1>
+      <p>중학교 정보 교과서의 개념을 하나씩 직접 눌러 보며 익혀요 · 미래엔 교과서 기준</p>
+    </div>
+  </div>
+
+  <div class="stage-note"><b>🧪 시범판 · 한 화면에 활동 하나</b><br>
+    <span class="stage-chip">🎬 새 형식</span> 표시가 있는 Ⅰ단원 활동 4개만 새 방식이에요. 화면마다 활동 하나만 보이고, [다음 ▶]·[◀ 이전], 위쪽 단계 번호, 브라우저 뒤로 가기, 키보드 ← →로 넘길 수 있어요.
+    나머지 활동은 기존 방식 그대로예요. · <a href="https://squillux.github.io/info-lessons/">원래 체험관 열기</a></div>
+
+  <details class="guide">
+    <summary>👩‍🏫 선생님을 위한 사용 안내</summary>
+    <ul>
+      <li>활동은 <b>생각 열기 → 조작 활동 → 확인 미션 → 한 줄 정리</b> 순서이고, 학생이 <b>[다음 ▶]</b>을 누를 때마다 하나씩 열려요.</li>
+      <li>수업 전에 전체를 보려면 활동 페이지 오른쪽 위 <b>☰ 펼치기</b>, 다시 누르면 <b>접기</b>예요.</li>
+      <li>전자칠판에서는 <b>가+ 크게</b>와 <b>전체 화면</b>을 쓰세요. 인쇄하면 모든 활동이 펼쳐져 학습지처럼 나와요.</li>
+      <li>단원별 주소를 나눠 줄 수 있어요. 예: 이 페이지 주소 끝의 <code>?unit=2</code></li>
+      <li>카드의 <b>★ 핵심</b>은 성취기준을 다루는 기본 활동, <b>☆ 선택</b>은 시간이 있을 때 하는 활동이에요. 카드 아래 <b>[9정○○-○○]</b>은 관련 성취기준이에요.</li>
+      <li><b>학생 로그인</b>을 켜면 학생은 <b>학번과 개인 코드</b>로 로그인하고, 선생님이 연 활동만 할 수 있어요. 활동 진도·퀴즈 결과·접속·출석 기록은 <a href="teacher/">👩‍🏫 교사용 관리</a> 화면에서 봐요. 활동 속에 적은 답은 저장하지 않아요. <b>📡 실시간</b> 활동은 이름 없이 투표 수와 제출 내용을 서버에 보관하며, 선생님이 <b>결과 내려받기</b> 후 <b>기록 지우기</b>를 할 수 있고 30일이 지나면 자동으로 지워져요. <b>심화</b>는 교과서 밖 내용, <b>더 해 보기</b>는 선택 활동이에요.</li>
+      <li><b>📡 실시간</b> 표시 활동은 반 전체가 함께 투표하거나 응답을 모을 수 있어요. 선생님 기기에서 <b>🧑‍🏫 교사</b> 버튼을 누르면 방 코드와 <b>QR 코드</b>가 나오고, 학생은 QR을 찍으면 바로 참여해요. 서버에는 이름 없이 투표 수와 제출 내용만 남고, 부적절한 제출물은 선생님이 숨길 수 있어요.</li>
+    </ul>
+  </details>
+  <nav class="units" id="units"></nav>
+  <div class="unit-desc" id="unitDesc"></div>
+  <div class="tools-row"><div class="seg" id="filter"><button data-f="all" class="active">전체 보기</button><button data-f="core">★ 핵심 활동만</button></div><a class="btn line" href="standards.html">📋 성취기준-활동 대응표</a></div>
+  <details class="guide" id="plan"><summary>🗓️ 이 단원 차시 운영 예시</summary><div id="planBody"></div></details>
+  <div id="list"></div>
+</main>
+<footer>
+  미래엔 중학교 정보 교과서 내용을 바탕으로 새로 구성한 활동이에요. 다른 출판사 교과서를 참고한 활동에는 출판사와 쪽수를 표시했어요. 학습 기록은 학년이 끝나면 지워요.
+</footer>
+<script src="assets/contents.js"></script>
+<script src="assets/auth.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const roman = ['', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ'];
+let coreOnly = false;
+const PLAN = {
+  1: ['1차시: 1·2 (컴퓨팅 시스템, 하드웨어)', '2차시: 3·4 (소프트웨어, 입력·처리·출력)', '3차시: 5 (운영체제)', '4차시: 6·7 (피지컬 컴퓨팅, 가상 센서 보드)', '5~6차시: 8 + 엔트리 센서 보드 실습', '7~8차시: 9 프로젝트(쾌적한 도서관)', '정리: 10'],
+  2: ['1~2차시: 1~4 (또는 45분 종합 수업 1차시)', '3차시: 5~7 (비트맵·소리·동영상)', '4차시: 8·9 (수집, 검색)', '5차시: 10~12 (분류·저장·설문)', '6차시: 14~16 (구조화)', '7차시: 18·19 (스프레드시트, 차트)', '8차시: 20 (데이터로 주장하기)', '9~10차시: 21 프로젝트 (또는 23)', '정리: 22'],
+  3: ['1차시: 1·2 (상태·추상화, 알고리즘 표현)', '2차시: 3·4 (알고리즘 비교)', '3차시: 5·6 (알고리즘 설계)', '4차시: 7 (최단 경로) · 8은 선택', '5차시: 9 (변수·리스트) + 엔트리 미션', '6차시: 10 (연산) + 엔트리 미션', '7차시: 11 (중첩 제어 구조) + 엔트리 미션', '8차시: 12·13 (함수, 디버깅)', '9~11차시: 14 투표 프로그램 프로젝트', '정리: 15'],
+  4: ['1차시: 1 (개념과 특성)', '2차시: 2·3 (모델 개발 과정, 좋은 데이터)', '3차시: 4 (이미지 분류) + 엔트리 미션', '4차시: 5·6 (소리·텍스트 분류)', '5~6차시: 8 (문제 찾기) · 7은 선택', '7차시: 9 (가치와 윤리 토론)', '8~9차시: 10 디자인 싱킹 프로젝트', '정리: 11'],
+  5: ['1차시: 1 (디지털 사회) · 2는 선택', '2차시: 3 (직업의 변화)', '3차시: 4·5 (디지털 윤리, 사이버 폭력)', '4차시: 6·7 (사이버 범죄, 중독)', '5차시: 8·9 (개인 정보)', '6차시: 10·11 (저작권, CCL)', '7~8차시: 13 카드 뉴스 프로젝트(선택)', '정리: 12'],
+};
+function show(u){
+  const info = unitList.find(x => x.unit === u) || unitList[1];
+  document.querySelectorAll('.unit-btn').forEach(b => b.classList.toggle('on', +b.dataset.u === info.unit));
+  document.getElementById('unitDesc').innerHTML = `<b>${roman[info.unit]} ${esc(info.name)}</b>${esc(info.desc)}`;
+  document.getElementById('planBody').innerHTML = '<ol>' + (PLAN[info.unit] || []).map(p => '<li>' + esc(p) + '</li>').join('') + '</ol><p class="hint">숫자는 아래 카드의 NO. 번호예요. ★ 핵심 활동만으로도 성취기준을 모두 다룰 수 있게 골랐어요. 학교 시수에 맞게 조절해 주세요.</p>';
+  const items = contentsList.filter(c => c.unit === info.unit);
+  const list = document.getElementById('list');
+  if (!items.length){
+    list.innerHTML = `<div class="empty"><b>🛠️ 준비 중이에요</b>이 단원의 활동은 곧 올라옵니다.</div>`;
+  } else {
+    const groups = [...new Set(items.map(c => c.sub))];
+    let n = 0;
+    list.innerHTML = groups.map(g => { const gi = items.filter(c => c.sub === g); return `<div class="sub-h"><span class="mono">${g}</span>${esc(subList[g] || '')} <span class="cnt">· 활동 ${gi.filter(c => !c.lesson).length}개</span></div>
+      <div class="cards">${gi.map(c => `<a class="card${c.lesson ? ' lesson' : ''}" style="${coreOnly && c.core === false ? 'display:none' : ''}" href="${esc(c.href)}">
+        <span class="ic" aria-hidden="true">${c.icon || '📘'}</span><div class="meta"><span class="num">${c.lesson ? 'LESSON' : 'NO. ' + String(++n).padStart(2, '0')}${c.lesson ? '' : (c.core === false ? '<span class="core-chip o">☆ 선택</span>' : '<span class="core-chip c">★ 핵심</span>')}</span><span class="badge">${esc(c.badge)}</span>${c.live ? '<span class="live-chip">📡 실시간</span>' : ''}${c.stage ? '<span class="stage-chip">🎬 새 형식</span>' : ''}</div><h2>${esc(c.title)}</h2><p>${esc(c.desc)}</p>${c.std ? '<span class="std">[9정' + esc(c.std) + ']</span>' : ''}</a>`).join('')}</div>`; }).join('');
+  }
+  history.replaceState(null, '', '?unit=' + info.unit);
+}
+document.getElementById('units').innerHTML = unitList.map(u => `<button class="unit-btn" data-u="${u.unit}"><span class="n">${roman[u.unit]}</span>${esc(u.name)}</button>`).join('');
+document.querySelectorAll('.unit-btn').forEach(b => b.onclick = () => show(+b.dataset.u));
+let cur = 1;
+const _show = show; show = u => { cur = u; _show(u); };
+document.querySelectorAll('#filter button').forEach(b => b.onclick = () => { coreOnly = b.dataset.f === 'core'; document.querySelectorAll('#filter button').forEach(x => x.classList.toggle('active', x === b)); show(cur); });
+show(+new URLSearchParams(location.search).get('unit') || 1);
+</script>
+</body>
+</html>
