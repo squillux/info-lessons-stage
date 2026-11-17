@@ -14,7 +14,7 @@
 .pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 </style>
 </head>
-<body data-unit="1" data-title="소프트웨어 분류하기" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 구성 · 미래엔 13~14쪽">
+<body data-stage data-unit="1" data-title="소프트웨어 분류하기" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 구성 · 미래엔 13~14쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 컴퓨팅 시스템</span>
   <h1>소프트웨어 분류하기</h1>
@@ -22,20 +22,20 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="운영체제(윈도우 등)|게임 런처|인터넷 브라우저|아무것도 필요 없어">
       <p>새로 산 컴퓨터를 켜자마자 게임을 할 수 있을까요? 게임보다 먼저 설치되어 있어야 하는 소프트웨어는 무엇일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="다른 프로그램을 돕는지, 내가 직접 쓰는지 생각해 봐 🗂️">
       <h3>🗂️ 시스템 소프트웨어 vs 응용 소프트웨어</h3>
       <p><b>시스템 소프트웨어</b>는 응용 소프트웨어가 잘 작동하도록 환경을 제공해요(운영체제, 유틸리티). <b>응용 소프트웨어</b>는 사용자가 특정한 문제를 해결하려고 쓰는 소프트웨어예요.</p>
       <div id="sort"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="사용자와 하드웨어 사이에는 누가 있을까? 🧱">
       <h3>🧱 사용자, 소프트웨어, 하드웨어의 관계</h3>
       <p>사용자가 하드웨어를 직접 다루지 않고도 컴퓨터를 쓸 수 있는 이유는 무엇일까요? 위에서부터 순서대로 쌓아 보세요.</p>
       <div class="stack" id="slots"></div>
@@ -43,7 +43,7 @@
       <div class="feedback" id="sFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="하고 싶은 일에 맞는 프로그램을 골라 봐 🎯">
       <h3>🎯 용도에 맞는 응용 소프트웨어</h3>
       <div id="use"></div>
     </div>

@@ -32,20 +32,20 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="센서가 있어서|카메라로 봐서|인터넷으로 알아서|사람이 설정해서">
       <p>스마트폰을 기울이면 화면이 돌아가고, 어두운 곳에서는 화면이 어두워져요. 스마트폰은 기울기와 밝기를 어떻게 알아챌까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="받아들이면 센서, 움직이면 액추에이터! 🔎">
       <h3>🔎 센서일까, 액추에이터일까?</h3>
       <p><b>센서</b>는 물체의 움직임이나 측정값을 입력받는 장치(감각 기관)이고, <b>액추에이터</b>는 마이크로컨트롤러가 보낸 신호에 따라 물리적인 움직임을 주는 장치예요.</p>
       <div id="sa"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="1 2 3 4 # 을 눌러 봐! 오른쪽 단계를 잘 봐 🚪">
       <h3>🚪 디지털 도어록 체험</h3>
       <p>비밀번호는 <b>1 2 3 4</b>예요. 숫자를 누르고 <b>#</b>을 눌러 보세요. 오른쪽에서 각 단계가 어떻게 진행되는지 확인해요.</p>
       <div class="lock">
@@ -63,20 +63,20 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="무엇을 감지하고 무엇을 움직이는지 찾아봐 🏙️">
       <h3>🏙️ 생활 속 피지컬 컴퓨팅 사례</h3>
       <p>사례마다 무엇을 <b>입력(센서)</b>받아 무엇을 <b>출력(액추에이터)</b>하는지 골라 보세요.</p>
       <div id="cases"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="정답은 없어! 이유를 함께 생각해 봐 ⚖️">
       <h3>⚖️ 가장 가치 있는 시스템은? <span class="tag-opt">실시간 투표</span></h3>
       <p>앞에서 살펴본 사례 중 우리 생활에 <b>가장 꼭 필요하다</b>고 생각하는 시스템에 투표하고, 그렇게 생각한 이유(편리함, 안전, 시간 절약, 건강 등)를 친구들과 이야기해 보세요. 정답은 없어요.</p>
       <p class="hint">💻 선생님이 [교사] 버튼으로 방을 열고 QR 코드를 보여 주면 학생들이 바로 참여해요. 이름은 저장되지 않아요.</p>
       <div id="value"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="같은 버튼인데 무엇이 다를까? ⚡">
       <h3>⚡ 전기 회로와 무엇이 다를까?</h3>
       <p>버튼을 누르면 전등이 켜지는 장치는 전기 회로만으로도 만들 수 있어요. 그런데 "버튼을 한 번 누르면 켜지고 다시 누르면 꺼지게" 바꾸고 싶다면요? 두 방식을 비교해 보세요.</p>
       <div class="cmp">
@@ -88,13 +88,13 @@
       <p class="hint">참고: 천재교육 중학교 정보 29쪽</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="센서 → 처리 → 실행 → 동작, 순서를 떠올려 봐 🔢">
       <h3>🔢 동작 과정 순서 맞추기</h3>
       <p>자동으로 물을 주는 스마트 화분이에요. 순서대로 눌러 보세요.</p>
       <div class="order" id="order"></div>
       <div class="feedback" id="oFb"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="내 말로 설명해 볼까? 꼭 넣을 낱말을 넣어 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">
@@ -105,7 +105,7 @@
   <section class="step sum">
     <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
     <div class="card">
-      <p>피지컬 컴퓨팅 시스템은 <b>① 센서로 데이터 수집 → ② 마이크로컨트롤러가 데이터 처리 → ③ 프로그램 실행 → ④ 액추에이터 제어</b> 과정으로 동작해요. 디지털 도어록, 스마트 가로등, 자율 주행 자동차가 그 예예요.</p>
+      <p>피지컬 컴퓨팅 시스템은 ① <b>센서</b>로 데이터 수집 → ② <b>마이크로컨트롤러</b>가 데이터 처리 → ③ <b>프로그램</b> 실행 → ④ <b>액추에이터</b> 제어 과정으로 동작해요. 디지털 도어록, 스마트 가로등, 자율 주행 자동차가 그 예예요.</p>
     </div>
   </section>
   <p class="src">미래엔 중학교 정보 25~27쪽 내용을 바탕으로 재구성</p>

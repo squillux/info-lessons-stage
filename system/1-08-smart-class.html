@@ -27,7 +27,7 @@
 .timer{font-family:ui-monospace,Consolas,monospace;font-size:1.4rem;font-weight:800}
 </style>
 </head>
-<body data-unit="1" data-title="스마트 교실 시뮬레이터" data-sub="중1 Ⅰ단원 · 피지컬 컴퓨팅 시스템 · 미래엔 32~36쪽">
+<body data-stage data-unit="1" data-title="스마트 교실 시뮬레이터" data-sub="중1 Ⅰ단원 · 피지컬 컴퓨팅 시스템 · 미래엔 32~36쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 피지컬 컴퓨팅</span>
   <h1>스마트 교실 시뮬레이터</h1>
@@ -35,14 +35,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="소리|움직임|밝기|여러 개를 함께">
       <p>교실에 사람이 있는지 없는지를 센서로 어떻게 알 수 있을까요? 소리, 움직임, 밝기 중 무엇을 쓰면 좋을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="소리가 기준값보다 크면 불이 켜져! 막대를 움직여 봐 💡">
       <h3>💡 소리로 켜지는 자동 전등</h3>
       <p>학생들이 들어와 떠들면 전등이 켜지고, 모두 나가 조용해지면 꺼져요. 소리 크기와 <b>기준값</b>을 바꿔 보세요.</p>
       <label>🔊 교실 소리 크기 (소리 센서 값) <input type="range" id="snd" min="0" max="100" value="5" style="width:100%"></label>
@@ -53,7 +53,7 @@
       <p class="hint">🤔 기준값을 너무 낮게 잡으면 어떤 문제가 생길까요? 너무 높게 잡으면요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="초를 바꾸고 실행해 봐 🚦">
       <h3>🚦 시간에 따라 바뀌는 신호등</h3>
       <p>각 색의 켜지는 시간을 정하고 실행해 보세요. (시뮬레이션에서는 1초를 0.2초로 빠르게 보여 줘요.)</p>
       <div class="sigrow">
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="버튼을 눌러서 신호가 바뀌는지 봐 🚸">
       <h3>🚸 버튼으로 동작하는 신호등</h3>
       <p>사람이 많지 않은 횡단보도에서는 보행자가 버튼을 누를 때만 신호가 바뀌어요. <b>평소에는 초록</b>, 버튼을 누르면 <b>노랑 5초 → 빨강 30초</b> 후 다시 초록이 돼요. (빠르게 보여 줘요.)</p>
       <div class="sigrow">
@@ -72,11 +72,11 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="문제에 맞는 입력과 출력을 골라 봐 🧠">
       <h3>🧠 센서와 액추에이터 고르기</h3>
       <div id="pick"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="이제 엔트리로 직접 만들어 보자! 🧩" id="entryMission"></div>
   </section>
 
   <section class="step">

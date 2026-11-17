@@ -260,21 +260,57 @@ addEventListener('beforeprint', () => document.querySelectorAll('details').forEa
   document.head.appendChild(s);
 })();
 
-/* ===== 시범: 한 화면에 활동 하나 (body에 data-stage가 있는 페이지만) =====
+/* ===== 한 화면에 활동 하나 (body에 data-stage가 있는 페이지만) =====
    카드 하나 = 화면 하나. 위쪽 단계 칩, 아래쪽 [◀ 이전] [다음 ▶], 화면 전환 애니메이션.
    주소 끝에 #s3 처럼 단계가 기록되어 브라우저 [뒤로 가기]로 이전 단계로 돌아간다.
    키보드 ← → (발표용 리모컨의 PageUp/PageDown)로도 넘길 수 있다.
+   도우미 '코딩이'가 화면마다 한마디 하고, 정답·오답에 반응한다.
+   카드에 data-bot="말" 을 쓰면 그 화면에서 코딩이가 할 말, 생각 열기 카드에 data-think="보기1|보기2" 를 쓰면 생각 고르기.
+   한 줄 정리 카드의 굵은 글씨(<b>)는 눌러서 여는 빈칸이 된다.
    진도 신호는 기존과 같게 '가장 멀리 간 단계'를 step으로 보낸다. */
+const BOT_SVG = `<g class="ant"><line x1="50" y1="22" x2="50" y2="10" stroke="#9a8af5" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="8" r="6.5" fill="#ff9cb8"/></g>
+  <rect x="5" y="44" width="9" height="18" rx="4.5" fill="#9a8af5"/>
+  <rect class="arm-r" x="86" y="44" width="9" height="18" rx="4.5" fill="#9a8af5"/>
+  <rect x="12" y="22" width="76" height="60" rx="26" fill="#fff" stroke="#9a8af5" stroke-width="4"/>
+  <rect x="22" y="33" width="56" height="36" rx="16" fill="#2f2a47"/>
+  <ellipse class="eye" cx="39" cy="48" rx="5" ry="7" fill="#86f2cf"/>
+  <ellipse class="eye" cx="61" cy="48" rx="5" ry="7" fill="#86f2cf"/>
+  <path class="mouth" d="M43 58 Q50 63 57 58" stroke="#86f2cf" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse class="mouth-o" cx="50" cy="60" rx="5" ry="4" fill="#86f2cf"/>
+  <circle cx="20" cy="66" r="5" fill="#ffc8d7"/><circle cx="80" cy="66" r="5" fill="#ffc8d7"/>
+  <rect x="34" y="84" width="32" height="10" rx="5" fill="#ffd45c"/>`;
+const botSvg = (w = 64) => `<svg class="bot" width="${w}" height="${Math.round(w * .96)}" viewBox="0 0 100 96" role="button" tabindex="0" aria-label="코딩이 (누르면 한마디)">${BOT_SVG}</svg>`;
+const BOT = {
+  think: ['정답은 없어! 떠오르는 생각을 골라 봐 🤔', '먼저 생각부터! 틀려도 괜찮아 🤔'],
+  act: ['직접 눌러 보면서 알아보자! 👆'],
+  quiz: ['배운 걸 확인해 볼까? 틀리면 해설을 읽으면 돼 📝'],
+  sum: ['빈칸을 눌러서 핵심 낱말을 떠올려 봐! 🧠'],
+  good: ['정답! 👍', '좋아, 잘하고 있어 ✨', '바로 그거야! 😆', '삐빅! 정답 신호 감지 📡', '역시! 💯'],
+  bad: ['괜찮아, 다시 해 보자 💪', '아깝다! 설명을 읽어 볼까? 🔍', '틀려도 괜찮아. 디버깅하면 돼 🔧'],
+  fun: ['삐빅! 반가워 🤖', '나를 눌렀구나? 간지러워 ㅋㅋ', '0과 1로 인사할게. 01101000 01101001 👋',
+    '컴퓨터는 시킨 대로만 한대. 그래서 순서가 중요해 😎', '배터리 충전 완료! 100% 🔋',
+    '알고 있었어? 최초의 컴퓨터 버그는 진짜 나방이었대 🦋', '1바이트는 8비트! 나는 오늘 기분이 8비트만큼 좋아 😆',
+    '어려운 문제는 작게 쪼개 봐! 그게 바로 분해야 🧩', '에러 메시지는 화내는 게 아니라 힌트를 주는 거야 💬',
+    '나는 알고리즘대로 움직여. 너는 뭐든 할 수 있고 💪', '쉬는 시간엔 눈도 좀 쉬게 해 줘 👀', '나 너무 많이 누르면… 어지러워 @_@'],
+};
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
 function stageMode(units){
   const P = infoProgress.state, N = units.length, root = document.documentElement, main = $('main');
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   root.classList.add('stage-on');
+  const esc = s => String(s).replace(/[<>&"]/g, c => ({'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;'}[c]));
   const stepTitle = u => { const h = u.step.querySelector('.step-h'); return h ? h.textContent.replace(/^\s*\d+/, '').trim() : ''; };
-  const kind = u => u.step.classList.contains('think') ? 'think' : u.step.classList.contains('sum') ? 'sum' : /확인|퀴즈/.test(stepTitle(u)) ? 'quiz' : 'act';
+  const kind = u => u.step.classList.contains('think') ? 'think' : u.step.classList.contains('sum') ? 'sum' : /확인|퀴즈|점검/.test(stepTitle(u)) ? 'quiz' : 'act';
   const label = u => { const h = u.card.querySelector('h3'); if (!h) return stepTitle(u); const c = h.cloneNode(true); c.querySelectorAll('.tag-more, .tag-opt').forEach(t => t.remove()); return c.textContent.trim(); };
-  const intro = [...main.children].filter(el => !el.matches('.step, .src'));
-  const outro = $$('main > .src');
+  units.forEach(u => { u.kind = kind(u); u.step.dataset.kind = u.kind; });
   const steps = $$('main .step');
+  const outro = $$('main > .src');
+  // 제목·소개를 첫 화면의 머리 상자로 묶기
+  const hero = document.createElement('div');
+  hero.className = 'st-hero';
+  const introEls = [...main.children].filter(el => !el.matches('.step, .src'));
+  if (introEls.length){ introEls[0].before(hero); introEls.forEach(el => hero.appendChild(el)); }
   const next = (() => {
     if (typeof contentsList === 'undefined') return null;
     const me = location.pathname.split('/').pop();
@@ -289,9 +325,87 @@ function stageMode(units){
     if (mine.length > 1 && h){ const t = document.createElement('span'); t.className = 'st-sub'; h.appendChild(t); mine.forEach((u, k) => u.sub = [t, `${k + 1} / ${mine.length}`]); }
   });
 
+  /* ---- 코딩이 ---- */
+  const guide = document.createElement('div');
+  guide.className = 'st-guide';
+  guide.innerHTML = botSvg(64) + '<div class="st-bubble" aria-live="polite"></div>';
+  const bot = guide.querySelector('.bot'), bubble = guide.querySelector('.st-bubble');
+  let sayT = null, lastSay = 0;
+  function say(html, opt = {}){
+    clearTimeout(sayT); lastSay = Date.now();
+    if (opt.jump) jump();
+    if (RM){ bubble.innerHTML = html; return; }
+    bot.classList.add('talking');
+    let i = 0;
+    const stepT = () => {
+      if (html.charAt(i) === '<') i = html.indexOf('>', i) + 1;
+      else if (html.charAt(i) === '&') i = html.indexOf(';', i) + 1;
+      else { const cp = html.codePointAt(i); i += cp > 0xffff ? 2 : 1; }
+      bubble.innerHTML = html.slice(0, i) + '<span class="caret"></span>';
+      if (i < html.length) sayT = setTimeout(stepT, 26);
+      else { bubble.innerHTML = html; bot.classList.remove('talking'); }
+    };
+    stepT();
+  }
+  function jump(){ if (RM) return; bot.classList.remove('jump'); void bot.getBoundingClientRect(); bot.classList.add('jump'); setTimeout(() => bot.classList.remove('jump'), 700); }
+  const poke = () => say(pick(BOT.fun), {jump: true});
+  bot.addEventListener('click', poke);
+  bot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); poke(); } });
+  function lineFor(i){
+    const u = units[i];
+    let t = u.card.dataset.bot ? esc(u.card.dataset.bot) : u.kind === 'sum' && !u.card.querySelector('.blank') ? '오늘 배운 내용을 소리 내어 한 번 읽어 볼까? 📌' : pick(BOT[u.kind]);
+    if (i === 0) t = '안녕! 나는 정보 도우미 <b>코딩이</b>야 🤖 ' + t;
+    return t;
+  }
+  // 정답·오답에 반응 (보기 버튼, 피드백 상자)
+  const react = ok => { if (Date.now() - lastSay < 900) return; say(pick(ok ? BOT.good : BOT.bad), {jump: ok}); };
+  document.addEventListener('click', e => {
+    const o = e.target.closest && e.target.closest('main .opt');
+    if (!o) return;
+    setTimeout(() => { if (o.classList.contains('right')) react(true); else if (o.classList.contains('wrong')) react(false); }, 0);
+  }, true);
+  if (typeof feedback === 'function'){
+    const fb0 = feedback;
+    window.feedback = feedback = function(el, ok, msg){ fb0(el, ok, msg); if (!all && units[cur].els.some(x => x.contains(el))) setTimeout(() => react(ok), 0); };
+  }
+  addEventListener('info:progress', e => {
+    const d = e.detail;
+    if (all) return;
+    if (d.type === 'quiz') setTimeout(() => say(d.score === d.total ? `${d.total}문제 모두 맞혔어! 🎉 [다음 ▶]을 눌러 볼까?` : `${d.score} / ${d.total}! 틀린 문제의 해설을 읽어 보자 📖`, {jump: d.score === d.total}), 30);
+    if (d.type === 'choice') setTimeout(() => say(cur < N - 1 ? '다 해냈어! 👏 준비되면 [다음 ▶]을 눌러 줘' : '다 해냈어! 👏', {jump: true}), 30);
+    if (d.type === 'mission') setTimeout(() => say('미션 완료! 멋져 🚀', {jump: true}), 30);
+  });
+
+  /* ---- 생각 열기: 생각 고르기 (저장하지 않음) ---- */
+  units.filter(u => u.kind === 'think' && u.card.dataset.think).forEach(u => {
+    const box = document.createElement('div');
+    box.className = 'think-pick';
+    box.innerHTML = '<span class="tp-q">내 생각은?</span>' + u.card.dataset.think.split('|').map(t => `<button class="tp">${esc(t.trim())}</button>`).join('');
+    box.querySelectorAll('.tp').forEach(b => b.onclick = () => {
+      box.querySelectorAll('.tp').forEach(x => x.classList.toggle('on', x === b));
+      say(`「${esc(b.textContent)}」 좋은 생각이야! 활동하면서 확인해 보자 👉`, {jump: true});
+    });
+    u.card.appendChild(box);
+  });
+
+  /* ---- 한 줄 정리: 굵은 낱말을 눌러서 여는 빈칸 ---- */
+  units.filter(u => u.kind === 'sum').forEach(u => {
+    const bs = [...u.card.querySelectorAll('p b')];
+    if (bs.length < 2) return;
+    bs.forEach(b => { const s = document.createElement('button'); s.className = 'blank'; s.title = '눌러서 보기'; s.innerHTML = b.innerHTML; b.replaceWith(s); });
+    const ctl = document.createElement('div');
+    ctl.className = 'blank-ctl';
+    ctl.innerHTML = '<span class="hint">빈칸을 눌러 핵심 낱말을 떠올려 봐요.</span> <button class="btn line">👀 모두 보기</button>';
+    u.card.appendChild(ctl);
+    const blanks = [...u.card.querySelectorAll('.blank')];
+    const check = () => { if (blanks.every(x => x.classList.contains('open')) && !u.cleared){ u.cleared = true; ctl.querySelector('.hint').textContent = '✅ 핵심 낱말을 모두 확인했어요.'; say('핵심 낱말을 다 찾았어! 오늘 배운 거 잊지 마 😊', {jump: true}); } };
+    blanks.forEach(x => x.onclick = () => { x.classList.add('open'); check(); });
+    ctl.querySelector('button').onclick = () => { blanks.forEach(x => x.classList.add('open')); check(); };
+  });
+
   // 저장된 위치(새로 고침해도 유지)와 주소의 #sN
   const key = 'stage:' + location.pathname;
-  let cur = 0, max = 0, busy = 0, all = false, cheered = false;
+  let cur = 0, max = 0, busy = 0, all = false;
   try { const s = JSON.parse(sessionStorage.getItem(key) || '{}'); max = Math.min(N - 1, Math.max(0, s.max | 0)); cur = Math.min(max, Math.max(0, s.cur | 0)); } catch (e) {}
   const fromHash = () => { const m = location.hash.match(/^#s(\d+)$/); return m ? Math.min(N, Math.max(1, +m[1])) - 1 : null; };
   const h0 = fromHash();
@@ -302,37 +416,42 @@ function stageMode(units){
   // 위쪽 단계 칩
   const nav = document.createElement('nav');
   nav.className = 'stagenav'; nav.setAttribute('aria-label', '활동 단계');
-  nav.innerHTML = '<div class="in">' + units.map((u, i) => `<button class="chip k-${kind(u)}"><b>${i + 1}</b><span></span></button>`).join('') + '</div>';
+  nav.innerHTML = '<div class="in">' + units.map(u => `<button class="chip k-${u.kind}"><b></b><span></span></button>`).join('') + '</div>';
   const chips = [...nav.querySelectorAll('.chip')];
   chips.forEach((c, i) => {
     c.title = (i + 1) + '. ' + label(units[i]);
+    c.querySelector('b').textContent = i + 1;
     c.querySelector('span').textContent = label(units[i]);
     c.onclick = () => all ? units[i].els[0].scrollIntoView({behavior: RM ? 'auto' : 'smooth', block: 'start'}) : go(i);
   });
   $('header.top').appendChild(nav);
 
-  // 아래쪽 이동 막대와 마침 화면
+  // 아래쪽 이동 막대와 마침 화면 (요란한 효과 없이 코딩이가 인사)
   const bar = document.createElement('div');
   bar.className = 'stagebar';
   main.after(bar);
   const done = document.createElement('div');
   done.className = 'stagedone';
   const d = document.body.dataset;
-  done.innerHTML = `<div class="trophy" aria-hidden="true">🏆</div><div class="msg">이 활동을 모두 마쳤어요!</div>
+  done.innerHTML = `<div class="sd-talk">${botSvg(72)}<div class="st-bubble">이 활동을 모두 마쳤어! 수고했어 😊${next ? '<br>다음 활동도 함께 해 볼까?' : ''}</div></div>
     <div class="ctrl"><a class="btn line" href="../index.html?unit=${d.unit || ''}">◀ 목차로</a>
     ${next ? `<a class="btn" href="../${next.href}">다음 활동: <span></span> ▶</a>` : ''}
     <button class="btn ghost" data-restart>처음부터 다시</button></div>`;
   if (next) done.querySelector('a.btn:not(.line) span').textContent = next.title;
   done.querySelector('[data-restart]').onclick = () => { max = 0; go(0); };
+  done.querySelector('.bot').addEventListener('click', e => { const b = e.currentTarget; b.classList.remove('jump'); void b.getBoundingClientRect(); b.classList.add('jump'); });
   main.appendChild(done);
 
   function show(){
     units.forEach((u, k) => u.els.forEach(el => el.classList.toggle('st-hide', k !== cur)));
     steps.forEach(s => s.classList.toggle('st-hide', units[cur].step !== s));
-    intro.forEach(el => el.classList.toggle('st-hide', cur !== 0));
+    hero.classList.toggle('st-hide', cur !== 0);
     outro.forEach(el => el.classList.toggle('st-hide', cur !== N - 1));
     done.classList.toggle('st-hide', cur !== N - 1);
     if (units[cur].sub) units[cur].sub[0].textContent = units[cur].sub[1];
+    units[cur].els[0].before(guide);
+    say(lineFor(cur));
+    dispatchEvent(new CustomEvent('stage:show', {detail: {index: cur, card: units[cur].card, all: false}}));
   }
   function renderNav(){
     chips.forEach((c, i) => {
@@ -365,24 +484,10 @@ function stageMode(units){
     main.animate([{opacity: 0, transform: `translateX(${dir * 48}px)`}, {opacity: 1, transform: 'none'}], {duration: 320, easing: 'cubic-bezier(.2,.8,.3,1)'});
     const vis = units[cur].els.filter(el => el.classList.contains('card'));
     vis.forEach((el, k) => el.animate([{opacity: 0, transform: 'translateY(18px) scale(.98)'}, {opacity: 1, transform: 'none'}],
-      {duration: 420, delay: 90 + k * 70, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'backwards'}));
+      {duration: 420, delay: 110 + k * 70, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'backwards'}));
     const no = units[cur].step.querySelector('.step-h .no');
     if (no) no.animate([{transform: 'scale(.4) rotate(-20deg)'}, {transform: 'scale(1.15) rotate(6deg)', offset: .6}, {transform: 'none'}], {duration: 480, easing: 'ease-out'});
-    if (cur === N - 1){
-      done.querySelector('.trophy').animate([{transform: 'scale(0) rotate(-30deg)'}, {transform: 'scale(1.2) rotate(8deg)', offset: .7}, {transform: 'none'}], {duration: 700, delay: 250, easing: 'ease-out', fill: 'backwards'});
-      if (!cheered){ cheered = true; confetti(); }
-    }
-  }
-  function confetti(){
-    if (RM) return;
-    const E = ['🎉', '✨', '⭐', '💻', '🏆', '💡'];
-    const layer = document.createElement('div'); layer.className = 'st-layer'; document.body.appendChild(layer); setTimeout(() => layer.remove(), 3600);
-    for (let i = 0; i < 30; i++){
-      const c = document.createElement('div'); c.className = 'st-confetti'; c.textContent = E[i % E.length];
-      c.style.left = (Math.random() * 100) + 'vw'; layer.appendChild(c);
-      c.animate([{transform: 'translate(0,0) rotate(0)'}, {transform: `translate(${(Math.random() - .5) * 200}px,${innerHeight + 80}px) rotate(${(Math.random() - .5) * 720}deg)`}],
-        {duration: 1600 + Math.random() * 1200, delay: Math.random() * 300, easing: 'cubic-bezier(.2,.6,.4,1)', fill: 'forwards'});
-    }
+    bot.animate([{transform: 'translateY(10px) scale(.9)', opacity: 0}, {transform: 'none', opacity: 1}], {duration: 360, easing: 'cubic-bezier(.3,1.5,.5,1)'});
   }
   // 단계 이동. push=false는 브라우저 뒤로/앞으로 가기에서 부를 때
   function go(i, push = true){
@@ -420,6 +525,8 @@ function stageMode(units){
     all = !all; root.classList.toggle('stage-all', all);
     if (all && max < N - 1) P.expanded = true;
     renderNav(); renderBar(); allLabel();
+    if (all) dispatchEvent(new CustomEvent('stage:show', {detail: {index: -1, card: null, all: true}}));
+    else show();
     window.scrollTo({top: 0}); window.dispatchEvent(new Event('resize'));
   };
 
@@ -435,6 +542,6 @@ function stageMode(units){
   save(); show(); renderNav(); renderBar();
   P.total = N; P.step = P.maxStep = max + 1;
   infoProgress.emit('start', {step: max + 1, total: N, view: cur + 1});
-  if (max === N - 1){ P.done = true; cheered = true; }
+  if (max === N - 1) P.done = true;
   enter(1);
 }

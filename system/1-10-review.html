@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../assets/common.css">
 <style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}</style>
 </head>
-<body data-unit="1" data-title="Ⅰ단원 정리 퀴즈" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
+<body data-stage data-unit="1" data-title="Ⅰ단원 정리 퀴즈" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 단원 정리</span>
   <h1>Ⅰ단원 정리 퀴즈</h1>
@@ -15,18 +15,18 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="자신 있어!|조금 헷갈려|다시 봐야 해">
       <p>이 단원에서 배운 내용을 "입력 → 처리 → 출력"이라는 말로 한 문장씩 설명해 볼까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>정리 퀴즈</h2>
-    <div class="card">
+    <div class="card" data-bot="1부 정리! 기억나는 대로 풀어 봐 💻">
       <h3>💻 컴퓨팅 시스템의 구성과 동작</h3>
       <div id="q1"></div>
     </div>
-    <div class="card">
+    <div class="card" data-bot="2부 정리! 센서와 액추에이터를 떠올려 봐 🔌">
       <h3>🔌 피지컬 컴퓨팅 시스템</h3>
       <div id="q2"></div>
     </div>
@@ -34,7 +34,7 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">3</span>스스로 점검</h2>
-    <div class="card">
+    <div class="card" data-bot="할 수 있게 된 것에 체크해 봐 ✅">
       <p>할 수 있게 된 것에 체크해 보세요. (저장되지 않아요.)</p>
       <div class="self" id="self"></div>
       <p class="hint" id="selfMsg"></p>

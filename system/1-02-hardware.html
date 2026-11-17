@@ -28,21 +28,23 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="키보드·카메라|CPU|모니터·스피커|아직 모르겠어">
       <p>사람은 눈과 귀로 정보를 받아들이고, 뇌로 생각하고 기억하며, 입과 손으로 표현해요. 컴퓨터에서 눈, 뇌, 입의 역할을 하는 장치는 무엇일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="사람 몸과 비교하면 쉬워! 짝을 맞춰 봐 🧠">
       <h3>🧭 하드웨어의 네 가지 역할</h3>
       <div class="flow"><div>⌨️ 입력 장치</div>→<div>🧠 중앙 처리 장치(CPU)</div>→<div>🖥️ 출력 장치</div></div>
       <div class="flow"><div class="mem">💾 기억 장치: 처리할 프로그램과 데이터, 처리 결과를 저장</div></div>
       <p class="hint">CPU는 명령어를 해석해 처리하는 <b>제어 장치</b>와 데이터를 계산하는 <b>연산 장치</b>로 구성돼요.</p>
+      <p style="margin:14px 0 6px"><b>🧍 사람 몸이라면?</b> 사람이 하는 일과 같은 역할의 장치를 골라 보세요.</p>
+      <div id="body"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="부품을 먼저 누르고, 알맞은 상자를 눌러 넣어 줘 📦">
       <h3>📦 부품 정리하기</h3>
       <p>부품을 누른 다음, 알맞은 상자를 누르세요.</p>
       <div class="parts" id="parts"></div>
@@ -50,12 +52,12 @@
       <div class="feedback" id="fb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="전원을 끄면 사라지는지가 힌트야 💡">
       <h3>💾 주기억 장치와 보조 기억 장치</h3>
       <div id="mem"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내 스마트폰 안에도 이 부품들이 다 있어 📱">
       <h3>📱 스마트폰 속 하드웨어</h3>
       <p>스마트폰도 컴퓨팅 시스템이에요. 각 부품은 어떤 장치일까요?</p>
       <div id="phone"></div>
@@ -85,12 +87,19 @@ $('#parts').innerHTML = PARTS.map(([n], i) => `<button data-i="${i}">${n}</butto
 $('#bins').innerHTML = BINS.map(([b, s], k) => `<button class="bin" data-k="${k}"><b>${b}</b><small>${s}</small><div></div></button>`).join('');
 $$('#parts button').forEach(b => b.onclick = () => { $$('#parts button').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); sel = +b.dataset.i; });
 $$('#bins .bin').forEach(bin => bin.onclick = () => {
-  if (sel === null) return feedback($('#fb'), false, '먼저 위에서 부품을 고르세요.');
+  if (sel === null) return feedback($('#fb'), false, '먼저 부품을 하나 고르세요.');
   const [n, k] = PARTS[sel], btn = $(`#parts [data-i="${sel}"]`);
   if (k === +bin.dataset.k){ bin.querySelector('div').insertAdjacentHTML('beforeend', `<span>${n}</span>`); btn.classList.add('done'); btn.classList.remove('sel'); sel = null; done++;
     feedback($('#fb'), true, done === PARTS.length ? '🎉 모든 부품을 정리했어요!' : `⭕ 정답! (${done} / ${PARTS.length})`); }
   else feedback($('#fb'), false, `❌ ${n}은(는) 이 상자가 아니에요. 이 부품이 하는 일을 떠올려 보세요.`);
 });
+
+renderChoice($('#body'), [
+  {icon:'👀', t:'눈과 귀로 보고 들어요.', a:0, e:'정보를 받아들이는 입력 장치예요.'},
+  {icon:'🤔', t:'뇌로 생각하고 계산해요.', a:1, e:'명령을 해석하고 계산하는 중앙 처리 장치(CPU)예요.'},
+  {icon:'📒', t:'배운 것을 머릿속에 기억해요.', a:2, e:'프로그램과 데이터를 저장하는 기억 장치예요.'},
+  {icon:'🗣️', t:'입으로 말하고 손으로 글을 써요.', a:3, e:'결과를 표현하는 출력 장치예요.'},
+], ['⌨️ 입력', '🧠 CPU', '💾 기억', '🖥️ 출력']);
 
 renderChoice($('#mem'), [
   {icon:'🧩', t:'처리 속도가 빠르지만, 전원이 꺼지면 저장된 내용이 사라져요. 지금 실행 중인 프로그램과 데이터를 잠시 저장해요.', a:0, e:'주기억 장치(램, RAM)예요.'},

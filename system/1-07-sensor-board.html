@@ -26,7 +26,7 @@
 .blocks .k{color:#ffc233}
 </style>
 </head>
-<body data-unit="1" data-title="가상 센서 보드" data-sub="중1 Ⅰ단원 · 피지컬 컴퓨팅 시스템의 구성 · 미래엔 26, 28~31쪽">
+<body data-stage data-unit="1" data-title="가상 센서 보드" data-sub="중1 Ⅰ단원 · 피지컬 컴퓨팅 시스템의 구성 · 미래엔 26, 28~31쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 피지컬 컴퓨팅</span>
   <h1>가상 센서 보드</h1>
@@ -34,14 +34,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="가능해! 밝기를 숫자로|불가능해|0과 1로만 돼|잘 모르겠어">
       <p>교실 불을 끄면 어두워진 것을 컴퓨터가 어떻게 알 수 있을까요? 어두움을 숫자로 나타낼 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="막대를 움직이면 숫자가 0~1023 사이에서 바뀌어! 🧪">
       <h3>🧪 센서 값 살펴보기</h3>
       <p>아날로그 센서는 <b>0~1023</b> 사이의 값을, 버튼 같은 디지털 센서는 <b>0 또는 1</b>을 입력해요. 막대를 움직이고 버튼을 눌러 값이 어떻게 바뀌는지 보세요.</p>
       <div class="boardv">
@@ -54,18 +54,19 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="만약 ~라면! 규칙을 만들고 센서 막대로 시험해 봐 🧩">
       <h3>🧩 규칙 만들기: 만약 ~라면</h3>
-      <p>센서와 조건, 동작을 골라 규칙을 만들고, 위의 막대를 움직여 LED가 규칙대로 켜지는지 확인해 보세요.</p>
+      <p>센서와 조건, 동작을 골라 규칙을 만들고, 센서 막대를 움직여 LED가 규칙대로 켜지는지 확인해 보세요.</p>
       <div class="rule">만약 <select id="rs"><option value="light">빛 센서</option><option value="sound">소리 센서</option><option value="temp">온도 센서</option><option value="slide">슬라이더</option></select>
         값이 <input id="rn" type="number" value="300" min="0" max="1023" style="width:90px">
         <select id="rc"><option value="lt">보다 작으면</option><option value="gt">보다 크면</option></select>
         <select id="rl"><option value="yellow">노랑</option><option value="red">빨강</option><option value="green">초록</option><option value="blue">파랑</option></select> LED 켜기, 아니면 끄기</div>
+      <div id="boardDock"></div>
       <div class="blocks" id="code"></div>
       <div class="feedback" id="rFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="흔들 때마다 1씩 더해져. 이게 바로 변수야 👟">
       <h3>👟 다른 보드로 만든 만보기 <span class="tag-opt">더 해 보기</span></h3>
       <p>마이크로비트 같은 보드에는 흔들림을 감지하는 <b>가속도 센서</b>가 있어요. 흔들림이 감지될 때마다 <b>변수</b> '운동 횟수'에 1을 더하면 만보기가 돼요.</p>
       <div class="ctrl"><button class="btn" id="shake">🤸 흔들기 (걸음)</button><button class="btn line" id="pA">A 버튼: 횟수 보기</button><button class="btn line" id="pB">B 버튼: 0으로 초기화</button></div>
@@ -74,11 +75,11 @@
       <p class="hint">참고: 비상교육 중학교 정보 22쪽</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="상황에 딱 맞는 센서와 조건을 골라 봐 🎯">
       <h3>🎯 미션: 상황에 맞는 규칙은?</h3>
       <div id="mission"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="이제 엔트리로 직접 만들어 보자! 🧩" id="entryMission"></div>
   </section>
 
   <section class="step">
@@ -97,6 +98,14 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
+/* 한 화면 모드: '규칙 만들기' 화면에 센서 보드를 함께 보여 준다 */
+(() => {
+  const board = $('.boardv'), home = board.parentElement, dock = $('#boardDock'), ruleCard = dock.closest('.card');
+  addEventListener('stage:show', e => {
+    if (e.detail.card === ruleCard){ dock.appendChild(board); dock.style.margin = '10px 0'; }
+    else if (board.parentElement !== home){ home.appendChild(board); dock.style.margin = ''; }
+  });
+})();
 const S = {}, pressed = new Set();
 const NAME = {light: '빛 센서', sound: '소리 센서', temp: '온도 센서', slide: '슬라이더'};
 const LNAME = {red: '빨강', green: '초록', blue: '파랑', yellow: '노랑'};

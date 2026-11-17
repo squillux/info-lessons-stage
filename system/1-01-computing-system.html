@@ -24,33 +24,35 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="스마트폰|전자레인지|교통 카드 단말기|엘리베이터">
       <p>오늘 아침 일어나서 학교에 올 때까지 사용한 기기를 떠올려 보세요. 그중 스스로 데이터를 처리하는 기기는 무엇일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="데이터를 받아서 스스로 처리하는지 살펴봐! 🔍">
       <h3>🔍 컴퓨팅 시스템일까?</h3>
       <p>데이터를 입력받아 <b>정해진 절차에 따라 자동으로 처리</b>하면 컴퓨팅 시스템이에요.</p>
       <div id="judge"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="각 시스템이 사람 대신 해 주는 일을 찾아봐 🏠">
       <h3>🏠 어떤 문제를 해결해 줄까?</h3>
       <div id="role"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="좋은 점일까, 걱정되는 점일까? 하나씩 나눠 보자 ⚖️">
       <h3>⚖️ 컴퓨팅 시스템이 사회에 미치는 영향</h3>
-      <div class="two-col">
+      <p>컴퓨팅 시스템 때문에 생긴 일이에요. 좋은 점일까요, 걱정되는 점일까요?</p>
+      <div id="impact"></div>
+      <div class="two-col" id="impactSum" style="margin-top:12px;display:none">
         <div class="pos"><h4>👍 긍정적 영향</h4><ul><li>일을 자동화해 빠르고 정확하게 처리해요.</li><li>멀리 있는 사람과도 쉽게 소통하고 협업해요.</li><li>필요한 정보를 언제 어디서나 찾을 수 있어요.</li></ul></div>
         <div class="neg"><h4>👎 부정적 영향</h4><ul><li>개인 정보 유출이나 사이버 범죄가 생길 수 있어요.</li><li>기기를 잘 다루지 못하는 사람은 소외될 수 있어요.</li><li>시스템이 고장 나면 많은 일이 멈춰요.</li></ul></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내 생각을 보내면 친구들 생각과 함께 모여! 📡">
       <h3>📡 우리 반 영향 모으기 <span class="tag-opt">실시간</span></h3>
       <p>내가 생각한 영향을 하나 골라 보내 보세요. 반 친구들의 생각이 긍정·부정으로 나뉘어 모여요. (1인 2개까지, 이름은 저장되지 않아요.)</p>
       <div id="live"></div>
@@ -65,7 +67,7 @@
   <section class="step sum">
     <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
     <div class="card">
-      <p><b>컴퓨팅 시스템</b>은 데이터를 정해진 절차에 따라 자동으로 처리해 문제 해결을 돕는 시스템이에요. 컴퓨터, 스마트폰, 키오스크, 로봇 청소기처럼 생활 곳곳에 있고, 사회에 긍정적·부정적 영향을 함께 줘요.</p>
+      <p><b>컴퓨팅 시스템</b>은 데이터를 정해진 절차에 따라 <b>자동</b>으로 처리해 문제 해결을 돕는 시스템이에요. 컴퓨터, 스마트폰, 키오스크, 로봇 청소기처럼 생활 곳곳에 있고, 사회에 <b>긍정적</b>·<b>부정적</b> 영향을 함께 줘요.</p>
     </div>
   </section>
   <p class="src">미래엔 중학교 정보 11, 14쪽 내용을 바탕으로 재구성</p>
@@ -87,6 +89,15 @@ renderChoice($('#role'), [
   {icon:'🚗', t:'자율 주행 자동차', a:1, e:'주변을 인식해 안전하게 스스로 운전해요.'},
   {icon:'🏭', t:'공장의 산업용 로봇', a:2, e:'반복적인 일을 빠르고 정확하게 해 생산성을 높여요.'},
 ], ['주문·결제를 대신해요', '스스로 운전해요', '반복 작업을 정확하게 해요']);
+
+renderChoice($('#impact'), [
+  {icon:'⚡', t:'은행 일을 자동으로 처리해 몇 초 만에 송금할 수 있어요.', a:0, e:'일을 자동화해 빠르고 정확하게 처리해요.'},
+  {icon:'🔓', t:'해킹으로 수많은 사람의 개인 정보가 빠져나갔어요.', a:1, e:'개인 정보 유출이나 사이버 범죄가 생길 수 있어요.'},
+  {icon:'💬', t:'멀리 사는 친구와 영상 통화로 함께 숙제를 해요.', a:0, e:'멀리 있는 사람과도 쉽게 소통하고 협업해요.'},
+  {icon:'👵', t:'키오스크 사용이 어려운 할머니가 주문을 못 하고 돌아가셨어요.', a:1, e:'기기를 잘 다루지 못하는 사람은 소외될 수 있어요.'},
+  {icon:'🔎', t:'궁금한 것을 언제 어디서나 바로 검색해요.', a:0, e:'필요한 정보를 언제 어디서나 찾을 수 있어요.'},
+  {icon:'🚫', t:'결제 시스템이 고장 나서 가게들이 한동안 문을 닫았어요.', a:1, e:'시스템이 고장 나면 많은 일이 멈춰요.'},
+], ['👍 긍정적 영향', '👎 부정적 영향'], () => { $("#impactSum").style.display = ""; });
 
 liveBoard($('#live'), {act: '1-01', title: '컴퓨팅 시스템이 사회에 미치는 영향', limit: 2,
   text: v => { try { const d = JSON.parse(v); return (d.k ? '👎 ' : '👍 ') + d.t; } catch(e){ return '?'; } },
