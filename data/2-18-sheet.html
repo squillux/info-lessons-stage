@@ -23,6 +23,30 @@ table.ss td.err{color:var(--bad)}
 .miss div{padding:6px 10px;border-radius:10px;background:var(--bg);font-size:.92rem}
 .miss div.done{background:var(--ok-soft);color:var(--ok);font-weight:700}
 .miss code{background:#fff;border-radius:6px;padding:0 6px}
+
+/* ── 추세선 탐정 ── */
+.tr-wrap{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:700px){.tr-wrap{grid-template-columns:1fr}}
+.tr-plot{position:relative;border-radius:16px;background:#fff;border:1.5px solid var(--line);padding:6px;touch-action:none}
+.tr-plot svg{display:block;width:100%;height:auto;user-select:none}
+.tr-plot .hd{cursor:grab}
+.tr-plot .hd:active{cursor:grabbing}
+.tr-side .meter2{display:flex;align-items:center;gap:8px;font-weight:800;margin:6px 0}
+.tr-side .meter2 .b{flex:1;height:14px;border-radius:999px;background:var(--bg);overflow:hidden}
+.tr-side .meter2 .b i{display:block;height:100%;transition:width .2s,background .2s}
+.tr-step{border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;background:#fff}
+.tr-step.done{background:var(--ok-soft);border-color:#b6e2c6}
+.tr-step.lock{opacity:.45}
+.tr-pred{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.tr-pred input{width:90px;font:inherit;font-weight:800;padding:6px 8px;border:2px solid var(--line);border-radius:10px}
+.tr-mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}
+@media (max-width:560px){.tr-mini{grid-template-columns:1fr}}
+.tr-m{border:1.5px solid var(--line);border-radius:14px;padding:8px;background:#fff}
+.tr-m svg{display:block;width:100%;height:auto;background:#f8faff;border-radius:8px}
+.tr-m b{display:block;font-size:.85rem;margin:4px 0}
+.tr-m .pick3{display:grid;gap:4px}
+.tr-m .pick3 button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:5px;font-weight:700;font-size:.8rem;color:var(--ink)}
+.tr-m .pick3 button.o{border-color:var(--mint);background:var(--mint-soft)}.tr-m .pick3 button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="데이터 해석과 스프레드시트 수식" data-sub="중1 Ⅱ단원 · 데이터의 해석 · 미래엔 64~65쪽">
@@ -60,6 +84,23 @@ table.ss td.err{color:var(--bad)}
       <h3>💬 분석 결과 해석하기</h3>
       <p>스프레드시트로 분석한 결과를 보고 답해 보세요.</p>
       <div id="interp"></div>
+    </div>
+
+    <div class="card" data-bot="손잡이 두 개를 끌어서 점들 사이를 지나는 선을 그어 봐 📈">
+      <h3>📈 추세선 탐정 <span class="tag-more">특색</span></h3>
+      <p>아이스크림 가게 사장님이 <b>기온</b>과 <b>판매량</b> 데이터를 모았어요. 점들의 흐름(추세)을 가장 잘 나타내는 선을 그어 보고, 내일 판매량을 <b>예측</b>해 보세요.</p>
+      <div class="tr-wrap">
+        <div class="tr-plot" id="trPlot"></div>
+        <div class="tr-side">
+          <div class="tr-step" id="trS1"><b>① 추세선 긋기</b><br><small>🔵 손잡이 2개를 끌어 선을 움직여요.</small><div class="meter2">정확도 <span class="b"><i id="trBar"></i></span><span id="trPct"></span></div><button class="btn" id="trOk" disabled>이 선으로 결정!</button></div>
+          <div class="tr-step lock" id="trS2"><b>② 예측하기</b><br><small>내일 기온은 <b>33℃</b>래요. 내 선으로 판매량을 예측하면?</small><div class="tr-pred"><input type="number" id="trIn" placeholder="개수" disabled> 개 <button class="btn ghost" id="trGo" disabled>예측!</button></div><div id="trPredFb"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" data-bot="점들이 어떤 모양으로 흩어져 있는지 보고 관계를 골라 봐 🔎">
+      <h3>🔎 어떤 관계일까?</h3>
+      <p>점들이 <b>오른쪽 위로</b> 모이면 양의 관계, <b>오른쪽 아래로</b> 모이면 음의 관계, 흩어져 있으면 관계가 없다고 해요.</p>
+      <div class="tr-mini" id="trMini"></div>
     </div>
     <div class="card" data-bot="시간이 있으면 진짜 스프레드시트로도 해 봐 📊">
       <h3>📊 실제 스프레드시트에서 해 보기 <span class="tag-opt">더 해 보기</span></h3>
@@ -175,6 +216,78 @@ renderChoice($('#interp'), [
   {t:'인구가 가장 많이 줄어든 구는? (D열을 보세요)', a:2, e:'마루구는 1,400명 줄어 감소 폭이 가장 커요. 증감률도 약 -4.7%로 가장 낮아요.'},
   {t:'인구가 늘어난 구는 몇 곳일까요?', a:4, e:'나루구, 라온구, 바다구 세 곳이 늘었어요. (D열이 양수)'},
 ], ['가람구', '다솜구', '마루구', '바다구', '3곳']);
+
+
+/* ===== 추세선 탐정 ===== */
+const TRD = [[18, 42], [20, 55], [21, 51], [23, 68], [24, 63], [25, 80], [26, 74], [27, 92], [28, 88], [29, 99], [30, 112], [31, 108]];
+const TR = {x0: 15, x1: 35, y0: 0, y1: 160, W: 400, H: 280, L: 44, B: 34, T: 10, R: 12};
+const trX = v => TR.L + (v - TR.x0) / (TR.x1 - TR.x0) * (TR.W - TR.L - TR.R), trY = v => TR.H - TR.B - (v - TR.y0) / (TR.y1 - TR.y0) * (TR.H - TR.B - TR.T);
+const trIX = px => TR.x0 + (px - TR.L) / (TR.W - TR.L - TR.R) * (TR.x1 - TR.x0), trIY = py => TR.y0 + (TR.H - TR.B - py) / (TR.H - TR.B - TR.T) * (TR.y1 - TR.y0);
+const trFit = (() => { const n = TRD.length, mx = TRD.reduce((s, p) => s + p[0], 0) / n, my = TRD.reduce((s, p) => s + p[1], 0) / n; const m = TRD.reduce((s, p) => s + (p[0] - mx) * (p[1] - my), 0) / TRD.reduce((s, p) => s + (p[0] - mx) ** 2, 0); return {m, b: my - m * mx}; })();
+let trH = [{x: 17, y: 110}, {x: 33, y: 60}], trLocked = false, trShowBest = false, trFirst = [];
+const trLine = () => { const m = (trH[1].y - trH[0].y) / (trH[1].x - trH[0].x || .01); return {m, b: trH[0].y - m * trH[0].x}; };
+const trErr = ln => TRD.reduce((s, [x, y]) => s + Math.abs(y - (ln.m * x + ln.b)), 0) / TRD.length;
+function trDraw(){
+  const ln = trLine(), at = x => trY(ln.m * x + ln.b);
+  let g = '';
+  for (let v = 0; v <= 160; v += 40) g += `<line x1="${TR.L}" x2="${TR.W - TR.R}" y1="${trY(v)}" y2="${trY(v)}" stroke="#eef1f7"/><text x="${TR.L - 6}" y="${trY(v) + 4}" font-size="10" text-anchor="end" fill="#8a95ab">${v}</text>`;
+  for (let v = 15; v <= 35; v += 5) g += `<text x="${trX(v)}" y="${TR.H - TR.B + 16}" font-size="10" text-anchor="middle" fill="#8a95ab">${v}℃</text>`;
+  g += `<text x="${TR.W / 2}" y="${TR.H - 4}" font-size="11" text-anchor="middle" fill="#5a6578" font-weight="700">기온</text><text x="12" y="${TR.T + 6}" font-size="11" fill="#5a6578" font-weight="700">개</text>`;
+  if (trLocked) TRD.forEach(([x, y]) => g += `<line x1="${trX(x)}" x2="${trX(x)}" y1="${trY(y)}" y2="${at(x)}" stroke="#ff7aa2" stroke-dasharray="3 2"/>`);
+  if (trShowBest) g += `<line x1="${trX(15)}" y1="${trY(trFit.m * 15 + trFit.b)}" x2="${trX(35)}" y2="${trY(trFit.m * 35 + trFit.b)}" stroke="#16b8a6" stroke-width="3" stroke-dasharray="7 5"/><text x="${trX(32)}" y="${trY(trFit.m * 32 + trFit.b) + 22}" font-size="10" fill="#0d7d71" font-weight="700">컴퓨터의 추세선</text>`;
+  TRD.forEach(([x, y]) => g += `<text x="${trX(x)}" y="${trY(y) + 5}" font-size="14" text-anchor="middle">🍦</text>`);
+  g += `<line x1="${trX(15)}" y1="${at(15)}" x2="${trX(35)}" y2="${at(35)}" stroke="#3b6cf6" stroke-width="3"/>`;
+  if (!trLocked) trH.forEach((h, i) => g += `<circle class="hd" data-i="${i}" cx="${trX(h.x)}" cy="${trY(h.y)}" r="11" fill="#3b6cf6" stroke="#fff" stroke-width="3"/>`);
+  if (trLocked && trPredX) g += `<line x1="${trX(33)}" x2="${trX(33)}" y1="${trY(0)}" y2="${at(33)}" stroke="#ffc233" stroke-width="2"/><line x1="${trX(33)}" x2="${TR.L}" y1="${at(33)}" y2="${at(33)}" stroke="#ffc233" stroke-width="2"/><circle cx="${trX(33)}" cy="${at(33)}" r="5" fill="#ffc233"/>`;
+  $('#trPlot').innerHTML = `<svg viewBox="0 0 ${TR.W} ${TR.H}" id="trSvg"><clipPath id="trc"><rect x="${TR.L}" y="${TR.T}" width="${TR.W - TR.L - TR.R}" height="${TR.H - TR.B - TR.T}"/></clipPath>${g}</svg>`;
+  const e = trErr(ln), pct = Math.max(0, Math.min(100, Math.round(100 - (e - 3.5) * 3)));
+  $('#trPct').textContent = pct + '%'; $('#trBar').style.width = pct + '%'; $('#trBar').style.background = pct >= 80 ? 'var(--mint)' : pct >= 50 ? 'var(--on)' : 'var(--bad)';
+  if (!trLocked) $('#trOk').disabled = pct < 80;
+  trBind();
+}
+let trPredX = false;
+function trBind(){
+  const svg = $('#trSvg'); if (trLocked) return;
+  svg.querySelectorAll('.hd').forEach(c => c.onpointerdown = e => {
+    e.preventDefault(); const i = +c.dataset.i; svg.setPointerCapture(e.pointerId);
+    svg.onpointermove = ev => { const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * TR.W, py = (ev.clientY - r.top) / r.height * TR.H;
+      trH[i] = {x: Math.max(15.5, Math.min(34.5, trIX(px))), y: Math.max(0, Math.min(160, trIY(py)))};
+      if (Math.abs(trH[0].x - trH[1].x) < 2) trH[i].x = trH[1 - i].x + (i ? 2 : -2);
+      trDraw(); };
+    svg.onpointerup = () => { svg.onpointermove = null; };
+  });
+}
+$('#trOk').onclick = () => {
+  trLocked = true; trFirst[0] = true; trDraw();
+  $('#trS1').classList.add('done'); $('#trOk').disabled = true; $('#trOk').textContent = '✅ 결정!';
+  $('#trS2').classList.remove('lock'); $('#trIn').disabled = false; $('#trGo').disabled = false; $('#trIn').focus();
+};
+$('#trGo').onclick = () => {
+  const ln = trLine(), mine = Math.round(ln.m * 33 + ln.b), best = Math.round(trFit.m * 33 + trFit.b), v = +$('#trIn').value;
+  if (!$('#trIn').value) return;
+  trPredX = true; trShowBest = true; trDraw();
+  const ok = Math.abs(v - mine) <= 8; if (trFirst[1] === undefined) trFirst[1] = ok;
+  $('#trPredFb').innerHTML = `<div class="feedback show ${ok ? 'ok' : 'bad'}">${ok ? '⭕' : '🤔'} 내 선으로 읽으면 33℃일 때 약 <b>${mine}개</b>예요. (내 답: ${v}개) 노란 선을 따라 읽어 봐요.<br>컴퓨터가 계산한 추세선(초록 점선)으로는 약 <b>${best}개</b>! 추세선이 있으면 아직 없는 데이터도 <b>예측</b>할 수 있어요.</div>`;
+  $('#trS2').classList.add('done');
+};
+trDraw();
+
+/* 어떤 관계일까? */
+const TRM = [
+  {t: '📚 공부 시간 ↔ 수학 점수', a: 0, pts: [[1, 40], [2, 52], [2.5, 48], [3, 61], [4, 66], [4.5, 72], [5, 70], [6, 85], [7, 88], [8, 93]]},
+  {t: '📱 하루 게임 시간 ↔ 수면 시간', a: 1, pts: [[0.5, 9], [1, 8.6], [1.5, 8.8], [2, 8], [3, 7.6], [3.5, 7.1], [4, 7.3], [5, 6.4], [6, 6.1], [7, 5.5]]},
+  {t: '👟 신발 크기 ↔ 좋아하는 숫자', a: 2, pts: [[230, 7], [235, 2], [240, 9], [245, 4], [250, 8], [255, 1], [260, 6], [265, 3], [270, 9], [275, 5]]},
+];
+const TRN = ['↗️ 양의 관계', '↘️ 음의 관계', '🔀 관계 없음'];
+$('#trMini').innerHTML = TRM.map((d, i) => { const xs = d.pts.map(p => p[0]), ys = d.pts.map(p => p[1]), [a, b, c, e] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  return `<div class="tr-m"><svg viewBox="0 0 160 110"><line x1="12" y1="98" x2="152" y2="98" stroke="#c9d2e3"/><line x1="12" y1="6" x2="12" y2="98" stroke="#c9d2e3"/>${d.pts.map(([x, y]) => `<circle cx="${18 + (x - a) / (b - a) * 128}" cy="${92 - (y - c) / (e - c) * 80}" r="4" fill="#7c5cff"/>`).join('')}</svg><b>${d.t}</b><div class="pick3">${TRN.map((n, k) => `<button data-i="${i}" data-k="${k}">${n}</button>`).join('')}</div></div>`; }).join('');
+const trMF = {};
+$$('#trMini .pick3 button').forEach(b => b.onclick = () => {
+  const i = +b.dataset.i, ok = +b.dataset.k === TRM[i].a; if (!(i in trMF)) trMF[i] = ok;
+  if (!ok){ b.classList.add('x'); b.disabled = true; return; }
+  b.classList.add('o'); b.closest('.pick3').querySelectorAll('button').forEach(x => x.disabled = true);
+  if (Object.keys(trMF).length === 3 && $$('#trMini button.o').length === 3) reportQuiz('trend', [!!trFirst[1]].concat([0, 1, 2].map(k => !!trMF[k])));
+});
 
 renderQuiz($('#quiz'), [
   {q:'스프레드시트에서 B2부터 B7까지의 평균을 구하는 수식은?', o:['=AVERAGE(B2:B7)','=MAX(B2:B7)','=B2+B7'], a:0, e:'AVERAGE는 평균, MIN은 최솟값, MAX는 최댓값을 구하는 함수예요.'},
