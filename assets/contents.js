@@ -82,7 +82,7 @@ const contentsList = [
   {unit: 2, sub: '2-2-3', icon: '💪', lesson: true, badge: '45분 종합 수업', title: '데이터로 문제 해결 한 바퀴', desc: '문제 이해 → 수집 → 구조화 → 분석·해석 → 활용의 순서로 데이터 문제 해결 과정을 정리하며 Ⅱ단원을 마무리해요. (교과서 68~75쪽)', href: 'lesson/2-2-3.html',},
 
   {unit: 3, sub: '3-1-1', icon: '🧭', badge: '중1 Ⅲ단원 · 문제 해결', title: '문제의 상태와 추상화', desc: '초기·현재·목표 상태를 구분하고, 핵심 요소를 골라 추상화한 노선도에서 가장 빠른 길을 찾아요. (교과서 81~84쪽)', href: 'algo/3-01-problem-state.html', tags: ['개념'], std: '03-01, 03-02', core: true},
-  {unit: 3, sub: '3-1-1', icon: '🔷', badge: '중1 Ⅲ단원 · 알고리즘', title: '알고리즘을 표현하는 세 가지 방법', desc: '홀짝 판별을 자연어·의사 코드·순서도로 표현하고, 순서도 기호와 알고리즘의 조건을 익혀요. (교과서 85~87쪽)', href: 'algo/3-02-represent.html', tags: ['개념'], std: '03-02', core: true},
+  {unit: 3, sub: '3-1-1', icon: '🔷', badge: '중1 Ⅲ단원 · 알고리즘', title: '알고리즘을 표현하는 세 가지 방법', desc: '홀짝 판별을 자연어·의사 코드·순서도로 표현하고, 순서도 기호와 알고리즘의 조건을 익혀요. 순서도 조립 공장에서 기호 카드를 맞춰 순서도를 완성하고 직접 실행해요. (교과서 85~87쪽)', href: 'algo/3-02-represent.html', tags: ['개념','게임'], std: '03-02', core: true},
   {unit: 3, sub: '3-1-1', icon: '⚖️', badge: '중1 Ⅲ단원 · 알고리즘', title: '양팔 저울로 가벼운 제품 찾기', desc: '저울을 직접 달아 불량품을 찾고, 두 개씩 비교와 세 묶음 비교 알고리즘의 횟수를 비교해요. (교과서 88~89쪽)', href: 'algo/3-03-balance.html', tags: ['게임'], std: '03-03', core: true},
   {unit: 3, sub: '3-1-1', icon: '🔢', badge: '중1 Ⅲ단원 · 알고리즘', title: '숫자 맞히기 업다운 게임', desc: '차례대로 찾기와 반으로 나누어 찾기를 경주시키고, 1~100의 합 알고리즘도 비교해요. (교과서 90~91쪽)', href: 'algo/3-04-up-down.html', tags: ['게임'], std: '03-03', core: true, key: true},
   {unit: 3, sub: '3-1-1', icon: '🧠', lesson: true, badge: '45분 종합 수업', title: '문제를 단순하게, 방법은 효율적으로', desc: '문제를 상태로 정의하고 추상화한 뒤, 여러 알고리즘을 비교해 효율적인 방법을 고르는 과정을 정리해요. (교과서 81~91쪽)', href: 'lesson/3-1-1.html',},

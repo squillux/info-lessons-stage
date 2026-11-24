@@ -15,6 +15,29 @@
 .sym{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
 .sym div{border:2px solid var(--line);border-radius:12px;padding:6px;text-align:center;background:#fff}
 .sym svg{width:90px;height:44px}
+
+/* ── 순서도 조립 공장 ── */
+.fw-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.fw-tabs span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.82rem;background:var(--bg);color:var(--muted)}
+.fw-tabs span.cur{background:var(--brand);color:#fff}.fw-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.fw-wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;align-items:start}
+@media (max-width:640px){.fw-wrap{grid-template-columns:1fr}.fw-wrap>div{order:-1;position:sticky;top:0;z-index:2;background:var(--panel,#fff);padding:4px 0}.fw-tray{flex-direction:row!important;flex-wrap:wrap}.fw-card{padding:5px 8px!important;font-size:.82rem!important}.fw-svg{max-width:300px}}
+.fw-svg{width:100%;max-width:380px;display:block;margin:auto;background:radial-gradient(circle at 1px 1px,#d8deea 1px,transparent 1.5px) 0 0/16px 16px,#fbfcff;border:2px solid var(--line);border-radius:16px}
+.fw-svg .slot{cursor:pointer}
+.fw-svg .slot.empty .sh{stroke-dasharray:6 4;fill:#fff}
+.fw-svg .slot.empty:hover .sh{stroke-width:4}
+.fw-svg .slot.lit .sh{fill:#fff3b0!important;stroke:#ff9800!important;stroke-width:4}
+.fw-svg .slot.shake{animation:fwshake .35s}
+@keyframes fwshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fw-svg .tx{animation:fwpop .35s cubic-bezier(.2,1.4,.4,1);transform-box:fill-box;transform-origin:center}
+@keyframes fwpop{from{transform:scale(.3);opacity:0}}
+.fw-tray{display:flex;flex-direction:column;gap:6px}
+.fw-card{border:2px solid var(--line);border-radius:12px;background:#fff;padding:7px 10px;font-weight:800;text-align:left;color:var(--ink);font-size:.9rem}
+.fw-card.sel{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--brand-soft)}
+.fw-card.used{display:none}
+.fw-run{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;background:#1f2540;color:#fff;border-radius:14px;padding:8px 12px}
+.fw-run input{font:inherit;font-weight:800;width:90px;border-radius:10px;border:0;padding:4px 8px}
+.fw-say{font-family:var(--cute);font-size:1.2rem;color:#7dffb0}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="알고리즘을 표현하는 세 가지 방법" data-sub="중1 Ⅲ단원 · 알고리즘 · 미래엔 85~87쪽">
@@ -32,26 +55,22 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card" data-bot="같은 알고리즘을 세 가지로 나타냈어. 비교해 봐 🔢">
+    <div class="card" data-bot="같은 알고리즘을 말로, 의사 코드로 나타냈어. 숫자를 넣어 실행해 봐 🔢">
       <h3>🔢 홀짝 판별 알고리즘을 세 가지로</h3>
       <div class="three">
         <div><h4>💬 자연어</h4><p style="margin:0;font-size:.92rem">임의의 숫자를 입력받아 2로 나눈 나머지가 0이면 짝수, 아니면 홀수를 출력한다.</p></div>
         <div><h4>📝 의사 코드</h4><ol><li>숫자 A를 입력</li><li>A ÷ 2의 나머지가 0이면 "짝수" 출력</li><li>그렇지 않으면 "홀수" 출력</li><li>종료</li></ol></div>
-        <div><h4>🔷 순서도</h4><svg viewBox="0 0 220 250">
-          <rect x="70" y="5" width="80" height="26" rx="13" fill="#e8f0ff" stroke="#3b6cf6"/><text x="110" y="23" text-anchor="middle" font-size="12">시작</text>
-          <line x1="110" y1="31" x2="110" y2="45" stroke="#333"/>
-          <polygon points="60,45 170,45 160,71 50,71" fill="#fff6dc" stroke="#e0a000"/><text x="110" y="62" text-anchor="middle" font-size="12">숫자 A 입력</text>
-          <line x1="110" y1="71" x2="110" y2="85" stroke="#333"/>
-          <polygon points="110,85 170,113 110,141 50,113" fill="#e6fbf6" stroke="#16b8a6"/><text x="110" y="117" text-anchor="middle" font-size="11">A÷2 나머지=0?</text>
-          <line x1="170" y1="113" x2="190" y2="113" stroke="#333"/><text x="178" y="107" font-size="10">예</text>
-          <polygon points="160,150 215,150 210,174 155,174" fill="#fff6dc" stroke="#e0a000" transform="translate(-5,0)"/><text x="180" y="166" text-anchor="middle" font-size="11">짝수 출력</text>
-          <line x1="190" y1="113" x2="190" y2="150" stroke="#333"/>
-          <line x1="110" y1="141" x2="110" y2="160" stroke="#333"/><text x="116" y="154" font-size="10">아니요</text>
-          <polygon points="60,160 160,160 152,184 52,184" fill="#fff6dc" stroke="#e0a000"/><text x="106" y="176" text-anchor="middle" font-size="11">홀수 출력</text>
-          <line x1="106" y1="184" x2="110" y2="210" stroke="#333"/><line x1="182" y1="174" x2="120" y2="210" stroke="#333"/>
-          <rect x="70" y="210" width="80" height="26" rx="13" fill="#e8f0ff" stroke="#3b6cf6"/><text x="110" y="228" text-anchor="middle" font-size="12">종료</text></svg></div>
+        <div><h4>🔷 순서도</h4><p style="margin:0;font-size:.92rem">정해진 <b>기호</b>와 화살표로 알고리즘의 흐름을 그림으로 나타내요. 👉 다음 화면 <b>순서도 조립 공장</b>에서 직접 만들어 실행해 봐요!</p></div>
       </div>
       <div class="run" style="margin-top:10px">숫자 A <input class="inp" id="a" type="number" value="7" style="width:110px"> <button class="btn" id="go">▶ 알고리즘 실행</button> <b id="out"></b></div>
+    </div>
+
+    <div class="card" data-bot="카드를 고르고 알맞은 모양의 빈칸을 눌러 순서도를 조립해 봐 🏭">
+      <h3>🏭 순서도 조립 공장 <span class="tag-more">특색</span></h3>
+      <p><b>카드를 하나 고른 뒤</b>, 알맞은 <b>모양의 빈칸</b>을 눌러 순서도를 완성하세요. 다 만들면 숫자를 넣고 직접 <b>실행</b>해 볼 수 있어요!</p>
+      <div class="fw-tabs" id="fwTabs"></div>
+      <div class="fw-wrap"><svg class="fw-svg" id="fwSvg"></svg><div><div class="fw-tray" id="fwTray"></div><div id="fwMsg"></div></div></div>
+      <div id="fwRunBox"></div>
     </div>
 
     <div class="card" data-bot="모양마다 하는 일이 달라 🔣">
@@ -100,6 +119,101 @@ renderChoice($('#cond'), [
   {icon:'🪄', t:'"0으로 나눈 값을 구한다."', a:2, e:'실행할 수 없어요. 수행 가능성: 실제로 할 수 있는 명령이어야 해요.'},
   {icon:'🫥', t:'"계산을 한다." (결과를 보여 주지 않음)', a:3, e:'결과가 없어요. 출력: 하나 이상의 결과가 나와야 해요.'},
 ], ['명확성', '유한성', '수행 가능성', '출력']);
+
+/* ===== 순서도 조립 공장 ===== */
+const FWM = [
+  {name: '홀짝 판별', h: 320, nodes: [
+    {id: 's', sh: 'term', x: 160, y: 24, t: '시작'}, {id: 'i', sh: 'io', x: 160, y: 84, t: '숫자 A 입력'},
+    {id: 'd', sh: 'dec', x: 160, y: 154, t: 'A÷2 나머지 = 0?'}, {id: 'y', sh: 'io', x: 78, y: 236, t: '"짝수" 출력'},
+    {id: 'n', sh: 'io', x: 242, y: 236, t: '"홀수" 출력'}, {id: 'e', sh: 'term', x: 160, y: 296, t: '끝'}],
+   edges: {'s-i': [[160, 39], [160, 68]], 'i-d': [[160, 100], [160, 122]], 'd-y': [[85, 154], [78, 154], [78, 220]], 'd-n': [[235, 154], [242, 154], [242, 220]], 'y-e': [[78, 252], [78, 296], [105, 296]], 'n-e': [[242, 252], [242, 296], [215, 296]]},
+   labels: [[66, 146, '예'], [246, 146, '아니요']], ask: '숫자 A', def: 7,
+   path(v){ return ['s', 'i', 'd', (Math.abs(Math.trunc(v)) % 2 === 0) ? 'y' : 'n', 'e']; },
+   say(v){ return Math.abs(Math.trunc(v)) % 2 === 0 ? '짝수' : '홀수'; }},
+  {name: '우산 챙기기', h: 380, nodes: [
+    {id: 's', sh: 'term', x: 160, y: 24, t: '시작'}, {id: 'i', sh: 'io', x: 160, y: 84, t: '강수 확률 입력'},
+    {id: 'd', sh: 'dec', x: 160, y: 154, t: '강수 확률 ≥ 60%?'}, {id: 'p', sh: 'proc', x: 262, y: 232, t: '우산을 가방에 넣기'},
+    {id: 'o', sh: 'io', x: 160, y: 296, t: '"출발!" 출력'}, {id: 'e', sh: 'term', x: 160, y: 356, t: '끝'}],
+   edges: {'s-i': [[160, 39], [160, 68]], 'i-d': [[160, 100], [160, 122]], 'd-p': [[235, 154], [262, 154], [262, 216]], 'd-o': [[160, 186], [160, 280]], 'p-o': [[262, 248], [262, 296], [225, 296]], 'o-e': [[160, 312], [160, 341]]},
+   labels: [[240, 146, '예'], [166, 214, '아니요']], ask: '강수 확률(%)', def: 70,
+   path(v){ return v >= 60 ? ['s', 'i', 'd', 'p', 'o', 'e'] : ['s', 'i', 'd', 'o', 'e']; },
+   say(v){ return v >= 60 ? '☂️ 우산 챙겨서 출발!' : '😎 그냥 출발!'; }},
+];
+const FWSH = {term: '시작·끝', io: '입력·출력', proc: '처리', dec: '판단'};
+let fwM = 0, fwSel = null, fwPlaced = {}, fwTried = false, fwBusy = false; const fwFirst = [];
+function fwShape(n){
+  const {x, y} = n;
+  if (n.sh === 'term') return `<rect class="sh" x="${x - 52}" y="${y - 15}" width="104" height="30" rx="15" fill="#e8f0ff" stroke="#3b6cf6" stroke-width="2.5"/>`;
+  if (n.sh === 'io') return `<polygon class="sh" points="${x - 58},${y - 16} ${x + 70},${y - 16} ${x + 58},${y + 16} ${x - 70},${y + 16}" fill="#fff6dc" stroke="#e0a000" stroke-width="2.5"/>`;
+  if (n.sh === 'proc') return `<rect class="sh" x="${x - 58}" y="${y - 16}" width="116" height="32" fill="#f2f2f2" stroke="#666" stroke-width="2.5"/>`;
+  return `<polygon class="sh" points="${x},${y - 32} ${x + 76},${y} ${x},${y + 32} ${x - 76},${y}" fill="#e6fbf6" stroke="#16b8a6" stroke-width="2.5"/>`;
+}
+function fwDraw(){
+  const M = FWM[fwM];
+  $('#fwSvg').setAttribute('viewBox', `0 0 320 ${M.h}`);
+  $('#fwSvg').innerHTML = `<defs><marker id="fwAr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8z" fill="#555"/></marker><filter id="fwGlow"><feGaussianBlur stdDeviation="3"/></filter></defs>` +
+    Object.values(M.edges).map(p => `<polyline points="${p.map(q => q.join(',')).join(' ')}" fill="none" stroke="#555" stroke-width="2" marker-end="url(#fwAr)"/>`).join('') +
+    M.labels.map(([x, y, t]) => `<text x="${x}" y="${y}" font-size="11" font-weight="800" fill="#c2185b">${t}</text>`).join('') +
+    M.nodes.map(n => `<g class="slot ${fwPlaced[n.id] ? '' : 'empty'}" data-id="${n.id}">${fwShape(n)}${fwPlaced[n.id] ? `<text class="tx" x="${n.x}" y="${n.y + 4}" text-anchor="middle" font-size="${n.sh === 'dec' ? 10.5 : 11.5}" font-weight="800">${n.t}</text>` : `<text x="${n.x}" y="${n.y + 4}" text-anchor="middle" font-size="10" fill="#9aa6c0">?</text>`}</g>`).join('') +
+    '<circle id="fwTok" r="0" fill="#ff7a00"/><circle id="fwTokG" r="0" fill="#ff7a00" opacity=".5" filter="url(#fwGlow)"/>';
+  $$('#fwSvg .slot').forEach(g => g.onclick = () => fwPut(g.dataset.id, g));
+}
+function fwLevel(){
+  const M = FWM[fwM]; fwSel = null; fwPlaced = {}; fwTried = false; fwBusy = false;
+  $('#fwTabs').innerHTML = FWM.map((m, i) => `<span class="${i < fwM ? 'ok' : i === fwM ? 'cur' : ''}">${i < fwM ? '✓ ' : ''}${i + 1}. ${m.name}</span>`).join('');
+  const cards = M.nodes.map(n => n.id).sort(() => Math.random() - .5);
+  $('#fwTray').innerHTML = cards.map(id => `<button class="fw-card" data-id="${id}">${M.nodes.find(n => n.id === id).t}</button>`).join('');
+  $$('#fwTray .fw-card').forEach(b => b.onclick = () => { $$('#fwTray .fw-card').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); fwSel = b.dataset.id; });
+  $('#fwMsg').innerHTML = '<p class="hint">💡 카드를 먼저 누르고, 순서도의 빈칸을 눌러요.</p>'; $('#fwRunBox').innerHTML = ''; fwDraw();
+}
+function fwPut(id, g){
+  if (fwBusy || fwPlaced[id]) return; const M = FWM[fwM];
+  if (!fwSel){ $('#fwMsg').innerHTML = '<p class="feedback show bad">먼저 카드를 골라요.</p>'; return; }
+  const want = M.nodes.find(n => n.id === id), card = M.nodes.find(n => n.id === fwSel);
+  if (fwSel !== id){
+    fwTried = true; g.classList.remove('shake'); void g.getBBox(); g.classList.add('shake');
+    const why = card.sh !== want.sh ? `"${card.t}"은(는) <b>${FWSH[card.sh]}</b> 기호에 들어가야 하는데, 이 빈칸은 <b>${FWSH[want.sh]}</b> 모양이에요.` : `모양은 맞지만 순서(위치)가 달라요. ${want.sh === 'io' && fwM === 0 ? '판단 기호에서 <b>예</b>와 <b>아니요</b> 중 어느 쪽으로 가야 할까요?' : '위에서부터 차례대로 생각해 봐요.'}`;
+    $('#fwMsg').innerHTML = `<p class="feedback show bad">❌ ${why}</p>`; return;
+  }
+  fwPlaced[id] = true; $(`#fwTray .fw-card[data-id="${id}"]`).classList.add('used'); fwSel = null;
+  $('#fwMsg').innerHTML = `<p class="feedback show ok">⭕ ${FWSH[want.sh]} 기호에 쏙!</p>`; fwDraw();
+  if (Object.keys(fwPlaced).length === M.nodes.length){ fwFirst.push(!fwTried); fwRunUI(); }
+}
+function fwRunUI(){
+  const M = FWM[fwM];
+  $('#fwMsg').innerHTML = '<p class="feedback show ok">🎉 순서도 완성! 이제 값을 넣고 실행해 봐요. 주황 불빛이 순서도를 따라 움직여요.</p>';
+  $('#fwRunBox').innerHTML = `<div class="fw-run">${M.ask} <input id="fwIn" type="number" value="${M.def}"><button class="btn" id="fwGo">▶ 실행</button><span class="fw-say" id="fwSay"></span></div><div id="fwNext"></div>`;
+  let runs = new Set();
+  $('#fwGo').onclick = async () => {
+    if (fwBusy) return; fwBusy = true; const v = +$('#fwIn').value || 0, P = M.path(v); $('#fwSay').textContent = ''; $('#fwSvg').scrollIntoView({behavior: 'smooth', block: 'center'});
+    for (let k = 0; k < P.length; k++){
+      $$('#fwSvg .slot').forEach(g => g.classList.toggle('lit', g.dataset.id === P[k]));
+      if (P[k] === 'i') $('#fwSay').textContent = `📥 ${v}`;
+      if (P[k] === 'd') $('#fwSay').textContent = `🤔 ${M.nodes.find(n => n.id === 'd').t.replace('A', v).replace('강수 확률', v + '%')}`;
+      if (['y', 'n', 'o'].includes(P[k])) $('#fwSay').textContent = `🗨️ ${M.say(v)}`;
+      await new Promise(r => setTimeout(r, 450));
+      if (k < P.length - 1) await fwMove(M.edges[P[k] + '-' + P[k + 1]]);
+    }
+    $$('#fwSvg .slot').forEach(g => g.classList.remove('lit')); $('#fwTok').setAttribute('r', 0); $('#fwTokG').setAttribute('r', 0);
+    fwBusy = false; runs.add(P.join(''));
+    if (runs.size >= 2 && !$('#fwNext').innerHTML){
+      $('#fwNext').innerHTML = `<p class="feedback show ok">⭕ 값에 따라 <b>판단 기호</b>에서 길이 달라지는 것을 확인했어요!</p>` + (fwM < FWM.length - 1 ? '<button class="btn" id="fwNx">다음 순서도 ▶</button>' : '<p>🎉 순서도 2개 완성! 순서도는 <b>정해진 기호</b>로 알고리즘의 흐름을 한눈에 보여 줘요. 시작·끝(둥근 사각형), 입력·출력(평행사변형), 처리(직사각형), 판단(마름모)을 기억해요.</p>');
+      if ($('#fwNx')) $('#fwNx').onclick = () => { fwM++; fwLevel(); }; else reportQuiz('flowfactory', fwFirst.slice(0, 2));
+    } else if (runs.size < 2) $('#fwSay').textContent += '  ➜ 다른 길로 가는 값도 넣어 봐요!';
+  };
+}
+function fwMove(pts){
+  return new Promise(res => {
+    const seg = []; let L = 0; for (let i = 1; i < pts.length; i++){ const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push([pts[i - 1], pts[i], d]); L += d; }
+    const t0 = performance.now(), dur = L * 6;
+    (function f(now){ let s = Math.min(1, (now - t0) / dur) * L, p = pts[pts.length - 1];
+      for (const [a, b, d] of seg){ if (s <= d){ p = [a[0] + (b[0] - a[0]) * s / d, a[1] + (b[1] - a[1]) * s / d]; break; } s -= d; }
+      for (const id of ['#fwTok', '#fwTokG']){ const c = $(id); c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]); c.setAttribute('r', id === '#fwTok' ? 7 : 13); }
+      if (now - t0 < dur) requestAnimationFrame(f); else res(); })(t0);
+  });
+}
+fwLevel();
+
 renderQuiz($('#quiz'), [
   {q:'프로그래밍 언어와 비슷한 형태로 알고리즘을 표현하는 방법은?', o:['자연어','의사 코드','순서도'], a:1, e:'의사 코드는 프로그래밍 언어로 바꾸기 쉬워요.'},
   {q:'알고리즘의 조건 중 "모든 명령은 실행 가능해야 한다"는 것은?', o:['수행 가능성','유한성','입력'], a:0, e:'실제로 수행할 수 있는 명령이어야 해요.'},
