@@ -1,6 +1,7 @@
 /* 중학교 정보 개념 체험관 · 활동 페이지 공통 스타일
-   디자인: 흰 바탕 + 파스텔 포인트 + 픽셀/코드 느낌 장식, 제목은 Jua(없으면 기본 글꼴) */
+   디자인: 흰 바탕 + 파스텔 포인트 + 픽셀/코드 느낌 장식, 제목은 Jua, 본문은 나눔스퀘어라운드(없으면 기본 글꼴) */
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/innks/NanumSquareRound@master/nanumsquareround.min.css');
 :root{
   --page:#ffffff; --bg:#f3f6fc; --panel:#ffffff; --ink:#1f2a3d; --muted:#5a6578; --line:#e3e8f2;
   --brand:#3b6cf6; --brand-soft:#e9efff; --mint:#16b8a6; --mint-soft:#e2f7f4;
@@ -287,3 +288,43 @@ html.stage-all .stagedone{display:none}
   .blank{color:var(--ink)!important;background:none!important}
   html.stage-on body{background:#fff}
 }
+
+
+/* ===== 디자인 다듬기 (2026-11-24): 둥근 본문 글꼴, 부드러운 카드, 장식 숫자의 고정폭 글꼴 정리 (전환 효과 추가 없음) ===== */
+:root{--body:"NanumSquareRound","Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;--line:#e6ebf4}
+body{font-family:var(--body);line-height:1.72;letter-spacing:-.003em}
+b,strong{font-weight:800}
+.lead{font-size:1.02rem}
+.badge{font-weight:700;padding:4px 13px}
+.badge::before{font-family:var(--body);font-weight:800}
+.step>.step-h .no,.chip b,.st-sub{font-family:var(--body);font-weight:800}
+.step>.step-h .no{border-radius:50%}
+.card{border:1.5px solid var(--line);border-radius:22px;box-shadow:0 6px 18px rgba(40,60,120,.06)}
+.card h3{font-size:1.12rem;font-weight:800}
+.step.think .card{border-color:#f5dc92}
+.step.sum .card{border-color:#bfe8e1}
+.hint{line-height:1.65}
+.btn{border-radius:14px;font-weight:800;box-shadow:0 3px 0 rgba(37,80,200,.35)}
+.btn.line{box-shadow:none}
+.opt{border-width:1.5px;border-radius:14px;font-weight:700}
+.q p,.choice p{font-weight:700;line-height:1.6}
+.inp{border-width:1.5px;border-radius:14px}
+.feedback{border-radius:14px}
+.score{font-weight:800}
+.tool{border-radius:12px}
+.back{border-radius:12px}
+
+/* ===== 뒤집는 카드: <button class="flip"><span class="fi"><span class="ff">앞면</span><span class="fb">뒷면</span></span></button>, .open 이면 뒤집힘 ===== */
+.flip{all:unset;box-sizing:border-box;display:block;cursor:pointer;perspective:900px;-webkit-tap-highlight-color:transparent}
+.flip .fi{display:grid;height:100%;transition:transform .55s cubic-bezier(.3,.7,.25,1);transform-style:preserve-3d}
+.flip.open .fi{transform:rotateY(180deg)}
+.flip .ff,.flip .fb{grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:18px;padding:14px;min-height:132px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.flip .ff{background:#fff;border:1.5px solid var(--line);align-items:center;text-align:center;box-shadow:0 4px 12px rgba(40,60,120,.06)}
+.flip:hover .ff{border-color:#b9c8f5}
+.flip .fb{transform:rotateY(180deg);background:var(--mint-soft);border:1.5px solid #bfe8e1;text-align:left;font-size:.9rem;line-height:1.55;color:#24433f}
+.flip .fb b{font-size:.98rem;color:var(--ink)}
+.flip .ci{font-size:2rem;line-height:1}
+.flip .tap{font-size:.75rem;color:#8a93a8}
+.flip:focus-visible .ff,.flip:focus-visible .fb{outline:3px solid #b9c8f5;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.flip .fi{transition:none}}
+@media print{.flip .fi{transform:none!important}.flip .fb{transform:none;position:static}.flip .ff{display:none}}

@@ -13,16 +13,6 @@
 .flow45 td:first-child{white-space:nowrap;font-weight:700}
 .flow45 ul{margin:4px 0 6px;padding-left:1.2em}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
-.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
-.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
-.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
-.cc .ci{font-size:1.6rem;line-height:1}
-.cc b{font-size:1.02rem}
-.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
-.cc .tap{font-size:.78rem;color:#8a93a8}
-.cc.open{background:#f3f7ff;border-color:#9db5f4}
-.cc.open .cd{display:block}
-.cc.open .tap{display:none}
 </style>
 </head>
 <body data-stage data-unit="4" data-title="인공지능은 데이터를 먹고 자란다" data-sub="중1 Ⅳ단원 · 45분 종합 수업 · 미래엔 156~159쪽">
@@ -48,9 +38,9 @@
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
     <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
       <h3>🗂️ 핵심 개념 카드</h3>
-      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <p>카드를 누르면 뒤집혀서 설명이 나와요. 먼저 설명을 떠올려 보고 뒤집어 확인해 보세요. 다시 누르면 앞면으로 돌아가요.</p>
       <div class="cgrid" id="cards"></div>
-      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">🔄 모두 뒤집기</button></div>
       <div class="feedback" id="ccFb"></div>
     </div>
     <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
@@ -77,13 +67,15 @@
 <script src="../assets/common.js"></script>
 <script>
 const CONCEPTS = [["📦","충분한 양","데이터가 적으면 규칙을 제대로 찾지 못해요."],["✨","좋은 품질","선명하고 잡음이 없으며 정답(이름표)이 정확해야 해요."],["🔦","특징이 드러난 데이터","구별에 필요한 특징이 잘 보여야 해요."],["⚖️","대표성","한쪽에 치우치지 않고 다양한 경우를 고르게 담아야 해요."],["🚲","필요한 데이터 유형","기능에 따라 이미지, 소리, 위치, 센서 데이터 등 알맞은 유형을 모아요."]];
-$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc flip" data-k="${k}" aria-pressed="false" aria-label="${t} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>${i} ${t}</b>${s}</span></span></button>`).join('');
+const seen = new Set();
+let ccDone = false;
 const ccCheck = () => {
-  const n = $$('#cards .cc.open').length;
-  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+  if (!ccDone && seen.size === CONCEPTS.length){ ccDone = true; feedback($('#ccFb'), true, '🎉 핵심 개념 ' + seen.size + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.'); }
 };
-$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
-$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+const flipTo = (b, on) => { b.classList.toggle('open', on); b.setAttribute('aria-pressed', on); if (on) seen.add(b.dataset.k); };
+$$('#cards .cc').forEach(b => b.onclick = () => { flipTo(b, !b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { const all = $$('#cards .cc'), on = !all.every(b => b.classList.contains('open')); all.forEach(b => flipTo(b, on)); $('#ccAll').textContent = on ? '↩️ 모두 앞면으로' : '🔄 모두 뒤집기'; ccCheck(); };
 renderChoice($('#match'), [{"icon":"🐱","t":"고양이 사진이 딱 3장뿐이에요.","a":0,"e":"데이터의 양이 부족해요."},{"icon":"🌫️","t":"흐릿하고 이름표가 틀린 사진이 섞여 있어요.","a":1,"e":"품질이 나쁜 데이터예요."},{"icon":"🍎","t":"빨간 사과 사진만 모았어요.","a":2,"e":"초록 사과가 없어 한쪽에 치우쳤어요."},{"icon":"😺","t":"흰 고양이만 1,000장 모았어요.","a":2,"e":"다양한 고양이를 고르게 담지 못했어요."}], ["충분한 양","좋은 품질","대표성"]);
 renderQuiz($('#quiz'), [{"q":"학습 데이터에 초록 사과가 없을 때 생기는 문제는?","o":["초록 사과를 잘 못 알아본다","빨간 사과도 못 알아본다","아무 문제 없다"],"a":0,"e":"대표성이 없으면 처음 보는 경우를 틀려요."},{"q":"좋은 데이터의 조건이 아닌 것은?","o":["충분한 양","좋은 품질","한 가지 종류만 많이"],"a":2,"e":"다양해야 대표성이 있어요."},{"q":"자율 주행 자전거가 장애물을 피하려면 어떤 데이터가 필요할까?","o":["거리 센서·카메라 이미지","노래 가사","날씨 사진만"],"a":0,"e":"장애물을 인식할 데이터가 필요해요."},{"q":"데이터가 나쁘면 어떻게 될까?","o":["같은 인공지능이라도 성능이 떨어진다","더 똑똑해진다","속도만 빨라진다"],"a":0,"e":"데이터의 질이 성능을 좌우해요."}]);
 </script>

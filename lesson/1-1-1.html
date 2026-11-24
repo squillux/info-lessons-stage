@@ -13,16 +13,6 @@
 .flow45 td:first-child{white-space:nowrap;font-weight:700}
 .flow45 ul{margin:4px 0 6px;padding-left:1.2em}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
-.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
-.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
-.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
-.cc .ci{font-size:1.6rem;line-height:1}
-.cc b{font-size:1.02rem}
-.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
-.cc .tap{font-size:.78rem;color:#8a93a8}
-.cc.open{background:#f3f7ff;border-color:#9db5f4}
-.cc.open .cd{display:block}
-.cc.open .tap{display:none}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="컴퓨팅 시스템 해부하기" data-sub="중1 Ⅰ단원 · 45분 종합 수업 · 미래엔 11~15쪽">
@@ -48,9 +38,9 @@
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
     <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
       <h3>🗂️ 핵심 개념 카드</h3>
-      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <p>카드를 누르면 뒤집혀서 설명이 나와요. 먼저 설명을 떠올려 보고 뒤집어 확인해 보세요. 다시 누르면 앞면으로 돌아가요.</p>
       <div class="cgrid" id="cards"></div>
-      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">🔄 모두 뒤집기</button></div>
       <div class="feedback" id="ccFb"></div>
     </div>
     <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
@@ -77,13 +67,15 @@
 <script src="../assets/common.js"></script>
 <script>
 const CONCEPTS = [["💻","컴퓨팅 시스템","데이터를 정해진 절차에 따라 자동으로 처리해 문제 해결을 돕는 시스템이에요. 컴퓨터, 스마트폰, 키오스크, 로봇 청소기 등"],["⌨️","입력 장치","데이터를 받아들이는 장치예요. 키보드, 마우스, 마이크, 카메라 등"],["🧠","중앙 처리 장치(CPU)","명령어를 해석하는 제어 장치와 계산하는 연산 장치로 이루어져요."],["💾","기억 장치","주기억 장치(램)는 실행 중인 데이터를, 보조 기억 장치(SSD 등)는 파일을 오래 보관해요."],["🖥️","출력 장치","처리 결과를 보여 주는 장치예요. 모니터, 스피커, 프린터 등"],["🧱","소프트웨어","시스템 소프트웨어(운영체제, 유틸리티)와 응용 소프트웨어(문서 편집기, 게임 등)로 나뉘어요."]];
-$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc flip" data-k="${k}" aria-pressed="false" aria-label="${t} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>${i} ${t}</b>${s}</span></span></button>`).join('');
+const seen = new Set();
+let ccDone = false;
 const ccCheck = () => {
-  const n = $$('#cards .cc.open').length;
-  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+  if (!ccDone && seen.size === CONCEPTS.length){ ccDone = true; feedback($('#ccFb'), true, '🎉 핵심 개념 ' + seen.size + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.'); }
 };
-$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
-$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+const flipTo = (b, on) => { b.classList.toggle('open', on); b.setAttribute('aria-pressed', on); if (on) seen.add(b.dataset.k); };
+$$('#cards .cc').forEach(b => b.onclick = () => { flipTo(b, !b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { const all = $$('#cards .cc'), on = !all.every(b => b.classList.contains('open')); all.forEach(b => flipTo(b, on)); $('#ccAll').textContent = on ? '↩️ 모두 앞면으로' : '🔄 모두 뒤집기'; ccCheck(); };
 renderChoice($('#match'), [{"icon":"🎤","t":"음성 비서에게 말을 걸었어요. 소리를 받아들이는 마이크","a":0,"e":"소리를 받아들이는 입력 장치예요."},{"icon":"🧮","t":"받은 명령을 해석하고 계산해요.","a":1,"e":"명령을 해석하고 계산하는 CPU예요."},{"icon":"📷","t":"찍은 사진을 전원을 꺼도 남도록 저장해요.","a":2,"e":"보조 기억 장치에 저장해요."},{"icon":"🔊","t":"길 안내 음성이 흘러나와요.","a":3,"e":"결과를 소리로 내보내는 출력 장치예요."},{"icon":"🪟","t":"프로그램을 실행하고 하드웨어를 관리하는 운영체제","a":4,"e":"운영체제는 시스템 소프트웨어예요."}], ["입력 장치","CPU","기억 장치","출력 장치","소프트웨어"]);
 renderQuiz($('#quiz'), [{"q":"컴퓨팅 시스템에 대한 설명으로 알맞은 것은?","o":["사람이 하나하나 손으로 처리한다","데이터를 정해진 절차에 따라 자동으로 처리한다","컴퓨터 한 종류만 해당한다"],"a":1,"e":"컴퓨팅 시스템은 데이터를 자동으로 처리해 문제 해결을 도와요."},{"q":"전원이 꺼지면 내용이 사라지는 기억 장치는?","o":["램(주기억 장치)","SSD","USB 메모리"],"a":0,"e":"램은 빠르지만 전원이 꺼지면 내용이 사라져요."},{"q":"다음 중 시스템 소프트웨어는?","o":["이미지 편집기","운영체제","게임"],"a":1,"e":"운영체제와 유틸리티는 시스템 소프트웨어예요."},{"q":"사용자와 하드웨어 사이에서 둘을 이어 주는 것은?","o":["응용 소프트웨어만","운영체제","출력 장치"],"a":1,"e":"사용자는 응용 소프트웨어를 쓰고, 운영체제가 하드웨어를 관리해요."}]);
 </script>

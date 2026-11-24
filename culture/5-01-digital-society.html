@@ -7,12 +7,6 @@
 <link rel="stylesheet" href="../assets/common.css">
 <style>
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.tcard{border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px;text-align:center;min-height:110px}
-.tcard .ic{font-size:2rem}
-.tcard b{display:block;margin:4px 0}
-.tcard p{margin:0;font-size:.85rem;color:var(--muted);display:none;text-align:left}
-.tcard.open{border-color:var(--mint);background:var(--mint-soft)}
-.tcard.open p{display:block}
 .idea{display:grid;gap:8px}
 .idea select,.idea textarea{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:12px;width:100%;background:var(--panel);color:var(--ink)}
 .idea-out{background:var(--bg);border-radius:12px;padding:12px 14px;min-height:48px}
@@ -103,7 +97,7 @@ const TECH = [
   ['💳', '핀테크', '금융과 기술을 합친 말로, 스마트폰 간편 결제처럼 IT로 제공하는 금융 서비스예요.'],
 ];
 const opened = new Set();
-$('#tech').innerHTML = TECH.map(([ic, n, d], i) => `<button class="tcard" data-i="${i}"><div class="ic">${ic}</div><b>${n}</b><p>${d}</p></button>`).join('');
+$('#tech').innerHTML = TECH.map(([ic, n, d], i) => `<button class="tcard flip" data-i="${i}" aria-label="${n} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">${ic}</span><b>${n}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>${ic} ${n}</b>${d}</span></span></button>`).join('');
 $$('.tcard').forEach(c => c.onclick = () => { c.classList.toggle('open'); opened.add(+c.dataset.i); $('#techN').textContent = opened.size === TECH.length ? '✅ 모두 살펴봤어요!' : `${opened.size} / ${TECH.length} 살펴봄`; });
 
 renderChoice($('#match'), [

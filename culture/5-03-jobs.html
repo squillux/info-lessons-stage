@@ -6,12 +6,10 @@
 <title>디지털 사회와 직업의 변화</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
-.ba{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 14px}
-.ba div{border-radius:14px;padding:10px 12px;font-size:.92rem}
-.ba .past{background:var(--bg)}
-.ba .now{background:var(--mint-soft);display:none}
-.ba.open .now{display:block}
-.ba h4{margin:0 0 4px}
+#ba{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:8px 0 14px}
+#ba .ff{justify-content:flex-start;gap:8px}
+#ba .ff .pt{font-size:.92rem;color:var(--muted);line-height:1.55}
+#ba .fb{gap:8px}
 .plan{display:grid;gap:10px}
 .plan label{font-weight:700}
 .plan input,.plan textarea{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:12px;width:100%;background:var(--panel);color:var(--ink)}
@@ -49,7 +47,7 @@
 
     <div class="card" data-bot="과거와 현재, 무엇이 달라졌을까? ⏳">
       <h3>⏳ 변화하는 직업: 과거와 현재</h3>
-      <p>과거 모습을 읽고, 버튼을 눌러 현재 모습과 필요한 역량을 확인해 보세요.</p>
+      <p>과거 모습을 읽고, 카드를 뒤집어 현재 모습과 필요한 역량을 확인해 보세요.</p>
       <div id="ba"></div>
     </div>
 
@@ -109,8 +107,8 @@ const BA = [
   ['🧑‍🏫 선생님', '교실에서 교과서로 수업했어요.', '원격 수업과 디지털 교과서, 태블릿 등 다양한 도구를 활용해요.', '디지털 도구로 수업하는 역량'],
   ['🧑‍🔧 정비사', '기계와 전기·전자 부품을 다루는 손재주가 중요했어요.', '드론을 띄워 비행기 외부를 점검하는 등 디지털 기기를 제어해요.', '디지털 기기를 제어하고 관리하는 역량'],
 ];
-$('#ba').innerHTML = BA.map(([n, p, c, k], i) => `<h4 style="margin:10px 0 0">${n}</h4><div class="ba" id="ba${i}"><div class="past"><h4>과거</h4>${p}</div><div class="now"><h4>현재</h4>${c}<br><b>필요 역량:</b> ${k}</div></div><button class="btn line" data-i="${i}">현재 모습 보기 ▶</button>`).join('');
-$$('#ba .btn').forEach(b => b.onclick = () => { $('#ba' + b.dataset.i).classList.add('open'); b.remove(); });
+$('#ba').innerHTML = BA.map(([n, p, c, k], i) => `<button class="flip" data-i="${i}" aria-pressed="false" aria-label="${n} 카드 뒤집기"><span class="fi"><span class="ff"><b>${n} · 과거</b><span class="pt">${p}</span><span class="tap">눌러서 현재 모습 보기 🔄</span></span><span class="fb"><b>${n} · 현재</b><span>${c}</span><span><b>필요 역량:</b> ${k}</span></span></span></button>`).join('');
+$$('#ba .flip').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-pressed', b.classList.contains('open')); });
 
 const CAPS = ['디지털 리터러시', '의사소통 능력', '융합 능력', '창의력', '협업 능력', '비판적 사고력'];
 const on = new Set();

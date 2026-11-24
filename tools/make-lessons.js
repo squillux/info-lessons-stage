@@ -45,16 +45,6 @@ for (const d of L){
 .flow45 td:first-child{white-space:nowrap;font-weight:700}
 .flow45 ul{margin:4px 0 6px;padding-left:1.2em}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
-.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
-.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
-.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
-.cc .ci{font-size:1.6rem;line-height:1}
-.cc b{font-size:1.02rem}
-.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
-.cc .tap{font-size:.78rem;color:#8a93a8}
-.cc.open{background:#f3f7ff;border-color:#9db5f4}
-.cc.open .cd{display:block}
-.cc.open .tap{display:none}
 </style>
 </head>
 <body data-stage data-unit="${unit}" data-title="${esc(d.title)}" data-sub="중1 ${ROMAN[unit]}단원 · 45분 종합 수업${pages ? ' · 미래엔 ' + pages : ''}">
@@ -80,9 +70,9 @@ for (const d of L){
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
     <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
       <h3>🗂️ 핵심 개념 카드</h3>
-      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <p>카드를 누르면 뒤집혀서 설명이 나와요. 먼저 설명을 떠올려 보고 뒤집어 확인해 보세요. 다시 누르면 앞면으로 돌아가요.</p>
       <div class="cgrid" id="cards"></div>
-      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">🔄 모두 뒤집기</button></div>
       <div class="feedback" id="ccFb"></div>
     </div>
     <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
@@ -109,13 +99,15 @@ for (const d of L){
 <script src="../assets/common.js"></script>
 <script>
 const CONCEPTS = ${js(d.concepts)};
-$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => \`<button class="cc" data-k="\${k}" aria-expanded="false"><span class="ci">\${i}</span><b>\${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">\${s}</span></button>\`).join('');
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => \`<button class="cc flip" data-k="\${k}" aria-pressed="false" aria-label="\${t} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">\${i}</span><b>\${t}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>\${i} \${t}</b>\${s}</span></span></button>\`).join('');
+const seen = new Set();
+let ccDone = false;
 const ccCheck = () => {
-  const n = $$('#cards .cc.open').length;
-  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+  if (!ccDone && seen.size === CONCEPTS.length){ ccDone = true; feedback($('#ccFb'), true, '🎉 핵심 개념 ' + seen.size + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.'); }
 };
-$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
-$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+const flipTo = (b, on) => { b.classList.toggle('open', on); b.setAttribute('aria-pressed', on); if (on) seen.add(b.dataset.k); };
+$$('#cards .cc').forEach(b => b.onclick = () => { flipTo(b, !b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { const all = $$('#cards .cc'), on = !all.every(b => b.classList.contains('open')); all.forEach(b => flipTo(b, on)); $('#ccAll').textContent = on ? '↩️ 모두 앞면으로' : '🔄 모두 뒤집기'; ccCheck(); };
 renderChoice($('#match'), ${js(d.match.items.map(([icon, t, a, e]) => ({icon, t, a, e})))}, ${js(d.match.opts)});
 renderQuiz($('#quiz'), ${js(d.quiz.map(([q, o, a, e]) => ({q, o, a, e})))});
 </script>
@@ -133,7 +125,7 @@ for (const d of L){
   lines.forEach((l, i) => { if (l.includes(`sub: '${d.sub}'`) && /href:/.test(l)) last = i; });
   if (last < 0) throw new Error('no activity for ' + d.sub);
   const desc = strip(d.lead) + (d._pages ? ` (교과서 ${d._pages.replace('쪽', '')}쪽)` : '');
-  const entry = `  {unit: ${unit}, sub: '${d.sub}', icon: '${d.icon}', lesson: true, badge: '45분 종합 수업', title: '${d.title.replace(/'/g, "\\'")}', desc: '${desc.replace(/'/g, "\\'")}', href: 'lesson/${d.sub}.html', stage: true},`;
+  const entry = `  {unit: ${unit}, sub: '${d.sub}', icon: '${d.icon}', lesson: true, badge: '45분 종합 수업', title: '${d.title.replace(/'/g, "\\'")}', desc: '${desc.replace(/'/g, "\\'")}', href: 'lesson/${d.sub}.html',},`;
   lines.splice(last + 1, 0, entry);
 }
 fs.writeFileSync(path.join(ROOT, 'assets/contents.js'), lines.join('\n'));

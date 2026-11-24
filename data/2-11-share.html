@@ -7,12 +7,6 @@
 <link rel="stylesheet" href="../assets/common.css">
 <style>
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.tcard{border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px;text-align:center;min-height:120px}
-.tcard .ic{font-size:2rem}
-.tcard b{display:block;margin:4px 0}
-.tcard p{margin:0;font-size:.85rem;color:var(--muted);display:none}
-.tcard.open{border-color:var(--mint);background:var(--mint-soft)}
-.tcard.open p{display:block}
 .names{display:grid;gap:10px}
 .pair{display:flex;gap:8px;flex-wrap:wrap}
 .pair .opt{font-family:ui-monospace,Consolas,monospace;font-size:.9rem}
@@ -82,7 +76,7 @@ const TOOLS = [
   ['▶️', '동영상 공유 사이트', '영상을 올려 공유하거나 다른 사람의 영상을 볼 수 있어요.'],
 ];
 const opened = new Set();
-$('#tools').innerHTML = TOOLS.map(([ic, n, d], i) => `<button class="tcard" data-i="${i}"><div class="ic">${ic}</div><b>${n}</b><p>${d}</p></button>`).join('');
+$('#tools').innerHTML = TOOLS.map(([ic, n, d], i) => `<button class="tcard flip" data-i="${i}" aria-label="${n} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">${ic}</span><b>${n}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>${ic} ${n}</b>${d}</span></span></button>`).join('');
 $$('.tcard').forEach(c => c.onclick = () => { c.classList.toggle('open'); opened.add(+c.dataset.i); $('#toolN').textContent = opened.size === TOOLS.length ? '✅ 모두 살펴봤어요! 저장한 데이터는 공유도 할 수 있는 경우가 많아요.' : `${opened.size} / ${TOOLS.length} 살펴봄`; });
 
 renderChoice($('#cases'), [

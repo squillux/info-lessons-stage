@@ -13,16 +13,6 @@
 .flow45 td:first-child{white-space:nowrap;font-weight:700}
 .flow45 ul{margin:4px 0 6px;padding-left:1.2em}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
-.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
-.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
-.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
-.cc .ci{font-size:1.6rem;line-height:1}
-.cc b{font-size:1.02rem}
-.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
-.cc .tap{font-size:.78rem;color:#8a93a8}
-.cc.open{background:#f3f7ff;border-color:#9db5f4}
-.cc.open .cd{display:block}
-.cc.open .tap{display:none}
 </style>
 </head>
 <body data-stage data-unit="4" data-title="이미지·소리·텍스트 분류 모델 종합" data-sub="중1 Ⅳ단원 · 45분 종합 수업 · 미래엔 163~171쪽">
@@ -48,9 +38,9 @@
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
     <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
       <h3>🗂️ 핵심 개념 카드</h3>
-      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <p>카드를 누르면 뒤집혀서 설명이 나와요. 먼저 설명을 떠올려 보고 뒤집어 확인해 보세요. 다시 누르면 앞면으로 돌아가요.</p>
       <div class="cgrid" id="cards"></div>
-      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">🔄 모두 뒤집기</button></div>
       <div class="feedback" id="ccFb"></div>
     </div>
     <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
@@ -77,13 +67,15 @@
 <script src="../assets/common.js"></script>
 <script>
 const CONCEPTS = [["🏷️","클래스","모델이 나눌 이름표(분류 결과)예요. 예: 동그라미/가위표, 기쁨/슬픔"],["🖼️","이미지 분류","클래스마다 다양한 각도·크기의 이미지를 모아 학습해요."],["🎧","소리 분류","높이, 크기, 반복 같은 소리의 특징을 학습해요."],["💬","텍스트 분류","클래스를 대표하는 낱말의 특징을 학습해 문장을 분류해요."],["📏","평가","학습에 쓰지 않은 데이터로 정확도를 재고, 데이터를 고쳐 다시 학습해요."]];
-$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc flip" data-k="${k}" aria-pressed="false" aria-label="${t} 카드 뒤집기"><span class="fi"><span class="ff"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 뒤집기</span></span><span class="fb"><b>${i} ${t}</b>${s}</span></span></button>`).join('');
+const seen = new Set();
+let ccDone = false;
 const ccCheck = () => {
-  const n = $$('#cards .cc.open').length;
-  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+  if (!ccDone && seen.size === CONCEPTS.length){ ccDone = true; feedback($('#ccFb'), true, '🎉 핵심 개념 ' + seen.size + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.'); }
 };
-$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
-$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+const flipTo = (b, on) => { b.classList.toggle('open', on); b.setAttribute('aria-pressed', on); if (on) seen.add(b.dataset.k); };
+$$('#cards .cc').forEach(b => b.onclick = () => { flipTo(b, !b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { const all = $$('#cards .cc'), on = !all.every(b => b.classList.contains('open')); all.forEach(b => flipTo(b, on)); $('#ccAll').textContent = on ? '↩️ 모두 앞면으로' : '🔄 모두 뒤집기'; ccCheck(); };
 renderChoice($('#match'), [{"icon":"♻️","t":"쓰레기 사진을 보고 분리수거 종류를 알려 줘요.","a":0,"e":"사진을 나누는 이미지 분류예요."},{"icon":"🐶","t":"울음소리로 강아지인지 고양이인지 알아봐요.","a":1,"e":"소리를 나누는 소리 분류예요."},{"icon":"📩","t":"받은 문자가 스팸인지 알려 줘요.","a":2,"e":"문장을 나누는 텍스트 분류예요."},{"icon":"😊","t":"댓글이 긍정인지 부정인지 나눠요.","a":2,"e":"감정을 분류하는 텍스트 분류예요."}], ["이미지 분류","소리 분류","텍스트 분류"]);
 renderQuiz($('#quiz'), [{"q":"분류 모델의 정확도를 높이는 방법은?","o":["클래스마다 다양한 데이터를 충분히 넣는다","데이터를 한 장만 넣는다","클래스 이름을 길게 짓는다"],"a":0,"e":"다양하고 충분한 데이터가 중요해요."},{"q":"소리 데이터를 모을 때 주의할 점은?","o":["잡음이 섞이지 않게 한다","모두 같은 소리로만 녹음한다","최대한 시끄러운 곳에서 녹음한다"],"a":0,"e":"잡음이 적고 다양한 소리를 모아요."},{"q":"모델 평가에 쓰는 데이터는?","o":["학습에 쓴 문장","학습에 쓰지 않은 테스트 문장","아무것도 쓰지 않음"],"a":1,"e":"처음 보는 데이터로 평가해야 해요."},{"q":"분류 모델에서 '클래스'란?","o":["모델이 나눌 이름표","컴퓨터 교실","데이터 용량"],"a":0,"e":"분류 결과가 되는 이름표예요."}]);
 </script>
