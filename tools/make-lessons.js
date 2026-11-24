@@ -126,7 +126,7 @@ renderQuiz($('#quiz'), ${js(d.quiz.map(([q, o, a, e]) => ({q, o, a, e})))});
 }
 
 /* contents.js: 기존 lesson 항목을 지우고, 각 소단원 마지막 활동 뒤에 새 lesson 항목 넣기 */
-let lines = csrc.split('\n').filter(l => !/lesson: true/.test(l));
+let lines = csrc.split('\n').filter(l => !/^\s*\{unit:.*lesson: true/.test(l));   // 활동 항목 줄만 지움 (주석 줄은 남김)
 for (const d of L){
   const unit = +d.sub[0];
   let last = -1;

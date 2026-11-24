@@ -1,4 +1,5 @@
 /* 정보 개념 체험관 · 단원과 활동 목록 (첫 화면과 활동 페이지가 함께 사용)
+   새 활동은 contentsList에 교과서 쪽수 순서로 추가한다. lesson: true = 45분 종합 수업(tools/make-lessons.js로 생성) */
 const unitList = [
   {unit: 1, name: '컴퓨팅 시스템', desc: '컴퓨팅 시스템의 구성과 동작, 피지컬 컴퓨팅'},
   {unit: 2, name: '데이터', desc: '데이터의 디지털 표현, 수집과 관리, 구조화와 해석'},
