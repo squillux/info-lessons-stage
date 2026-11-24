@@ -3,37 +3,118 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅳ단원 AI 보스전</title>
+<title>Ⅳ단원 AI 트레이너</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
-.fill{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:520px;margin:10px 0}
-.fill div{border:2px dashed var(--line);border-radius:12px;padding:10px 4px;text-align:center;min-height:2.6em;font-weight:700}
-.fill div.ok{border-style:solid;border-color:var(--mint);background:var(--mint-soft)}
 .self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}
-@media (max-width:520px){.fill{grid-template-columns:repeat(2,1fr)}}
-.arena{border-radius:20px;padding:16px;background:linear-gradient(160deg,#1f1b3a,#3b2f6b);color:#fff}
-.boss{display:flex;align-items:center;gap:14px}
-.boss .face{font-size:3.6rem;line-height:1}
-.boss .face.hit{animation:hit .45s}
-.boss .face.ok{animation:none}
-@keyframes hit{20%{transform:translateX(-8px) rotate(-8deg)}40%{transform:translateX(8px) rotate(6deg)}60%{transform:translateX(-4px)}}
-.hp{flex:1}.hp b{font-size:.9rem}
-.hpbar{height:14px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:4px}
-.hpbar i{display:block;height:100%;background:linear-gradient(90deg,#ff5a7a,#ffb35c);transition:width .4s}
-.me{margin-top:10px;font-size:1.2rem;letter-spacing:2px}
-.dmg{font-weight:800;color:#ffd45c;min-height:1.4em}
-.qbox{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px}
-.qbox .q{font-weight:800;margin:0 0 10px}
-.qbox .opts{display:grid;gap:8px}
-.win{text-align:center}.win .big{font-size:3rem}
-.badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+/* ── AI 연구실 ── */
+.lab{border-radius:20px;background:linear-gradient(160deg,#141b33,#1f2b52);color:#e8ecff;padding:14px;position:relative;overflow:hidden}
+.lab::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(134,242,207,.08) 1px,transparent 1px);background-size:16px 16px;pointer-events:none}
+.pipe{display:flex;gap:4px;flex-wrap:wrap;position:relative;margin-bottom:12px}
+.pipe span{flex:1 1 0;min-width:64px;text-align:center;border-radius:10px;padding:6px 2px;font-size:.74rem;font-weight:800;background:rgba(255,255,255,.07);color:#8f9bc4;position:relative}
+.pipe span.cur{background:#ffd45c;color:#3a2a00;box-shadow:0 0 0 3px rgba(255,212,92,.25)}
+.pipe span.done{background:rgba(22,184,166,.25);color:#86f2cf}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;position:relative}
+@media (max-width:720px){.lab-grid{grid-template-columns:1fr}}
+.stage{min-height:340px;border-radius:16px;background:rgba(0,0,0,.22);padding:12px;position:relative}
+.side{border-radius:16px;background:#fff;color:var(--ink);padding:12px 14px;align-self:start}
+.side h4{margin:0 0 6px;font-size:1rem}
+.side .q{font-weight:800;margin:4px 0 8px;line-height:1.5}
+.side .opts{display:grid;gap:6px}
+.side .opts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 11px;text-align:left;font-weight:700;color:var(--ink);line-height:1.4}
+.side .opts button:hover{border-color:var(--brand)}
+.side .opts button.o{border-color:var(--mint);background:var(--mint-soft)}
+.side .opts button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
+.side .exp{margin-top:8px;padding:9px 11px;border-radius:12px;background:var(--yellow-soft);border:1.5px solid #f5dc92;font-size:.9rem;line-height:1.55}
+.side .go{margin-top:10px}
+.bubble{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.bubble svg{flex:0 0 auto}
+.bubble p{margin:0;background:var(--brand-soft);border-radius:14px;padding:8px 11px;font-size:.9rem;line-height:1.5}
+.qtag{display:inline-block;border-radius:999px;padding:1px 9px;font-size:.72rem;font-weight:800;background:var(--brand);color:#fff;margin-bottom:4px}
+.stage h5{margin:0 0 8px;font-size:.95rem;color:#ffd45c}
+.stage p{margin:4px 0;font-size:.9rem;line-height:1.55;color:#cdd5f5}
+/* 의뢰서 */
+.brief{display:flex;gap:12px;align-items:center;background:#fffdf5;color:#3a2a00;border-radius:14px;padding:12px;transform:rotate(-1deg);box-shadow:0 8px 20px rgba(0,0,0,.35);margin:6px 4px 12px}
+.brief .stamp{font-size:2.4rem}
+.brief b{display:block;font-size:1.02rem}
+.brief small{display:block;font-size:.85rem;line-height:1.5;color:#6b5a2a}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mini div{aspect-ratio:1;border-radius:10px;background:#333 center/cover;position:relative}
+.mini div::after{content:"?";position:absolute;inset:auto 6px 6px auto;width:22px;height:22px;border-radius:50%;background:#ffd45c;color:#3a2a00;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+/* 데이터 카드 */
+.cnt{display:flex;gap:8px;margin-bottom:8px;font-size:.85rem;font-weight:800}
+.cnt span{border-radius:999px;padding:3px 10px;background:rgba(255,255,255,.1)}
+.dgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+@media (max-width:520px){.dgrid{grid-template-columns:repeat(3,1fr)}}
+.dc{position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;box-shadow:0 0 0 2px rgba(255,255,255,.12);transition:transform .15s,opacity .2s,box-shadow .2s}
+.dc img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.dc.blur img{filter:blur(5px) brightness(1.1)}
+.dc .chk{position:absolute;left:5px;top:5px;width:22px;height:22px;border-radius:50%;background:var(--mint);color:#fff;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.dc.out{opacity:.35}.dc.out .chk{background:#666}
+.dc .lb{position:absolute;left:4px;right:4px;bottom:4px;border:0;border-radius:8px;padding:3px 0;font-size:.72rem;font-weight:800;background:rgba(255,255,255,.92);color:#1f2a3d;cursor:pointer}
+.dc .lb.dog{background:#ffe7c2}
+.dc.err{box-shadow:0 0 0 3px #ff5a5a;animation:shk .4s}
+.dc.good{box-shadow:0 0 0 3px #16b8a6}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.errs{margin:8px 0 0;padding:0;list-style:none;font-size:.85rem}
+.errs li{background:rgba(255,90,90,.15);border-radius:10px;padding:6px 10px;margin:4px 0;color:#ffd1d1}
+/* 학습 */
+.trainbox{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}
+.feed{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+.feed>*{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;transition:transform .5s,opacity .5s}
+.feed .eat{transform:translateX(120px) scale(.3);opacity:0}
+.net{width:100%;height:auto;max-height:190px}
+.net circle{fill:#2b3a67;stroke:#86f2cf;stroke-width:1.5;transition:fill .2s}
+.net circle.on{fill:#86f2cf}
+.net line{stroke:rgba(134,242,207,.25);stroke-width:1}
+.net.run line{animation:wire 0.6s linear infinite;stroke-dasharray:4 4}
+@keyframes wire{to{stroke-dashoffset:-8}}
+.meter{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-weight:800;font-size:.9rem}
+.chart{width:100%;height:auto;background:rgba(255,255,255,.05);border-radius:10px;margin-top:6px}
+.thought{min-height:1.6em;color:#86f2cf;font-size:.88rem;font-weight:700}
+/* 테스트 */
+.tests{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tc{border-radius:12px;background:rgba(255,255,255,.06);padding:6px;font-size:.78rem}
+.tc .ph{position:relative;border-radius:8px;overflow:hidden}
+.tc img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.tc .heat{position:absolute;inset:0;background:radial-gradient(ellipse 34% 30% at 55% 52%,rgba(255,60,60,.65),rgba(255,160,0,.3) 55%,transparent 75%);mix-blend-mode:screen;opacity:0;transition:opacity .6s}
+.tc.show-heat .heat{opacity:1}
+.tc .res{margin-top:5px;font-weight:800;min-height:1.4em}
+.bar2{height:8px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:3px}
+.bar2 i{display:block;height:100%;width:0;border-radius:999px;transition:width .9s}
+.bar2 i.c{background:#ffb35c}.bar2 i.d{background:#7cc4ff}
+.tc.ok{box-shadow:0 0 0 2px #16b8a6}.tc.no{box-shadow:0 0 0 2px #ff5a5a}
+.tc .mark{float:right}
+.more{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.more span{border-radius:10px;padding:6px 9px;background:rgba(134,242,207,.14);color:#86f2cf;font-size:.8rem;font-weight:800;animation:pop .5s}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+/* 윤리 · 출시 */
+.check{list-style:none;padding:0;margin:0}
+.check li{display:flex;gap:8px;align-items:center;border-radius:12px;padding:8px 10px;margin:5px 0;background:rgba(255,255,255,.06);font-size:.88rem;font-weight:700;color:#cdd5f5}
+.check li i{font-style:normal;width:22px;height:22px;border-radius:6px;border:2px solid #8f9bc4;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.check li.ok{background:rgba(22,184,166,.2);color:#e8fff8}.check li.ok i{background:#16b8a6;border-color:#16b8a6}
+.check li.cur{box-shadow:0 0 0 2px #ffd45c}
+.app{width:min(100%,250px);margin:0 auto;border:8px solid #0d1226;border-radius:30px;background:#fff;color:var(--ink);overflow:hidden}
+.app .h{padding:10px 12px 6px;font-family:var(--cute);font-size:1.1rem}
+.app .g{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px}
+.app .g div{position:relative;border-radius:8px;overflow:hidden}
+.app .g img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.app .g span{position:absolute;left:4px;bottom:4px;border-radius:999px;background:rgba(255,255,255,.9);font-size:.66rem;font-weight:800;padding:1px 6px}
+.app .n{margin:8px;border-radius:10px;background:var(--brand-soft);font-size:.7rem;padding:6px 8px;line-height:1.4}
+.cert{text-align:center}
+.cert .big{font-size:2.6rem}
+.badge2{display:inline-block;margin:6px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+@media (max-width:520px){.flow{grid-template-columns:1fr 1fr}}
+.flow div{border-radius:14px;padding:10px;background:var(--mint-soft);border:1.5px solid #bfe8e1;font-size:.85rem;line-height:1.45}
+.flow b{display:block;color:#0d7d71}
 </style>
 </head>
-<body data-stage data-unit="4" data-title="Ⅳ단원 AI 보스전" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
+<body data-stage data-unit="4" data-title="Ⅳ단원 AI 트레이너" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 단원 정리</span>
-  <h1>Ⅳ단원 AI 보스전</h1>
-  <p class="lead">인공지능의 개념과 특성, 인공지능 시스템과 데이터, 활용과 윤리를 정리해 봐요.</p>
+  <h1>🧠 Ⅳ단원 AI 트레이너</h1>
+  <p class="lead">동물 보호소에서 사진을 보고 <b>고양이와 강아지를 자동으로 분류하는 인공지능</b>을 만들어 달라는 의뢰가 왔어요! 데이터를 고르고, 학습시키고, 평가하고, 편향을 고치고, 윤리까지 점검해서 앱을 출시해 보세요.</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
@@ -43,18 +124,20 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>AI 보스전</h2>
-    <div class="card" data-bot="낱말을 순서대로 눌러 빈칸을 채워 봐 🔄">
-      <h3>🔄 인공지능 모델 개발 과정 채우기</h3>
-      <p>낱말을 순서대로 눌러 빈칸을 채워 보세요.</p>
-      <div class="fill" id="fill"></div>
-      <div class="opts" id="words"></div>
-      <div class="feedback" id="fFb"></div>
+    <h2 class="step-h"><span class="no">2</span>AI 트레이너</h2>
+    <div class="card" data-bot="코딩이의 안내를 따라 한 단계씩 진행해 봐. 인공지능 모델 개발 과정 그대로야 🧠">
+      <h3>🧠 보호소 분류 AI 만들기</h3>
+      <div class="lab">
+        <div class="pipe" id="pipe"></div>
+        <div class="lab-grid">
+          <div class="stage" id="stage"></div>
+          <div class="side" id="side"></div>
+        </div>
+      </div>
     </div>
-    <div class="card" data-bot="정답을 맞힐 때마다 버그봇의 체력이 깎여! 목숨은 3개야 👾">
-      <h3>👾 고장 난 AI '버그봇'을 고쳐라!</h3>
-      <p>편향된 데이터를 먹고 고장 난 인공지능 <b>버그봇</b>이 나타났어요. 문제를 맞혀 버그봇의 오류를 하나씩 고쳐 주세요. 틀리면 내 목숨 ❤️이 줄어요.</p>
-      <div class="arena" id="arena"></div>
+    <div class="card" data-bot="내가 한 일을 인공지능 모델 개발 과정으로 정리해 보자 📋">
+      <h3>📋 AI 트레이너 기록</h3>
+      <div id="record"><p class="hint">앞 화면에서 앱을 출시하면 기록이 나타나요.</p></div>
     </div>
   </section>
 
@@ -70,65 +153,197 @@
   <section class="step sum">
     <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
     <div class="card">
-      <p>인공지능은 <b>데이터</b>로 <b>학습</b>해 <b>모델</b>을 만들고 <b>평가</b>해 활용해요. 좋은 인공지능에는 좋은 데이터가 필요하고, 개발하고 쓸 때는 <b>윤리적 문제</b>를 함께 고려해야 해요.</p>
+      <p>인공지능은 <b>데이터</b>로 <b>학습</b>해 <b>모델</b>을 만들고 <b>테스트 데이터로 평가</b>해 활용해요. 데이터가 한쪽에 치우치면 <b>편향</b>된 판단을 하므로 좋은 데이터가 필요하고, 개발하고 쓸 때는 <b>윤리적 문제</b>를 함께 고려해야 해요.</p>
     </div>
   </section>
-  <p class="src">미래엔 중학교 정보 161, 183, 186쪽 정리 활동을 바탕으로 새로 구성</p>
+  <p class="src">미래엔 중학교 정보 161, 183, 186쪽 정리 활동을 바탕으로 새로 구성 · 인공지능의 판단 결과는 학습 원리를 보여 주기 위한 연출이에요.</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5" id="cred"></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-const ORD = ['데이터 입력', '학습', '모델 생성', '모델 평가'];
-let at = 0;
-$('#fill').innerHTML = ORD.map((_, i) => `<div>${i + 1}</div>`).join('');
-$('#words').innerHTML = ORD.map((w, i) => [w, i]).sort(() => Math.random() - .5).map(([w, i]) => `<button class="opt" data-i="${i}">${w}</button>`).join('');
-$$('#words .opt').forEach(b => b.onclick = () => {
-  if (+b.dataset.i !== at) return feedback($('#fFb'), false, '❌ 이 단계는 아직이에요.');
-  const c = $$('#fill div')[at]; c.textContent = ORD[at]; c.classList.add('ok'); b.disabled = true; at++;
-  feedback($('#fFb'), true, at === 4 ? '🎉 데이터 입력 → 학습 → 모델 생성 → 모델 평가!' : '⭕');
-});
-/* ===== AI 보스전 ===== */
-const QS = [
-  {q: '인공지능의 특성 중 이미지, 소리, 글자 등을 알아보는 것은?', o: ['추론', '인식', '생성'], a: 1, e: '센서 등으로 외부 세계를 알아보는 것은 인식이에요.'},
-  {q: '인공지능 소프트웨어와 일반 소프트웨어의 가장 큰 차이는?', o: ['화면 색깔', '데이터로 스스로 규칙을 학습하는지 여부', '가격'], a: 1, e: '인공지능은 데이터로 스스로 규칙을 찾아요.'},
-  {q: '모델의 성능을 평가할 때 사용하는 데이터는?', o: ['훈련 데이터', '테스트 데이터'], a: 1, e: '학습에 쓰지 않은 새로운 데이터로 평가해요.'},
-  {q: '좋은 학습 데이터의 조건이 아닌 것은?', o: ['충분한 양', '한쪽에 치우친 데이터', '특징이 드러난 데이터'], a: 1, e: '데이터는 대표성 있게 고르게 모아야 해요.'},
-  {q: '인공지능으로 문제를 해결하는 과정의 첫 단계는?', o: ['모델 개발', '문제 이해', '실행 및 적용'], a: 1, e: '먼저 해결할 문제를 정확히 이해해요.'},
-  {q: '얼굴 사진으로 자동 출석부를 만들 때 반드시 지켜야 할 것은?', o: ['사진 주인의 동의를 받는다', '사진을 많이 공유한다', '사진을 SNS에 올린다'], a: 0, e: '얼굴은 민감한 개인 정보라 동의가 필요해요.'},
-  {q: '인공지능이 내린 판단의 근거를 알 수 있어야 한다는 원칙은?', o: ['투명성', '데이터 편향', '저작권'], a: 0, e: '투명해야 결과를 믿을 수 있어요.'},
-  {q: '바람직한 인공지능을 위해 정부가 할 수 있는 노력은?', o: ['인공지능 관련 법과 제도 마련', '윤리 지침에 따라 제품 개발', '사용 시간 줄이기'], a: 0, e: '정부는 법과 제도를 마련해요.'},
+const P = '../assets/photos/';
+const CRED = {
+  a_cat1: ['Felis catus-cat on snow.jpg', 'Von.grzanka', 'CC BY-SA 3.0'], a_cat2: ['Domestic Cat Face Shot.jpg', 'Augustus Binu', 'CC BY-SA 3.0'],
+  a_cat3: ['Domestic cat 2011 G02.jpg', 'George Chernilevsky', 'Public domain'], a_cat4: ['Tabby cat with blue eyes-3336579.jpg', 'AdinaVoicu', 'CC0'],
+  a_cat5: ['Cautious Tabby Red Cat.jpg', 'Etaped', 'CC BY-SA 4.0'], f_cat: ['Calico cat, - Assisi, Italy.jpg', 'Terragio67', 'CC BY-SA 4.0'],
+  a_dog1: ['DSC09611a Search and Rescue Dog, Austrian Red Cross Perchtoldsdorf, 2024-10.jpg', 'Aciarium', 'CC BY 4.0'], a_dog2: ['Dog portrait Budapest.jpg', 'CONTRERAS Roberto', 'CC BY 4.0'],
+  a_dog3: ['Dülmen, Hausdülmen, Golden Retriever -- 2022 -- 5945.jpg', 'Dietmar Rabich', 'CC BY-SA 4.0'], a_dog4: ['Callie the golden retriever puppy.jpg', 'MichaelMcPhee', 'CC BY 3.0'],
+  a_dog5: ['Shiba inu taiki.jpg', 'Roberto Vasarri', 'Public domain'], a_dogw: ['Cream shiba inu dllu.jpg', 'Dllu', 'CC BY-SA 4.0'],
+  f_gamepad: ['Nintendo-Switch-Pro-Controller-FL.jpg', 'Evan-Amos', 'Public domain'],
+};
+$('#cred').innerHTML = Object.values(CRED).map(([t, a, l]) => `<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(t.replace(/ /g, '_'))}" target="_blank" rel="noopener">${t}</a> · ${a} · ${l}</li>`).join('');
+
+const STEPS = ['문제 이해', '데이터 입력', '학습', '모델 생성', '모델 평가', '윤리 점검', '🚀 출시'];
+const Qs = {
+  understand: {q: '인공지능으로 문제를 해결할 때 가장 먼저 할 일은?', o: ['모델을 바로 만든다', '해결할 문제를 정확히 이해한다', '앱을 출시한다'], a: 1, e: '무엇을 입력받아 무엇을 출력할지(사진 → 고양이/강아지) 먼저 정해야 해요.'},
+  diff: {q: '이 분류 AI가 일반 소프트웨어와 가장 다른 점은?', o: ['사람이 규칙을 모두 코드로 적어 준다', '데이터로 스스로 규칙(특징)을 학습한다', '화면이 더 예쁘다'], a: 1, e: '"귀가 뾰족하면 고양이"처럼 규칙을 직접 적지 않고, 데이터에서 스스로 특징을 찾아요.'},
+  gooddata: {q: '좋은 학습 데이터의 조건이 아닌 것은?', o: ['충분한 양', '정확한 라벨', '한쪽에 치우친 데이터'], a: 2, e: '데이터는 다양하고 고르게, 대표성 있게 모아야 해요.'},
+  recog: {q: '사진을 보고 고양이인지 강아지인지 알아보는 인공지능의 특성은?', o: ['인식', '생성', '추론'], a: 0, e: '이미지·소리·글자 등을 알아보는 것은 인식이에요.'},
+  test: {q: '모델의 성능을 평가할 때 사용하는 데이터는?', o: ['학습에 쓴 훈련 데이터', '학습에 쓰지 않은 테스트 데이터'], a: 1, e: '처음 보는 데이터로 평가해야 진짜 실력을 알 수 있어요.'},
+  why: {q: '흰 강아지를 고양이로 잘못 판단한 까닭은?', o: ['학습 데이터에 흰 강아지 사진이 없어서 데이터가 치우쳤다', '사진 파일이 너무 커서', '인공지능은 원래 강아지를 잘 못 알아봐서'], a: 0, e: '학습한 강아지는 모두 검은색·갈색이었고, 하얀색은 눈밭 고양이와 흰 고양이 사진에만 있었어요. AI가 "하얀색 = 고양이"라는 잘못된 특징을 배운 거예요. 이것이 데이터 편향이에요.'},
+  fix: {q: '편향을 고치는 가장 좋은 방법은?', o: ['테스트에서 흰 강아지 사진을 뺀다', '여러 색·품종의 강아지와 고양이 사진을 더 모아 다시 학습한다', '정확도 숫자를 100%로 고쳐 쓴다'], a: 1, e: '데이터를 다양하게 보충해 다시 학습시키는 것이 근본적인 해결 방법이에요.'},
+  consent: {q: '입양 신청 사진에 보호자의 얼굴이 함께 찍혀 있다면?', o: ['동의를 받고, 분류에 필요 없는 얼굴은 가린다', '얼굴도 학습에 마음대로 쓴다', 'SNS에 공유해 홍보한다'], a: 0, e: '얼굴은 개인 정보예요. 동의를 받고 필요한 만큼만 써야 해요.'},
+  trans: {q: '인공지능이 내린 판단의 근거를 알 수 있어야 한다는 원칙은?', o: ['투명성', '데이터 편향', '저작권'], a: 0, e: '앱에 "AI가 분류했어요"와 판단 근거를 보여 주면 결과를 믿고 확인할 수 있어요.'},
+  resp: {q: 'AI가 분류를 틀려 입양 정보가 잘못 나갔다면?', o: ['AI 잘못이니 아무도 책임지지 않는다', '사람이 최종 확인하고, 틀린 것을 신고·수정할 수 있게 한다', '앱을 몰래 지운다'], a: 1, e: '인공지능을 만든 사람과 쓰는 사람이 함께 책임을 지고 고칠 수 있어야 해요(책임성).'},
+  law: {q: '바람직한 인공지능을 위해 정부가 할 수 있는 노력은?', o: ['인공지능 관련 법과 제도 마련', '윤리 지침에 따라 제품 개발', '사용 시간 줄이기'], a: 0, e: '정부는 법과 제도를 마련하고, 기업은 윤리 지침에 따라 개발하고, 사용자는 바르게 써요.'},
+};
+const first = {};
+const DATA = [
+  {img: 'a_cat1', lab: 'cat', truth: 'cat'}, {img: 'a_dog1', lab: 'dog', truth: 'dog'}, {img: 'a_cat3', lab: 'cat', truth: 'cat', blur: true},
+  {img: 'a_cat2', lab: 'cat', truth: 'cat'}, {img: 'a_dog5', lab: 'cat', truth: 'dog'}, {img: 'f_gamepad', lab: 'dog', truth: 'none'},
+  {img: 'a_cat4', lab: 'cat', truth: 'cat'}, {img: 'a_dog2', lab: 'dog', truth: 'dog'}, {img: 'f_cat', lab: 'cat', truth: 'cat'}, {img: 'a_dog4', lab: 'dog', truth: 'dog'},
 ];
-const BOSS_LINES = ['ERROR: 고양이 = 강아지?!', '편향 데이터 냠냠…', '근거? 그런 건 몰라!', '삐빅… 오류 수정 중…', '데이터가… 고르게…?', '으악, 정답이다!', '시스템… 복구… 중…', '거의 다 고쳐졌어…!'];
-const BS = {};
-const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
-function bossStart(){ Object.assign(BS, {hp: QS.length, life: 3, queue: shuffle(QS.map((_, i) => i)), first: {}}); bossDraw(''); }
-function bossDraw(msg){
-  if (BS.hp <= 0) return bossWin();
-  if (BS.life <= 0) return bossLose();
-  const qi = BS.queue[0], Q = QS[qi];
-  $('#arena').innerHTML = `<div class="boss"><div class="face" id="face">👾</div><div class="hp"><b>버그봇 오류 ${BS.hp} / ${QS.length}</b><div class="hpbar"><i style="width:${BS.hp / QS.length * 100}%"></i></div><div class="dmg" id="dmg">${msg || '💬 ' + BOSS_LINES[QS.length - BS.hp]}</div></div></div>
-    <div class="me">내 목숨 ${'❤️'.repeat(BS.life)}${'🤍'.repeat(3 - BS.life)}</div>
-    <div class="qbox"><p class="q">⚔️ ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="bsFb"></div></div>`;
-  $$('#arena .opt').forEach(b => b.onclick = () => {
-    const ok = +b.dataset.k === Q.a; if (!(qi in BS.first)) BS.first[qi] = ok;
-    $$('#arena .opt').forEach(x => x.disabled = true); b.classList.add(ok ? 'right' : 'wrong');
-    if (ok){ BS.hp--; BS.queue.shift(); $('#face').classList.add('hit'); $('#dmg').textContent = '💥 오류 하나 수정! (-1)'; feedback($('#bsFb'), true, '⭕ ' + Q.e); setTimeout(() => bossDraw(''), 1500); }
-    else { BS.life--; BS.queue.push(BS.queue.shift()); feedback($('#bsFb'), false, '❌ ' + Q.e + ' (버그봇의 반격! 목숨 -1)'); setTimeout(() => bossDraw('😈 버그봇의 반격!'), 2200); }
+DATA.forEach(d => d.inc = true);
+const TESTS = [{img: 'a_cat5', truth: 'cat', p: 94}, {img: 'a_dog3', truth: 'dog', p: 88}, {img: 'a_dogw', truth: 'dog', p: 29, p2: 93}];
+let phase = 0, dataTries = 0;
+const LBL = {cat: '🐱 고양이', dog: '🐶 강아지'};
+const bot = () => typeof botSvg === 'function' ? botSvg(44) : '🤖';
+
+function pipe(){ $('#pipe').innerHTML = STEPS.map((s, i) => `<span class="${i < phase ? 'done' : i === phase ? 'cur' : ''}">${i < phase ? '✓ ' : ''}${s}</span>`).join(''); }
+function say(t){ return `<div class="bubble">${bot()}<p>${t}</p></div>`; }
+/* 개념 질문: 맞히면 then() */
+function ask(key, then, lead){
+  const Q = Qs[key];
+  $('#side').innerHTML = (lead ? say(lead) : '') + `<span class="qtag">개념 체크</span><div class="q">${Q.q}</div><div class="opts">${Q.o.map((o, k) => `<button data-k="${k}">${o}</button>`).join('')}</div><div id="qx"></div>`;
+  $$('#side .opts button').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.k === Q.a; if (!(key in first)) first[key] = ok;
+    if (!ok){ b.classList.add('x'); b.disabled = true; $('#qx').innerHTML = `<div class="exp">❌ 다시 생각해 봐요.</div>`; return; }
+    b.classList.add('o'); $$('#side .opts button').forEach(x => x.disabled = true);
+    $('#qx').innerHTML = `<div class="exp">⭕ ${Q.e}</div><button class="btn go" id="qgo">계속 ▶</button>`;
+    $('#qgo').onclick = then;
   });
 }
-function bossWin(){
-  const r = Object.values(BS.first), n = r.filter(Boolean).length;
-  $('#arena').innerHTML = `<div class="win"><div class="big">🤖✨</div><h4 style="font-size:1.4rem;margin:6px 0">버그봇 수리 완료!</h4><p>버그봇이 공정하고 투명한 착한 AI로 돌아왔어요. 남은 목숨 ${'❤️'.repeat(BS.life)} · 한 번에 맞힌 문제 <b>${n} / ${r.length}</b></p><span class="badge2">${BS.life === 3 ? '🏆 완벽한 AI 엔지니어' : BS.life === 2 ? '🥈 믿음직한 AI 수리공' : '🥉 아슬아슬 AI 구조대'}</span><div class="feedback" id="bsFb"></div><p><button class="btn line" id="again">🔄 다시 도전</button></p></div>`;
-  feedback($('#bsFb'), true, '🎉 Ⅳ단원 보스전 승리!'); $('#again').onclick = bossStart;
-  reportQuiz('boss4', r);
-}
-function bossLose(){
-  $('#arena').innerHTML = `<div class="win"><div class="big">👾😈</div><h4 style="font-size:1.3rem;margin:6px 0">앗, 목숨을 모두 잃었어요</h4><p>버그봇의 남은 오류 ${BS.hp}개. 틀린 문제의 해설을 떠올리며 다시 도전해 보세요!</p><div class="feedback" id="bsFb"></div><p><button class="btn" id="again">🔄 다시 도전</button></p></div>`;
-  feedback($('#bsFb'), false, '괜찮아요. 다시 도전하면 이길 수 있어요!'); $('#again').onclick = bossStart;
-}
-bossStart();
+function goPhase(n){ phase = n; pipe(); [p0, p1, p2, p3, p4, p5, p6][n](); }
 
-const SELF = ['인공지능의 개념과 특성을 설명하고, 인공지능 소프트웨어를 구별할 수 있다.', '인공지능 모델이 만들어지는 과정과 훈련·테스트 데이터를 설명할 수 있다.', '좋은 학습 데이터의 조건을 알고 데이터를 고를 수 있다.', '이미지·텍스트 데이터로 분류 모델을 만들고 평가할 수 있다.', '인공지능으로 해결할 수 있는 문제를 찾고 시스템을 구상할 수 있다.', '인공지능의 윤리적 문제를 알고 해결 방안을 제시할 수 있다.'];
+/* 0 문제 이해 */
+function p0(){
+  $('#stage').innerHTML = `<h5>📨 새 의뢰가 도착했어요</h5>
+    <div class="brief"><span class="stamp">🏠</span><div><b>행복 동물 보호소</b><small>하루에도 사진이 수백 장씩 들어와요. 사진을 보고 <b>고양이인지 강아지인지 자동으로 분류</b>해 주는 AI를 만들어 입양 앱에 넣어 주세요!</small></div></div>
+    <p>📥 입력: 동물 사진 → 📤 출력: 🐱 고양이 / 🐶 강아지</p>
+    <div class="mini">${['a_cat5', 'a_dog3', 'a_dogw'].map(i => `<div style="background-image:url(${P}${i}.jpg)"></div>`).join('')}</div>`;
+  ask('understand', () => ask('diff', () => goPhase(1), '좋아! 그럼 이 AI는 보통 프로그램과 뭐가 다를까?'), '안녕, 나는 AI 트레이너를 도울 코딩이야. 먼저 의뢰서를 읽어 봐!');
+}
+/* 1 데이터 입력 */
+function p1(){
+  const draw = (errSet) => {
+    const inc = DATA.filter(d => d.inc), nc = inc.filter(d => d.lab === 'cat').length, nd = inc.filter(d => d.lab === 'dog').length;
+    $('#stage').innerHTML = `<h5>🗂️ 학습 데이터 고르기</h5><p>사진을 누르면 넣고(✓) 빼요(✕). 아래 라벨을 누르면 🐱/🐶가 바뀌어요.</p>
+      <div class="cnt"><span>🐱 고양이 ${nc}장</span><span>🐶 강아지 ${nd}장</span><span>합계 ${inc.length}장</span></div>
+      <div class="dgrid">${DATA.map((d, i) => `<div class="dc${d.blur ? ' blur' : ''}${d.inc ? '' : ' out'}${errSet && errSet.has(i) ? ' err' : ''}" data-i="${i}"><img src="${P}${d.img}.jpg" alt=""><span class="chk">${d.inc ? '✓' : '✕'}</span><button class="lb ${d.lab}" data-i="${i}">${LBL[d.lab]}</button></div>`).join('')}</div>
+      <ul class="errs" id="errs"></ul>`;
+    $$('#stage .dc').forEach(c => c.onclick = e => { if (e.target.classList.contains('lb')) return; const d = DATA[+c.dataset.i]; d.inc = !d.inc; draw(); });
+    $$('#stage .lb').forEach(b => b.onclick = () => { const d = DATA[+b.dataset.i]; d.lab = d.lab === 'cat' ? 'dog' : 'cat'; draw(); });
+  };
+  draw();
+  $('#side').innerHTML = say('AI는 데이터를 먹고 자라. 그런데 이 사진 더미에는 <b>나쁜 데이터</b>가 섞여 있어! 흐린 사진, 관련 없는 사진, <b>라벨이 틀린 사진</b>을 찾아 고쳐 줘.') +
+    `<p class="hint" style="margin:0 0 8px">💡 라벨만 고치면 쓸 수 있는 사진도 있어요. 고양이와 강아지 수가 비슷해야 해요.</p><button class="btn" id="dataGo">✅ 학습 데이터 확정</button><div id="dx"></div>`;
+  $('#dataGo').onclick = () => {
+    dataTries++;
+    const errs = [], bad = new Set();
+    DATA.forEach((d, i) => {
+      if (!d.inc) return;
+      if (d.blur){ errs.push('흐린 사진: 특징(귀·눈·무늬)이 보이지 않아 학습에 방해돼요.'); bad.add(i); }
+      else if (d.truth === 'none'){ errs.push('게임 패드 사진: 고양이·강아지와 관련 없는 데이터예요.'); bad.add(i); }
+      else if (d.lab !== d.truth){ errs.push(`라벨이 틀린 사진: ${d.truth === 'dog' ? '강아지(시바견)인데 고양이' : '고양이인데 강아지'}로 적혀 있어요.`); bad.add(i); }
+    });
+    const inc = DATA.filter(d => d.inc && !d.blur && d.truth !== 'none' && d.lab === d.truth), nc = inc.filter(d => d.lab === 'cat').length, nd = inc.filter(d => d.lab === 'dog').length;
+    if (!bad.size && (nc < 4 || nd < 4)){ errs.push(`데이터가 부족하거나 치우쳤어요(🐱${nc} / 🐶${nd}). 빼 버린 좋은 사진은 없나요? 라벨만 고치면 쓸 수 있는 사진도 있어요.`); DATA.forEach((d, i) => { if (!d.inc && !d.blur && d.truth !== 'none') bad.add(i); }); }
+    if (errs.length){
+      first.data = false; draw(bad);
+      $('#errs').innerHTML = errs.map(e => `<li>⚠️ ${e}</li>`).join('');
+      $('#dx').innerHTML = `<div class="exp">❌ 빨간 테두리 사진을 다시 살펴봐요.</div>`; return;
+    }
+    if (!('data' in first)) first.data = true;
+    draw(); $$('#stage .dc').forEach((c, i) => DATA[i].inc && c.classList.add('good'));
+    $('#dx').innerHTML = `<div class="exp">⭕ 깨끗한 학습 데이터 8장 완성! (🐱 4 · 🐶 4) 흐린 사진과 관련 없는 사진은 빼고, 틀린 라벨은 고쳤어요.</div><button class="btn go" id="dgo">계속 ▶</button>`;
+    $('#dgo').onclick = () => ask('gooddata', () => goPhase(2));
+  };
+}
+/* 2 학습 */
+const NET = (() => { const L = [[4, 20], [5, 60], [2, 100]], pts = L.map(([n, x]) => Array.from({length: n}, (_, k) => [x, 10 + (k + .5) * 80 / n]));
+  let s = ''; for (let l = 0; l < 2; l++) pts[l].forEach(a => pts[l + 1].forEach(b => s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`));
+  pts.flat().forEach(([x, y], i) => s += `<circle cx="${x}" cy="${y}" r="5" data-n="${i}"/>`);
+  return `<svg class="net" id="net" viewBox="0 0 120 100">${s}<text x="108" y="34" font-size="7" fill="#ffb35c">🐱</text><text x="108" y="74" font-size="7" fill="#7cc4ff">🐶</text></svg>`; })();
+function chart(acc){ const pts = acc.map((a, i) => `${10 + i * 45},${70 - a * .6}`).join(' ');
+  return `<svg class="chart" viewBox="0 0 200 80"><text x="4" y="10" font-size="7" fill="#8f9bc4">정확도</text><polyline points="${pts}" fill="none" stroke="#86f2cf" stroke-width="2.5"/>${acc.map((a, i) => `<circle cx="${10 + i * 45}" cy="${70 - a * .6}" r="3" fill="#ffd45c"/><text x="${6 + i * 45}" y="${64 - a * .6}" font-size="7" fill="#fff">${a}%</text>`).join('')}</svg>`; }
+function train(imgs, accs, thoughts, done){
+  $('#stage').innerHTML = `<h5>⚙️ 학습 중…</h5><div class="trainbox"><div class="feed" id="feedI">${imgs.map(i => i.startsWith('+') ? `<div style="aspect-ratio:1;border-radius:6px;background:rgba(134,242,207,.15);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#86f2cf;text-align:center">${i.slice(1)}</div>` : `<img src="${P}${i}.jpg" alt="">`).join('')}</div>${NET}</div>
+    <div class="meter"><span id="ep">학습 0 / ${accs.length}회</span><span class="thought" id="th"></span></div><div id="ch">${chart([])}</div>`;
+  const net = $('#net'); net.classList.add('run');
+  $$('#feedI > *').forEach((im, k) => setTimeout(() => im.classList.add('eat'), 200 + k * 160));
+  let e = 0; const acc = [];
+  const tick = () => {
+    $$('#net circle').forEach(c => c.classList.toggle('on', Math.random() < .5));
+    acc.push(accs[e]); e++; $('#ep').textContent = `학습 ${e} / ${accs.length}회`; $('#th').textContent = thoughts[e - 1] || ''; $('#ch').innerHTML = chart(acc);
+    if (e < accs.length) setTimeout(tick, 700); else { net.classList.remove('run'); $$('#net circle').forEach(c => c.classList.add('on')); setTimeout(done, 500); }
+  };
+  setTimeout(tick, 600);
+}
+function p2(){
+  $('#side').innerHTML = say('이제 고른 데이터로 학습을 시작할게! 학습할수록 정확도가 어떻게 바뀌는지 봐 📈') + '<button class="btn" id="trainGo">▶ 학습 시작</button>';
+  $('#trainGo').onclick = () => { $('#trainGo').disabled = true;
+    train(DATA.filter(d => d.inc).map(d => d.img), [48, 66, 79, 90, 96], ['특징 찾는 중…', '귀 모양 👂', '코와 주둥이 👃', '털 색과 무늬 🎨', '거의 다 배웠어!'], () => goPhase(3)); };
+}
+/* 3 모델 생성 */
+function p3(){
+  $('#stage').insertAdjacentHTML('afterbegin', '<h5 style="color:#86f2cf">🧠 모델 생성 완료! 「냥멍 분류기 v1」</h5>');
+  ask('recog', () => goPhase(4), '모델이 만들어졌어! 학습 데이터 정확도는 96%야. 이 모델은 어떤 인공지능 특성을 쓰는 걸까?');
+}
+/* 4 모델 평가 */
+function p4(){
+  const drawTests = (heat) => {
+    $('#stage').innerHTML = `<h5>🧪 테스트 데이터로 평가하기</h5><p>학습에 쓰지 않은 새 사진 3장이에요. 버튼을 눌러 AI의 판단을 확인하세요.</p>
+      <div class="tests">${TESTS.map((t, i) => `<div class="tc${heat && i === 2 ? ' show-heat' : ''}" id="tc${i}"><div class="ph"><img src="${P}${t.img}.jpg" alt=""><div class="heat"></div></div><div class="res" id="r${i}">?</div><div class="bar2"><i class="c" id="bc${i}"></i></div><div class="bar2"><i class="d" id="bd${i}"></i></div></div>`).join('')}</div>
+      <div id="tmore"></div>`;
+  };
+  const run = (i, pDog) => { const pc = 100 - pDog, guess = pDog >= 50 ? 'dog' : 'cat', t = TESTS[i];
+    $('#bc' + i).style.width = pc + '%'; $('#bd' + i).style.width = pDog + '%';
+    setTimeout(() => { $('#r' + i).innerHTML = `AI: ${LBL[guess]} ${Math.max(pc, pDog)}% <span class="mark">${guess === t.truth ? '⭕' : '❌'}</span>`; $('#tc' + i).classList.add(guess === t.truth ? 'ok' : 'no'); }, 900); };
+  const start = () => {
+    drawTests();
+    $('#side').innerHTML = say('두근두근… 처음 보는 사진도 잘 맞힐까?') + '<button class="btn" id="tGo">🔍 AI에게 보여 주기</button><div id="tx"></div>';
+    $('#tGo').onclick = () => { $('#tGo').disabled = true;
+      TESTS.forEach((t, i) => setTimeout(() => run(i, t.truth === 'dog' ? t.p : 100 - t.p), i * 700));
+      setTimeout(() => { $('#tx').innerHTML = `<div class="exp">😮 흰 강아지를 <b>고양이 71%</b>로 잘못 판단했어요! 테스트 정확도 2 / 3. 흰 강아지 사진의 <b>빨간 부분</b>은 AI가 주목한 곳이에요. 하얀 털을 보고 있네요…</div><button class="btn go" id="wgo">왜 틀렸을까? ▶</button>`;
+        drawTests(true); TESTS.forEach((t, i) => run(i, t.truth === 'dog' ? t.p : 100 - t.p));
+        $('#wgo').onclick = () => ask('why', () => ask('fix', retrain, '맞아, 이게 바로 데이터 편향이야. 어떻게 고칠까?'), '학습 데이터를 떠올려 봐. 강아지 4장은 검은색·삼색·붉은색·금색이었고, 하얀색은 눈밭 고양이와 흰 고양이 사진에만 있었어.'); }, 2600);
+    };
+  };
+  ask('test', start, '이제 모델을 평가할 차례야. 어떤 데이터로 평가해야 할까?');
+}
+function retrain(){
+  $('#side').innerHTML = say('여러 색과 품종의 사진을 더 모았어! 다시 학습시켜 보자 🔁');
+  train(DATA.filter(d => d.inc).map(d => d.img).slice(0, 6).concat(['+🐕 흰·크림색 강아지 15장', '+🐈‍⬛ 검은·얼룩 고양이 15장']), [70, 85, 93, 97], ['새 데이터 학습…', '흰 털 = 고양이? ❌', '귀·주둥이 모양에 집중', '편향 줄이기 완료!'], () => {
+    $('#stage').innerHTML = `<h5 style="color:#86f2cf">🧠 「냥멍 분류기 v2」 다시 평가</h5><div class="tests" style="grid-template-columns:repeat(3,1fr)">${TESTS.map((t, i) => `<div class="tc ok"><div class="ph"><img src="${P}${t.img}.jpg" alt=""></div><div class="res">AI: ${LBL[t.truth]} ${t.p2 || t.p}% <span class="mark">⭕</span></div></div>`).join('')}</div>
+      <div class="more"><span>📊 테스트 정확도 3 / 3</span><span>🎨 다양한 데이터 보충</span></div>`;
+    $('#side').innerHTML = say('이번엔 흰 강아지도 <b>강아지 93%</b>로 맞혔어! 🎉 데이터를 다양하게 모으는 게 얼마나 중요한지 알겠지?') + '<button class="btn" id="eGo">출시 전 윤리 점검 ▶</button>';
+    $('#eGo').onclick = () => goPhase(5);
+  });
+}
+/* 5 윤리 점검 */
+const ETH = [['consent', '🔒 개인 정보 보호'], ['trans', '🔍 투명성'], ['resp', '🙋 책임성'], ['law', '⚖️ 법과 제도']];
+function p5(){
+  let k = 0;
+  const draw = () => { $('#stage').innerHTML = `<h5>✅ 출시 전 윤리 체크리스트</h5><ul class="check">${ETH.map(([, t], i) => `<li class="${i < k ? 'ok' : i === k ? 'cur' : ''}"><i>${i < k ? '✓' : ''}</i>${t}</li>`).join('')}</ul><p>모든 항목을 통과해야 앱을 출시할 수 있어요.</p>`; };
+  const nextQ = () => { draw(); if (k >= ETH.length) return goPhase(6); ask(ETH[k][0], () => { k++; nextQ(); }, k ? '' : '잠깐! 출시 전에 윤리 점검부터 해야 해.'); };
+  nextQ();
+}
+/* 6 출시 */
+function p6(){
+  const keys = Object.keys(Qs).concat(['data']), res = keys.map(x => !!first[x]), n = res.filter(Boolean).length;
+  const grade = n >= 11 ? ['🏆', '최고의 AI 트레이너'] : n >= 8 ? ['🥈', '믿음직한 AI 트레이너'] : ['🌱', '성장하는 AI 트레이너'];
+  $('#stage').innerHTML = `<div class="app"><div class="h">🏠 행복 보호소 입양</div><div class="g">${['a_cat5', 'a_dog3', 'a_dogw', 'f_cat'].map((i, j) => `<div><img src="${P}${i}.jpg" alt=""><span>${j === 0 || j === 3 ? '🐱 고양이' : '🐶 강아지'}</span></div>`).join('')}</div><div class="n">🤖 AI가 분류했어요 · 귀와 주둥이 모양을 보고 판단했어요.<br>틀렸다면 <b>[수정 요청]</b>을 눌러 주세요.</div></div>`;
+  $('#side').innerHTML = `<div class="cert"><div class="big">${grade[0]}</div><h4 style="margin:4px 0">🚀 앱 출시 성공!</h4><span class="badge2">${grade[1]}</span><p>한 번에 통과한 단계 <b>${n} / ${res.length}</b></p><button class="btn ghost" id="again">처음부터 다시 ↺</button></div>`;
+  $('#again').onclick = () => { for (const x in first) delete first[x]; DATA.forEach(d => { d.inc = true; }); DATA[4].lab = 'cat'; goPhase(0); };
+  $('#record').innerHTML = `<p><span class="badge2">${grade[0]} ${grade[1]} · ${n} / ${res.length}</span></p>
+    <div class="flow"><div><b>① 데이터 입력</b>흐린 사진·관련 없는 사진을 빼고 틀린 라벨을 고쳐 깨끗한 학습 데이터를 만들었어요.</div><div><b>② 학습</b>학습을 반복할수록 정확도가 48% → 96%로 올라갔어요.</div><div><b>③ 모델 생성</b>사진을 보고 고양이·강아지를 <b>인식</b>하는 분류 모델이 만들어졌어요.</div><div><b>④ 모델 평가</b>테스트 데이터로 평가해 <b>데이터 편향</b>을 발견하고, 데이터를 보충해 고쳤어요.</div></div>
+    <p>🛡️ 출시 전에 <b>개인 정보 보호 · 투명성 · 책임성 · 법과 제도</b>를 점검했어요.</p>`;
+  reportQuiz('trainer4', res);
+}
+goPhase(0);
+
+const SELF = ['인공지능의 개념과 특성을 설명하고, 인공지능 소프트웨어를 구별할 수 있다.', '인공지능 모델이 만들어지는 과정과 훈련·테스트 데이터를 설명할 수 있다.', '좋은 학습 데이터의 조건을 알고 데이터를 고를 수 있다.', '데이터 편향이 무엇인지 알고 해결 방법을 말할 수 있다.', '인공지능으로 해결할 수 있는 문제를 찾고 시스템을 구상할 수 있다.', '인공지능의 윤리적 문제를 알고 해결 방안을 제시할 수 있다.'];
 $('#self').innerHTML = SELF.map(s => `<label><input type="checkbox"> ${s}</label>`).join('');
 $$('#self input').forEach(i => i.onchange = () => { const n = $$('#self input:checked').length; $('#selfMsg').textContent = n === SELF.length ? '🎉 Ⅳ단원을 완벽하게 정리했어요!' : `${n} / ${SELF.length} · 체크하지 못한 내용은 해당 활동을 다시 해 보세요.`; });
 </script>
