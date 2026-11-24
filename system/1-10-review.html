@@ -13,47 +13,78 @@
 .room{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:#1b2233;user-select:none}
 .wall{position:absolute;inset:0 0 32% 0;background:linear-gradient(#323c55,#283149)}
 .floor{position:absolute;inset:68% 0 0 0;background:repeating-linear-gradient(90deg,#3a3142 0 12%,#352d3d 12% 24%)}
+.win{position:absolute;left:52%;top:6%;width:13%;height:20%;background:linear-gradient(#0d1430,#1d2a55);border:4px solid #4a5677;border-radius:4px}
+.win::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:3px solid #4a5677}
+.moon{position:absolute;right:16%;top:16%;width:22%;aspect-ratio:1;border-radius:50%;background:#fff6c9;box-shadow:0 0 12px #fff6c9}
+.sign{position:absolute;left:21%;top:6%;background:#e9edf6;color:#2b3245;font-weight:800;font-size:clamp(8px,1.3vw,12px);padding:2px 8px;border-radius:4px;opacity:.8}
+.clock{position:absolute;left:74%;top:7%;width:6%;aspect-ratio:1;border-radius:50%;background:#f4f1e4;border:3px solid #5b6478}
+.clock i{position:absolute;left:50%;bottom:50%;width:2px;background:#2b3245;transform-origin:bottom}
+.clock .hh{height:28%;transform:rotate(120deg)}.clock .mm{height:40%;transform:rotate(-30deg)}
 .door{position:absolute;left:3%;top:20%;width:14%;height:50%;perspective:500px;background:#0e1220;border-radius:4px}
 .door-light{position:absolute;inset:0;background:radial-gradient(circle at 50% 60%,#fff6c9,#ffd45c 60%,#f5a623);opacity:0;transition:opacity 1s}
 .door-panel{position:absolute;inset:0;background:linear-gradient(90deg,#7b5a3c,#8d6a47);border:3px solid #5e4129;border-radius:4px;transform-origin:left center;transition:transform 1.4s cubic-bezier(.3,.7,.3,1)}
+.door-panel::before{content:"";position:absolute;inset:10% 14% 55%;border:2px solid #6e5034;border-radius:2px}
+.door-panel::after{content:"";position:absolute;inset:52% 14% 8%;border:2px solid #6e5034;border-radius:2px}
 .knob{position:absolute;right:10%;top:52%;width:12%;aspect-ratio:1;border-radius:50%;background:#e8c25a}
 .door.open .door-panel{transform:rotateY(-80deg)}
 .door.open .door-light{opacity:1}
-.shelf{position:absolute;left:20%;top:16%;width:15%;height:52%;background:#5b4632;border:3px solid #4a3828;border-radius:3px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:4px;align-content:space-around}
-.shelf i{height:22px;border-radius:2px;background:#4f7cd6}.shelf i.b2{background:#d65f7c}.shelf i.b3{background:#4fb39c}
-.shelf.glow i:nth-child(5){box-shadow:0 0 10px 3px #ffd45c;background:#ffd45c}
-.desk{position:absolute;left:38%;top:60%;width:38%;height:6%;background:#8d6a47;border-radius:3px}
-.drawer{position:absolute;left:43%;top:66%;width:16%;height:12%;background:#7b5a3c;border:2px solid #5e4129;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#e8c25a;font-size:.8rem;transition:transform .8s cubic-bezier(.3,1.4,.5,1)}
-.drawer.open{transform:translateY(60%) scale(1.08);background:#5e4129;box-shadow:inset 0 10px 0 #2a1d12}
-.monitor{position:absolute;left:44%;top:30%;width:20%;height:28%;background:#111;border:5px solid #2b3245;border-radius:6px}
-.monitor::after{content:"";position:absolute;left:40%;bottom:-24%;width:20%;height:20%;background:#2b3245}
-.scr{position:absolute;inset:0;background:#05070d;color:#a7f3c0;font-size:clamp(9px,1.4vw,13px);line-height:1.35;padding:6%;font-family:ui-monospace,Consolas,monospace;transition:background .8s,box-shadow .8s;overflow:hidden}
+/* 조사할 물건 = 버튼 */
+.obj{position:absolute;border:0;padding:0;background:none;cursor:pointer;z-index:3;transition:filter .2s,transform .2s;font:inherit;color:inherit}
+.obj:hover,.obj:focus-visible{filter:drop-shadow(0 0 6px #ffd45c) drop-shadow(0 0 2px #ffd45c);outline:none;z-index:4}
+.obj::after{content:attr(data-label);position:absolute;left:50%;bottom:calc(100% + 4px);transform:translateX(-50%);white-space:nowrap;background:#ffd45c;color:#2b2200;font-size:clamp(9px,1.2vw,12px);font-weight:800;padding:2px 8px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .15s}
+.obj:hover::after,.obj:focus-visible::after{opacity:1}
+.obj.done::before{content:"✓";position:absolute;right:-4px;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--ok);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:2}
+.obj.hint{animation:hsp 1s ease-in-out 3}
+@keyframes hsp{50%{filter:drop-shadow(0 0 12px #ffd45c) drop-shadow(0 0 4px #ffd45c);transform:scale(1.06)}}
+.keypad{left:13.2%;top:42%;width:3.2%;height:12%;background:#1b2030;border:2px solid #8a95ab;border-radius:4px;display:flex;flex-direction:column;align-items:center;gap:6%;padding:6% 0}
+.kscr{width:80%;background:#0b0f1a;color:#ff5a5a;font-size:clamp(4px,.6vw,7px);text-align:center;border-radius:1px;font-family:ui-monospace,Consolas,monospace;line-height:1.6}
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;width:76%}
+.kgrid i{aspect-ratio:1;background:#5b6478;border-radius:1px}
+.door.open~.keypad .kscr{color:#3cf08a}
+.shelf{left:20%;top:14%;width:15%;height:54%;background:#5b4632;border:3px solid #4a3828;border-radius:3px;display:flex;flex-direction:column;justify-content:space-around;padding:4% 5%}
+.shelf .row{display:flex;width:100%;box-sizing:border-box;padding:0 4%;align-items:flex-end;gap:4%;height:28%;border-bottom:4px solid #3d2e20;position:relative}
+.shelf i{flex:1;border-radius:2px 2px 0 0;box-shadow:inset -2px 0 rgba(0,0,0,.2);font-style:normal;font-size:clamp(5px,.8vw,8px);font-weight:800;color:#3a2a00;writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center}
+.shelf .lean{position:absolute;right:2%;bottom:0;width:8%;height:60%;background:#8a95ab;transform:rotate(14deg);transform-origin:bottom}
+.shelf.glow .osb{box-shadow:0 0 10px 3px #ffd45c;animation:pls 1.2s ease-in-out infinite}
+@keyframes pls{50%{filter:brightness(1.3)}}
+.desk{position:absolute;left:38%;top:60%;width:38%;height:6%;background:linear-gradient(#9c7650,#7b5a3c);border-radius:3px}
+.desk .kb{position:absolute;left:14%;top:-30%;width:32%;height:45%;background:#cfd5e2;border-radius:2px;box-shadow:inset 0 -2px #9aa3b5}
+.desk .mouse{position:absolute;left:52%;top:-30%;width:5%;height:50%;background:#cfd5e2;border-radius:40%}
+.monitor{left:43%;top:28%;width:22%;height:27%;background:#1c2130;border-radius:6px;padding:4%}
+.monitor::before{content:"";position:absolute;left:43%;bottom:-16%;width:14%;height:16%;background:#2b3245}
+.monitor .scr{position:absolute;inset:6% 5% 9%;border-radius:2px;background:#05070d;color:#a7f3c0;font-size:clamp(8px,1.3vw,12px);line-height:1.35;padding:5%;font-family:ui-monospace,Consolas,monospace;text-align:left;transition:background .8s,box-shadow .8s;overflow:hidden}
 .monitor.on .scr{background:#0b2a4a;box-shadow:0 0 22px 4px rgba(120,190,255,.55)}
-.tower{position:absolute;left:68%;top:38%;width:6%;height:22%;background:#2b3245;border-radius:4px}
-.tower .pled{position:absolute;left:30%;top:10%;width:30%;aspect-ratio:1;border-radius:50%;background:#555}
+.drawer{left:42%;top:66.5%;width:17%;height:12%;background:linear-gradient(#8d6a47,#7b5a3c);border:2px solid #5e4129;border-radius:3px;transition:transform .8s cubic-bezier(.3,1.4,.5,1)}
+.drawer .handle{position:absolute;left:30%;top:22%;width:40%;height:14%;background:#e8c25a;border-radius:3px}
+.drawer .dial{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);display:flex;gap:2px;background:#1b2030;border-radius:3px;padding:2px 3px}
+.drawer .dial i{font-style:normal;color:#ffd45c;font-size:clamp(6px,1vw,10px);font-weight:800;font-family:ui-monospace,Consolas,monospace;width:1.2em;text-align:center;background:#2b3245;border-radius:2px}
+.drawer.open{transform:translateY(55%) scale(1.06);background:#5e4129;box-shadow:inset 0 10px 0 #2a1d12}
+.tower{left:68%;top:36%;width:6.5%;height:24%;background:linear-gradient(90deg,#2b3245,#363f57);border-radius:4px;box-shadow:inset -3px 0 rgba(0,0,0,.25)}
+.tower .pbtn{position:absolute;left:30%;top:8%;width:40%;aspect-ratio:1;border-radius:50%;border:2px solid #8a95ab}
+.tower .pled{position:absolute;left:42%;top:30%;width:16%;aspect-ratio:1;border-radius:50%;background:#555}
 .tower.on .pled{background:#3cf08a;box-shadow:0 0 8px #3cf08a}
-.tower .slot{position:absolute;left:25%;top:45%;width:50%;height:6%;background:#0e1220}
-.tower.usb .slot{background:#ffc233}
-.trash{position:absolute;left:79%;top:72%;width:7%;height:16%;background:linear-gradient(#8a95ab,#6b7489);border-radius:2px 2px 8px 8px}
-.corner{position:absolute;right:0;top:12%;width:13%;height:58%;background:#05060a;overflow:hidden;border-radius:6px 0 0 6px}
-.corner .board{position:absolute;inset:18% 10%;background:#1f8f5f;border-radius:6px;padding:6px;color:#fff;font-size:.7rem;opacity:0;transition:opacity 1s}
+.tower .slot{position:absolute;left:25%;top:42%;width:50%;height:5%;background:#0e1220;border-radius:1px}
+.tower.usb .slot{background:#3b6cf6;box-shadow:0 0 0 2px #ffc233}
+.tower .vent{position:absolute;left:20%;right:20%;top:58%;bottom:8%;background:repeating-linear-gradient(#20263a 0 2px,transparent 2px 5px)}
+.trash{left:78%;top:68%;width:8%;height:22%}
+.trash svg{width:100%;height:100%;display:block}
+.corner{right:0;top:12%;width:13%;height:58%;background:#05060a;border-radius:6px 0 0 6px;overflow:hidden}
+.corner .board{position:absolute;inset:16% 10%;background:linear-gradient(135deg,#1f8f5f,#16734b);border-radius:6px;border:2px solid #0f5a39;opacity:0;transition:opacity 1s}
 .corner.lit{background:#2a2f3f}
 .corner.lit .board{opacity:1}
+.board .chip{position:absolute;left:28%;top:10%;width:44%;height:16%;background:#1b1f2b;border-radius:2px;box-shadow:0 0 0 2px #1b1f2b,0 -4px 0 -2px #c9ccd6,0 4px 0 -2px #c9ccd6}
+.board .pins{position:absolute;left:8%;right:8%;bottom:6%;height:5%;background:repeating-linear-gradient(90deg,#e8c25a 0 3px,transparent 3px 7px)}
+.board .wire{position:absolute;width:3px;border-radius:2px}
+.board .w1{left:20%;top:-20%;height:30%;background:#ff5a5a;transform:rotate(-10deg)}.board .w2{left:70%;top:-20%;height:30%;background:#5aa8ff;transform:rotate(12deg)}
 .corner.beam::after{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,246,200,.9) 0 14%,transparent 30%);animation:beam 1.6s ease-in-out}
 @keyframes beam{0%{transform:translate(-30%,-30%)}50%{transform:translate(20%,10%)}100%{transform:translate(0,0);opacity:0}}
-.leds{display:grid;gap:5px;margin-top:6px}
-.leds span{display:flex;align-items:center;gap:4px;font-weight:800;font-size:.8rem}
-.leds span i{width:14px;height:14px;border-radius:50%;background:#333;display:inline-block}
+.leds{position:absolute;left:10%;right:10%;top:34%;display:grid;gap:6%}
+.leds span{display:flex;align-items:center;gap:6px;font-weight:800;font-size:clamp(9px,1.2vw,13px);color:#fff}
+.leds span i{width:clamp(9px,1.4vw,14px);aspect-ratio:1;border-radius:50%;background:#333;display:inline-block;border:2px solid #0f5a39}
 .leds span.on i{box-shadow:0 0 10px 3px currentColor}
-.dim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 100%);animation:flick 6s infinite}
+.dim{position:absolute;inset:0;pointer-events:none;z-index:4;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 100%);animation:flick 6s infinite}
 @keyframes flick{0%,96%,100%{opacity:1}97%{opacity:.6}98%{opacity:1}99%{opacity:.7}}
 .room.free .dim{opacity:0;animation:none;transition:opacity 1.2s}
-.hs{position:absolute;transform:translate(-50%,-50%);border:0;background:rgba(255,255,255,.08);border-radius:50%;width:clamp(30px,6vw,46px);height:clamp(30px,6vw,46px);font-size:clamp(15px,2.6vw,22px);cursor:pointer;z-index:3;box-shadow:0 0 0 2px rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
-.hs:hover{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 3px #ffd45c,0 0 14px #ffd45c}
-.hs.done{opacity:.45}
-.hs.hint{animation:hsp 1s ease-in-out 3}
-@keyframes hsp{50%{transform:translate(-50%,-50%) scale(1.35);box-shadow:0 0 0 4px #ffd45c,0 0 20px #ffd45c}}
-.keypad{left:15%;top:48%}.h-shelf{left:27.5%;top:42%}.h-drawer{left:51%;top:72%}.h-mon{left:63%;top:31%}.h-tower{left:71%;top:49%}.h-trash{left:82.5%;top:80%}.h-corner{left:93.5%;top:41%}
 .modal{position:absolute;left:8%;right:8%;top:calc(46px + 2cqw);max-height:calc(62.5cqw - 4cqw);z-index:5;background:#fff;color:var(--ink);border-radius:16px;padding:14px 16px;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,.45);animation:pop .3s cubic-bezier(.3,1.4,.5,1)}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
 .modal.shake{animation:shk .35s}
@@ -85,7 +116,7 @@
 .badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
 @keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){.dim,.alarm,#erTime.low{animation:none}}
-@media (max-width:560px){.room{aspect-ratio:4/3}.modal{position:relative;left:auto;right:auto;top:auto;max-height:none;margin-top:8px;border:2px solid #ffd45c;box-shadow:0 6px 18px rgba(0,0,0,.15)}.corner{width:18%}.h-corner{left:91%}}
+@media (max-width:560px){.room{aspect-ratio:4/3}.modal{position:relative;left:auto;right:auto;top:auto;max-height:none;margin-top:8px;border:2px solid #ffd45c;box-shadow:0 6px 18px rgba(0,0,0,.15)}.corner{width:18%}}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="Ⅰ단원 방 탈출" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
@@ -109,21 +140,22 @@
         <div class="er-hud"><span id="erTime">⏳ 15:00</span><span id="erGoal">🎯 방 안을 조사해 보세요</span><button class="btn line" id="erHint">💡 힌트</button></div>
         <div class="room" id="room">
           <div class="wall"></div><div class="floor"></div>
+          <div class="win"><span class="moon"></span></div>
+          <div class="sign">정보실</div>
+          <div class="clock"><i class="hh"></i><i class="mm"></i></div>
           <div class="door" id="door"><div class="door-light"></div><div class="door-panel"><span class="knob"></span></div></div>
-          <button class="hs keypad" data-o="keypad" aria-label="문 키패드">🔢</button>
-          <div class="shelf"><i></i><i></i><i class="b2"></i><i></i><i class="b3"></i><i></i><i class="b2"></i><i></i><i class="b3"></i><i></i><i></i><i class="b2"></i></div>
-          <button class="hs h-shelf" data-o="shelf" aria-label="책장">📚</button>
-          <div class="desk"></div>
-          <div class="drawer" id="drawer"><span>━</span></div>
-          <button class="hs h-drawer" data-o="drawer" aria-label="책상 서랍">🗄️</button>
-          <div class="monitor" id="monitor"><div class="scr" id="scr"></div></div>
-          <button class="hs h-mon" data-o="monitor" aria-label="모니터">🖥️</button>
-          <div class="tower" id="tower"><span class="pled"></span><span class="slot"></span></div>
-          <button class="hs h-tower" data-o="tower" aria-label="컴퓨터 본체">🖲️</button>
-          <div class="trash"></div>
-          <button class="hs h-trash" data-o="trash" aria-label="휴지통">🗑️</button>
-          <div class="corner" id="corner"><div class="board" id="board"><b>센서 보드</b><div class="leds" id="leds"></div></div></div>
-          <button class="hs h-corner" data-o="corner" aria-label="어두운 구석">🌑</button>
+          <button class="obj keypad" data-o="keypad" data-label="문 전자 키패드"><span class="kscr">LOCK</span><span class="kgrid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></button>
+          <button class="obj shelf" data-o="shelf" data-label="책장">
+            <span class="row"><i style="height:56%;background:#4f7cd6"></i><i style="height:72%;background:#d65f7c"></i><i style="height:64%;background:#4fb39c"></i><i style="height:48%;background:#e8a23a"></i><i style="height:72%;background:#6b5ad6"></i><i style="height:60%;background:#4f7cd6"></i></span>
+            <span class="row"><i class="" style="height:64%;background:#4fb39c"></i><i class="" style="height:52%;background:#d65f7c"></i><i class="osb" style="height:76%;background:#ffd45c">OS</i><i class="" style="height:60%;background:#4f7cd6"></i><i class="" style="height:68%;background:#e8a23a"></i><b class="lean"></b></span>
+            <span class="row"><i style="height:60%;background:#6b5ad6"></i><i style="height:72%;background:#4f7cd6"></i><i style="height:56%;background:#4fb39c"></i><i style="height:68%;background:#d65f7c"></i><i style="height:52%;background:#e8a23a"></i><i style="height:64%;background:#4f7cd6"></i></span>
+          </button>
+          <div class="desk"><span class="kb"></span><span class="mouse"></span></div>
+          <button class="obj monitor" id="monitor" data-o="monitor" data-label="모니터"><span class="scr" id="scr"></span></button>
+          <button class="obj drawer" id="drawer" data-o="drawer" data-label="책상 서랍 (자물쇠)"><span class="handle"></span><span class="dial"><i>0</i><i>0</i><i>0</i></span></button>
+          <button class="obj tower" id="tower" data-o="tower" data-label="컴퓨터 본체"><span class="pbtn"></span><span class="pled"></span><span class="slot"></span><span class="vent"></span></button>
+          <button class="obj trash" data-o="trash" data-label="휴지통"><svg viewBox="0 0 60 70" aria-hidden="true"><path d="M8 18 L14 66 Q14 68 17 68 H43 Q46 68 46 66 L52 18Z" fill="#7d879c" stroke="#5b6478" stroke-width="2"/><path d="M16 20 L18 64" stroke="#5b6478" stroke-width="1.5"/><path d="M24 20 L26 64" stroke="#5b6478" stroke-width="1.5"/><path d="M32 20 L34 64" stroke="#5b6478" stroke-width="1.5"/><path d="M40 20 L42 64" stroke="#5b6478" stroke-width="1.5"/><path d="M6 16 H54" stroke="#5b6478" stroke-width="4" stroke-linecap="round"/><path d="M18 14 q-4 -9 6 -10 q6 -3 9 3 q8 -2 7 6 q2 6 -6 6 q-6 4 -11 0 q-8 1 -5 -5Z" fill="#f4f1e4" stroke="#c9c2a4"/><path d="M33 12 q2 -7 9 -5 q6 0 5 7 q-1 5 -8 4 q-7 1 -6 -6Z" fill="#fffbe8" stroke="#c9c2a4"/></svg></button>
+          <button class="obj corner" id="corner" data-o="corner" data-label="어두운 구석"><span class="board" id="board"><span class="chip"></span><span class="pins"></span><span class="leds" id="leds"></span><span class="wire w1"></span><span class="wire w2"></span></span></button>
           <div class="dim" id="dim"></div>
           <div class="intro" id="intro"><div class="alarm">⚡ 정전 경보 ⚡</div><p>수업이 끝나고 혼자 남았는데 전기가 나갔어요.<br>컴퓨터실 문이 <b>전자 잠금</b>으로 잠겼어요!</p><button class="btn" id="erStart">🔦 탈출 시작</button></div>
         </div>
@@ -173,9 +205,9 @@ function erInit(){
   Object.assign(ER, {t: 15 * 60, started: false, first: {}, inv: [], dcode: [d10(), d10(), d10()], ecode: [d10(), d10(), d10()], clue: [null, null, null], usbQ: 0,
     done: {}, ledOn: [], wheel: [0, 0, 0], kp: '', hints: 0, wrong: 0, ledPos: [0, 1, 2].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1])});
   clearInterval(ER.tm);
-  $('#room').className = 'room'; $('#door').className = 'door'; $('#drawer').className = 'drawer'; $('#monitor').className = 'monitor'; $('#tower').className = 'tower'; $('#corner').className = 'corner';
-  $('.shelf').classList.remove('glow'); $('#scr').innerHTML = ''; $('#modal').hidden = true;
-  $$('#room .hs').forEach(b => b.classList.remove('done'));
+  $('#room').className = 'room'; $('#door').className = 'door'; $('#drawer').className = 'obj drawer'; $('#monitor').className = 'obj monitor'; $('#tower').className = 'obj tower'; $('#corner').className = 'obj corner';
+  $('.shelf').classList.remove('glow'); $$('#drawer .dial i').forEach(i => i.textContent = 0); $('#scr').innerHTML = ''; $('#modal').hidden = true;
+  $$('#room .obj').forEach(b => b.classList.remove('done', 'hint'));
   $('#room').querySelector('.outro')?.remove(); $('#intro').hidden = false;
   drawInv(); drawLeds(); goal(); timeTxt();
 }
@@ -189,7 +221,7 @@ function goal(){
 }
 function drawInv(){ $('#inv').innerHTML = ER.inv.length ? ER.inv.map(i => `<span>${i}</span>`).join('') : '<span class="empty">아직 없어요</span>'; }
 function drawLeds(){
-  $('#leds').innerHTML = ER.ledPos.map(c => { const on = ER.ledOn.includes(c); return `<span class="${on ? 'on' : ''}" style="color:${COLORS[c][1]}"><i style="background:${on ? COLORS[c][1] : '#333'}"></i>${on ? ER.ecode[c] : '?'}</span>`; }).join('');
+  $('#leds').innerHTML = ER.ledPos.map(c => { const on = ER.ledOn.includes(c); return `<span class="${on ? 'on' : ''}" style="color:${COLORS[c][1]}"><i style="background:${on ? COLORS[c][1] : '#333'}"></i><b style="color:#fff">${on ? ER.ecode[c] : '?'}</b></span>`; }).join('');
 }
 function fly(icon, fromEl){
   const room = $('#room'), r0 = room.getBoundingClientRect(), a = fromEl.getBoundingClientRect(), b = $('#inv').getBoundingClientRect();
@@ -230,7 +262,7 @@ const ACT = {
   drawer(btn){
     if (ER.done.drawer) return say('🗄️ 서랍은 이미 열려 있어요.', true);
     const m = modal(`<h4>🗄️ 책상 서랍 · 3자리 자물쇠</h4><p class="hint">▲▼를 눌러 숫자를 맞춘 뒤 [열기]를 누르세요.</p><div class="wheels">${[0, 1, 2].map(i => `<div class="wheel"><button data-w="${i}" data-d="1" aria-label="${i + 1}번째 올리기">▲</button><b id="w${i}">${ER.wheel[i]}</b><button data-w="${i}" data-d="-1" aria-label="${i + 1}번째 내리기">▼</button></div>`).join('')}</div><div style="text-align:center"><button class="btn" id="dOpen">🔓 열기</button></div><div class="feedback" id="mFb"></div>`);
-    m.querySelectorAll('.wheel button').forEach(b => b.onclick = () => { const i = +b.dataset.w; ER.wheel[i] = (ER.wheel[i] + +b.dataset.d + 10) % 10; const w = m.querySelector('#w' + i); w.textContent = ER.wheel[i]; w.animate([{transform: `translateY(${b.dataset.d > 0 ? 8 : -8}px)`, opacity: .3}, {transform: 'none', opacity: 1}], {duration: 180}); });
+    m.querySelectorAll('.wheel button').forEach(b => b.onclick = () => { const i = +b.dataset.w; ER.wheel[i] = (ER.wheel[i] + +b.dataset.d + 10) % 10; const w = m.querySelector('#w' + i); w.textContent = ER.wheel[i]; $$('#drawer .dial i')[i].textContent = ER.wheel[i]; w.animate([{transform: `translateY(${b.dataset.d > 0 ? 8 : -8}px)`, opacity: .3}, {transform: 'none', opacity: 1}], {duration: 180}); });
     m.querySelector('#dOpen').onclick = () => {
       if (ER.wheel.join('') !== ER.dcode.join('')){ ER.wrong++; m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake'); return feedback($('#mFb'), false, ER.clue.some(c => c === null) ? '❌ 철컥… 안 열려요. 아직 찾지 못한 숫자가 있어요.' : '❌ 철컥… 안 열려요. 가방 속 단서 숫자를 순서대로 맞춰 보세요.'); }
       m.hidden = true; ER.done.drawer = 1; btn.classList.add('done'); $('#drawer').classList.add('open');
@@ -263,7 +295,7 @@ const ACT = {
       out.innerHTML = `<div class="paper">💡 <b style="color:${COLORS[c][1]}">${COLORS[c][0]} LED</b>가 켜졌어요! 숫자 <b>${ER.ecode[c]}</b>${ER.ledOn.length < 3 ? '<div style="margin-top:6px"><button class="btn" id="nx">다음 칸 ▶</button></div>' : ''}</div>`;
       ER.inv.push(`💡 ${COLORS[c][0]}: ${ER.ecode[c]}`); drawInv();
       out.querySelector('#nx')?.addEventListener('click', ACT.board);
-      if (ER.ledOn.length === 3) $$('#room .hs.h-corner').forEach(b => b.classList.add('done'));
+      if (ER.ledOn.length === 3) $('#corner').classList.add('done');
     });
   },
   keypad(){
@@ -279,11 +311,11 @@ const ACT = {
     });
   },
 };
-$$('#room .hs').forEach(b => b.onclick = () => { if (!ER.started) return; ACT[b.dataset.o](b); });
+$$('#room .obj').forEach(b => b.onclick = () => { if (!ER.started) return; ACT[b.dataset.o](b); });
 $('#erHint').onclick = () => {
   if (!ER.started) return; ER.hints++;
   const t = !ER.done.drawer ? (ER.clue.every(c => c !== null) ? 'drawer' : ['monitor', 'shelf', 'trash'].find(k => !ER.done[k])) : !ER.done.tower ? 'tower' : !ER.done.corner || ER.ledOn.length < 3 ? 'corner' : 'keypad';
-  const b = $(`#room .hs[data-o="${t}"]`); b.classList.remove('hint'); void b.offsetWidth; b.classList.add('hint');
+  const b = $(`#room .obj[data-o="${t}"]`); b.classList.remove('hint'); void b.offsetWidth; b.classList.add('hint');
 };
 function escape(){
   clearInterval(ER.tm); ER.started = false; $('#door').classList.add('open'); $('#room').classList.add('free');
