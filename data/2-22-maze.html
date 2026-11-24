@@ -3,34 +3,101 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅱ단원 미로 탈출 퀴즈</title>
+<title>Ⅱ단원 데이터 공장</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
-.mapline{display:flex;align-items:center;gap:0;margin:6px 0 16px;overflow-x:auto;padding:6px 2px}
-.room{flex:0 0 34px;height:34px;border-radius:9px;background:var(--bg);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--muted)}
-.room.done{background:var(--mint);border-color:var(--mint);color:#fff}
-.room.cur{border-color:var(--brand);background:#fff;font-size:1.1rem}
-.path{flex:0 0 14px;height:4px;background:var(--line)}
-.path.done{background:var(--mint)}
-.gate{border:3px solid #1f2a3d;border-radius:20px;padding:20px;background:repeating-linear-gradient(45deg,#fff 0 14px,#fafbfe 14px 28px)}
-.gate .q{font-size:1.2rem;font-weight:800;margin:0 0 14px}
-.doors{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.door{border:0;border-radius:18px 18px 8px 8px;padding:26px 12px 18px;font-weight:800;font-size:1.05rem;color:#fff;position:relative;min-height:110px;transition:transform .15s}
-.door::after{content:"";position:absolute;right:16px;top:50%;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.8)}
-.door.l{background:var(--brand)}
-.door.r{background:var(--pink)}
-.door:active{transform:scale(.97)}
-.door.shake{animation:shake .4s}
-@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.win{text-align:center;padding:20px}
-.win .big{font-family:var(--cute);font-size:2.2rem}
+/* ── 공장 라인 ── */
+.fac{border-radius:20px;background:linear-gradient(#e9eef8,#d9e1f0);padding:12px;position:relative;overflow:hidden}
+.line{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;padding:6px 4px 40px}
+.belt{position:absolute;left:0;right:0;bottom:6px;height:14px;border-radius:7px;background:repeating-linear-gradient(90deg,#4a5370 0 12px,#3a4260 12px 24px);box-shadow:inset 0 2px 3px rgba(0,0,0,.4)}
+.belt.run{animation:belt .5s linear infinite}
+@keyframes belt{to{background-position:24px 0}}
+.mc{position:relative;z-index:1;border-radius:14px 14px 6px 6px;background:linear-gradient(#ffffff,#eef2fa);border:2px solid #b9c3da;padding:8px 4px 6px;text-align:center;font-size:.72rem;font-weight:800;color:#4a5370;transition:all .3s}
+.mc .ic{font-size:1.6rem;display:block;line-height:1.2}
+.mc .lamp{position:absolute;right:6px;top:6px;width:9px;height:9px;border-radius:50%;background:#c9d2e3}
+.mc.cur{border-color:var(--brand);box-shadow:0 0 0 3px rgba(59,108,246,.2);color:var(--brand)}
+.mc.cur .lamp{background:#ffc233;animation:blink 1s infinite}
+.mc.done{border-color:var(--mint);color:#0d7d71}.mc.done .lamp{background:var(--mint)}
+.mc.jam{animation:jam .45s;border-color:var(--bad)}.mc.jam .lamp{background:var(--bad)}
+.mc .gear{display:inline-block}
+.mc.cur .gear,.mc.work .gear{animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{50%{opacity:.3}}
+@keyframes jam{20%{transform:translateX(-5px) rotate(-2deg)}60%{transform:translateX(5px) rotate(2deg)}}
+.smoke{position:absolute;left:50%;top:-6px;font-size:1.2rem;animation:smoke 1s forwards;pointer-events:none}
+@keyframes smoke{to{transform:translate(-50%,-30px) scale(1.8);opacity:0}}
+.box{position:absolute;bottom:12px;z-index:2;font-size:1.4rem;transition:left .9s cubic-bezier(.5,0,.3,1);transform:translateX(-50%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.order{display:flex;gap:10px;align-items:center;background:#fffdf5;border-radius:12px;padding:8px 12px;margin-bottom:8px;font-size:.88rem;box-shadow:0 3px 8px rgba(30,40,80,.12)}
+.order b{color:#a0620a}
+.fscore{display:flex;gap:10px;font-size:.82rem;font-weight:800;color:#4a5370;margin-top:4px}
+/* 작업대 */
+.bench{margin-top:12px;border-radius:16px;background:#fff;padding:14px;min-height:260px}
+.bench h4{margin:0 0 6px}
+.bench .sub{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.it{border:2px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:border-color .2s}
+.it .im{height:96px;background:#eee center/cover;display:flex;align-items:center;justify-content:center;font-size:2.4rem}
+.it .im.lcd{background:#2b3a2b;color:#b6ffb0;font-family:monospace;font-size:1.8rem;letter-spacing:2px}
+.it .im.mp3{background:linear-gradient(135deg,#7c5cff,#ff7aa2);color:#fff}
+.it p{margin:6px 8px;font-size:.85rem;font-weight:700}
+.it .bb{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 6px 6px}
+.it .bb button,.pick button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;font-weight:800;font-size:.8rem;color:var(--ink)}
+.it.ok{border-color:var(--mint)}.it.no{border-color:var(--bad);animation:jam .4s}
+.it .bb button.sel,.pick button.sel{background:var(--brand);border-color:var(--brand);color:#fff}
+.it.ok .bb button.sel{background:var(--mint);border-color:var(--mint)}
+/* 변환 그래프 */
+.conv svg{display:block;width:100%;max-width:520px;margin:0 auto;height:auto;background:#f8faff;border-radius:12px;border:1.5px solid var(--line)}
+.steps3{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.steps3 button{flex:1 1 120px;border:0;border-radius:12px;padding:10px;font-weight:800;color:#fff;background:#4a5370;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.steps3 button.done{background:var(--mint)}
+.bits{display:flex;gap:6px;flex-wrap:wrap;font-family:monospace;font-weight:800;font-size:.9rem}
+.bits span{border-radius:8px;padding:4px 8px;background:#1f2a3d;color:#86f2cf;animation:pop .4s}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+/* 출처 카드 */
+.src-c{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.src-c .h{display:flex;gap:8px;align-items:center;font-weight:800}
+.src-c .h span{font-size:1.5rem}
+.src-c q{font-size:.85rem;color:var(--muted);quotes:none}
+.src-c.ok{border-color:var(--mint)}.src-c.no{border-color:var(--bad)}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:4px}
+/* 구조 미리보기 */
+.shape{margin-top:6px;border-radius:10px;background:var(--mint-soft);padding:6px;font-size:.78rem;animation:pop .4s}
+.shape table{border-collapse:collapse;width:100%}.shape td{border:1px solid #9fd8cf;padding:1px 4px;text-align:center}
+/* 스프레드시트 */
+.sheet{border-collapse:collapse;font-size:.9rem;margin:6px 0}
+.sheet td,.sheet th{border:1px solid #cfd6e4;padding:5px 12px;text-align:center}
+.sheet th{background:#eef2fa;font-weight:800}
+.sheet td.fx{background:var(--yellow-soft);font-weight:800;min-width:90px}
+.fxbar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.fxbar button{font-family:monospace;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;font-weight:800}
+.charts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.charts button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 4px;font-weight:800;font-size:.85rem;color:var(--ink)}
+.charts svg{display:block;width:100%;height:56px;margin-bottom:4px}
+.charts button.x{border-color:var(--bad);opacity:.5}.charts button.o{border-color:var(--mint);background:var(--mint-soft)}
+.lc path{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.4s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* 품질 검사 */
+.qc{border:2px dashed #f5c26b;border-radius:16px;padding:12px;background:#fffaf0;margin-top:10px}
+.qc .t{font-weight:800;color:#a0620a}
+.qc .q{font-weight:800;margin:6px 0}
+.qc .opts{display:grid;gap:6px}
+.qc .opts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 10px;text-align:left;font-weight:700;color:var(--ink)}
+.qc .opts button.o{border-color:var(--mint);background:var(--mint-soft)}.qc .opts button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
+.msg{margin-top:10px;border-radius:12px;padding:9px 12px;font-size:.9rem;line-height:1.5;display:none}
+.msg.show{display:block}.msg.ok{background:var(--ok-soft);color:#13693a}.msg.bad{background:var(--bad-soft);color:#a12d2d}
+/* 완성품 */
+.poster{max-width:420px;margin:6px auto;border-radius:18px;background:#fff;border:3px solid #1f2a3d;padding:14px;position:relative;animation:pop .6s}
+.poster h4{margin:0 0 4px;font-family:var(--cute);font-weight:400;font-size:1.35rem}
+.poster .big{font-size:1.6rem;font-weight:900;color:var(--brand)}
+.poster .st{position:absolute;right:10px;top:10px;border:3px solid var(--bad);color:var(--bad);border-radius:10px;padding:2px 8px;font-weight:900;transform:rotate(10deg)}
+.badge2{display:inline-block;margin:6px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
 </style>
 </head>
-<body data-stage data-unit="2" data-title="Ⅱ단원 미로 탈출 퀴즈" data-sub="중1 Ⅱ단원 · 단원 정리 · 미래엔 73, 76~77쪽">
+<body data-stage data-unit="2" data-title="Ⅱ단원 데이터 공장" data-sub="중1 Ⅱ단원 · 단원 정리 · 미래엔 73, 76~77쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 단원 정리</span>
-  <h1>Ⅱ단원 미로 탈출 퀴즈</h1>
-  <p class="lead">데이터 단원에서 배운 내용을 떠올리며 갈림길마다 맞는 문을 골라 미로를 탈출하세요. 틀린 문을 열면 막다른 길이에요!</p>
+  <h1>🏭 Ⅱ단원 데이터 공장</h1>
+  <p class="lead">방송부에서 <b>"이번 주 우리 학교 기온 리포트"</b>를 주문했어요! 아날로그 자료를 <b>디지털로 변환</b>하고, 믿을 만한 데이터를 <b>수집</b>하고, <b>구조화</b>해서 <b>분석·시각화</b>하는 기계 4대를 차례로 돌려 리포트를 완성해 보세요.</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
@@ -40,19 +107,25 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card" data-bot="갈림길마다 문제를 풀어야 다음 길이 열려 🧭">
-      <h3>🧭 미로 탈출</h3>
-      <div class="mapline" id="map"></div>
-      <div id="stage"></div>
-      <p class="hint" id="tries"></p>
+    <h2 class="step-h"><span class="no">2</span>데이터 공장</h2>
+    <div class="card" data-bot="기계마다 작업을 끝내고 품질 검사를 통과하면 다음 기계로 넘어가. 틀리면 기계가 멈춰! 🏭">
+      <h3>🏭 기온 리포트 생산 라인</h3>
+      <div class="fac">
+        <div class="order">📋 <span><b>주문서</b> · 방송부: "이번 주 기온 변화를 한눈에 보여 주는 리포트를 만들어 주세요!"</span></div>
+        <div class="line" id="line"><div class="belt" id="belt"></div></div>
+        <div class="fscore"><span id="jams">🔧 기계 멈춤 0번</span><span id="qn">✅ 통과 0</span></div>
+        <div class="bench" id="bench"></div>
+      </div>
+    </div>
+    <div class="card" data-bot="완성된 리포트와 공장 기록을 확인해 보자 📋">
+      <h3>📋 공장 기록</h3>
+      <div id="record"><p class="hint">앞 화면에서 리포트를 출고하면 기록이 나타나요.</p></div>
     </div>
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <h2 class="step-h"><span class="no">3</span>스스로 점검</h2>
     <div class="card">
-      <p style="margin-top:0"><b>스스로 점검하기</b>: 할 수 있는 것에 체크해 보세요. (저장되지 않아요)</p>
       <div id="self"></div>
     </div>
   </section>
@@ -60,45 +133,210 @@
   <section class="step sum">
     <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
     <div class="card">
-      <p>실생활 데이터를 <b>디지털로 표현</b>하고, 목적에 맞게 <b>수집·관리</b>하고, 리스트·테이블·다이어그램으로 <b>구조화</b>한 뒤, 분석·시각화해 <b>해석</b>하면 데이터로 문제를 해결할 수 있어요.</p>
+      <p>아날로그 데이터를 <b>디지털로 변환</b>하고(표본화 → 양자화 → 부호화), 믿을 수 있는 출처에서 <b>수집</b>해 목적에 맞게 <b>분류·구조화</b>한 뒤, 함수로 <b>분석</b>하고 알맞은 그래프로 <b>시각화</b>하면 데이터가 의미 있는 정보가 돼요.</p>
     </div>
   </section>
-  <p class="src">미래엔 중학교 정보 73, 76~77쪽(스스로 정리하기, 스스로 풀어보기) 내용을 바탕으로 새로 구성</p>
+  <p class="src">미래엔 중학교 정보 73, 76~77쪽 정리 활동을 바탕으로 새로 구성 · 기온 값은 가상 데이터</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5">
+    <li><a href="https://commons.wikimedia.org/wiki/File:Mercury_Thermometer.jpg" target="_blank" rel="noopener">Mercury Thermometer.jpg</a> · Anonimski · CC BY-SA 3.0</li>
+    <li><a href="https://commons.wikimedia.org/wiki/File:Das_Vinyl_dreht_sich.jpg" target="_blank" rel="noopener">Das Vinyl dreht sich.jpg</a> · Sulamith Sallmann · CC BY-SA 4.0</li></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-const Q = [
-  ['바람의 세기처럼 연속적으로 변하는 값은?', '아날로그 데이터', '디지털 데이터', 0],
-  ['아스키 코드는 몇 비트로 문자를 나타낼까?', '7비트', '16비트', 0],
-  ['확대하면 계단 현상이 생기는 이미지 방식은?', '벡터 방식', '비트맵 방식', 1],
-  ['소리를 디지털로 바꾸는 순서는?', '표본화 → 양자화 → 부호화', '부호화 → 표본화 → 양자화', 0],
-  ['인터넷에서 데이터를 수집할 때 알맞은 태도는?', '출처와 신뢰성을 확인한다', '검색 결과는 모두 믿는다', 0],
-  ['사진·동영상·문서·음악으로 나누는 것은 어떤 기준의 분류?', '의미에 따른 분류', '형식에 따른 분류', 1],
-  ['데이터를 확인하거나 이해하기 쉽도록 체계적으로 정리하는 것은?', '데이터의 구조화', '데이터의 구체화', 0],
-  ['학생회 조직도처럼 상하 관계를 보여 주는 구조화 방법은?', '그래프형', '계층형', 1],
-  ['스프레드시트에서 평균을 구하는 함수는?', '=MAX( )', '=AVERAGE( )', 1],
-  ['분석 결과를 이해하기 쉽게 시각적으로 표현하는 것은?', '데이터의 시각화', '데이터의 표현화', 0],
-];
-let at = 0, miss = 0, order = Q.map((q, i) => i);
-function drawMap(){
-  $('#map').innerHTML = Q.map((_, i) => `${i ? `<span class="path${i <= at ? ' done' : ''}"></span>` : ''}<span class="room${i < at ? ' done' : i === at ? ' cur' : ''}">${i < at ? '✓' : i === at ? '🧑' : i + 1}</span>`).join('') + `<span class="path${at >= Q.length ? ' done' : ''}"></span><span class="room${at >= Q.length ? ' done' : ''}">🏁</span>`;
+const P = '../assets/photos/';
+const MC = [['🔄', '디지털 변환기'], ['📥', '수집기'], ['🗂️', '구조화기'], ['📊', '분석·시각화기'], ['📦', '출고']];
+const BOXES = ['🌡️', '💾', '📚', '🗃️', '📰'];
+let m = 0, jams = 0;
+const first = {};
+const rec = (k, ok) => { if (!(k in first)) first[k] = ok; $('#qn').textContent = '✅ 통과 ' + Object.values(first).filter(Boolean).length; };
+
+function drawLine(){
+  $('#line').innerHTML = '<div class="belt" id="belt"></div>' + MC.map(([i, t], k) => `<div class="mc${k < m ? ' done' : k === m ? ' cur' : ''}" id="mc${k}"><span class="lamp"></span><span class="ic">${k === m && k < 4 ? '<span class="gear">⚙️</span>' : i}</span>${t}</div>`).join('') + `<span class="box" id="box">${BOXES[m]}</span>`;
+  const b = $('#box'); b.style.left = (m * 20 + 10) + '%';
 }
-function stage(){
-  drawMap();
-  if (at >= Q.length){
-    $('#stage').innerHTML = `<div class="win"><div class="big">🎉 미로 탈출 성공!</div><p>막다른 길을 ${miss}번 만났어요. ${miss === 0 ? '완벽해요!' : '틀렸던 내용은 해당 활동에서 다시 확인해 보세요.'}</p><button class="btn ghost" id="again">다시 도전</button></div>`;
-    $('#again').onclick = () => { at = 0; miss = 0; stage(); };
-    return;
-  }
-  const [q, a, b] = Q[order[at]];
-  $('#stage').innerHTML = `<div class="gate"><p class="q">🚪 ${at + 1}번 갈림길: ${q}</p><div class="doors"><button class="door l" data-k="0">${a}</button><button class="door r" data-k="1">${b}</button></div><div class="feedback" id="gFb"></div></div>`;
-  $$('.door').forEach(d => d.onclick = () => {
-    if (+d.dataset.k === Q[order[at]][3]){ at++; stage(); }
-    else { miss++; d.classList.add('shake'); setTimeout(() => d.classList.remove('shake'), 450); feedback($('#gFb'), false, '🧱 막다른 길! 다른 문을 열어 보세요.'); $('#tries').textContent = `막다른 길: ${miss}번`; }
+function jam(msg, el){
+  jams++; $('#jams').textContent = `🔧 기계 멈춤 ${jams}번`;
+  const c = $('#mc' + m); c.classList.remove('jam'); void c.offsetWidth; c.classList.add('jam');
+  c.insertAdjacentHTML('beforeend', '<span class="smoke">💨</span>'); setTimeout(() => { const s = c.querySelector('.smoke'); s && s.remove(); }, 1000);
+  if (el) say(el, false, '🔧 ' + msg);
+}
+function say(el, ok, t){ el.className = 'msg show ' + (ok ? 'ok' : 'bad'); el.innerHTML = t; }
+function advance(){
+  m++; $('#belt').classList.add('run');
+  const b = $('#box'); b.textContent = BOXES[m - 1]; b.style.left = (m * 20 + 10) + '%';
+  setTimeout(() => { $('#belt').classList.remove('run'); drawLine(); [m1, m2, m3, m4, finish][m](); }, 950);
+}
+/* 품질 검사: list = [[key, q, opts, a, e], ...] 모두 통과하면 then */
+function qc(el, list, then){
+  let k = 0;
+  const one = () => {
+    if (k >= list.length) return then();
+    const [key, q, o, a, e] = list[k];
+    el.innerHTML = `<div class="qc"><div class="t">🔍 품질 검사 ${k + 1} / ${list.length}</div><div class="q">${q}</div><div class="opts">${o.map((x, j) => `<button data-j="${j}">${x}</button>`).join('')}</div><div class="msg" id="qm"></div></div>`;
+    el.querySelectorAll('.opts button').forEach(b => b.onclick = () => {
+      const ok = +b.dataset.j === a; rec(key, ok);
+      if (!ok){ b.classList.add('x'); b.disabled = true; jam('불량품! 다시 검사해요.', el.querySelector('#qm')); return; }
+      b.classList.add('o'); el.querySelectorAll('.opts button').forEach(x => x.disabled = true);
+      say(el.querySelector('#qm'), true, '⭕ 합격! ' + e); setTimeout(() => { k++; one(); }, 1300);
+    });
+  };
+  one();
+}
+const nextBtn = (el, label) => { el.insertAdjacentHTML('beforeend', `<p><button class="btn" id="nx">${label} ▶</button></p>`); $('#nx').onclick = advance; };
+
+/* ① 디지털 변환기 */
+const TEMP = h => 12 + 9 * Math.sin((h - 9) / 24 * 2 * Math.PI) + 1.2 * Math.sin(h / 2.3);   // 하루 기온(가상)
+function m1(){
+  const B = $('#bench');
+  const ITEMS = [{im: `<div class="im" style="background-image:url(${P}d_thermo.jpg)"></div>`, t: '수은 온도계의 눈금', a: 0},
+    {im: '<div class="im lcd">23.5℃</div>', t: '디지털 온도계의 숫자', a: 1},
+    {im: `<div class="im" style="background-image:url(${P}d_vinyl.jpg)"></div>`, t: 'LP판에 새겨진 소리 홈', a: 0},
+    {im: '<div class="im mp3">🎧</div>', t: '스마트폰의 음악 파일(MP3)', a: 1}];
+  B.innerHTML = `<h4>🔄 1단계 · 재료 분류</h4><p class="sub">공장에 들어온 재료예요. 연속적으로 변하는 값은 <b>아날로그</b>, 0과 1로 끊어서 저장한 값은 <b>디지털</b>이에요.</p>
+    <div class="items">${ITEMS.map((x, i) => `<div class="it" data-i="${i}">${x.im}<p>${x.t}</p><div class="bb"><button data-v="0">〰️ 아날로그</button><button data-v="1">0101 디지털</button></div></div>`).join('')}</div><div class="msg" id="m1m"></div>`;
+  const ans = {};
+  $$('#bench .it').forEach(c => c.querySelectorAll('button').forEach(b => b.onclick = () => {
+    const i = +c.dataset.i; c.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x === b));
+    const ok = +b.dataset.v === ITEMS[i].a; c.classList.remove('ok', 'no'); void c.offsetWidth; c.classList.add(ok ? 'ok' : 'no'); ans[i] = ok;
+    if (!ok){ rec('analog', false); jam('분류가 틀렸어요. 값이 끊김 없이 이어지는지 생각해 봐요.', $('#m1m')); return; }
+    if (Object.keys(ans).length === 4 && Object.values(ans).every(Boolean)){ rec('analog', true); say($('#m1m'), true, '⭕ 분류 완료! 이제 아날로그 온도 변화를 디지털로 바꿔 볼까요?'); setTimeout(conv, 1200); }
+  }));
+}
+function conv(){
+  const B = $('#bench'), hrs = [0, 4, 8, 12, 16, 20], X = h => 30 + h * 11.5, Y = v => 150 - (v - 0) * 5.5;
+  let curve = ''; for (let h = 0; h <= 24; h += .25) curve += (h ? 'L' : 'M') + X(h).toFixed(1) + ' ' + Y(TEMP(h)).toFixed(1);
+  const st = {s: false, q: false, c: false};
+  const draw = () => {
+    const vals = hrs.map(h => TEMP(h)), qv = vals.map(v => Math.round(v));
+    B.innerHTML = `<h4>🔄 2단계 · 아날로그 → 디지털 변환</h4><p class="sub">하루 동안 기온은 끊김 없이 변해요(아날로그). 변환 버튼을 <b>올바른 순서</b>로 눌러 디지털 데이터로 바꿔 보세요.</p>
+      <div class="conv"><svg viewBox="0 0 320 170">
+        ${[0, 5, 10, 15, 20, 25].map(v => `<line x1="30" x2="310" y1="${Y(v)}" y2="${Y(v)}" stroke="${st.q ? '#c7d3f0' : '#eef1f7'}" stroke-width="${st.q ? 1 : .6}"/><text x="4" y="${Y(v) + 3}" font-size="8" fill="#8a95ab">${v}℃</text>`).join('')}
+        <path d="${curve}" fill="none" stroke="#ff7aa2" stroke-width="2.5" opacity="${st.s ? .35 : 1}"/>
+        ${st.s ? hrs.map((h, i) => `<line x1="${X(h)}" x2="${X(h)}" y1="150" y2="${Y(st.q ? qv[i] : vals[i])}" stroke="#3b6cf6" stroke-dasharray="3 2"/><circle cx="${X(h)}" cy="${Y(st.q ? qv[i] : vals[i])}" r="4.5" fill="${st.q ? '#16b8a6' : '#3b6cf6'}"><animate attributeName="r" values="1;6;4.5" dur=".5s"/></circle><text x="${X(h) - 8}" y="${Y(st.q ? qv[i] : vals[i]) - 8}" font-size="8" font-weight="700" fill="#1f2a3d">${st.q ? qv[i] : vals[i].toFixed(1)}</text>`).join('') : ''}
+        ${hrs.map(h => `<text x="${X(h) - 6}" y="164" font-size="8" fill="#8a95ab">${h}시</text>`).join('')}
+      </svg></div>
+      <div class="steps3">${shuf3.map(k => `<button data-k="${k}" class="${st[k] ? 'done' : ''}">${{s: '📍 표본화', q: '📏 양자화', c: '🔢 부호화'}[k]}</button>`).join('')}</div>
+      ${st.c ? `<div class="bits">${qv.map(v => `<span>${v}℃ → ${v.toString(2).padStart(5, '0')}</span>`).join('')}</div>` : ''}
+      <div class="msg" id="cm"></div><div id="cq"></div>`;
+    $$('#bench .steps3 button').forEach(b => b.onclick = () => press(b.dataset.k));
+  };
+  const shuf3 = ['c', 's', 'q'];
+  let tried = false;
+  const press = k => {
+    if (st[k]) return;
+    const need = !st.s ? 's' : !st.q ? 'q' : 'c';
+    if (k !== need){ if (!tried) rec('order', false); tried = true;
+      return jam({s: '이미 값을 뽑았어요.', q: '먼저 일정한 간격으로 값을 뽑아야(표본화) 반올림할 값이 생겨요!', c: need === 's' ? '아직 뽑은 값이 없어서 0과 1로 바꿀 수 없어요! 먼저 표본화부터.' : '소수점 값은 그대로 2진수로 바꾸기 어려워요. 먼저 정해진 단계로 반올림(양자화)해요.'}[k], $('#cm')); }
+    st[k] = true; draw();
+    if (k === 's') say($('#cm'), true, '📍 <b>표본화</b>: 일정한 시간 간격(4시간)으로 값을 뽑았어요.');
+    if (k === 'q') say($('#cm'), true, '📏 <b>양자화</b>: 뽑은 값을 정해진 단계(1℃)에 맞춰 정수로 바꿨어요.');
+    if (k === 'c'){ if (!tried) rec('order', true);
+      say($('#cm'), true, '🔢 <b>부호화</b>: 정수를 0과 1(5비트)로 바꿨어요. 디지털 변환 완료! (표본화 → 양자화 → 부호화)');
+      setTimeout(() => qc($('#cq'), [
+        ['ascii', '영문자·숫자 등을 나타내는 아스키 코드는 몇 비트로 문자를 나타낼까?', ['7비트', '16비트', '1비트'], 0, '아스키 코드는 7비트로 128개의 문자를 나타내요.'],
+        ['bitmap', '리포트에 넣을 그림을 크게 확대했더니 계단 현상이 생겼어요. 이 이미지 방식은?', ['벡터 방식', '비트맵 방식'], 1, '점(픽셀)으로 표현하는 비트맵은 확대하면 계단 현상이 생겨요. 벡터는 깨지지 않아요.'],
+      ], () => nextBtn($('#cq'), '📥 수집기로 보내기')), 1400); }
+  };
+  draw();
+}
+/* ② 수집기 */
+function m2(){
+  const SRC = [
+    {ic: '🏛️', n: '기상청 날씨누리', q: '"이번 주 ○○시 일별 최고·최저 기온 관측 자료"', a: 1, e: '공식 기관의 관측 자료라 믿을 수 있어요.'},
+    {ic: '📝', n: '출처 없는 개인 블로그', q: '"내일 무려 40도까지 올라간대요!! 대박"', a: 0, e: '근거와 출처가 없고 과장된 내용이에요.'},
+    {ic: '🌡️', n: '우리 반 온도 센서', q: '"교실 창가 센서가 매일 오후 1시에 측정한 기온"', a: 1, e: '측정 방법과 시간이 분명한 직접 수집 데이터예요.'},
+    {ic: '📱', n: '누가 올렸는지 모르는 SNS 캡처', q: '"기온 그래프 사진 (원본 링크 없음)"', a: 0, e: '원본과 작성자를 확인할 수 없어 신뢰하기 어려워요.'},
+  ];
+  const sel = {};
+  $('#bench').innerHTML = `<h4>📥 수집기 · 믿을 수 있는 데이터만!</h4><p class="sub">인터넷과 학교에서 데이터 4개를 찾았어요. <b>출처와 신뢰성</b>을 확인해 수집할 것과 버릴 것을 고르세요.</p>
+    <div class="items">${SRC.map((s, i) => `<div class="src-c" data-i="${i}"><div class="h"><span>${s.ic}</span>${s.n}</div><q>${s.q}</q><div class="pick"><button data-v="1">📥 수집</button><button data-v="0">🗑️ 버림</button></div></div>`).join('')}</div>
+    <p><button class="btn" id="m2go">수집 완료</button></p><div class="msg" id="m2m"></div>`;
+  $$('#bench .src-c').forEach(c => c.querySelectorAll('button').forEach(b => b.onclick = () => { sel[c.dataset.i] = +b.dataset.v; c.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x === b)); c.classList.remove('ok', 'no'); }));
+  $('#m2go').onclick = () => {
+    if (Object.keys(sel).length < 4) return say($('#m2m'), false, '4개 모두 수집할지 버릴지 골라 주세요.');
+    const wrong = SRC.map((s, i) => s.a !== sel[i] ? i : -1).filter(i => i >= 0);
+    $$('#bench .src-c').forEach((c, i) => c.classList.add(wrong.includes(i) ? 'no' : 'ok'));
+    if (wrong.length){ rec('source', false); return jam(wrong.map(i => `${SRC[i].ic} ${SRC[i].n}: ${SRC[i].e}`).join('<br>'), $('#m2m')); }
+    rec('source', true);
+    say($('#m2m'), true, '⭕ 기상청 자료와 우리 반 센서 데이터만 수집했어요. 인터넷 데이터는 <b>출처와 신뢰성</b>을 꼭 확인해요!');
+    nextBtn($('#bench'), '🗂️ 구조화기로 보내기');
+  };
+}
+/* ③ 구조화기 */
+function m3(){
+  const B = $('#bench');
+  B.innerHTML = `<h4>🗂️ 구조화기</h4><div id="m3a"></div>`;
+  qc($('#m3a'), [['format', '수집한 파일을 사진·동영상·문서·음악 폴더로 나눴어요. 어떤 기준의 분류일까?', ['의미에 따른 분류', '형식에 따른 분류'], 1, '파일의 형식(종류)에 따라 나눈 거예요.']], struct);
+}
+function struct(){
+  const D = [
+    {t: '현장 체험 준비물: 물, 모자, 도시락, 우산', a: 'list', pv: '<ol style="margin:0;padding-left:18px"><li>물</li><li>모자</li><li>도시락</li></ol>'},
+    {t: '요일별 최고 기온·최저 기온·날씨', a: 'table', pv: '<table><tr><td>요일</td><td>최고</td><td>날씨</td></tr><tr><td>월</td><td>18</td><td>☀️</td></tr></table>'},
+    {t: '방송부 조직: 부장 → 아나운서팀·기술팀', a: 'tree', pv: '부장<br>├ 아나운서팀<br>└ 기술팀'},
+    {t: '학교 주변 기상 관측소 사이의 연결', a: 'graph', pv: '🅰️ — 🅱️ — 🅲<br>&nbsp;&nbsp;╲&nbsp;&nbsp;&nbsp;╱<br>&nbsp;&nbsp;&nbsp;&nbsp;🅳'},
+  ];
+  const N = {list: '📃 리스트', table: '📋 테이블', tree: '🌳 계층형', graph: '🕸️ 그래프형'};
+  const ok = {};
+  $('#bench').innerHTML = `<h4>🗂️ 구조화기 · 알맞은 구조 고르기</h4><p class="sub">데이터를 이해하기 쉽게 정리하는 것이 <b>구조화</b>예요. 각 데이터에 가장 알맞은 구조를 고르세요.</p>
+    <div class="items">${D.map((d, i) => `<div class="src-c" data-i="${i}"><div class="h">${d.t}</div><div class="pick">${Object.entries(N).map(([k, v]) => `<button data-v="${k}">${v}</button>`).join('')}</div><div class="pv"></div></div>`).join('')}</div><div class="msg" id="m3m"></div><div id="m3q"></div>`;
+  let tried = false;
+  $$('#bench .src-c').forEach(c => c.querySelectorAll('button').forEach(b => b.onclick = () => {
+    const i = +c.dataset.i, d = D[i]; if (ok[i]) return;
+    if (b.dataset.v !== d.a){ if (!tried) rec('struct', false); tried = true; c.classList.remove('no'); void c.offsetWidth; c.classList.add('no'); return jam(`"${d.t.split(':')[0]}"에는 ${N[b.dataset.v]}보다 더 알맞은 구조가 있어요.`, $('#m3m')); }
+    ok[i] = true; b.classList.add('sel'); c.classList.remove('no'); c.classList.add('ok'); c.querySelector('.pv').innerHTML = `<div class="shape">${d.pv}</div>`;
+    if (Object.keys(ok).length === 4){ if (!tried) rec('struct', true);
+      say($('#m3m'), true, '⭕ 구조화 완료! 순서대로 나열은 리스트, 여러 항목 비교는 테이블, 상하 관계는 계층형, 연결 관계는 그래프형이에요.');
+      setTimeout(() => qc($('#m3q'), [['structdef', '데이터를 확인하거나 이해하기 쉽도록 체계적으로 정리하는 것은?', ['데이터의 구조화', '데이터의 구체화', '데이터의 암호화'], 0, '구조화하면 데이터의 관계와 특징이 한눈에 보여요.']], () => nextBtn($('#m3q'), '📊 분석·시각화기로 보내기')), 1200); }
+  }));
+}
+/* ④ 분석·시각화기 */
+const DAYS = ['월', '화', '수', '목', '금'], T = [18, 21, 23, 20, 24];
+const lineSvg = (w, h, cls) => { const xs = i => 10 + i * (w - 20) / 4, ys = v => h - 8 - (v - 15) * (h - 16) / 10;
+  return `<svg class="${cls || ''}" viewBox="0 0 ${w} ${h}"><path d="${T.map((v, i) => (i ? 'L' : 'M') + xs(i) + ' ' + ys(v)).join('')}" fill="none" stroke="#3b6cf6" stroke-width="2.5"/>${T.map((v, i) => `<circle cx="${xs(i)}" cy="${ys(v)}" r="2.5" fill="#3b6cf6"/>`).join('')}</svg>`; };
+function m4(){
+  $('#bench').innerHTML = `<h4>📊 분석·시각화기 · 1단계 함수로 분석</h4><p class="sub">수집한 기온을 스프레드시트로 정리했어요. 노란 칸에 <b>평균 기온</b>을 구하는 함수를 넣으세요.</p>
+    <table class="sheet"><tr><th></th>${DAYS.map(d => `<th>${d}</th>`).join('')}<th>평균</th></tr><tr><th>최고 기온(℃)</th>${T.map(v => `<td>${v}</td>`).join('')}<td class="fx" id="fx">?</td></tr></table>
+    <div class="fxbar">${['=MAX(B2:F2)', '=AVERAGE(B2:F2)', '=SUM(B2:F2)'].map(f => `<button>${f}</button>`).join('')}</div><div class="msg" id="m4m"></div><div id="m4b"></div>`;
+  let tried = false;
+  $$('#bench .fxbar button').forEach(b => b.onclick = () => {
+    const f = b.textContent, val = {'=MAX(B2:F2)': 24, '=AVERAGE(B2:F2)': 21.2, '=SUM(B2:F2)': 106}[f];
+    $('#fx').textContent = val;
+    if (!f.includes('AVERAGE')){ if (!tried) rec('func', false); tried = true; return jam(`${f.split('(')[0]}는 ${val === 24 ? '가장 큰 값' : '합계'}을 구해요. 평균을 구하는 함수는?`, $('#m4m')); }
+    if (!tried) rec('func', true);
+    $$('#bench .fxbar button').forEach(x => x.disabled = true);
+    say($('#m4m'), true, '⭕ =AVERAGE( )로 평균 21.2℃를 구했어요!'); setTimeout(chart, 1100);
   });
 }
-stage();
+function chart(){
+  const C = [['line', '꺾은선그래프', lineSvg(120, 56)], ['pie', '원그래프', '<svg viewBox="0 0 120 56"><circle cx="60" cy="28" r="24" fill="#ffc233"/><path d="M60 28 L60 4 A24 24 0 0 1 82 36Z" fill="#3b6cf6"/><path d="M60 28 L82 36 A24 24 0 0 1 44 46Z" fill="#ff7aa2"/></svg>'], ['bar', '띠그래프', '<svg viewBox="0 0 120 56"><rect x="8" y="20" width="30" height="16" fill="#3b6cf6"/><rect x="38" y="20" width="40" height="16" fill="#ffc233"/><rect x="78" y="20" width="34" height="16" fill="#ff7aa2"/></svg>']];
+  $('#m4b').innerHTML = `<h4 style="margin-top:12px">📊 2단계 · 그래프로 시각화</h4><p class="sub">주문서: "이번 주 <b>기온 변화</b>를 한눈에!" 요일에 따른 변화를 보여 주기에 가장 알맞은 그래프는?</p>
+    <div class="charts">${C.map(([k, n, s]) => `<button data-k="${k}">${s}${n}</button>`).join('')}</div><div class="msg" id="m4c"></div><div id="m4q"></div>`;
+  let tried = false;
+  $$('#m4b .charts button').forEach(b => b.onclick = () => {
+    if (b.dataset.k !== 'line'){ if (!tried) rec('chart', false); tried = true; b.classList.add('x'); b.disabled = true; return jam('원그래프·띠그래프는 전체에 대한 비율을 보여 줄 때 써요. 시간에 따른 변화는?', $('#m4c')); }
+    if (!tried) rec('chart', true);
+    b.classList.add('o'); $$('#m4b .charts button').forEach(x => x.disabled = true);
+    say($('#m4c'), true, '⭕ 시간(요일)에 따른 변화는 꺾은선그래프가 한눈에 보여 줘요!');
+    setTimeout(() => qc($('#m4q'), [['visual', '분석 결과를 이해하기 쉽게 그래프나 그림으로 표현하는 것은?', ['데이터의 시각화', '데이터의 표현화', '데이터의 압축'], 0, '시각화하면 많은 데이터의 특징과 변화를 한눈에 알 수 있어요.']], () => nextBtn($('#m4q'), '📦 리포트 출고하기')), 1200);
+  });
+}
+/* 출고 */
+function finish(){
+  const keys = ['analog', 'order', 'ascii', 'bitmap', 'source', 'format', 'struct', 'structdef', 'func', 'chart', 'visual'];
+  const res = keys.map(k => !!first[k]), n = res.filter(Boolean).length;
+  const grade = jams === 0 ? ['🏆', '무결점 공장장'] : jams <= 3 ? ['🥈', '숙련된 데이터 기술자'] : ['🌱', '성장하는 데이터 기술자'];
+  const poster = `<div class="poster"><span class="st">출고 완료</span><h4>🌡️ 이번 주 우리 학교 기온 리포트</h4>
+    <div style="display:flex;gap:12px;align-items:center;margin:6px 0"><div><small>평균 최고 기온</small><div class="big">21.2℃</div></div><div style="flex:1">${lineSvg(220, 90, 'lc')}<div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);padding:0 6px">${DAYS.map(d => `<span>${d}</span>`).join('')}</div></div></div>
+    <p style="margin:4px 0;font-size:.88rem">📈 수요일까지 오르다 목요일에 잠시 내려간 뒤, 금요일에 가장 따뜻했어요(24℃).</p>
+    <small style="color:var(--muted)">자료: 기상청 날씨누리 · 우리 반 온도 센서 | 제작: 데이터 공장</small></div>`;
+  $('#bench').innerHTML = poster + `<p style="text-align:center"><span class="badge2">${grade[0]} ${grade[1]}</span><br>기계 멈춤 ${jams}번 · 한 번에 통과 ${n} / ${res.length}</p><p style="text-align:center"><button class="btn ghost" id="again">공장 다시 돌리기 ↺</button></p>`;
+  $('#again').onclick = () => { m = 0; jams = 0; for (const k in first) delete first[k]; $('#jams').textContent = '🔧 기계 멈춤 0번'; $('#qn').textContent = '✅ 통과 0'; drawLine(); m1(); };
+  const LAB = {analog: '아날로그·디지털 구분', order: '표본화→양자화→부호화', ascii: '아스키 코드 7비트', bitmap: '비트맵 계단 현상', source: '출처와 신뢰성', format: '형식에 따른 분류', struct: '리스트·테이블·계층형·그래프형', structdef: '구조화의 뜻', func: '=AVERAGE 함수', chart: '변화는 꺾은선그래프', visual: '시각화의 뜻'};
+  $('#record').innerHTML = poster + `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${keys.map((k, i) => `<span class="pill" style="background:${res[i] ? 'var(--ok-soft)' : 'var(--bad-soft)'}">${res[i] ? '⭕' : '🔁'} ${LAB[k]}</span>`).join('')}</div><p class="hint">🔁 표시는 처음에 헷갈렸던 내용이에요. 목차에서 해당 활동을 다시 해 보세요.</p>`;
+  reportQuiz('factory2', res);
+}
+drawLine(); m1();
 
 const SELF = ['디지털 데이터의 표현 방법(문자, 이미지, 소리, 동영상)을 설명할 수 있다.', '데이터를 목적에 맞게 수집·분류·저장할 수 있다.', '데이터를 리스트, 테이블, 다이어그램으로 구조화할 수 있다.', '데이터를 분석·시각화하고 근거를 들어 의견을 말할 수 있다.'];
 $('#self').innerHTML = SELF.map(t => `<label style="display:flex;gap:10px;align-items:center;padding:6px 0"><input type="checkbox" style="width:20px;height:20px"> ${t}</label>`).join('') + '<p class="hint" id="selfMsg"></p>';
