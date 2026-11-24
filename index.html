@@ -59,6 +59,13 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:
 .tg-토의{background:#fff1e3;color:#b4570b}.tg-프로젝트{background:#ffeef3;color:#c2185b}.tg-엔트리{background:#eaf7e1;color:#3f7d1c}.tg-정리{background:#f1f3f7;color:#5a6578}
 .tag-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:-6px 4px 14px;font-size:.85rem;color:var(--muted)}
 .tag-legend .tag-chip{margin:0}
+.tag-legend button.tag-chip{border:1.5px solid transparent;cursor:pointer;font-size:.8rem;padding:3px 11px;font-family:inherit}
+.tag-legend button.live-chip{border:1.5px solid transparent;cursor:pointer;font-size:.8rem;padding:3px 11px;margin:0;font-family:inherit}
+.tag-legend.picking button:not(.on):not(.clr){opacity:.45}
+.tag-legend button.on{border-color:currentColor}
+.tag-legend .clr{border:0;background:none;color:var(--muted);font-size:.8rem;text-decoration:underline;cursor:pointer;font-family:inherit}
+.core-chip.k{color:#fff;background:linear-gradient(90deg,#ff7aa2,#ff9f5a)}
+.mode-hint{margin:-4px 4px 12px;font-size:.88rem;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -84,7 +91,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:
       <li>수업 전에 전체를 보려면 활동 페이지 오른쪽 위 <b>☰ 펼치기</b>, 다시 누르면 <b>접기</b>예요.</li>
       <li>전자칠판에서는 <b>가+ 크게</b>와 <b>전체 화면</b>을 쓰세요. 인쇄하면 모든 활동이 펼쳐져 학습지처럼 나와요.</li>
       <li>단원별 주소를 나눠 줄 수 있어요. 예: 이 페이지 주소 끝의 <code>?unit=2</code></li>
-      <li>카드의 <b>★ 핵심</b>은 성취기준을 다루는 기본 활동, <b>☆ 선택</b>은 시간이 있을 때 하는 활동이에요. 카드 아래 <b>[9정○○-○○]</b>은 관련 성취기준이에요.</li>
+      <li><b>수업 모드</b>: <b>⏱ 압축</b>(소단원마다 종합 수업 + <b>🎯 대표</b> 활동 1개), <b>📘 기본</b>(종합 수업 + <b>★ 핵심</b> 활동), <b>🌱 전체</b>(☆ 선택 활동까지). <b>태그</b>를 누르면 토의·엔트리 실습처럼 원하는 종류만 골라 볼 수 있어요(여러 개 선택 가능). 카드 아래 <b>[9정○○-○○]</b>은 관련 성취기준이에요.</li>
       <li><b>학생 로그인</b>을 켜면 학생은 <b>학번과 개인 코드</b>로 로그인하고, 선생님이 연 활동만 할 수 있어요. 활동 진도·퀴즈 결과·접속·출석 기록은 <a href="teacher/">👩‍🏫 교사용 관리</a> 화면에서 봐요. 활동 속에 적은 답은 저장하지 않아요. <b>📡 실시간</b> 활동은 이름 없이 투표 수와 제출 내용을 서버에 보관하며, 선생님이 <b>결과 내려받기</b> 후 <b>기록 지우기</b>를 할 수 있고 30일이 지나면 자동으로 지워져요. <b>심화</b>는 교과서 밖 내용, <b>더 해 보기</b>는 선택 활동이에요.</li>
       <li><b>📡 실시간</b> 표시 활동은 반 전체가 함께 투표하거나 응답을 모을 수 있어요. <a href="teacher/">👩‍🏫 교사용 관리</a> 화면의 <b>📡 실시간 활동</b>에서 <b>[▶ 실행]</b>을 누르면 방 코드와 <b>QR 코드</b>가 나오고, 학생은 활동 화면에서 코드를 입력하거나 QR을 찍어 참여해요. 서버에는 이름 없이 투표 수와 제출 내용만 남고, 부적절한 제출물은 선생님이 숨길 수 있어요.</li>
     </ul>
@@ -92,7 +99,8 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:
   <nav class="units" id="units"></nav>
   <div class="unit-desc" id="unitDesc"></div>
   <div class="tag-legend" id="tagLegend"></div>
-  <div class="tools-row"><div class="seg" id="filter"><button data-f="all" class="active">전체 보기</button><button data-f="core">★ 핵심 활동만</button></div><a class="btn line" href="standards.html">📋 성취기준-활동 대응표</a></div>
+  <div class="tools-row"><div class="seg" id="mode" role="group" aria-label="수업 모드"><button data-m="short">⏱ 압축</button><button data-m="basic">📘 기본</button><button data-m="all">🌱 전체</button></div><a class="btn line" href="standards.html">📋 성취기준-활동 대응표</a></div>
+  <p class="mode-hint" id="modeHint"></p>
   <details class="guide" id="plan"><summary>🗓️ 이 단원 차시 운영 예시</summary><div id="planBody"></div></details>
   <div id="list"></div>
 </main>
@@ -104,7 +112,15 @@ footer{max-width:1080px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:
 <script>
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const roman = ['', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ'];
-let coreOnly = false;
+const MODES = {short: '⏱ 압축: 소단원마다 45분 종합 수업과 🎯 대표 활동 1개만 보여요. 시수가 부족할 때 써요.', basic: '📘 기본: 종합 수업과 ★ 핵심 활동(🎯 대표 포함)을 보여요. 성취기준을 모두 다룰 수 있어요.', all: '🌱 전체: ☆ 선택 활동까지 모든 활동을 보여요.'};
+const store = {get(k, d){ try { return localStorage.getItem(k) ?? d; } catch (e){ return d; } }, set(k, v){ try { localStorage.setItem(k, v); } catch (e){} }};
+let mode = MODES[store.get('idx:mode', 'all')] ? store.get('idx:mode', 'all') : 'all';
+const picked = new Set(String(store.get('idx:tags', '')).split(',').filter(Boolean));
+const hasTag = (c, t) => t === 'live' ? !!c.live : (c.tags || []).includes(t);
+const visible = c => {
+  if (picked.size) return !c.lesson && [...picked].some(t => hasTag(c, t)) && (mode !== 'short' || c.key) && (mode !== 'basic' || c.core !== false);
+  return mode === 'short' ? (c.lesson || c.key) : mode === 'basic' ? (c.lesson || c.core !== false) : true;
+};
 const TAGS = {개념: ['💡 개념', '분류·짝 맞추기로 개념 익히기'], 체험: ['🔬 체험', '시뮬레이션·실험·직접 조작'], 게임: ['🎮 게임', '퍼즐·게임형 활동'], 토의: ['🗣️ 토의·토론', '의견 나누기, 투표 뒤 이야기하기'], 프로젝트: ['🛠️ 프로젝트', '여러 단계를 거치는 모둠 프로젝트'], 엔트리: ['💻 엔트리', '엔트리 실습과 이어지는 활동'], 정리: ['📝 단원 정리', '단원 정리 퀴즈']};
 const PLAN = {
   1: ['1차시: 1·2 (컴퓨팅 시스템, 하드웨어)', '2차시: 3·4 (소프트웨어, 입력·처리·출력)', '3차시: 5 (운영체제)', '4차시: 6·7 (피지컬 컴퓨팅, 가상 센서 보드)', '5~6차시: 8 + 엔트리 센서 보드 실습', '7~8차시: 9 프로젝트(쾌적한 도서관)', '정리: 10'],
@@ -117,7 +133,7 @@ function show(u){
   const info = unitList.find(x => x.unit === u) || unitList[1];
   document.querySelectorAll('.unit-btn').forEach(b => b.classList.toggle('on', +b.dataset.u === info.unit));
   document.getElementById('unitDesc').innerHTML = `<b>${roman[info.unit]} ${esc(info.name)}</b>${esc(info.desc)}`;
-  document.getElementById('planBody').innerHTML = '<ol>' + (PLAN[info.unit] || []).map(p => '<li>' + esc(p) + '</li>').join('') + '</ol><p class="hint">숫자는 아래 카드의 NO. 번호예요. ★ 핵심 활동만으로도 성취기준을 모두 다룰 수 있게 골랐어요. 학교 시수에 맞게 조절해 주세요.</p>';
+  document.getElementById('planBody').innerHTML = '<ol>' + (PLAN[info.unit] || []).map(p => '<li>' + esc(p) + '</li>').join('') + '</ol><p class="hint">숫자는 아래 카드의 NO. 번호예요. 📘 기본 모드(★ 핵심) 활동만으로도 성취기준을 모두 다룰 수 있게 골랐어요. 학교 시수에 맞게 조절해 주세요.</p>';
   const items = contentsList.filter(c => c.unit === info.unit);
   const list = document.getElementById('list');
   if (!items.length){
@@ -125,18 +141,32 @@ function show(u){
   } else {
     const groups = [...new Set(items.map(c => c.sub))];
     let n = 0;
-    list.innerHTML = groups.map(g => { const gi = items.filter(c => c.sub === g); return `<div class="sub-h"><span class="mono">${g}</span>${esc(subList[g] || '')} <span class="cnt">· 활동 ${gi.filter(c => !c.lesson).length}개</span></div>
-      <div class="cards">${gi.map(c => `<a class="card${c.lesson ? ' lesson' : ''}" style="${coreOnly && c.core === false ? 'display:none' : ''}" href="${esc(c.href)}">
-        <span class="ic" aria-hidden="true">${c.icon || '📘'}</span><div class="meta"><span class="num">${c.lesson ? 'LESSON' : 'NO. ' + String(++n).padStart(2, '0')}${c.lesson ? '' : (c.core === false ? '<span class="core-chip o">☆ 선택</span>' : '<span class="core-chip c">★ 핵심</span>')}</span><span class="badge">${esc(c.badge)}</span>${c.live ? '<span class="live-chip">📡 실시간</span>' : ''}${(c.tags || []).map(t => TAGS[t] ? `<span class="tag-chip tg-${t}" title="${TAGS[t][1]}">${TAGS[t][0]}</span>` : '').join('')}</div><h2>${esc(c.title)}</h2><p>${esc(c.desc)}</p>${c.std ? '<span class="std">[9정' + esc(c.std) + ']</span>' : ''}</a>`).join('')}</div>`; }).join('');
+    const no = new Map(); items.filter(c => !c.lesson).forEach(c => no.set(c, ++n));
+    const html = groups.map(g => { const gi = items.filter(c => c.sub === g), vis = gi.filter(visible); if (!vis.length) return ''; const acts = gi.filter(c => !c.lesson).length, va = vis.filter(c => !c.lesson).length;
+      return `<div class="sub-h"><span class="mono">${g}</span>${esc(subList[g] || '')} <span class="cnt">· 활동 ${va === acts ? acts + '개' : va + ' / ' + acts + '개'}</span></div>
+      <div class="cards">${vis.map(c => `<a class="card${c.lesson ? ' lesson' : ''}" href="${esc(c.href)}">
+        <span class="ic" aria-hidden="true">${c.icon || '📘'}</span><div class="meta"><span class="num">${c.lesson ? 'LESSON' : 'NO. ' + String(no.get(c)).padStart(2, '0')}${c.lesson ? '' : (c.core === false ? '<span class="core-chip o">☆ 선택</span>' : c.key ? '<span class="core-chip k" title="소단원 대표 활동 (⏱ 압축 모드)">🎯 대표</span>' : '<span class="core-chip c">★ 핵심</span>')}</span><span class="badge">${esc(c.badge)}</span>${c.live ? '<span class="live-chip">📡 실시간</span>' : ''}${(c.tags || []).map(t => TAGS[t] ? `<span class="tag-chip tg-${t}" title="${TAGS[t][1]}">${TAGS[t][0]}</span>` : '').join('')}</div><h2>${esc(c.title)}</h2><p>${esc(c.desc)}</p>${c.std ? '<span class="std">[9정' + esc(c.std) + ']</span>' : ''}</a>`).join('')}</div>`; }).join('');
+    list.innerHTML = html || `<div class="empty"><b>🔍 조건에 맞는 활동이 없어요</b>수업 모드를 바꾸거나 태그 선택을 해제해 보세요.</div>`;
   }
+  document.getElementById('modeHint').textContent = MODES[mode] + (picked.size ? ' · 태그로 고른 활동만 보여요(종합 수업은 숨김).' : '');
   history.replaceState(null, '', '?unit=' + info.unit);
 }
-document.getElementById('tagLegend').innerHTML = '<span>활동 태그</span>' + Object.entries(TAGS).map(([k, v]) => `<span class="tag-chip tg-${k}" title="${v[1]}">${v[0]}</span>`).join('') + '<span class="live-chip" style="margin:0">📡 실시간</span>';
+function drawTags(){
+  const el = document.getElementById('tagLegend');
+  el.classList.toggle('picking', picked.size > 0);
+  el.innerHTML = '<span>태그로 골라 보기</span>' + Object.entries(TAGS).map(([k, v]) => `<button class="tag-chip tg-${k}${picked.has(k) ? ' on' : ''}" data-t="${k}" title="${v[1]}" aria-pressed="${picked.has(k)}">${v[0]}</button>`).join('')
+    + `<button class="live-chip${picked.has('live') ? ' on' : ''}" data-t="live" title="반 전체가 함께 투표·응답 모으기" aria-pressed="${picked.has('live')}">📡 실시간</button>` + (picked.size ? '<button class="clr">✕ 선택 해제</button>' : '');
+  el.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { const t = b.dataset.t; picked.has(t) ? picked.delete(t) : picked.add(t); store.set('idx:tags', [...picked].join(',')); drawTags(); show(cur); });
+  const c = el.querySelector('.clr'); if (c) c.onclick = () => { picked.clear(); store.set('idx:tags', ''); drawTags(); show(cur); };
+}
+drawTags();
 document.getElementById('units').innerHTML = unitList.map(u => `<button class="unit-btn" data-u="${u.unit}"><span class="n">${roman[u.unit]}</span>${esc(u.name)}</button>`).join('');
 document.querySelectorAll('.unit-btn').forEach(b => b.onclick = () => show(+b.dataset.u));
 let cur = 1;
 const _show = show; show = u => { cur = u; _show(u); };
-document.querySelectorAll('#filter button').forEach(b => b.onclick = () => { coreOnly = b.dataset.f === 'core'; document.querySelectorAll('#filter button').forEach(x => x.classList.toggle('active', x === b)); show(cur); });
+const paintMode = () => document.querySelectorAll('#mode button').forEach(x => { x.classList.toggle('active', x.dataset.m === mode); x.setAttribute('aria-pressed', x.dataset.m === mode); });
+paintMode();
+document.querySelectorAll('#mode button').forEach(b => b.onclick = () => { mode = b.dataset.m; store.set('idx:mode', mode); paintMode(); show(cur); });
 show(+new URLSearchParams(location.search).get('unit') || 1);
 </script>
 </body>
