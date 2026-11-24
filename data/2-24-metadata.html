@@ -34,14 +34,32 @@
 .pv{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;z-index:2}
 .pv[hidden]{display:none}
 .pv-top{display:flex;align-items:center;gap:8px;padding:30px 10px 6px}
-.pv-top button{all:unset;cursor:pointer;color:var(--brand);font-weight:800;font-size:.9rem;padding:2px 6px}
-.pv-top span{font-size:.78rem;color:var(--muted);font-weight:700}
-.pv-img{flex:1 1 auto;margin:0 8px;border-radius:12px;background:#111 center/cover no-repeat;position:relative;overflow:hidden}
+.pv-top button.back{all:unset;cursor:pointer;color:var(--brand);font-weight:800;font-size:.9rem;padding:2px 6px}
+.pv-top span{flex:1;text-align:center;font-size:.78rem;color:var(--muted);font-weight:700}
+.pv-top button.i{all:unset;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;background:var(--brand-soft);color:var(--brand)}
+.pv-top button.i.hint{box-shadow:0 0 0 3px var(--on);animation:ipulse 1.2s ease-in-out infinite}
+@keyframes ipulse{50%{transform:scale(1.12)}}
+.pv-img{flex:1 1 auto;margin:0 8px 12px;border-radius:12px;background:#111 center/cover no-repeat;position:relative;overflow:hidden}
 .pv-img .btl{width:12%}
-.pv-act{display:flex;justify-content:space-around;align-items:center;padding:10px 0 14px}
-.pv-act button{all:unset;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#27304a}
-.pv-act button.i{background:var(--brand-soft);color:var(--brand);font-weight:800;box-shadow:0 0 0 2px var(--brand-soft)}
-.pv-act button.i.hint{box-shadow:0 0 0 3px var(--on)}
+.ph-grid button .sel{position:absolute;right:5px;top:5px;width:18px;height:18px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.25);box-shadow:0 0 3px rgba(0,0,0,.4);display:none;color:#fff;font-size:.7rem;font-weight:900;align-items:center;justify-content:center}
+.ph-scr.selmode .ph-grid button .sel{display:flex}
+.ph-grid button.pick .sel{background:var(--brand)}
+.ph-grid button.pick::before{content:"";position:absolute;inset:0;background:rgba(59,108,246,.22)}
+.ph-head button{all:unset;cursor:pointer;font-size:.8rem;font-weight:800;color:var(--brand);padding:2px 4px}
+.ph-tab span{cursor:pointer}
+.selbar{flex:0 0 auto;display:none;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px 12px;border-top:1px solid var(--line);font-size:.8rem;font-weight:800}
+.ph-scr.selmode .selbar{display:flex}.ph-scr.selmode .ph-tab{display:none}
+.selbar button{border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.78rem;background:var(--brand);color:#fff}
+.selbar button:disabled{opacity:.4}
+.albums{flex:1 1 auto;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 12px 10px;align-content:start}
+.albums[hidden]{display:none}
+.alb{font-size:.78rem}
+.alb .cv{aspect-ratio:1;border-radius:10px;background:#e9edf5 center/cover;margin-bottom:3px;position:relative;box-shadow:3px 3px 0 #e3e8f2,6px 6px 0 #eef1f7}
+.alb.new .cv{animation:albIn .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes albIn{from{transform:scale(.3);opacity:0}}
+.alb b{display:block}.alb small{color:var(--muted)}
+.alb.empty .cv{display:flex;align-items:center;justify-content:center;color:#b5bccb;font-size:1.6rem;border:2px dashed var(--line);box-shadow:none;background:#fff}
+.fly{position:absolute;z-index:9;width:56px;height:56px;border-radius:8px;background:center/cover;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:all .6s cubic-bezier(.5,0,.3,1);pointer-events:none}
 .sheet{position:absolute;left:0;right:0;bottom:0;max-height:78%;overflow-y:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 24px rgba(30,40,80,.18);padding:8px 16px 16px;transform:translateY(105%);transition:transform .3s ease;z-index:3}
 .sheet.open{transform:none}
 .sheet .grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 8px}
@@ -61,13 +79,55 @@
 .def{display:none;margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--yellow-soft);border:1.5px solid #f5dc92}
 .def.show{display:block}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:8px}
-/* 올리기 전 점검 */
-.post{border:1.5px solid var(--line);border-radius:18px;overflow:hidden;max-width:340px;background:#fff}
-.post .pimg{height:190px;background:#ddd center/cover}
-.post .pbody{padding:10px 14px}
-.mtag{display:inline-block;margin:3px 4px 0 0;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700;background:var(--bg)}
-.mtag.risk{background:var(--bad-soft);color:var(--bad)}
-.mtag.off{text-decoration:line-through;opacity:.45}
+/* 올리기 전 점검: 새 게시물 화면 */
+.ph-grid[hidden]{display:none}
+.cp-head{display:flex;align-items:center;justify-content:space-between;padding:6px 12px 8px;border-bottom:1px solid #f0f2f7}
+.cp-head b{font-size:.92rem}
+.cp-head button{all:unset;cursor:pointer;font-weight:800;font-size:.85rem;color:var(--muted)}
+.cp-head .share{color:#fff;background:var(--brand);border-radius:999px;padding:4px 12px}
+.cp-body{flex:1 1 auto;overflow-y:auto}
+.cp-top{display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid #f0f2f7}
+.cp-img{flex:0 0 72px;height:72px;border-radius:10px;background:#ddd center/cover}
+.cp-img.big{flex:none;height:auto;aspect-ratio:4/3;border-radius:0}
+.cp-cap{font-size:.82rem;line-height:1.45}
+.cp-sec{padding:10px 12px 4px;font-size:.7rem;font-weight:800;color:var(--muted);background:var(--bg)}
+.cp-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #f0f2f7;font-size:.8rem;transition:background .3s}
+.cp-row>span{flex:0 0 20px;text-align:center}
+.cp-row>div{flex:1;min-width:0}
+.cp-row small{display:block;color:var(--muted);font-size:.7rem}
+.cp-row.risk{background:#fff4f4}
+.cp-row.risk small{color:var(--bad);font-weight:700}
+.cp-row .del,.cp-row .chg{border:0;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:800;background:var(--bad-soft);color:var(--bad)}
+.cp-row .chg{background:var(--brand-soft);color:var(--brand)}
+.cp-row i.off{font-style:normal;color:#b5bccb;font-size:.72rem}
+.cp-row .tg{all:unset;cursor:pointer;width:40px;height:23px;border-radius:999px;background:#cfd6e4;position:relative;flex:0 0 auto}
+.cp-row .tg::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:left .2s}
+.cp-row .tg.on{background:var(--mint)}
+.cp-row .tg.on::after{left:20px}
+.stranger{position:absolute;inset:0;z-index:4;background:rgba(20,24,40,.55);display:flex;align-items:center;justify-content:center;padding:14px}
+.stranger[hidden]{display:none}
+.st-card{background:#fff;border-radius:18px;padding:12px 14px;text-align:center;font-size:.82rem;animation:pin .35s}
+.st-card small{display:block;font-weight:800;color:var(--bad);margin-bottom:6px}
+.st-card p{margin:8px 0;font-weight:700;line-height:1.6}
+@keyframes pin{from{transform:translateY(30px);opacity:0}}
+.upbar{height:4px;background:var(--bg)}.upbar i{display:block;height:100%;width:0;background:var(--brand);animation:up 1.2s forwards}
+@keyframes up{to{width:100%}}
+.cp-feed{opacity:.35;transition:opacity .4s}.cp-feed.show{opacity:1}
+.cp-feed .p-h{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:.82rem}
+.cp-feed .p-h small{margin-left:auto;color:var(--muted);font-size:.7rem}
+.cp-feed .av{width:28px;height:28px;border-radius:50%;background:#7c5cff;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.cp-feed .p-cap{padding:8px 12px;font-size:.82rem}
+.clean{margin:0 12px;border-radius:10px;padding:6px 10px;background:var(--mint-soft);color:#0d7d71;font-size:.74rem;font-weight:800}
+.risk-m{display:flex;align-items:center;gap:8px;font-size:.85rem;margin-bottom:8px}
+.risk-m .rbar{flex:1;height:12px;border-radius:999px;background:var(--bg);overflow:hidden}
+.risk-m .rbar i{display:block;height:100%;transition:width .4s,background .4s}
+.leak{border-radius:14px;padding:9px 12px;margin:6px 0;background:var(--bad-soft);border:1.5px solid #f6c4c4;transition:all .3s}
+.leak small{display:block;color:var(--muted);font-size:.8rem}
+.leak small i{font-style:normal;color:var(--bad);font-weight:700}
+.leak.safe{background:var(--ok-soft);border-color:#b6e2c6;opacity:.8}
+.leak.ok{background:var(--bg);border-color:var(--line)}
+.phone.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .sw{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #f0f2f7;font-size:.92rem}
 .sw button{all:unset;cursor:pointer;width:46px;height:26px;border-radius:999px;background:#cfd6e4;position:relative;flex:0 0 auto}
 .sw button::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
@@ -97,7 +157,7 @@
       <div class="ph-wrap">
         <div class="phone"><div class="ph-scr" id="ph1"></div></div>
         <div class="ph-side">
-          <p>사진을 누른 다음 아래의 <b>ⓘ</b>를 눌러 보세요. 사진 속에는 보이지 않던 정보가 나와요. 여러 사진을 열어 <b>숨은 정보 5가지</b>를 모두 찾아보세요.</p>
+          <p>사진을 누른 다음 오른쪽 위의 <b>ⓘ</b>를 눌러 보세요. 사진 속에는 보이지 않던 정보가 나와요. 여러 사진을 열어 <b>숨은 정보 5가지</b>를 모두 찾아보세요.</p>
           <div class="found" id="found"></div>
           <p class="hint" id="foundN">아직 연 사진이 없어요.</p>
           <div class="def" id="def">💡 이렇게 <b>데이터(사진)에 대한 정보를 담은 데이터</b>를 <b>메타데이터</b>라고 해요. 사진을 찍으면 스마트폰이 날짜·시간, 위치(위도·경도), 기기, 크기 같은 메타데이터를 자동으로 함께 저장해요.</div>
@@ -118,10 +178,10 @@
       <div class="ph-wrap">
         <div class="phone"><div class="ph-scr" id="ph2"></div></div>
         <div class="ph-side">
-          <p>사진첩 위쪽의 <b>날짜·장소·사람</b> 조건을 눌러 사진을 골라낸 다음, <b>[앨범 만들기]</b>를 누르세요. 폴더를 하나도 만들지 않아도 돼요.</p>
+          <p>사진첩 오른쪽 위 <b>[선택]</b>을 누르고 미션에 맞는 사진을 골라 <b>[📁 앨범에 넣기]</b>를 누르세요. 위쪽의 <b>날짜·장소·사람</b> 조건을 쓰면 폴더 없이도 빠르게 고를 수 있어요.</p>
           <div id="missions"></div>
-          <div class="ctrl"><button class="btn" id="mkAlbum">📁 지금 보이는 사진으로 앨범 만들기</button></div>
           <div class="feedback" id="albumFb"></div>
+          <div id="albumInsight"></div>
           <p class="src" style="text-align:left;margin-top:8px">참고: 씨마스 중학교 정보 67쪽 (메타데이터로 사진 정리하기)</p>
         </div>
       </div>
@@ -140,18 +200,14 @@
       </div>
     </div>
 
-    <div class="card" data-bot="올리기 전에 숨은 정보부터 확인하자 🔐">
+    <div class="card" data-bot="올리기 전에 낯선 사람의 눈으로 확인해 보자 🔐">
       <h3>📤 ④ 올리기 전에 점검하기</h3>
-      <p>물병을 찾은 지우가 집에 와서 "드디어 찾았다!" 사진을 찍어 SNS에 올리려고 해요. 그런데 사진의 메타데이터를 열어 보니…</p>
+      <p>물병을 찾은 지우가 집에서 "드디어 찾았다!" 사진을 SNS에 올리려고 해요. <b>🕵️ 낯선 사람이 알 수 있는 것</b> 목록을 보면서 휴대폰의 게시물 설정을 고친 다음 <b>[공유]</b>를 눌러 보세요.</p>
       <div class="ph-wrap">
-        <div class="post">
-          <div class="pimg" style="background-image:url(../assets/photos/m_bottle.jpg)"></div>
-          <div class="pbody"><b>지우</b> 드디어 찾았다!! 🥳<div id="ptags" style="margin-top:6px"></div></div>
-        </div>
+        <div class="phone"><div class="ph-scr" id="ph4"></div></div>
         <div class="ph-side">
-          <div class="sw"><span>📍 위치 정보 포함 <small class="hint">(○○아파트 101동 · 37.461, 126.712)</small></span><button id="swLoc" class="on" aria-label="위치 정보 포함" aria-pressed="true"></button></div>
-          <div class="sw"><span>📅 촬영 날짜·시간 포함</span><button id="swTime" class="on" aria-label="촬영 날짜·시간 포함" aria-pressed="true"></button></div>
-          <div class="ctrl" style="margin-top:8px"><button class="btn" id="postGo">📤 올리기</button></div>
+          <h4 style="margin:0 0 6px">🕵️ 낯선 사람이 알 수 있는 것</h4>
+          <div id="leak"></div>
           <div class="feedback" id="postFb"></div>
         </div>
       </div>
@@ -176,7 +232,7 @@
       <p><b>메타데이터</b>는 데이터에 대한 데이터예요. 사진의 <b>촬영 날짜·위치·기기</b> 같은 메타데이터를 활용하면 폴더 없이도 여러 기준으로 <b>분류</b>할 수 있지만, 위치처럼 <b>개인 정보</b>가 드러날 수 있으니 공유하기 전에 확인해요.</p>
     </div>
   </section>
-  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함, 물병 그림은 덧붙임)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:Bulguksa_temple_entrance_gate_stairs_flower_bed_and_blue_sky_in_Gyeongju_South_Korea.jpg" target="_blank" rel="noopener">Bulguksa temple entrance gate stairs flower bed and blue sky in Gyeongju South Korea.jpg</a> · Basile Morin · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Dabotap_Pagoda_01.jpg" target="_blank" rel="noopener">Dabotap Pagoda 01.jpg</a> · Bernard Gagnon · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Cheomseongdae_Night_Violet.jpg" target="_blank" rel="noopener">Cheomseongdae Night Violet.jpg</a> · Brinacor · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Bus_Akas_Asri_Pariwisata.jpg" target="_blank" rel="noopener">Bus Akas Asri Pariwisata.jpg</a> · Ardhan Febriansyah · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Relay_runner_(Unsplash).jpg" target="_blank" rel="noopener">Relay runner (Unsplash).jpg</a> · Braden Collum bradencollum · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:EMACS_gold_medal_2023_Pescara.jpg" target="_blank" rel="noopener">EMACS gold medal 2023 Pescara.jpg</a> · Emptywords · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:A_South_Korean_school_lunch.jpg" target="_blank" rel="noopener">A South Korean school lunch.jpg</a> · 570cjk · CC BY-SA 3.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Onigiri_002.jpg" target="_blank" rel="noopener">Onigiri 002.jpg</a> · Ocdp · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Pontypool_Park_Cherry_Trees.jpg" target="_blank" rel="noopener">Pontypool Park Cherry Trees.jpg</a> · WelshDave · CC BY 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Brown_street_dog_01.jpg" target="_blank" rel="noopener">Brown street dog 01.jpg</a> · A S M Jobaer · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Hyeopjae_Beach_Scenery.jpg" target="_blank" rel="noopener">Hyeopjae Beach Scenery.jpg</a> · Lcarrion88 · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:2023_Mandarynki.jpg" target="_blank" rel="noopener">2023 Mandarynki.jpg</a> · Jacek Halicki · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Brisbane_City_Hall_Auditorium_stage_and_organs.jpg" target="_blank" rel="noopener">Brisbane City Hall Auditorium stage and organs.jpg</a> · Kgbo · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Flickr_cc_runner_wisconsin_u.jpg" target="_blank" rel="noopener">Flickr cc runner wisconsin u.jpg</a> · ms4denmark · CC BY-SA 2.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Random_Verna_bottled_water_photo.jpg" target="_blank" rel="noopener">Random Verna bottled water photo.jpg</a> · Khor letey · CC BY-SA 4.0</li></ul></details>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함, 물병 그림은 덧붙임)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:Bulguksa_temple_entrance_gate_stairs_flower_bed_and_blue_sky_in_Gyeongju_South_Korea.jpg" target="_blank" rel="noopener">Bulguksa temple entrance gate stairs flower bed and blue sky in Gyeongju South Korea.jpg</a> · Basile Morin · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Dabotap_Pagoda_01.jpg" target="_blank" rel="noopener">Dabotap Pagoda 01.jpg</a> · Bernard Gagnon · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Cheomseongdae_Night_Violet.jpg" target="_blank" rel="noopener">Cheomseongdae Night Violet.jpg</a> · Brinacor · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Bus_Akas_Asri_Pariwisata.jpg" target="_blank" rel="noopener">Bus Akas Asri Pariwisata.jpg</a> · Ardhan Febriansyah · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Relay_runner_(Unsplash).jpg" target="_blank" rel="noopener">Relay runner (Unsplash).jpg</a> · Braden Collum bradencollum · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:EMACS_gold_medal_2023_Pescara.jpg" target="_blank" rel="noopener">EMACS gold medal 2023 Pescara.jpg</a> · Emptywords · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:A_South_Korean_school_lunch.jpg" target="_blank" rel="noopener">A South Korean school lunch.jpg</a> · 570cjk · CC BY-SA 3.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Onigiri_002.jpg" target="_blank" rel="noopener">Onigiri 002.jpg</a> · Ocdp · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Pontypool_Park_Cherry_Trees.jpg" target="_blank" rel="noopener">Pontypool Park Cherry Trees.jpg</a> · WelshDave · CC BY 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Brown_street_dog_01.jpg" target="_blank" rel="noopener">Brown street dog 01.jpg</a> · A S M Jobaer · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Hyeopjae_Beach_Scenery.jpg" target="_blank" rel="noopener">Hyeopjae Beach Scenery.jpg</a> · Lcarrion88 · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:2023_Mandarynki.jpg" target="_blank" rel="noopener">2023 Mandarynki.jpg</a> · Jacek Halicki · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:RCC-K_Hosts_Humphreys_High_School_Students_for_Inaugural_Cyber_Operations_Tour_(10048372).jpg" target="_blank" rel="noopener">RCC-K Hosts Humphreys High School Students for Inaugural Cyber Operations Tour (10048372).jpg</a> · U.S. Army photo by Staff Sgt. Nicholas Goodman · Public domain</li><li><a href="https://commons.wikimedia.org/wiki/File:Flickr_cc_runner_wisconsin_u.jpg" target="_blank" rel="noopener">Flickr cc runner wisconsin u.jpg</a> · ms4denmark · CC BY-SA 2.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Random_Verna_bottled_water_photo.jpg" target="_blank" rel="noopener">Random Verna bottled water photo.jpg</a> · Khor letey · CC BY-SA 4.0</li></ul></details>
   <p class="src">미래엔 중학교 정보 52~53쪽(데이터의 분류) 내용을 바탕으로 재구성 · 메타데이터 참고: 씨마스 중학교 정보 67쪽 · 사진, 장소, 인물은 모두 가상 데이터</p>
 </main>
 <script src="../assets/contents.js"></script>
@@ -210,11 +266,11 @@ const PICS = [
 ];
 // 체육 대회 날 친구들이 보낸 사진 (순서는 섞여 있음). 🥤가 보이면 물병이 찍힌 사진
 const DET = [
-  {e: '🥇🥤', bg: '#fff4c2,#ffe07a', d: '2026-05-20', t: '11:15', p: 'ground', who: ['지우', '하준'], dv: 1, res: '4000×3000', mb: 3.0},
+  {e: '🥇🥤', bg: '#fff4c2,#ffe07a', d: '2026-05-20', t: '11:15', p: 'ground', who: ['하준'], dv: 0, res: '4032×3024', mb: 3.0},
   {e: '🎤', bg: '#efe6ff,#d6c4ff', d: '2026-05-20', t: '13:30', p: 'hall', who: ['민서'], dv: 0, res: '4032×3024', mb: 2.5},
-  {e: '🏃🥤', bg: '#e2f7e9,#b9ecc9', d: '2026-05-20', t: '09:40', p: 'ground', who: ['지우'], dv: 0, res: '4032×3024', mb: 3.3},
+  {e: '🏃🥤', bg: '#e2f7e9,#b9ecc9', d: '2026-05-20', t: '09:40', p: 'ground', who: ['지우', '하준'], dv: 1, res: '4000×3000', mb: 3.4},
   {e: '🏁', bg: '#e8eefc,#c7d6f7', d: '2026-05-20', t: '14:10', p: 'ground', who: ['하준'], dv: 1, res: '4000×3000', mb: 3.1},
-  {e: '🍱🥤', bg: '#ffeede,#ffd2b0', d: '2026-05-20', t: '12:20', p: 'lunch', who: ['지우', '민서'], dv: 1, res: '4000×3000', mb: 2.8},
+  {e: '🍱🥤', bg: '#ffeede,#ffd2b0', d: '2026-05-20', t: '12:20', p: 'lunch', who: ['지우', '민서', '하준'], dv: 1, res: '4000×3000', mb: 2.7},
 ];
 const IMG = ['m_bul', 'm_dabo', 'm_cheom', 'm_bus', 'm_start', 'm_medal', 'm_lunch', 'm_rice', 'm_blossom', 'm_puppy', 'm_beach', 'm_tang'];
 PICS.forEach((p, i) => p.img = IMG[i]);
@@ -243,32 +299,66 @@ const infoHTML = p => { const pl = PLACES[p.p];
   <div class="mrow" data-m="who"><span>👤</span><div><b>${p.who.length ? p.who.join(', ') : '알아본 인물 없음'}</b><small>사진 속 인물</small></div></div>
   <button class="close">닫기 ✕</button>`; };
 
-/* 가상 사진첩 하나 만들기. opt: {list, title, chips(el), onInfo(p), viewExtra(p) → 버튼 html, onView(p, pv)} */
+/* AI 이미지 자리: assets/photos/ai/<이름>.jpg 파일이 있으면 그 그림이 위에 덮이고, 없으면 원래 사진이 보여요. */
+const AI_SLOT = new Set([]);   // 넣을 수 있는 이름: m_bul m_dabo m_cheom m_start m_medal m_lunch m_blossom (파일을 넣은 뒤 여기에 이름 추가)
+const bgImg = p => (AI_SLOT.has(p.img) ? `url(../assets/photos/ai/${p.img}.jpg), ` : '') + `url(../assets/photos/${p.img}.jpg)`;
+
+/* 가상 사진첩 하나 만들기. opt: {list, title, current(), seen, onInfo(p), viewExtra(p), onView(p, pv), select, onAdd(picked), albums()} */
 function phone(scr, opt){
   scr.innerHTML = `<div class="ph-bar"><span>10:24</span><i>📶 🔋</i></div>
-    <div class="ph-head"><b>${opt.title || '사진'}</b><small id="${scr.id}n"></small></div>
-    <div class="ph-chips"></div><div class="ph-grid"></div>
-    <div class="ph-tab"><span class="on">🖼️<br>사진</span><span>📁<br>앨범</span><span>🔍<br>검색</span></div>
-    <div class="pv" hidden><div class="pv-top"><button class="back">‹ 뒤로</button><span class="dt"></span></div>
-      <div class="pv-img"></div><div class="pv-act"><button aria-label="공유">⤴</button><button class="i" aria-label="사진 정보 보기">ⓘ</button><button aria-label="좋아요">♡</button></div>
+    <div class="ph-head"><b>${opt.title || '사진'}</b><span><small></small>${opt.select ? ' <button class="selb">선택</button>' : ''}</span></div>
+    <div class="ph-chips"></div><div class="ph-grid"></div><div class="albums" hidden></div>
+    <div class="selbar"><button class="cancel" style="background:var(--bg);color:var(--muted)">취소</button><span class="seln">사진을 눌러 고르세요</span><button class="addb" disabled>📁 앨범에 넣기</button></div>
+    <div class="ph-tab"><span class="on" data-t="p">🖼️<br>사진</span><span data-t="a">📁<br>앨범</span><span>🔍<br>검색</span></div>
+    <div class="pv" hidden><div class="pv-top"><button class="back">‹ 뒤로</button><span class="dt"></span><button class="i" aria-label="사진 정보 보기">ⓘ</button></div>
+      <div class="pv-img"></div>
       <div class="sheet" role="dialog" aria-label="사진 정보"></div></div>`;
-  const grid = scr.querySelector('.ph-grid'), pv = scr.querySelector('.pv'), sheet = scr.querySelector('.sheet');
-  let cur = null;
-  const draw = list => {
-    grid.innerHTML = list.length ? list.map(p => `<button data-k="${ALL.indexOf(p)}" style="background-image:url(../assets/photos/${p.img}.jpg)" aria-label="사진 ${fmtS(p.d)}">${photoHTML(p)}</button>`).join('') : '<div class="ph-empty">조건에 맞는 사진이 없어요.</div>';
-    scr.querySelector('.ph-head small').textContent = `사진 ${list.length}장`;
-    grid.querySelectorAll('button').forEach(b => { if (opt.seen && opt.seen.has(+b.dataset.k)) b.classList.add('seen');
-      b.onclick = () => open(ALL[+b.dataset.k]); });
+  const grid = scr.querySelector('.ph-grid'), pv = scr.querySelector('.pv'), sheet = scr.querySelector('.sheet'), alb = scr.querySelector('.albums');
+  const picked = new Set();
+  let cur = null, list = opt.list;
+  const selMode = () => scr.classList.contains('selmode');
+  const selInfo = () => {
+    scr.querySelector('.seln').textContent = picked.size ? `${picked.size}장 선택` : '사진을 눌러 고르세요';
+    scr.querySelector('.addb').disabled = !picked.size;
+    const sb = scr.querySelector('.selb'); if (sb) sb.textContent = selMode() ? (list.length && list.every(p => picked.has(ALL.indexOf(p))) ? '선택 해제' : '모두 선택') : '선택';
   };
+  const draw = l => {
+    list = l; showTab('p');
+    grid.innerHTML = list.length ? list.map(p => { const k = ALL.indexOf(p); return `<button data-k="${k}" class="${picked.has(k) ? 'pick' : ''}" style="background-image:${bgImg(p)}" aria-label="사진 ${fmtS(p.d)}">${photoHTML(p)}<span class="sel">✓</span></button>`; }).join('') : '<div class="ph-empty">조건에 맞는 사진이 없어요.</div>';
+    scr.querySelector('.ph-head small').textContent = `${list.length}장`;
+    grid.querySelectorAll('button').forEach(b => { if (opt.seen && opt.seen.has(+b.dataset.k)) b.classList.add('seen');
+      b.onclick = () => { const k = +b.dataset.k;
+        if (selMode()){ picked.has(k) ? picked.delete(k) : picked.add(k); b.classList.toggle('pick', picked.has(k)); selInfo(); }
+        else open(ALL[k]); }; });
+    selInfo();
+  };
+  const showTab = t => {
+    scr.querySelectorAll('.ph-tab span[data-t]').forEach(s => s.classList.toggle('on', s.dataset.t === t));
+    grid.hidden = t !== 'p'; scr.querySelector('.ph-chips').style.display = t === 'p' ? '' : 'none';
+    alb.hidden = t !== 'a'; const sbb = scr.querySelector('.selb'); if (sbb) sbb.style.visibility = t === 'a' ? 'hidden' : '';
+    if (t === 'a'){ scr.querySelector('.ph-head b').textContent = '앨범'; const a = opt.albums ? opt.albums() : [];
+      alb.innerHTML = a.map(x => x.list ? `<div class="alb${x.isNew ? ' new' : ''}"><div class="cv" style="background-image:${bgImg(x.list[0])}"></div><b>${x.t}</b><small>${x.list.length}장</small></div>` : `<div class="alb empty"><div class="cv">＋</div><b>${x.t}</b><small>아직 없음</small></div>`).join('') || '<div class="ph-empty">아직 만든 앨범이 없어요.</div>';
+      scr.querySelector('.ph-head small').textContent = '';
+    } else scr.querySelector('.ph-head b').textContent = opt.title || '사진';
+  };
+  scr.querySelectorAll('.ph-tab span[data-t]').forEach(s => s.onclick = () => { if (s.dataset.t === 'p') draw(list); else { scr.classList.remove('selmode'); showTab('a'); } });
+  const sb = scr.querySelector('.selb');
+  if (sb) sb.onclick = () => {
+    if (!selMode()){ scr.classList.add('selmode'); pv.hidden = true; draw(list); return; }
+    const all = list.every(p => picked.has(ALL.indexOf(p)));
+    list.forEach(p => all ? picked.delete(ALL.indexOf(p)) : picked.add(ALL.indexOf(p))); draw(list);
+  };
+  scr.querySelector('.cancel').onclick = () => { scr.classList.remove('selmode'); picked.clear(); draw(list); };
+  scr.querySelector('.addb').onclick = () => opt.onAdd && opt.onAdd([...picked].map(k => ALL[k]));
   const open = p => {
     cur = p; pv.hidden = false; sheet.classList.remove('open');
     pv.querySelector('.dt').textContent = fmtS(p.d);
-    const img = pv.querySelector('.pv-img'); img.style.backgroundImage = 'url(../assets/photos/' + p.img + '.jpg)'; img.innerHTML = photoHTML(p);
+    const img = pv.querySelector('.pv-img'); img.style.backgroundImage = bgImg(p); img.innerHTML = photoHTML(p);
     pv.querySelector('.i').classList.toggle('hint', !(opt.seen && opt.seen.size));
     pv.querySelectorAll('.extra').forEach(x => x.remove());
-    if (opt.viewExtra){ pv.querySelector('.pv-act').insertAdjacentHTML('afterend', `<div class="extra" style="text-align:center;padding:0 0 12px">${opt.viewExtra(p)}</div>`); opt.onView && opt.onView(p, pv); }
+    if (opt.viewExtra){ img.insertAdjacentHTML('afterend', `<div class="extra" style="text-align:center;padding:0 0 12px">${opt.viewExtra(p)}</div>`); opt.onView && opt.onView(p, pv); }
   };
-  pv.querySelector('.back').onclick = () => { pv.hidden = true; draw(opt.current ? opt.current() : opt.list); };
+  pv.querySelector('.back').onclick = () => { pv.hidden = true; draw(opt.current ? opt.current() : list); };
   pv.querySelector('.i').onclick = () => {
     sheet.innerHTML = infoHTML(cur); sheet.classList.add('open');
     sheet.querySelector('.close').onclick = () => sheet.classList.remove('open');
@@ -277,7 +367,15 @@ function phone(scr, opt){
     opt.onInfo && opt.onInfo(cur);
   };
   draw(opt.list);
-  return {draw, chips: scr.querySelector('.ph-chips'), close: () => { pv.hidden = true; }};
+  return {draw, showTab, chips: scr.querySelector('.ph-chips'), close: () => { pv.hidden = true; },
+    endSelect: () => { scr.classList.remove('selmode'); picked.clear(); },
+    fly: () => { // 고른 사진이 앨범 탭으로 날아가요
+      const r0 = scr.getBoundingClientRect(), tab = scr.querySelector('.ph-tab span[data-t="a"]').getBoundingClientRect();
+      [...grid.querySelectorAll('button.pick')].slice(0, 8).forEach((b, i) => { const r = b.getBoundingClientRect(), f = document.createElement('div');
+        f.className = 'fly'; f.style.backgroundImage = b.style.backgroundImage; f.style.left = (r.left - r0.left) + 'px'; f.style.top = (r.top - r0.top) + 'px'; scr.appendChild(f);
+        setTimeout(() => { f.style.left = (tab.left - r0.left + tab.width / 2 - 14) + 'px'; f.style.top = (tab.top - r0.top) + 'px'; f.style.width = f.style.height = '28px'; f.style.opacity = '.3'; }, 30 + i * 70);
+        setTimeout(() => f.remove(), 800 + i * 70); });
+    }};
 }
 
 /* ===== ① 사진 정보 열어 보기 ===== */
@@ -305,34 +403,51 @@ $$('#other .flip').forEach(b => b.onclick = () => b.classList.toggle('open'));
 
 /* ===== ② 메타데이터로 앨범 만들기 ===== */
 const MISSIONS = [
-  {t: '📁 수학여행 앨범', d: '경주 수학여행에서 찍은 사진만 모으세요.', ok: p => PLACES[p.p].city === '경주'},
-  {t: '📁 지우와 함께', d: '지우가 함께 찍힌 사진만 모으세요.', ok: p => p.who.includes('지우')},
-  {t: '📁 체육 대회 날', d: '체육 대회가 열린 5월 20일에 찍은 사진만 모으세요.', ok: p => p.d === '2026-05-20'},
+  {t: '수학여행', icon: '🏯', d: '경주 수학여행에서 찍은 사진만 골라 앨범에 넣으세요.', tip: '위쪽 <b>📍 경주</b> 조건을 누르면 고르기 쉬워요.', ok: p => PLACES[p.p].city === '경주'},
+  {t: '지우와 함께', icon: '👧', d: '지우가 함께 찍힌 사진만 골라 앨범에 넣으세요.', tip: '<b>👤 지우</b> 조건을 누른 뒤 [모두 선택]을 써 보세요.', ok: p => p.who.includes('지우')},
+  {t: '체육 대회 날', icon: '🏃', d: '체육 대회가 열린 5월 20일에 찍은 사진만 골라 앨범에 넣으세요.', tip: '<b>📅 5월 20일</b> 조건을 이용해요.', ok: p => p.d === '2026-05-20'},
 ];
-let mi = 0, filt = null;
+let mi = 0, filt = null, lastNew = -1;
+const made = [];
 const cur2 = () => filt ? PICS.filter(filt.f) : PICS;
-const ph2 = phone($('#ph2'), {list: PICS, current: cur2, title: '사진'});
+const ph2 = phone($('#ph2'), {list: PICS, current: cur2, title: '사진', select: true,
+  albums: () => MISSIONS.map((m, i) => made[i] ? {t: m.icon + ' ' + m.t, list: made[i], isNew: i === lastNew} : {t: m.icon + ' ' + m.t}),
+  onAdd: picks => {
+    if (mi >= MISSIONS.length) return;
+    const m = MISSIONS[mi], want = PICS.filter(m.ok);
+    const wrong = picks.filter(p => !m.ok(p)), miss = want.filter(p => !picks.includes(p));
+    if (!wrong.length && !miss.length){
+      ph2.fly(); made[mi] = picks; lastNew = mi; mi++;
+      setTimeout(() => { ph2.endSelect(); ph2.showTab('a'); }, 650);
+      setTimeout(() => { lastNew = -1; if (mi < MISSIONS.length){ filt = null; resetChips(); ph2.draw(cur2()); } }, 2600);
+      drawMissions();
+      feedback($('#albumFb'), true, mi < MISSIONS.length ? `⭕ "${m.t}" 앨범 완성! (사진 ${want.length}장) 사진첩이 다시 열리면 다음 미션을 해 보세요.` : '🎉 앨범 3개 완성! 폴더를 하나도 만들지 않고 날짜·장소·사람 메타데이터만으로 정리했어요.');
+      if (mi === MISSIONS.length) setTimeout(albumInsight, 900);
+    } else {
+      const msg = [];
+      if (wrong.length) msg.push(`미션과 맞지 않는 사진 ${wrong.length}장이 섞여 있어요`);
+      if (miss.length) msg.push(`빠진 사진이 ${miss.length}장 있어요`);
+      feedback($('#albumFb'), false, '❌ ' + msg.join(', ') + '. 사진의 ⓘ 정보를 확인하거나 위쪽 조건을 이용해 보세요.');
+    }
+  }});
 const FILTERS = [{k: 'all', t: '전체', f: null}]
-    .concat([...new Set(Object.values(PLACES).map(x => x.city))].map(c => ({k: 'c' + c, t: '📍 ' + c, f: p => PLACES[p.p].city === c})))
+    .concat([...new Set(Object.values(PLACES).map(x => x.city))].filter(c => PICS.some(p => PLACES[p.p].city === c)).map(c => ({k: 'c' + c, t: '📍 ' + c, f: p => PLACES[p.p].city === c})))
   .concat([...new Set(PICS.flatMap(p => p.who))].map(w => ({k: 'w' + w, t: '👤 ' + w, f: p => p.who.includes(w)})))
   .concat([...new Set(PICS.map(p => p.d))].sort().map(d => ({k: 'd' + d, t: '📅 ' + fmtS(d), f: p => p.d === d})));
 ph2.chips.innerHTML = FILTERS.map((x, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${x.t}</button>`).join('');
+const resetChips = () => { ph2.chips.querySelectorAll('button').forEach((y, i) => y.classList.toggle('on', !i)); ph2.chips.scrollTo({left: 0}); };
 ph2.chips.querySelectorAll('button').forEach(b => b.onclick = () => {
   const x = FILTERS[+b.dataset.i]; filt = x.f ? x : null;
   ph2.chips.querySelectorAll('button').forEach(y => y.classList.toggle('on', y === b));
   ph2.chips.scrollTo({left: b.offsetLeft - ph2.chips.clientWidth / 2 + b.offsetWidth / 2, behavior: 'smooth'});
   ph2.close(); ph2.draw(cur2());
 });
-const drawMissions = () => { $('#missions').innerHTML = MISSIONS.map((m, i) => `<div class="mission${i < mi ? ' done' : ''}" ${i > mi ? 'style="opacity:.45"' : ''}><b class="t">${i < mi ? '✅' : i === mi ? '👉' : '🔒'} 미션 ${i + 1}. ${m.t}</b>${m.d}</div>`).join(''); };
+const drawMissions = () => { $('#missions').innerHTML = MISSIONS.map((m, i) => `<div class="mission${i < mi ? ' done' : ''}" ${i > mi ? 'style="opacity:.45"' : ''}><b class="t">${i < mi ? '✅' : i === mi ? '👉' : '🔒'} 미션 ${i + 1}. ${m.icon} ${m.t} 앨범</b>${m.d}${i === mi ? `<br><small class="hint">💡 ${m.tip}</small>` : ''}</div>`).join(''); };
 drawMissions();
-$('#mkAlbum').onclick = () => {
-  if (mi >= MISSIONS.length) return feedback($('#albumFb'), true, '🎉 앨범 3개를 모두 만들었어요. 폴더를 하나도 만들지 않고 메타데이터만으로 정리했어요!');
-  const m = MISSIONS[mi], list = cur2(), want = PICS.filter(m.ok);
-  const same = list.length === want.length && list.every(p => m.ok(p));
-  if (same){ mi++; drawMissions();
-    feedback($('#albumFb'), true, mi < MISSIONS.length ? `⭕ "${m.t.slice(3)}" 앨범을 만들었어요! (사진 ${want.length}장) 다음 미션도 해 보세요.` : '🎉 앨범 3개 완성! 같은 사진도 날짜·장소·사람 메타데이터로 여러 앨범에 동시에 들어갈 수 있어요. 폴더는 하나도 만들지 않았어요.');
-  } else feedback($('#albumFb'), false, list.length === PICS.length ? '먼저 사진첩 위쪽에서 조건을 하나 골라 보세요.' : (list.length === want.length ? '❌ 사진 수는 같지만 미션과 다른 사진이 섞여 있어요. 사진의 ⓘ 정보를 확인하고 다른 조건을 골라 보세요.' : `❌ 지금 보이는 사진은 ${list.length}장인데, 미션에 맞는 사진은 ${want.length}장이에요. 다른 조건을 골라 보세요.`));
-};
+function albumInsight(){
+  const both = PICS.filter(p => made.filter(l => l.includes(p)).length >= 2);
+  $('#albumInsight').innerHTML = `<div class="def show">💡 <b>같은 사진이 여러 앨범에 동시에 들어 있어요!</b><div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">${both.map(p => `<span style="width:58px;height:58px;border-radius:8px;background:center/cover;background-image:${bgImg(p)};display:inline-block"></span>`).join('')}</div>폴더는 사진 한 장을 한 곳에만 넣을 수 있지만, 메타데이터(날짜·장소·사람)로 분류하면 사진을 복사하지 않고도 여러 기준으로 동시에 정리할 수 있어요.</div>`;
+}
 
 /* ===== ③ 사진 탐정: 잃어버린 물병 ===== */
 const ANSWER = DET[4];
@@ -344,20 +459,58 @@ phone($('#ph3'), {list: DET, seen: seen3, title: '받은 사진',
     if (detDone) return;
     if (!p.btl) return feedback($('#detFb'), false, '❌ 이 사진에는 지우의 파란 물병이 보이지 않아요. 물병이 찍힌 사진만 비교해요.');
     if (p !== ANSWER) return feedback($('#detFb'), false, `❌ 물병이 보이지만 ${p.t}보다 늦게 찍힌 물병 사진이 있어요. ⓘ로 촬영 시간을 비교해 보세요.`);
-    if (!seen3.has(ALL.indexOf(p))) return feedback($('#detFb'), false, '🤔 맞는 것 같지만, 먼저 ⓘ를 눌러 이 사진의 촬영 시간과 장소를 확인해 보세요.');
+    if (!seen3.has(ALL.indexOf(p))) return feedback($('#detFb'), false, '🤔 맞는 것 같지만, 먼저 오른쪽 위 ⓘ를 눌러 이 사진의 촬영 시간과 장소를 확인해 보세요.');
     detDone = true;
     feedback($('#detFb'), true, '⭕ 찾았어요! 물병이 마지막으로 찍힌 사진은 12:20에 찍은 사진이에요. 그 뒤 사진(13:30 강당, 14:10 운동장)에는 물병이 없어요.');
     renderChoice($('#where'), [{icon: '📍', t: '그렇다면 지우는 물병을 어디에 두고 왔을까요? (사진의 위치 정보를 떠올려 보세요)', a: 1, e: '사진의 위치 메타데이터가 "우리 학교 급식실"이었어요. 급식실 분실물 보관함에서 물병을 찾았답니다!'}], ['운동장', '급식실', '강당']);
   }; }});
 
 /* ===== ④ 올리기 전에 점검하기 ===== */
-const sw = {loc: true, time: true};
-const drawPost = () => { $('#ptags').innerHTML = `<span class="mtag risk${sw.loc ? '' : ' off'}">📍 ○○아파트 101동</span><span class="mtag${sw.time ? '' : ' off'}">📅 5월 20일 19:05</span><span class="mtag">📱 스마트폰 B</span>`; };
-[['#swLoc', 'loc'], ['#swTime', 'time']].forEach(([id, k]) => $(id).onclick = () => { sw[k] = !sw[k]; $(id).classList.toggle('on', sw[k]); $(id).setAttribute('aria-pressed', sw[k]); drawPost(); });
-drawPost();
-$('#postGo').onclick = () => sw.loc
-  ? feedback($('#postFb'), false, '⚠️ 잠깐! 사진에 집 위치(위도·경도)가 그대로 들어 있어요. 누구나 지우가 사는 곳을 알 수 있어요. 위치 정보를 끄고 다시 올려 보세요.')
-  : feedback($('#postFb'), true, '⭕ 안전하게 올렸어요! 위치 같은 메타데이터는 개인 정보가 될 수 있어서, 공유하기 전에 꼭 확인해야 해요.' + (sw.time ? ' (촬영 시간도 꼭 필요한 정보인지 생각해 보세요.)' : ''));
+const UP = {tag: true, gps: true, time: true, dev: true, pub: true, done: false};
+const HOME = {n: '○○아파트 101동', gps: '37.461, 126.712', x: 28, y: 20};
+function drawComposer(){
+  const s = $('#ph4');
+  if (UP.done) return;
+  s.innerHTML = `<div class="ph-bar"><span>19:07</span><i>📶 🔋</i></div>
+    <div class="cp-head"><button class="x" aria-label="닫기">✕</button><b>새 게시물</b><button class="share" id="shareBtn">공유</button></div>
+    <div class="cp-body">
+      <div class="cp-top"><div class="cp-img" style="background-image:url(../assets/photos/m_bottle.jpg)"></div><div class="cp-cap">드디어 찾았다!! 🥳 집에 와서 인증샷 📸</div></div>
+      <div class="cp-row${UP.tag ? ' risk' : ''}"><span>📍</span><div><b>위치 태그</b><small>${UP.tag ? HOME.n : '위치 추가'}</small></div>${UP.tag ? '<button data-k="tag" class="del">삭제</button>' : '<i class="off">없음</i>'}</div>
+      <div class="cp-row${UP.pub ? ' risk' : ''}"><span>👥</span><div><b>공개 범위</b><small>${UP.pub ? '전체 공개 (누구나 볼 수 있음)' : '친한 친구만'}</small></div><button data-k="pub" class="chg">${UP.pub ? '바꾸기' : '전체로'}</button></div>
+      <div class="cp-sec">⚙️ 고급 설정 · 사진에 함께 저장된 정보(메타데이터)</div>
+      ${[['gps', '📍', '사진 위치 정보(GPS)', HOME.gps], ['time', '📅', '촬영 날짜·시간', '2026년 5월 20일 19:05'], ['dev', '📱', '촬영 기기', '스마트폰 B']].map(([k, i, t, v]) => `<div class="cp-row sw2${UP[k] && k !== 'dev' ? ' risk' : ''}"><span>${i}</span><div><b>${t}</b><small>${v}</small></div><button data-k="${k}" class="tg${UP[k] ? ' on' : ''}" aria-pressed="${UP[k]}" aria-label="${t} 포함"></button></div>`).join('')}
+    </div><div class="stranger" id="stranger" hidden></div>`;
+  s.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { UP[b.dataset.k] = !UP[b.dataset.k]; drawComposer(); drawLeak(); });
+  $('#shareBtn').onclick = share;
+}
+const leaks = () => [
+  {on: UP.tag || UP.gps, t: '🏠 지우가 사는 곳', d: `${HOME.n}`, src: [UP.tag && '위치 태그', UP.gps && '사진 GPS'].filter(Boolean)},
+  {on: (UP.tag || UP.gps) && UP.time, t: '⏰ 저녁 7시쯤 집에 있다는 것', d: '촬영 시간 + 위치를 합치면 생활 패턴이 드러나요', src: ['촬영 시간', '위치']},
+  {on: UP.pub, t: '👀 모르는 사람도 이 게시물을 봄', d: '전체 공개면 누구나 위 정보를 볼 수 있어요', src: ['공개 범위']},
+];
+function drawLeak(){
+  const L = leaks(), n = L.filter(x => x.on).length;
+  $('#leak').innerHTML = `<div class="risk-m"><span>위험도</span><div class="rbar"><i style="width:${n / 3 * 100}%;background:${n >= 2 ? 'var(--bad)' : n ? 'var(--on)' : 'var(--mint)'}"></i></div><b>${n ? n + '개 노출' : '안전'}</b></div>`
+    + L.map(x => `<div class="leak${x.on ? '' : ' safe'}"><b>${x.on ? '' : '✅ '}${x.t}</b><small>${x.on ? x.d + ' · <i>' + x.src.join(' + ') + '</i>' : '가렸어요'}</small></div>`).join('')
+    + `<div class="leak ok"><b>📱 촬영 기기</b><small>기기 이름만으로는 나를 알아보기 어려워요. 꼭 끌 필요는 없어요.</small></div>`;
+}
+function share(){
+  const L = leaks().filter(x => x.on);
+  if (L.length){
+    const st = $('#stranger'); st.hidden = false;
+    st.innerHTML = `<div class="st-card"><small>🕵️ 낯선 사람의 화면</small>${UP.tag || UP.gps ? `<svg class="mmap" viewBox="0 0 100 60"><rect width="100" height="60" fill="#e9f4ea"/><path d="M0 18 H100 M0 42 H100 M30 0 V60 M70 0 V60" stroke="#fff" stroke-width="3"/><g transform="translate(${HOME.x} ${HOME.y * .6 + 14})"><circle r="9" fill="#e04848" opacity=".2"><animate attributeName="r" values="5;12;5" dur="1.4s" repeatCount="indefinite"/></circle><path d="M0 -9 C-5 -9 -6 -4 -6 -3 C-6 2 0 6 0 6 C0 6 6 2 6 -3 C6 -4 5 -9 0 -9Z" fill="#e04848"/></g><text x="${HOME.x + 8}" y="${HOME.y * .6 + 12}" font-size="5" font-weight="700" fill="#1f2a3d">지우네 집?${UP.time ? ' · 19:05' : ''}</text></svg>` : ''}<p>${L.map(x => x.t).join('<br>')}</p><button class="btn" id="stBack">설정 다시 고치기</button></div>`;
+    $('#stBack').onclick = () => { st.hidden = true; };
+    $('#ph4').closest('.phone').classList.remove('shake'); void $('#ph4').offsetWidth; $('#ph4').closest('.phone').classList.add('shake');
+    return feedback($('#postFb'), false, `⚠️ 이대로 올리면 낯선 사람이 ${L.map(x => x.t.replace(/^\S+\s/, '')).join(', ')}을(를) 알 수 있어요. 휴대폰의 설정을 고쳐 보세요.`);
+  }
+  UP.done = true;
+  const s = $('#ph4');
+  s.innerHTML = `<div class="ph-bar"><span>19:08</span><i>📶 🔋</i></div><div class="cp-head"><span></span><b>공유하는 중…</b><span></span></div><div class="upbar"><i></i></div>
+    <div class="cp-feed"><div class="p-h"><span class="av">J</span><b>jiwoo</b><small>👥 친한 친구만</small></div><div class="cp-img big" style="background-image:url(../assets/photos/m_bottle.jpg)"></div><div class="p-cap"><b>jiwoo</b> 드디어 찾았다!! 🥳 집에 와서 인증샷 📸</div><div class="clean">🔒 위치·시간 정보 없이 공유됨${UP.dev ? '' : ' · 기기 정보도 지움'}</div></div>`;
+  setTimeout(() => { const h = s.querySelector('.cp-head b'); if (h) h.textContent = '공유 완료 ✓'; s.querySelector('.cp-feed').classList.add('show'); }, 1300);
+  feedback($('#postFb'), true, '⭕ 안전하게 올렸어요! 사진 한 장의 메타데이터는 작아 보여도, 위치와 시간이 합쳐지면 사는 곳과 생활 패턴이 드러날 수 있어요. 공유하기 전에 꼭 확인해요.');
+}
+drawComposer(); drawLeak();
 
 renderQuiz($('#quiz'), [
   {q: '메타데이터에 대한 설명으로 알맞은 것은?', o: ['사진 속에 찍힌 모습', '데이터에 대한 정보를 담은 데이터', '아주 큰 데이터'], a: 1, e: '메타데이터는 데이터(사진)에 대한 데이터예요.'},
