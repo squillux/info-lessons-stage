@@ -3,14 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅴ단원 글자 타일 퍼즐</title>
+<title>Ⅴ단원 SNS 피드 지킴이</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
+.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}
+/* ── 피드 지킴이 ── */
+.fw{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.fw-side{flex:1 1 260px;min-width:0}
+.phone{flex:0 0 auto;width:min(100%,310px);margin:0 auto;border:9px solid #27304a;border-radius:38px;background:#fff;overflow:hidden;position:relative;box-shadow:0 14px 30px rgba(30,40,80,.16)}
+.ph-scr{position:relative;height:clamp(420px,calc(100vh - 440px),540px);display:flex;flex-direction:column;background:#fff;overflow:hidden}
+.ph-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 18px 2px;font-size:.72rem;font-weight:800;color:#27304a}
+.ph-bar i{font-style:normal;letter-spacing:1px}
+.app-h{display:flex;align-items:center;justify-content:space-between;padding:4px 14px 8px;border-bottom:1px solid #f0f2f7}
+.app-h b{font-family:var(--cute);font-weight:400;font-size:1.3rem;background:linear-gradient(90deg,#ff7aa2,#ffb35c,#3b6cf6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.app-h span{font-size:1.05rem;letter-spacing:6px;color:#27304a}
+.stories{display:flex;gap:8px;padding:8px 10px;border-bottom:1px solid #f0f2f7;overflow:hidden;flex:0 0 auto}
+.stories i{flex:0 0 40px;height:40px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#ffc233,#ff7aa2,#7c5cff);font-style:normal;box-sizing:border-box}
+.stories i::before{content:attr(data-c);display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;background:#fff;border:2px solid #fff;box-sizing:border-box;font-size:.8rem;font-weight:800;color:#27304a}
+.feed{flex:1 1 auto;overflow-y:auto;position:relative;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.post{animation:pin .45s ease}
+@keyframes pin{from{transform:translateY(60px);opacity:0}}
+.p-h{display:flex;align-items:center;gap:8px;padding:8px 10px}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.8rem;flex:0 0 auto}
+.p-h b{font-size:.82rem}.p-h small{display:block;color:var(--muted);font-size:.68rem;font-weight:400}
+.p-h .more{margin-left:auto;color:var(--muted)}
+.p-img{position:relative;aspect-ratio:4/3;background:#ddd center/cover;overflow:hidden}
+.p-img .tag{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.68rem;border-radius:6px;padding:2px 7px}
+.p-act{display:flex;gap:14px;padding:7px 10px 2px;font-size:1.25rem;color:#27304a}
+.p-act .bm{margin-left:auto}
+.p-act .hrt{transition:transform .2s}
+.p-act .hrt.on{color:#ff3b5c;animation:pop .45s}
+@keyframes pop{40%{transform:scale(1.5)}}
+.p-like{padding:0 10px;font-size:.78rem;font-weight:800}
+.p-cap{padding:2px 10px 4px;font-size:.82rem;line-height:1.5;word-break:keep-all}
+.p-cap>b:first-child{margin-right:4px}
+.p-cap .hash{color:#3462d8}
+.p-cap small{color:var(--muted)}
+.p-cmt{padding:0 10px 10px;font-size:.78rem;line-height:1.55}
+.p-cmt div{transition:opacity .4s}
+.p-cmt .gone{text-decoration:line-through;opacity:.35}
+.p-cmt .mine{color:#0d7d71;font-weight:700;animation:pin .4s}
+.p-cmt .mute{color:var(--muted)}
+.red{transition:background .5s,color .5s;border-radius:4px}
+.red.hide{background:#27304a;color:transparent;user-select:none}
+.big-heart{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:5rem;color:#fff;text-shadow:0 4px 16px rgba(0,0,0,.35);opacity:0;pointer-events:none}
+.big-heart.go{animation:bh .9s}
+@keyframes bh{30%{opacity:1;transform:scale(1.15)}70%{opacity:1}100%{opacity:0}}
+.stamp{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:rgba(20,24,40,.62);backdrop-filter:blur(6px);color:#fff;font-weight:800;text-align:center;padding:12px;animation:fd .4s}
+.stamp big{font-size:2.4rem}
+.stamp em{font-style:normal;border:3px solid #ff5a5a;color:#ffd1d1;border-radius:10px;padding:2px 10px;transform:rotate(-8deg);font-size:1rem}
+@keyframes fd{from{opacity:0}}
+.lockchip{display:inline-block;margin:0 10px 8px;border-radius:999px;background:var(--mint-soft);color:#0d7d71;font-size:.72rem;font-weight:800;padding:2px 9px;animation:pin .4s}
+/* 알림 배너 */
+.noti{position:absolute;left:8px;right:8px;top:26px;z-index:5;background:rgba(255,255,255,.97);border-radius:16px;box-shadow:0 10px 26px rgba(20,30,60,.3);padding:10px 12px;font-size:.8rem;line-height:1.45;transform:translateY(-160%);transition:transform .45s cubic-bezier(.2,1.3,.4,1)}
+.noti.show{transform:none}
+.noti small{display:block;color:var(--muted);font-size:.68rem;font-weight:700;margin-bottom:2px}
+.noti.warn{background:#fff3f3;border:1.5px solid #ffc9c9}
+.noti.good{background:#effbf7;border:1.5px solid #bfe8e1}
+/* 시작·끝 화면 */
+.ov{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(160deg,#ffeef3,#e9efff);gap:8px}
+.ov[hidden]{display:none}
+.ov .ic{font-size:3.4rem}
+.ov h4{margin:0;font-family:var(--cute);font-weight:400;font-size:1.4rem}
+.ov p{margin:0;font-size:.85rem;color:var(--muted)}
+/* 오른쪽 판정 패널 */
+.gauge{border:1.5px solid var(--line);border-radius:16px;padding:10px 14px;background:#fff;margin-bottom:10px}
+.gauge .t{display:flex;justify-content:space-between;font-weight:800;font-size:.9rem}
+.gbar{height:14px;border-radius:999px;background:var(--bg);overflow:hidden;margin-top:6px}
+.gbar i{display:block;height:100%;width:40%;border-radius:999px;background:linear-gradient(90deg,#ffc233,#16b8a6);transition:width .5s}
+.gauge.up{animation:gup .5s}.gauge.down{animation:shk .4s}
+@keyframes gup{50%{box-shadow:0 0 0 4px var(--mint-soft)}}
+.dots{display:flex;gap:5px;margin-top:8px}
+.dots i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.dots i.cur{background:var(--on)}.dots i.ok{background:var(--mint)}.dots i.miss{background:#f2a3a3}
+.judge{border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;background:#fff}
+.judge h4{margin:0 0 8px;font-size:1rem}
+.jbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.jbtns button{border:0;border-radius:14px;padding:14px 8px;font-weight:800;font-size:1rem;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.jbtns .okb{background:var(--ok-soft);color:var(--ok)}
+.jbtns .nob{background:var(--bad-soft);color:var(--bad)}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.types button,.acts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 10px;font-weight:700;text-align:left;font-size:.9rem;line-height:1.4;color:var(--ink)}
+.types button:hover,.acts button:hover{border-color:var(--brand)}
+.types button.x,.acts button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
+.types button.o,.acts button.o{border-color:var(--mint);background:var(--mint-soft);opacity:1}
+.acts{display:grid;gap:6px}
+.why{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--yellow-soft);border:1.5px solid #f5dc92;font-size:.9rem;line-height:1.55;display:none}
+.why.show{display:block;animation:pin .35s}
+.shake{animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.rep{display:grid;gap:6px;margin-top:8px}
+.rep div{display:flex;gap:8px;align-items:center;border-radius:12px;padding:6px 10px;background:var(--bg);font-size:.86rem}
+.rep img{width:42px;height:42px;border-radius:8px;object-fit:cover;flex:0 0 auto}
+.rep div.ok{background:var(--ok-soft)}.rep div.miss{background:var(--bad-soft)}
+.badge2{display:inline-block;margin:6px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+/* ── 보너스 글자 타일 ── */
 .pz{display:grid;gap:12px}
 .pz .row{display:block;border:2px solid var(--line);border-radius:16px;padding:10px 14px;background:#fff}
 .pz .row.ok{border-color:var(--mint);background:var(--mint-soft)}
 .pz .clue{margin:0 0 6px}
-.pz .boxes{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .slots,.tiles{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
 .slots span{width:44px;height:48px;border-radius:12px;border:2px dashed #c9d2e3;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;background:#fff;cursor:pointer}
 .slots span.f{border-style:solid;border-color:var(--brand);background:var(--brand-soft)}
@@ -18,33 +110,58 @@
 .tiles button{width:44px;height:48px;border-radius:12px;border:0;background:linear-gradient(#fff6db,#ffe7a3);box-shadow:0 3px 0 #e8c25a;font-size:1.25rem;font-weight:800;color:#3a2a00;transition:transform .1s}
 .tiles button:active{transform:translateY(2px);box-shadow:0 1px 0 #e8c25a}
 .tiles button.used{visibility:hidden}
-.pz .row.ok .tiles{display:none}
-.pz .row.ok .hintb{display:none}
-.shake{animation:shk .35s}
-@keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.pz .boxes input{width:min(100%,260px)}
-.pz .row.ok input{border-color:var(--mint)}
+.pz .row.ok .tiles,.pz .row.ok .hintb{display:none}
 .pz .hintb{margin-left:6px}
-.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}
 </style>
 </head>
-<body data-stage data-unit="5" data-title="Ⅴ단원 글자 타일 퍼즐" data-sub="중1 Ⅴ단원 · 단원 정리 · 미래엔 219, 222쪽">
+<body data-stage data-unit="5" data-title="Ⅴ단원 SNS 피드 지킴이" data-sub="중1 Ⅴ단원 · 단원 정리 · 미래엔 219, 222쪽">
 <main>
   <span class="badge">중1 Ⅴ단원 · 단원 정리</span>
-  <h1>Ⅴ단원 글자 타일 퍼즐</h1>
-  <p class="lead">설명을 읽고 <b>글자 타일</b>을 순서대로 눌러 용어를 완성해 보세요. 함정 타일도 섞여 있어요! 막히면 <b>초성 힌트</b>를 눌러요.</p>
+  <h1>📱 Ⅴ단원 SNS 피드 지킴이</h1>
+  <p class="lead">우리 반 친구들이 SNS에 올린 게시물을 살펴보며 <b>개인 정보 노출, 피싱, 저작권 침해, 사이버 폭력, 디지털 과의존</b>을 찾아내고, 알맞게 대처해 <b>디지털 시민 지수</b>를 높여 보세요!</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card" data-think="디지털 사회|디지털 윤리|개인 정보|저작권">
-      <p>이 단원에서 배운 용어 중 가장 기억에 남는 것은 무엇인가요? 친구에게 한 문장으로 설명해 보세요.</p>
+    <div class="card" data-think="개인 정보|피싱|저작권|사이버 폭력|과의존">
+      <p>SNS에 사진이나 글을 올리기 전에, 나는 무엇을 확인하나요? 한 가지만 말해 보세요.</p>
     </div>
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <h2 class="step-h"><span class="no">2</span>피드 지킴이</h2>
+    <div class="card" data-bot="게시물을 잘 보고 괜찮은지, 문제가 있는지 판단해 봐! 위치 태그, 글, 댓글까지 꼼꼼히 📱">
+      <h3>📱 우리 반 피드를 지켜라</h3>
+      <div class="fw">
+        <div class="phone"><div class="ph-scr">
+          <div class="ph-bar"><span id="clock">8:40</span><i>▂▄▆ 📶 🔋</i></div>
+          <div class="noti" id="noti"></div>
+          <div class="app-h"><b>모두의 피드</b><span>♡✉</span></div>
+          <div class="stories" id="stories"></div>
+          <div class="feed" id="feed"></div>
+          <div class="ov" id="intro">
+            <div class="ic">🛡️</div>
+            <h4>오늘의 미션: 피드 지킴이</h4>
+            <p>게시물 7개가 올라와요.<br>① 괜찮은지 / 문제인지 판단하고<br>② 문제라면 어떤 문제인지,<br>③ 어떻게 대처할지 골라요.</p>
+            <button class="btn" id="start">피드 열기 ▶</button>
+          </div>
+        </div></div>
+        <div class="fw-side">
+          <div class="gauge" id="gauge"><div class="t"><span>🛡️ 디지털 시민 지수</span><span id="gv">40</span></div><div class="gbar"><i id="gb"></i></div><div class="dots" id="dots"></div></div>
+          <div class="judge" id="judge"><p class="hint" style="margin:0">휴대폰 화면의 <b>피드 열기</b>를 눌러 시작해요.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" data-bot="오늘 찾은 문제들을 다시 한 번 정리해 보자 📋">
+      <h3>📋 피드 지킴이 결과</h3>
+      <div id="result"><p class="hint">앞 화면에서 게시물 7개를 모두 살펴보면 결과가 나타나요.</p></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>보너스: 글자 타일 퍼즐</h2>
     <div class="card" data-bot="디지털 사회와 직업 용어를 맞혀 봐 🧩">
       <h3>🧩 디지털 사회와 직업</h3>
+      <p class="hint">설명을 읽고 글자 타일을 순서대로 눌러 용어를 완성해요. 함정 타일도 섞여 있어요!</p>
       <div class="pz" id="p1"></div>
     </div>
     <div class="card" data-bot="디지털 윤리 용어를 맞혀 봐 🧩">
@@ -59,7 +176,7 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">3</span>스스로 점검</h2>
+    <h2 class="step-h"><span class="no">4</span>스스로 점검</h2>
     <div class="card">
       <p>할 수 있게 된 것에 체크해 보세요. (저장되지 않아요.)</p>
       <div class="self" id="self"></div>
@@ -68,16 +185,215 @@
   </section>
 
   <section class="step sum">
-    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <h2 class="step-h"><span class="no">5</span>한 줄 정리</h2>
     <div class="card">
-      <p>디지털 사회를 살아가는 우리는 기술의 변화를 이해하고 진로를 준비하며, <b>디지털 윤리</b>를 실천하고 <b>개인 정보</b>와 <b>저작권</b>을 보호해야 해요.</p>
+      <p>디지털 사회를 살아가는 우리는 올리기 전에 한 번 더 확인하고(<b>개인 정보</b>·<b>저작권</b>), 의심스러운 링크는 누르지 않고(<b>피싱</b>), 상처 주는 말에 동조하지 않으며(<b>디지털 윤리</b>), 스스로 사용 시간을 조절해요.</p>
     </div>
   </section>
-  <p class="src">미래엔 중학교 정보 219, 222쪽 정리 활동을 바탕으로 새로 구성</p>
+  <p class="src">미래엔 중학교 정보 219, 222쪽 정리 활동을 바탕으로 새로 구성 · 게시물의 이름과 내용은 모두 지어낸 것이에요.</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5" id="cred"></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
+const P = '../assets/photos/';
+const CRED = {
+  f_sunset: ['Kitesurfer at sunset, Workum, may 2017.jpg', 'Villy Fink Isaksen', 'CC BY-SA 4.0'],
+  f_apt: ['Daechi Dongbo Centreville Apartment Complex 3.jpg', 'kallerna', 'CC BY-SA 4.0'],
+  f_gift: ['Brown gift box with red ribbon and bow.jpg', 'Shixart1985', 'CC BY 2.0'],
+  f_cat: ['Calico cat, - Assisi, Italy.jpg', 'Terragio67', 'CC BY-SA 4.0'],
+  f_cinema: ['Mayan Theater (Denver), Main Screen, 2025.jpg', 'Chevsapher', 'CC0'],
+  f_court: ['Outdoor basketball court, Hurst Park, Molesey, Surrey 02.jpg', 'Mertbiol', 'CC0'],
+  f_gamepad: ['Nintendo-Switch-Pro-Controller-FL.jpg', 'Evan-Amos', 'Public domain'],
+};
+$('#cred').innerHTML = Object.values(CRED).map(([t, a, l]) => `<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(t.replace(/ /g, '_'))}" target="_blank" rel="noopener">${t}</a> · ${a} · ${l}</li>`).join('');
+
+const TYPES = [['priv', '🔒 개인 정보 노출'], ['phish', '🎣 피싱·사칭'], ['copy', '©️ 저작권 침해'], ['bully', '💢 사이버 폭력'], ['over', '🌀 디지털 과의존']];
+const TN = Object.fromEntries(TYPES);
+/* bad: 문제 유형(없으면 괜찮은 게시물) · acts[0]이 정답(화면에서는 섞음) */
+const POSTS = [
+  {img: 'f_sunset', user: 'sky_haru', col: '#ff9f5a', time: '2시간 전', likes: 24,
+   cap: '블로그 배경으로 쓸 노을 사진 찾았다 🌅 <span class="hash">#노을 #바다</span><br><small>📷 출처: 위키미디어 공용 · Villy Fink Isaksen · CC BY-SA 4.0</small>',
+   ok: '자유 이용이 허락된 사진을 쓰면서 출처와 이용 조건(CCL)을 밝혔어요. 저작권을 지킨 좋은 예예요! 👍'},
+  {img: 'f_apt', user: 'minseo.daily', col: '#7c5cff', time: '1시간 전', likes: 13, tag: '📍 ○○동 새솔아파트',
+   cap: '드디어 이사 완료 🏠✨ <span class="red">새솔아파트 105동 1203호</span>야! 주말에 놀러 와~ 모르는 거 있으면 <span class="red">010-2345-6789</span>로 연락해 <span class="hash">#이사 #새집</span>',
+   bad: 'priv', why: '집 주소(동·호수), 전화번호, 위치 태그는 나를 알아볼 수 있는 <b>개인 정보</b>예요. 전체 공개 게시물은 모르는 사람도 볼 수 있어요.',
+   acts: ['동·호수와 전화번호를 지우고, 위치 태그를 빼고, 공개 범위를 친한 친구로 바꾼다', '친구들만 보겠지 하고 그대로 둔다', '전화번호만 지우고 주소는 그대로 둔다'],
+   miss: ['📩 메시지 · 처음 보는 계정', '105동 맞지? ㅎㅎ 지금 너희 아파트 앞인데 나와 볼래?'],
+   fix: '🔒 친한 친구만 · 주소·연락처 가림'},
+  {img: 'f_gift', user: 'event_official★', col: '#e04848', time: '방금', likes: 2,
+   cap: '🎉 축하합니다! 최신 스마트폰 <b>당첨</b>! 오늘 안에 아래 링크에서 <u>이름·주민등록번호·계정 비밀번호</u>를 입력하면 바로 배송해 드려요 👉 <span class="hash">bit.ly/fr33-ph0ne</span>',
+   bad: 'phish', why: '공식처럼 꾸민 계정이 급하게 재촉하며 <b>비밀번호·주민등록번호</b>를 요구해요. 개인 정보를 빼내려는 <b>피싱</b>이에요. 진짜 회사는 비밀번호를 묻지 않아요.',
+   acts: ['링크를 누르지 않고 신고·차단한 뒤, 친구들과 어른께 알린다', '진짜인지 확인하려고 링크만 살짝 눌러 본다', '비밀번호만 빼고 이름과 주민등록번호는 입력한다'],
+   miss: ['⚠️ 보안 알림', '해외에서 내 계정에 새 로그인이 감지되었습니다. 비밀번호가 변경되었습니다.'],
+   stamp: ['🚫', '피싱 신고·차단 완료']},
+  {img: 'f_cat', user: 'neko_dongne', col: '#16b8a6', time: '3시간 전', likes: 57,
+   cap: '학원 가는 길에 만난 삼색 고양이 🐱 내가 직접 찍었어! (위치 정보는 껐음) <span class="hash">#고양이 #길냥이</span>',
+   ok: '직접 찍은 사진이고, 위치 정보도 꺼서 개인 정보를 지켰어요. 마음 편히 ♡를 눌러도 되는 게시물! 🐱'},
+  {img: 'f_cinema', user: 'movie_free_zone', col: '#27304a', time: '5시간 전', likes: 88,
+   cap: '🎬 어제 개봉한 영화 <b>전체 파일</b> 공유합니다~ 극장 가지 말고 여기서 공짜로 다운받으세요! 공유 많이 해 주세요 🙏 <span class="hash">#무료영화 #다운</span>',
+   bad: 'copy', why: '영화는 만든 사람의 <b>저작물</b>이에요. 허락 없이 전체 파일을 올리고 퍼뜨리는 것은 <b>저작권 침해</b>이고, 불법 파일을 내려받거나 공유하는 것도 문제가 돼요.',
+   acts: ['내려받거나 공유하지 않고 신고한 뒤, 정식 서비스나 극장에서 본다', '나만 보고 공유하지 않으면 괜찮으니 내려받는다', '친구들도 볼 수 있게 단톡방에 공유한다'],
+   miss: ['⚖️ 알림', '불법 복제물을 내려받고 공유한 기록으로 저작권 침해 경고를 받았습니다.'],
+   stamp: ['🚫', '불법 공유 게시물 신고됨']},
+  {img: 'f_court', user: 'jun_ball', col: '#3b6cf6', time: '어제', likes: 31,
+   cap: '오늘 반 대항 농구 졌다 😤 솔직히 다 <b>도윤</b> 때문임 <span class="hash">#농구 #패배</span>',
+   cmts: [['b', 'ha_0n', 'ㅋㅋㅋ 인정 걔 진짜 못함'], ['b', 'zz_ryu', '다음 경기 땐 단톡방에서 빼자 ㅋㅋ'], ['b', 'min_k', '도윤 프사 캡처해서 올림 ㅋㅋ'], ['m', 'doyun_', '...']],
+   bad: 'bully', why: '한 친구를 탓하고, 놀리고, 따돌리자는 댓글과 사진 캡처는 <b>사이버 폭력</b>이에요. 웃자고 단 댓글도 상대에게는 큰 상처가 되고, 동조하는 것도 가해가 될 수 있어요.',
+   acts: ['동조하지 않고 그만하자는 댓글을 남기고, 도윤이를 위로하며, 증거를 저장해 선생님께 알린다', '나는 댓글을 안 달았으니 그냥 넘어간다', '분위기 맞추려고 웃는 이모티콘만 단다'],
+   miss: ['💬 메시지 · doyun_', '나 내일 학교 가기 싫어… 다들 나 싫어하는 것 같아.'],
+   fix: '💬 내 댓글이 분위기를 바꿨어요'},
+  {img: 'f_gamepad', user: 'game.king_07', col: '#ffb000', time: '오전 4:12', likes: 9,
+   cap: '새벽 4시인데 아직 게임 중 🎮 오늘도 밤샘 각! 학교에서 자면 됨 ㅋㅋ 요즘 게임 안 하면 너무 불안함 <span class="hash">#밤샘 #랭크전</span>',
+   bad: 'over', why: '밤을 새우고, 생활(학교·잠)에 지장이 생기고, 안 하면 불안한 것은 <b>디지털 과의존</b>의 신호예요. 스스로 조절하는 습관이 필요해요.',
+   acts: ['사용 시간을 정해 알림을 설정하고, 잠자기 1시간 전에는 기기를 다른 방에 둔다', '주말에 몰아서 더 하면 괜찮아진다', '알림을 모두 켜 두고 친구들과 경쟁한다'],
+   miss: ['😵 다음 날', '수업 시간에 졸다가 지각까지… 이번 주에만 세 번째예요.'],
+   noti: ['⏰ 사용 시간 알림', '오늘 정한 게임 시간 1시간을 다 썼어요. 내일 또 만나요! 😴']},
+];
+const CLOCK = ['8:40', '9:15', '10:02', '12:30', '15:48', '18:20', '21:05'];
+const shuf = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+let idx = -1, score = 40, first = [], cur = null;
+const res = [];
+
+$('#stories').innerHTML = ['나', 'ㅁ', 'ㄴ', 'ㅈ', 'ㅅ', 'ㄱ', 'ㅎ'].map(c => `<i data-c="${c}"></i>`).join('');
+$('#dots').innerHTML = POSTS.map(() => '<i></i>').join('');
+const setScore = d => {
+  score = Math.max(0, Math.min(100, score + d));
+  $('#gv').textContent = score; $('#gb').style.width = score + '%';
+  if (!d) return;
+  const g = $('#gauge'); g.classList.remove('up', 'down'); void g.offsetWidth; g.classList.add(d > 0 ? 'up' : 'down');
+};
+setScore(0);
+let notiT;
+const noti = (h, t, cls) => {
+  const n = $('#noti'); n.className = 'noti ' + (cls || ''); n.innerHTML = `<small>${h}</small>${t}`;
+  void n.offsetWidth; n.classList.add('show');
+  clearTimeout(notiT); notiT = setTimeout(() => n.classList.remove('show'), 4200);
+};
+
+function postHTML(p){
+  const cm = p.cmts ? `<div class="p-cmt">${p.cmts.map(([k, u, t]) => `<div data-c="${k}"><b>${u}</b> ${t}</div>`).join('')}</div>` : `<div class="p-cmt"><span class="mute">댓글 ${Math.round(p.likes / 3)}개 모두 보기</span></div>`;
+  return `<article class="post" id="post">
+    <div class="p-h"><span class="av" style="background:${p.col}">${p.user[0].toUpperCase()}</span><div><b>${p.user}</b><small>${p.time}</small></div><span class="more">⋯</span></div>
+    <div class="p-img" style="background-image:url(${P}${p.img}.jpg)">${p.tag ? `<span class="tag">${p.tag}</span>` : ''}<div class="big-heart">♥</div></div>
+    <div class="p-act"><span class="hrt">♡</span><span>💬</span><span>↗</span><span class="bm">🔖</span></div>
+    <div class="p-like">좋아요 <span class="lk">${p.likes}</span>개</div>
+    <div class="p-cap"><b>${p.user}</b>${p.cap}</div>${cm}</article>`;
+}
+function dots(){ $$('#dots i').forEach((d, i) => d.className = i === idx ? 'cur' : (res[i] === undefined ? '' : res[i] ? 'ok' : 'miss')); }
+
+function next(){
+  idx++; dots();
+  if (idx >= POSTS.length) return finish();
+  cur = POSTS[idx]; first = [];
+  $('#feed').innerHTML = postHTML(cur); $('#feed').scrollTop = 0;
+  $('#clock').textContent = CLOCK[idx];
+  askOk();
+}
+function like(){
+  const h = $('#post .hrt'); if (!h || h.classList.contains('on')) return;
+  h.textContent = '♥'; h.classList.add('on'); $('#post .lk').textContent = cur.likes + 1;
+  const b = $('#post .big-heart'); b.classList.remove('go'); void b.offsetWidth; b.classList.add('go');
+}
+function why(html, then, label){
+  const w = $('#why'); w.innerHTML = html + (then ? `<div style="margin-top:8px"><button class="btn" id="wgo">${label || '다음 게시물 ▶'}</button></div>` : ''); w.classList.add('show');
+  if (then) $('#wgo').onclick = then;
+}
+function askOk(){
+  $('#judge').innerHTML = `<h4>${idx + 1} / ${POSTS.length} · 이 게시물, 괜찮을까요?</h4>
+    <p class="hint" style="margin-top:0">사진의 위치 태그, 글, 댓글까지 꼼꼼히 읽어 보세요.</p>
+    <div class="jbtns"><button class="okb" data-v="1">👍 괜찮아요</button><button class="nob" data-v="0">🚨 문제 있어요</button></div><div class="why" id="why"></div>`;
+  $$('#judge .jbtns button').forEach(b => b.onclick = () => judgeOk(b.dataset.v === '1'));
+}
+function judgeOk(saysOk){
+  $$('#judge .jbtns button').forEach(b => b.disabled = true);
+  if (!cur.bad){
+    if (saysOk){ setScore(+8); res[idx] = true; like(); noti('💗 ' + cur.user, '내가 좋아요를 눌렀어요!', 'good'); why('⭕ ' + cur.ok, next); }
+    else { setScore(-4); res[idx] = false; why('🤔 이건 괜찮은 게시물이에요. ' + cur.ok, next); }
+    dots(); return;
+  }
+  if (saysOk){
+    first.push(false); setScore(-6);
+    noti(cur.miss[0], cur.miss[1], 'warn'); if (innerWidth < 640) $('.phone').scrollIntoView({behavior: 'smooth', block: 'start'});
+    why('😱 앗! 그냥 넘어갔더니 이런 일이 생겼어요. 이 게시물에는 <b>문제</b>가 있어요. 다시 살펴보고 어떤 문제인지 찾아봐요.', askType, '어떤 문제인지 찾기 ▶');
+  } else { first.push(true); setScore(+3); askType(); }
+}
+function askType(){
+  $('#judge').innerHTML = `<h4>🚨 어떤 문제인가요?</h4><div class="types">${TYPES.map(([k, t]) => `<button data-k="${k}">${t}</button>`).join('')}</div><div class="why" id="why"></div>`;
+  let tried = false;
+  $$('#judge .types button').forEach(b => b.onclick = () => {
+    if (b.dataset.k === cur.bad){
+      b.classList.add('o'); if (!tried){ first.push(true); setScore(+3); }
+      $$('#judge .types button').forEach(x => x.disabled = true);
+      why('⭕ ' + cur.why, askAct, '어떻게 대처할까? ▶');
+    } else {
+      if (!tried){ first.push(false); setScore(-4); } tried = true;
+      b.classList.add('x'); b.disabled = true; const t = $('#judge .types'); t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake');
+    }
+  });
+}
+const NOPE = {priv: '정보가 조금이라도 남아 있으면 누군가 나를 찾아낼 수 있어요.', phish: '링크를 누르거나 일부만 입력해도 위험해요.', copy: '불법 파일을 내려받는 것도 저작권 침해에 함께하는 거예요.', bully: '모른 척하거나 동조하는 것도 친구에게 상처가 돼요.', over: '몰아서 하거나 경쟁하면 조절이 더 어려워져요.'};
+function askAct(){
+  const opts = shuf(cur.acts.map((t, k) => [t, k]));
+  $('#judge').innerHTML = `<h4>🛠️ ${TN[cur.bad]} · 어떻게 대처할까요?</h4><div class="acts">${opts.map(([t, k]) => `<button data-k="${k}">${t}</button>`).join('')}</div><div class="why" id="why"></div>`;
+  let tried = false;
+  $$('#judge .acts button').forEach(b => b.onclick = () => {
+    if (b.dataset.k === '0'){
+      b.classList.add('o'); if (!tried){ first.push(true); setScore(+3); }
+      $$('#judge .acts button').forEach(x => x.disabled = true);
+      res[idx] = first.every(Boolean); dots(); fixPost();
+      why('⭕ 좋은 대처예요! 게시물이 어떻게 바뀌었는지 휴대폰을 봐요.', next);
+    } else {
+      if (!tried){ first.push(false); setScore(-4); } tried = true;
+      b.classList.add('x'); b.disabled = true;
+      why('❌ ' + NOPE[cur.bad] + ' 다른 방법을 골라 보세요.');
+    }
+  });
+}
+const showCap = () => { const c = $('#post .p-cap'); if (c) $('#feed').scrollTo({top: Math.max(0, c.offsetTop - 50), behavior: 'smooth'}); if (innerWidth < 640) $('.phone').scrollIntoView({behavior: 'smooth', block: 'start'}); };
+function chip(post, t){ post.querySelector('.p-like').insertAdjacentHTML('beforebegin', `<span class="lockchip">${t}</span>`); }
+function fixPost(){
+  const p = cur, post = $('#post');
+  if (p.bad === 'priv'){
+    $$('#post .red').forEach(r => r.classList.add('hide'));
+    const t = post.querySelector('.tag'); if (t) t.remove();
+    showCap(); chip(post, p.fix); noti('🔒 공개 범위 변경', '이제 친한 친구 12명만 이 게시물을 볼 수 있어요.', 'good');
+  } else if (p.stamp){
+    post.querySelector('.p-img').insertAdjacentHTML('beforeend', `<div class="stamp"><big>${p.stamp[0]}</big><em>${p.stamp[1]}</em></div>`);
+    $('#feed').scrollTo({top: 0, behavior: 'smooth'}); if (innerWidth < 640) $('.phone').scrollIntoView({behavior: 'smooth', block: 'start'});
+  } else if (p.bad === 'bully'){
+    $$('#post .p-cmt div[data-c="b"]').forEach((d, k) => setTimeout(() => d.classList.add('gone'), 250 * k));
+    const c = post.querySelector('.p-cmt'), add = (t, ms) => setTimeout(() => { c.insertAdjacentHTML('beforeend', `<div class="mine">${t}</div>`); $('#feed').scrollTo({top: 9999, behavior: 'smooth'}); }, ms);
+    add('<b>나</b> 이제 그만하자. 한 사람 탓할 일 아니야. 도윤아 오늘 수비 멋있었어 👍', 800);
+    add('<b>ha_0n</b> 맞아 내가 심했다… 도윤아 미안 🙏', 1700);
+    add('<b>doyun_</b> 고마워 ㅠㅠ 다음엔 같이 이기자!', 2600);
+    setTimeout(() => chip(post, p.fix), 800);
+  } else if (p.noti){
+    noti(p.noti[0], p.noti[1], 'good');
+    post.querySelector('.p-img').style.filter = 'grayscale(1) brightness(.85)';
+    chip(post, '🌙 오후 10시 이후 방해 금지 모드'); showCap();
+  }
+}
+function finish(){
+  const n = res.filter(Boolean).length;
+  const grade = score >= 90 ? ['🌟', '디지털 시민 마스터'] : score >= 70 ? ['👍', '든든한 디지털 시민'] : ['🌱', '성장하는 디지털 시민'];
+  $('#feed').innerHTML = '';
+  const ov = $('#intro'); ov.hidden = false;
+  ov.innerHTML = `<div class="ic">${grade[0]}</div><h4>피드 지킴이 완료!</h4><p>디지털 시민 지수 <b style="font-size:1.4rem;color:var(--ink)">${score}</b></p><span class="badge2">${grade[1]}</span><p>한 번에 바르게 판단한 게시물 ${n} / ${POSTS.length}</p><button class="btn ghost" id="again">다시 하기 ↺</button>`;
+  $('#again').onclick = restart;
+  $('#judge').innerHTML = `<h4>🎉 모든 게시물을 살펴봤어요!</h4><p style="margin:0">다음 화면에서 오늘 찾아낸 문제들을 정리해 봐요.</p>`;
+  $('#result').innerHTML = `<p><span class="badge2">${grade[0]} ${grade[1]} · ${score}점</span></p>
+    <div class="rep">${POSTS.map((p, i) => `<div class="${res[i] ? 'ok' : 'miss'}"><img src="${P}${p.img}.jpg" alt=""><span>${res[i] ? '⭕' : '🔁'} <b>${p.bad ? TN[p.bad] : '👍 괜찮은 게시물'}</b> · ${p.bad ? p.acts[0] : p.ok}</span></div>`).join('')}</div>
+    <p class="hint">🔁 표시는 처음에 헷갈렸던 게시물이에요. 왜 헷갈렸는지 짝과 이야기해 봐요.</p>`;
+  reportQuiz('feed5', POSTS.map((_, i) => !!res[i]));
+}
+function restart(){
+  idx = -1; score = 40; res.length = 0; setScore(0);
+  $('#intro').hidden = true; next();
+}
+$('#start').onclick = () => { $('#intro').hidden = true; next(); };
+
+/* ── 보너스: 글자 타일 퍼즐 ── */
 const SETS = {
   p1: [
     ['디지털 기술이 사회·경제·문화 등 다양한 분야에 큰 영향을 미치는 사회', '디지털사회'],
@@ -102,8 +418,7 @@ const SETS = {
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 const cho = w => [...w].map(c => { const k = c.charCodeAt(0) - 0xAC00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : c; }).join('');
 let solved = 0; const totalN = Object.values(SETS).flat().length;
-const ALLW = Object.values(SETS).flat().map(x => x[1]), first = {};
-const shuf = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+const ALLW = Object.values(SETS).flat().map(x => x[1]), tfirst = {};
 Object.entries(SETS).forEach(([id, list]) => {
   $('#' + id).innerHTML = list.map(([c, w], i) => `<div class="row" data-w="${w}"><p class="clue">${i + 1}. ${c} <span class="pill">${w.length}글자</span></p><div class="slots"></div><div class="tiles"></div><div class="ctrl"><button class="btn ghost hintb">💡 초성 힌트</button><span class="hint"></span></div><div class="feedback"></div></div>`).join('');
 });
@@ -111,20 +426,20 @@ $$('.pz .row').forEach(row => {
   const w = row.dataset.w, chars = [...w];
   const pool = shuf([...new Set(ALLW.filter(x => x !== w).join(''))].filter(ch => !chars.includes(ch)));
   const tiles = shuf(chars.concat(pool.slice(0, chars.length <= 3 ? 3 : 2)));
-  let pick = [];
+  let sel = [];
   const draw = () => {
-    row.querySelector('.slots').innerHTML = chars.map((_, i) => `<span class="${pick[i] !== undefined ? 'f' : ''}" data-i="${i}">${pick[i] !== undefined ? tiles[pick[i]] : ''}</span>`).join('');
-    row.querySelector('.tiles').innerHTML = tiles.map((t, i) => `<button class="${pick.includes(i) ? 'used' : ''}" data-i="${i}" aria-label="${t} 타일">${t}</button>`).join('');
-    row.querySelectorAll('.tiles button').forEach(b => b.onclick = () => { if (row.classList.contains('ok') || pick.length >= chars.length) return; pick.push(+b.dataset.i); draw(); if (pick.length === chars.length) check(); });
-    row.querySelectorAll('.slots span').forEach(s => s.onclick = () => { if (row.classList.contains('ok')) return; const i = +s.dataset.i; if (pick[i] === undefined) return; pick.splice(i, 1); draw(); });
+    row.querySelector('.slots').innerHTML = chars.map((_, i) => `<span class="${sel[i] !== undefined ? 'f' : ''}" data-i="${i}">${sel[i] !== undefined ? tiles[sel[i]] : ''}</span>`).join('');
+    row.querySelector('.tiles').innerHTML = tiles.map((t, i) => `<button class="${sel.includes(i) ? 'used' : ''}" data-i="${i}" aria-label="${t} 타일">${t}</button>`).join('');
+    row.querySelectorAll('.tiles button').forEach(b => b.onclick = () => { if (row.classList.contains('ok') || sel.length >= chars.length) return; sel.push(+b.dataset.i); draw(); if (sel.length === chars.length) check(); });
+    row.querySelectorAll('.slots span').forEach(s => s.onclick = () => { if (row.classList.contains('ok')) return; const i = +s.dataset.i; if (sel[i] === undefined) return; sel.splice(i, 1); draw(); });
   };
   const check = () => {
-    const ok = pick.map(i => tiles[i]).join('') === w;
-    if (!(w in first)) first[w] = ok;
+    const ok = sel.map(i => tiles[i]).join('') === w;
+    if (!(w in tfirst)) tfirst[w] = ok;
     if (ok){ row.classList.add('ok'); solved++; feedback(row.querySelector('.feedback'), true, '⭕ 정답! ' + w);
       $('#total').textContent = solved === totalN ? `🎉 ${totalN}개 용어를 모두 완성했어요!` : `${solved} / ${totalN} 완성`; $('#total').classList.add('show');
-      if (solved === totalN) reportQuiz('tiles5', ALLW.map(x => !!first[x]));
-    } else { feedback(row.querySelector('.feedback'), false, '❌ 다른 용어예요. 설명을 다시 읽어 보세요.'); const sl = row.querySelector('.slots'); sl.classList.remove('shake'); void sl.offsetWidth; sl.classList.add('shake'); setTimeout(() => { pick = []; draw(); }, 700); }
+      if (solved === totalN) reportQuiz('tiles5', ALLW.map(x => !!tfirst[x]));
+    } else { feedback(row.querySelector('.feedback'), false, '❌ 다른 용어예요. 설명을 다시 읽어 보세요.'); const sl = row.querySelector('.slots'); sl.classList.remove('shake'); void sl.offsetWidth; sl.classList.add('shake'); setTimeout(() => { sel = []; draw(); }, 700); }
   };
   row.querySelector('.hintb').onclick = () => { row.querySelector('.ctrl .hint').textContent = '💡 ' + cho(w); };
   draw();

@@ -134,9 +134,9 @@ const contentsList = [
   {unit: 5, sub: '5-2-2', icon: '🔐', lesson: true, badge: '45분 종합 수업', title: '내 개인 정보 지키기', desc: '개인 정보의 범위를 알고, 안전한 비밀번호와 보안 수칙으로 내 정보를 지키는 방법을 정리해요. (교과서 210~213쪽)', href: 'lesson/5-2-2.html',},
   {unit: 5, sub: '5-2-3', icon: '⚖️', badge: '중1 Ⅴ단원 · 저작권 보호', title: '저작권 판정소', desc: '저작 인격권과 저작 재산권을 구분하고, 보호 기간 계산과 저작물 이용 5단계를 익혀 침해 여부를 판정해요. (교과서 214, 216~218쪽)', href: 'culture/5-10-copyright.html', tags: ['개념'], std: '05-03', core: true, key: true},
   {unit: 5, sub: '5-2-3', icon: '🎛️', badge: '중1 Ⅴ단원 · 저작권 보호', title: '디지털 저작물과 CCL 조합기', desc: '소프트웨어 사용 범위와 공공누리 유형을 알아보고, CCL 조건을 조합해 이용할 수 있는 범위를 확인해요. (교과서 215쪽)', href: 'culture/5-11-license.html', tags: ['개념'], std: '05-03', core: true},
-  {unit: 5, sub: '5-2-3', icon: '🧩', badge: '중1 Ⅴ단원 · 단원 정리', title: 'Ⅴ단원 글자 타일 퍼즐', desc: '설명을 읽고 섞인 글자 타일을 순서대로 눌러 디지털 사회·윤리·개인 정보·저작권 용어를 완성해요. (교과서 219, 222쪽)', href: 'culture/5-12-puzzle.html', tags: ['정리','게임'], std: '05-01~03', core: false},
+  {unit: 5, sub: '5-2-3', icon: '📱', badge: '중1 Ⅴ단원 · 단원 정리', title: 'Ⅴ단원 SNS 피드 지킴이', desc: '친구들의 SNS 게시물(실제 사진)을 살펴 개인 정보 노출·피싱·저작권 침해·사이버 폭력·과의존을 찾아내고 대처해 디지털 시민 지수를 높여요. 보너스 글자 타일 퍼즐도 있어요.', href: 'culture/5-12-puzzle.html', tags: ['정리','게임'], std: '05-01~03', core: false},
   {unit: 5, sub: '5-2-3', icon: '📰', badge: '중1 Ⅴ단원 · 창의·융합 프로젝트', title: '카드 뉴스 기획실', desc: '디지털 윤리 주제를 골라 사례를 정리하고, 3장짜리 카드 뉴스 개요를 미리 보기로 만들어 봐요. (교과서 220~221쪽)', href: 'culture/5-13-card-news.html', tags: ['프로젝트','토의'], live: true, std: '05-02, 05-03', core: false},
-  {unit: 5, sub: '5-2-3', icon: '©️', lesson: true, badge: '45분 종합 수업', title: '저작권 지키며 만들고 나누기', desc: '저작권과 CCL을 이해하고, 저작물을 바르게 이용하고 나누는 방법을 정리하며 Ⅴ단원을 마무리해요. (교과서 214~222쪽)', href: 'lesson/5-2-3.html',},
+  {unit: 5, sub: '5-2-3', icon: '©️', lesson: true, badge: '45분 종합 수업', title: '저작권 지키며 만들고 나누기', desc: '저작권과 CCL을 이해하고, 저작물을 바르게 이용하고 나누는 방법을 정리하며 Ⅴ단원을 마무리해요. (교과서 214~221쪽)', href: 'lesson/5-2-3.html',},
 ];
 
 /* 학생 로그인(학번 + 개인 코드) 켜기. false면 지금처럼 로그인 없이 누구나 체험할 수 있다.
