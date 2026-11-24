@@ -21,7 +21,7 @@
 .sw span{width:26px;height:26px;border-radius:6px;border:1px solid var(--line)}
 </style>
 </head>
-<body data-unit="2" data-title="픽셀 그림과 색" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 47쪽">
+<body data-stage data-unit="2" data-title="픽셀 그림과 색" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 47쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>픽셀 그림과 색</h1>
@@ -29,7 +29,7 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="작은 네모(픽셀)|선과 곡선|아무것도 안 보여|글자">
       <p>휴대폰 사진을 아주 크게 확대하면 무엇이 보일까요? 그 작은 네모 하나하나를 컴퓨터는 어떻게 기억할까요?</p>
     </div>
   </section>
@@ -40,7 +40,7 @@
       <button data-m="draw" class="active">✏️ 자유롭게 그리기</button>
       <button data-m="decode">🔐 암호 풀기</button>
     </div>
-    <div class="card">
+    <div class="card" data-bot="1인 칸만 칠하면 숨은 그림이 나와 ✏️">
       <h3>✏️ 1비트 픽셀 그림</h3>
       <div id="decodeBar" hidden style="margin-bottom:12px">
         <p style="margin:0 0 8px">오른쪽 암호를 보고 <b>1인 칸만</b> 칠해 숨은 그림을 찾아보세요.</p>
@@ -66,7 +66,7 @@
       <p class="hint">📏 8×8 흑백 그림 = 픽셀 64개 = <b>64비트</b> = <b>8바이트</b>. 이미지 용량 = 픽셀 하나의 용량 × 전체 픽셀 수</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="2비트면 00, 01, 10, 11! 색이 몇 가지일까? 🖍️">
       <h3>🖍️ 2비트로 4가지 색 칠하기</h3>
       <p>픽셀 하나에 <b>2비트</b>를 쓰면 00, 01, 10, 11 → <b>4가지 색</b>을 나타낼 수 있어요. 붓 색을 고르고 칸을 칠해 보세요.</p>
       <div class="ctrl" id="pal4"></div>
@@ -82,7 +82,7 @@
       <p class="src" style="text-align:left;margin-top:8px">참고: 씨마스 중학교 정보 56쪽</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="비트 수를 바꾸면 색의 수가 어떻게 늘어나는지 봐 🎨">
       <h3>🎨 픽셀 하나에 비트를 더 쓰면?</h3>
       <p>픽셀 하나를 몇 비트로 표현하느냐에 따라 나타낼 수 있는 색의 수가 달라져요.</p>
       <div class="seg" id="depth">
@@ -93,7 +93,7 @@
       <p class="hint">24비트는 빨강(R)·초록(G)·파랑(B)에 8비트씩 써서 16,777,216가지 색을 표현해요(트루 컬러). 비트 수가 클수록 표현할 수 있는 색이 많아져 화질이 좋아지지만, 용량도 커져요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="해상도를 올리면 용량은 어떻게 될까? 🔍">
       <h3>🔍 해상도를 바꿔 보기</h3>
       <p><b>해상도</b>는 비트맵 이미지의 <b>가로 픽셀 수 × 세로 픽셀 수</b>예요. 같은 그림을 해상도만 바꿔서 저장하면 어떻게 달라질까요?</p>
       <div class="seg" id="resSeg">
@@ -109,7 +109,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="막대를 움직여 좋아하는 색을 만들어 봐 🌈">
       <h3>🌈 빛의 3원색(RGB) 섞기 <span class="tag-more">심화</span></h3>
       <p>24비트 색은 빨강(R)·초록(G)·파랑(B)에 각각 <b>8비트(0~255)</b>를 써요. 막대를 움직여 색을 만들어 보세요. 웹 페이지에서는 이 세 값을 <b>16진수</b>로 바꿔 #RRGGBB처럼 적기도 해요.</p>
       <div class="row" style="align-items:center">

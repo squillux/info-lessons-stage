@@ -36,7 +36,7 @@
 }
 </style>
 </head>
-<body data-unit="2" data-title="비트와 이진수 카드" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 46, 48쪽">
+<body data-stage data-unit="2" data-title="비트와 이진수 카드" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 46, 48쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>비트와 이진수 카드</h1>
@@ -44,7 +44,7 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="1개|2개|3개|4개">
       <p>전구 1개로는 "예 / 아니요" 두 가지만 알릴 수 있어요.<br><b>오늘 급식 디저트 4가지 중 무엇이 나오는지</b> 친구에게 전구로 알리려면 전구가 몇 개 필요할까요?</p>
     </div>
   </section>
@@ -52,7 +52,7 @@
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
 
-    <div class="card">
+    <div class="card" data-bot="전구를 하나 더할 때마다 신호가 몇 배가 될까? 💡">
       <h3>💡 전구 = 비트(bit)</h3>
       <p>디지털 데이터의 최소 저장 단위를 <b>비트(bit: binary digit)</b>라고 해요. 1비트는 0과 1 중 하나를 나타내요. 전구를 더하거나 빼면서 신호가 몇 가지 생기는지 확인해 보세요.</p>
       <div class="ctrl">
@@ -68,7 +68,7 @@
       <div id="volt"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="카드를 뒤집어서 보이는 점의 개수를 세어 봐 🃏">
       <h3>🃏 이진수 카드로 수 만들기</h3>
       <p>카드를 누르면 뒤집혀요. 점이 보이는 앞면은 <b>1</b>, 뒷면은 <b>0</b>이에요. 보이는 점의 개수를 모두 더하면 10진수가 돼요.</p>
       <div class="bitcards" id="bitcards"></div>
@@ -80,7 +80,7 @@
       <div style="text-align:center"><button class="btn line" id="resetCards">모두 뒤집기(0으로)</button></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="큰 카드부터 넣어 보면 쉬워! 🧩">
       <h3>🧩 미션: 카드로 이 수를 만들어 보세요</h3>
       <div class="mission">
         <span>목표 수</span><span class="big-num" id="target">5</span>
@@ -91,7 +91,7 @@
       <div class="feedback" id="missionFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="2로 나누고, 나머지를 아래에서 위로 읽어 봐 ➗">
       <h3>➗ 2로 나누어 이진수 구하기 <span class="tag-opt">더 해 보기</span></h3>
       <p>카드 없이도 이진수를 구할 수 있어요. 10진수를 <b>2로 계속 나누면서 나머지</b>를 적고, 나머지를 <b>아래에서 위로</b> 읽으면 이진수가 돼요. 미션을 맞히면 그 수의 과정이 여기에 나타나요.</p>
       <div class="ctrl">
@@ -104,13 +104,13 @@
       <p class="hint">💬 내 생일 날짜(일)를 이진수로 나타내 보세요. 카드 5장으로 31일까지 모두 나타낼 수 있을까요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="글자도 그림도 소리도 결국 0과 1이야 🗺️">
       <h3>🗺️ 글자, 그림, 소리, 영상도 모두 이진수로</h3>
       <p>우리가 디지털 기기로 만나는 모든 데이터는 <b>실생활 데이터 → 이진수 표현 → 디지털 데이터</b>의 과정을 거쳐요. 눌러서 각각 어떻게 바뀌는지 미리 보고, 다음 활동에서 직접 해 봐요.</p>
       <div class="ctrl" id="flowmap"></div>
       <div id="flowOut" class="feedback show ok" style="font-weight:600"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

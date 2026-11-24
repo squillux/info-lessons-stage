@@ -35,7 +35,7 @@ table.sheet tr.g3 td:not(.rh){background:#e2f7f4}
 .dish.extra{border-color:var(--bad);background:var(--bad-soft)}
 </style>
 </head>
-<body data-unit="2" data-title="데이터 분류 정리함" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 52~53쪽">
+<body data-stage data-unit="2" data-title="데이터 분류 정리함" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 52~53쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 수집과 관리</span>
   <h1>데이터 분류 정리함</h1>
@@ -43,14 +43,14 @@ table.sheet tr.g3 td:not(.rh){background:#e2f7f4}
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="종류별로 폴더 만들기|날짜별로 정리하기|파일 이름 바꾸기|그냥 검색하기">
       <p>체험 학습을 준비하며 모은 사진, 영상, 문서, 음악 파일 수십 개가 바탕 화면에 뒤섞여 있어요. 필요한 파일을 빨리 찾으려면 어떻게 정리하면 좋을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="같은 파일도 기준을 바꾸면 다르게 정리돼 🗂️">
       <h3>🗂️ 같은 파일, 다른 기준</h3>
       <p>파일을 누른 다음 넣을 폴더를 누르세요. 먼저 <b>형식</b>으로 정리하고, 다음에는 같은 파일을 <b>의미(쓰임)</b>로 정리해 봐요.</p>
       <div class="seg" id="mode"><button data-m="0" class="active">① 형식에 따라</button><button data-m="1">② 의미에 따라</button></div>
@@ -61,7 +61,7 @@ table.sheet tr.g3 td:not(.rh){background:#e2f7f4}
       <p class="hint">💬 두 기준으로 정리한 결과를 비교해 보세요. 어떤 때는 형식 기준이, 어떤 때는 의미 기준이 더 편리할까요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="정렬 기준을 눌러서 같은 값끼리 모아 봐 📊">
       <h3>📊 스프레드시트로 정렬하기</h3>
       <p>체험 학습 희망 조사 결과예요. <b>스프레드시트</b>는 행과 열로 이루어진 표의 칸(셀)에 데이터를 넣어 계산·비교·검색할 수 있는 응용 프로그램이에요. 정렬 기준을 바꿔 보세요.</p>
       <div class="ctrl" id="sortBy" style="margin-bottom:10px"></div>
@@ -69,7 +69,7 @@ table.sheet tr.g3 td:not(.rh){background:#e2f7f4}
       <p class="hint" id="sheetQ">💬 정렬 기준을 누르면 같은 값끼리 모여요. 4월에 가고 싶은 학생은 몇 명일까요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="폴더 없이도 사진 정보로 정리할 수 있어 🏷️">
       <h3>🏷️ 메타데이터로 사진 정리하기</h3>
       <p><b>메타데이터</b>는 데이터에 대한 데이터예요. 스마트폰 사진에는 촬영 날짜, 장소, 크기 같은 정보가 함께 저장되어 있어서, 폴더를 따로 만들지 않아도 여러 기준으로 정리할 수 있어요.</p>
       <div class="seg" id="metaBy"><button data-k="none" class="active">찍은 순서</button><button data-k="place">장소별</button><button data-k="date">날짜별</button><button data-k="who">함께 찍힌 친구별</button></div>
@@ -77,7 +77,7 @@ table.sheet tr.g3 td:not(.rh){background:#e2f7f4}
       <p class="src" style="text-align:left;margin-top:8px">참고: 씨마스 중학교 정보 67쪽</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="메뉴 옆 숫자가 알레르기 번호야. 꼼꼼히! 🍱">
       <h3>🍱 급식 알레르기 음식 찾기</h3>
       <p>가상 식단표에서 알레르기를 일으킬 수 있는 음식을 찾아 분류해요. 메뉴 옆 숫자가 알레르기 유발 식품 번호예요.</p>
       <p class="hint" style="margin-top:0">1 난류 · 2 우유 · 3 메밀 · 4 땅콩 · 5 대두 · 6 밀 · 7 고등어 · 8 게 · 9 새우 · 10 돼지고기 · 11 복숭아 · 12 토마토 · 13 아황산류 · 14 호두 · 15 닭고기 · 16 쇠고기 · 17 오징어 · 18 조개류 · 19 잣</p>

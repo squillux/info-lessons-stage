@@ -190,7 +190,8 @@ html.stage-on .step-h{margin-bottom:10px}
 /* 코딩이 + 말풍선 */
 .st-guide{display:flex;align-items:flex-end;gap:8px;margin:2px 0 12px}
 html.stage-all .st-guide{display:none}
-.bot{flex:none;cursor:pointer;overflow:visible;animation:bob 2.8s ease-in-out infinite;transform-origin:50% 100%;outline-offset:4px}
+.bot{flex:none;cursor:pointer;overflow:visible;animation:bob 2.8s ease-in-out infinite;transform-origin:50% 100%;outline:none;-webkit-tap-highlight-color:transparent}
+.bot:focus,.bot:focus-visible{outline:none}
 .bot .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.4s infinite}
 .bot .ant{transform-origin:50px 21px;animation:sway 3s ease-in-out infinite}
 .bot .arm-r{transform-origin:89px 46px}

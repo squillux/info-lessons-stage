@@ -17,7 +17,7 @@ table.nt th{background:var(--bg)}
 .big{font-family:var(--cute);font-size:2.4rem;text-align:center}
 </style>
 </head>
-<body data-unit="2" data-title="나이팅게일의 장미 도표" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 63쪽">
+<body data-stage data-unit="2" data-title="나이팅게일의 장미 도표" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 63쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 구조화</span>
   <h1>나이팅게일의 장미 도표</h1>
@@ -25,14 +25,14 @@ table.nt th{background:var(--bg)}
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="기록을 모아 정리해요|의사를 더 뽑아요|약을 많이 사요|잘 모르겠어">
       <p>전쟁 중 병원에 온 병사들이 크게 다치지 않았는데도 많이 죽고 있었어요. 원인을 찾으려면 무엇부터 해야 할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="흩어진 기록을 표로 정리해 봐 📒">
       <h3>📒 흩어진 기록을 표로 구조화하기</h3>
       <p>당시에는 병원 기록이 정리되어 있지 않아 원인을 알 수 없었어요. 나이팅게일은 입원 시점, 부상, 감염 여부 등을 기록하고 정리했어요.</p>
       <div class="logs" id="logs"></div>
@@ -40,7 +40,7 @@ table.nt th{background:var(--bg)}
       <div id="tbl" class="scroll-x" style="margin-top:10px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="가장 큰 조각은 어떤 원인일까? 🌹">
       <h3>🌹 표를 장미 도표로 시각화하기</h3>
       <p>달마다 조각 하나, 조각의 넓이가 사망자 수예요. 꽃잎 모양이라 <b>장미 도표</b>라고 불렀어요.</p>
       <div class="legend"><span><i style="background:#3b6cf6"></i>감염병</span><span><i style="background:#ff7aa2"></i>부상</span><span><i style="background:#9aa3b5"></i>기타</span></div>
@@ -52,7 +52,7 @@ table.nt th{background:var(--bg)}
       <div class="feedback" id="causeFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="나이팅게일이 한 일을 순서대로 눌러 봐 🔁">
       <h3>🔁 데이터로 문제를 해결한 과정</h3>
       <p>나이팅게일이 문제를 해결한 순서대로 단계를 눌러 보세요.</p>
       <div class="opts" id="flowPool"></div>

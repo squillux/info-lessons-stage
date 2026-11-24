@@ -18,7 +18,7 @@
 .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--on));transition:width .4s}
 </style>
 </head>
-<body data-unit="2" data-title="데이터 직업 탐색" data-sub="중1 Ⅱ단원 · 진로 탐색 · 미래엔 56쪽">
+<body data-stage data-unit="2" data-title="데이터 직업 탐색" data-sub="중1 Ⅱ단원 · 진로 탐색 · 미래엔 56쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 진로 탐색</span>
   <h1>데이터 직업 탐색</h1>
@@ -26,14 +26,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="내가 본 영상 기록을 분석해서|우연히 골라서|사람이 하나하나 골라서|잘 모르겠어">
       <p>동영상 앱은 내가 좋아할 만한 영상을 어떻게 알고 추천해 줄까요? 그 뒤에서는 어떤 사람들이 일하고 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="수집부터 시작해서 순서대로 눌러 봐 📊">
       <h3>📊 빅데이터 전문가는 어떤 순서로 일할까?</h3>
       <p><b>빅데이터</b>는 전통적인 방법으로는 수집·저장·관리·분석하기 어려울 만큼 많은 양의 데이터예요. 빅데이터 전문가가 하는 일을 순서대로 눌러 보세요.</p>
       <div class="slots" id="slots"></div>
@@ -42,12 +42,12 @@
       <div class="feedback" id="orderFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="설명을 읽고 어떤 직업인지 맞혀 봐 💼">
       <h3>💼 어떤 직업일까?</h3>
       <div id="jobs"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="나에게 맞는 점을 솔직하게 체크해 봐 🙋">
       <h3>🙋 나와 맞는 점 찾기</h3>
       <p>데이터 관련 직업에 도움이 되는 특성이에요. 나에게 해당하는 것을 체크해 보세요. (기록은 저장되지 않아요)</p>
       <div class="checks" id="traits"></div>

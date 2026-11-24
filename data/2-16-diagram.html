@@ -29,7 +29,7 @@ table.ot th,table.ot td{border:1px solid var(--line);padding:4px 10px;text-align
 table.ot th{background:var(--bg)}
 </style>
 </head>
-<body data-unit="2" data-title="다이어그램: 계층형과 그래프형" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 61~62쪽">
+<body data-stage data-unit="2" data-title="다이어그램: 계층형과 그래프형" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 61~62쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 구조화</span>
   <h1>다이어그램: 계층형과 그래프형</h1>
@@ -37,14 +37,14 @@ table.ot th{background:var(--bg)}
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="2번|3번|4번|7번">
       <p>우리 반 8명이 토너먼트로 가위바위보 대회를 해요. 우승하려면 몇 번 이겨야 할까요? 말로 설명하기 어렵다면 어떻게 그려서 보여 줄 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="이긴 사람을 눌러서 한 단계씩 올려 봐 🏆">
       <h3>🏆 계층형: 가위바위보 대진표</h3>
       <p>각 경기에서 이긴 사람을 눌러 다음 단계로 올려 보세요. 대진표는 위아래로 나뉘어 가는 <b>계층형(트리)</b> 구조예요.</p>
       <div class="bracket" id="bracket"></div>
@@ -53,7 +53,7 @@ table.ot th{background:var(--bg)}
       <p class="src" style="text-align:left;margin-top:8px">참고: 천재교육 중학교 정보 66쪽</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="파일을 고르고 알맞은 폴더에 넣어 봐 📁">
       <h3>📁 계층형: 폴더 트리에 정리하기</h3>
       <p>파일 탐색기의 폴더도 계층형이에요. 파일을 누른 뒤, 넣을 폴더 이름을 누르세요.</p>
       <div id="fpile" style="margin-bottom:8px"></div>
@@ -62,7 +62,7 @@ table.ot th{background:var(--bg)}
       <div class="feedback" id="fFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="역을 눌러서 어디와 연결됐는지 확인해 봐 🚇">
       <h3>🚇 그래프형: 지하철 노선도</h3>
       <p>가상의 지하철 노선도예요. 그래프형은 두 개 이상의 데이터를 선으로 연결해 데이터 사이의 연관성을 나타내요. <span class="tag-more" style="margin:0 4px 0 0">심화</span>이때 역 같은 점을 <b>노드</b>, 역을 잇는 선을 <b>엣지</b>라고 해요. 역을 눌러 연결된 역을 확인해 보세요.</p>
       <svg id="map" viewBox="0 0 560 300"></svg>
@@ -73,7 +73,7 @@ table.ot th{background:var(--bg)}
       <p class="hint">⚠️ 그래프형의 ‘그래프’는 점과 선으로 연결한 구조예요. 데이터 시각화에 쓰는 막대그래프와는 다른 뜻이에요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="질문마다 표와 트리 중 더 편한 쪽을 골라 봐 ⚖️">
       <h3>⚖️ 표로 볼까, 트리로 볼까?</h3>
       <p>같은 학생회 데이터를 표와 트리로 나타냈어요. 버튼을 눌러 비교하고, 질문마다 어느 쪽이 더 편한지 골라 보세요.</p>
       <div class="seg" id="otSeg"><button data-v="t" class="active">📊 표</button><button data-v="r">🌳 트리</button></div>
@@ -87,7 +87,7 @@ table.ot th{background:var(--bg)}
       <p class="src" style="text-align:left;margin-top:8px">참고: 씨마스 중학교 정보 71쪽 (같은 데이터를 표와 트리로 구조화해 비교하는 활동)</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="순서, 위아래, 연결 중 무엇이 중요할까? 🧩">
       <h3>🧩 어떤 방법으로 구조화할까?</h3>
       <div id="pick"></div>
     </div>

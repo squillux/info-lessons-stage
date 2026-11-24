@@ -22,7 +22,7 @@ table.dt tr.warn td{background:#fff3f3}
 .res div{border-radius:12px;padding:8px 12px}
 </style>
 </head>
-<body data-unit="2" data-title="우리 반 체력 분석 프로젝트" data-sub="중1 Ⅱ단원 · 데이터의 구조화와 해석 · 미래엔 68~72쪽">
+<body data-stage data-unit="2" data-title="우리 반 체력 분석 프로젝트" data-sub="중1 Ⅱ단원 · 데이터의 구조화와 해석 · 미래엔 68~72쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 프로젝트</span>
   <h1>우리 반 체력 분석 프로젝트</h1>
@@ -30,20 +30,20 @@ table.dt tr.warn td{background:#fff3f3}
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="우리 반 체력 측정 기록|줄다리기 우승 팀 기록|키와 몸무게만|잘 모르겠어">
       <p>우리 반 학생들의 체력이 어느 정도인지 알고, 줄다리기를 위해 무엇을 보강해야 할지 정하려면 어떤 데이터가 필요할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="줄다리기에 필요한 힘을 측정 요소와 연결해 봐 💪">
       <h3>① 문제 이해와 데이터 수집</h3>
       <p><b>현재 상태</b>: 자신의 신체 능력 중 어느 부분이 부족한지 모른다. → <b>목표 상태</b>: 부족한 신체 능력을 알 수 있다.<br>줄다리기에 필요한 신체 부위와 측정 요소를 연결해 보세요.</p>
       <div id="parts"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="먼저 정렬하고, 필요 없는 데이터는 지워 봐 🧹">
       <h3>② 데이터 구조화: 정렬하고 필요 없는 데이터 지우기</h3>
       <p>‘국민 체력 100’ 같은 체력 측정 데이터를 내려받았다고 생각해 봐요(가상 데이터). 분석하기 좋게 정리해야 해요.</p>
       <div class="ctrl" style="margin-bottom:8px"><button class="btn ghost" id="sortBtn">⇅ 성별 → 신장 순으로 정렬</button><button class="btn line" id="resetBtn">처음으로</button></div>
@@ -51,7 +51,7 @@ table.dt tr.warn td{background:#fff3f3}
       <div class="tasks" id="tasks"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="구간별 평균을 구하고 비교해 봐 🧮">
       <h3>③ 데이터 분석과 해석</h3>
       <p>신장 구간별로 각 측정 요소의 평균값을 구해요. 스프레드시트라면 <code>=AVERAGE(첫 셀:끝 셀)</code>을 쓰고 자동 채우기 핸들로 옆 칸을 채우겠죠?</p>
       <div class="ctrl"><button class="btn" id="avgBtn">🧮 신장 구간별 평균 구하기</button><span class="hint" id="avgHint">② 정리를 먼저 끝내야 정확한 평균을 구할 수 있어요.</span></div>
@@ -63,7 +63,7 @@ table.dt tr.warn td{background:#fff3f3}
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내 기록을 넣어 보자. 저장되지 않으니 걱정 마 📋">
       <h3>④ 데이터 활용: 나의 체력과 비교하기</h3>
       <p>나의 측정 기록을 넣으면 내 키 구간의 평균과 비교해 줘요. (입력한 값은 저장되지 않아요)</p>
       <div class="me">

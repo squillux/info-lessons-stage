@@ -22,7 +22,7 @@
 .bar i{display:block;height:20px;border-radius:6px;background:linear-gradient(90deg,var(--brand),var(--mint));transition:width .5s}
 </style>
 </head>
-<body data-unit="2" data-title="설문 문항 검사기" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 55쪽">
+<body data-stage data-unit="2" data-title="설문 문항 검사기" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 55쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 수집과 관리</span>
   <h1>설문 문항 검사기</h1>
@@ -30,14 +30,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="예|아니요|둘 다 고르고 싶어|답하기 어려워">
       <p>"급식이 맛있고 양도 많나요? (예 / 아니요)" 이 질문에 "맛은 있는데 양이 적은" 친구는 무엇이라고 답해야 할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="문항마다 어떤 기준을 어겼는지 찾아봐 🔎">
       <h3>🔎 문항 검토 기준으로 검사하기</h3>
       <div class="rules">
         <div>🔁 모둠의 다른 문항과 겹치지 않는다</div>
@@ -49,12 +49,12 @@
       <div id="judge"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="어떻게 고치면 더 좋은 문항이 될까? ✏️">
       <h3>✏️ 더 좋은 문항으로 고치기</h3>
       <div id="fix"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내 문항을 만들고 체크리스트로 검사해 봐 🛠️">
       <h3>🛠️ 나만의 선택형 문항 만들기</h3>
       <div class="form">
         <label>설문 주제 <input id="topic" value="인터넷 사용 시간"></label>
@@ -73,7 +73,7 @@
       <div id="result" style="margin-top:12px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="선생님이 보낸 문항에 우리 반이 함께 답해 봐 📡">
       <h3>📡 우리 반에 진짜로 물어보기 <span class="tag-opt">실시간</span></h3>
       <p>잘 만든 문항 하나를 골라, 선생님 기기의 '나만의 선택형 문항' 칸에 입력하고 <b>📤 설정 보내기</b>를 누르세요. 학생들이 각자 기기에서 응답하면 결과가 바로 모여요. (1인 1응답, 이름은 저장되지 않아요.)</p>
       <div id="liveSurvey"></div>

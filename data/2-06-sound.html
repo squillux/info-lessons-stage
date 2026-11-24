@@ -19,7 +19,7 @@
 .enc input.bad{border-color:var(--bad);background:var(--bad-soft)}
 </style>
 </head>
-<body data-unit="2" data-title="소리를 숫자로" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 48쪽">
+<body data-stage data-unit="2" data-title="소리를 숫자로" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 48쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>소리를 숫자로</h1>
@@ -27,14 +27,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="소리 크기를 숫자로 적은 것|녹음 테이프|악보|잘 모르겠어">
       <p>스마트폰에 저장된 노래 파일 안에는 무엇이 들어 있을까요? 공기의 떨림인 소리를 어떻게 0과 1로 바꿀 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="①②③ 단계 버튼을 차례로 눌러 봐 🎵">
       <h3>🎵 소리 파형을 이진수로</h3>
       <p>단계 버튼을 차례로 눌러 소리가 이진수로 바뀌는 과정을 따라가 보세요.</p>
       <div class="seg" id="stage">
@@ -55,7 +55,7 @@
       <p class="hint">💬 표본 개수를 4개와 16개로 바꿔 보세요. 노란 막대가 원래 파형과 더 비슷해지는 쪽은? 그 대신 무엇이 늘어나나요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="간격과 단계를 바꿔 가며 들어 봐. 음량 조심! 🎧">
       <h3>🎧 귀로 비교해 보기</h3>
       <p>짧은 멜로디를 디지털로 바꿀 때 <b>표본화 간격</b>과 <b>양자화 단계</b>를 다르게 하면 소리가 어떻게 달라질까요? 🔊 소리가 나니 음량을 확인하세요.</p>
       <div class="ctrl"><b style="width:120px">표본화 (1초에)</b>
@@ -66,7 +66,7 @@
       <p class="hint">💬 음악 파일은 보통 1초에 44,100번 표본화하고 16비트로 양자화해요. 가장 거친 소리와 가장 좋은 소리의 데이터 양은 몇 배 차이 날까요?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="8, 4, 2, 1 자리를 떠올리면 쉬워 ✍️">
       <h3>✍️ 직접 부호화해 보기</h3>
       <p>양자화한 값을 4비트 이진수로 바꿔 입력하세요. (8 4 2 1 자리를 떠올려 보세요!)</p>
       <div class="enc" id="enc"></div>

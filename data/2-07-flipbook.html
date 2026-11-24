@@ -17,7 +17,7 @@
 .px.ghost{background:#dfe5f2}
 </style>
 </head>
-<body data-unit="2" data-title="플립북 애니메이션" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 48쪽">
+<body data-stage data-unit="2" data-title="플립북 애니메이션" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 48쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>플립북 애니메이션</h1>
@@ -25,14 +25,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="그림이 움직여 보여요|그냥 여러 장으로 보여요|그림이 흐려져요|잘 모르겠어">
       <p>교과서 귀퉁이에 조금씩 다른 그림을 그리고 빠르게 넘기면 어떻게 보일까요? 사진은 멈춰 있는데 왜 움직이는 것처럼 보일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="fps를 1에서 24까지 바꿔 봐. 언제부터 부드러워질까? 🎞️">
       <h3>🎞️ fps를 바꿔 보기</h3>
       <div class="stage">
         <canvas id="screen" width="16" height="16"></canvas>
@@ -48,7 +48,7 @@
       <div class="strip" id="strip"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="연한 회색 그림을 따라 조금씩 다르게 그려 봐 ✏️">
       <h3>✏️ 나만의 플립북 만들기</h3>
       <p>프레임 4장을 골라 가며 그림을 조금씩 다르게 그려 보세요. 연한 회색은 바로 앞 프레임의 그림이에요.</p>
       <div class="ctrl" id="myTabs" style="margin-bottom:10px"></div>
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="fps와 시간을 늘리면 용량이 얼마나 커질까? 📦">
       <h3>📦 동영상은 왜 용량이 클까?</h3>
       <p>동영상 용량 ≈ 프레임 한 장의 용량 × fps × 재생 시간(초). 여기에 소리와 자막까지 더해져요.</p>
       <div class="ctrl">

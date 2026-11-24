@@ -21,7 +21,7 @@ table.grid2 td.both{background:#ffc233}
 table.grid2 select{font:inherit;padding:2px 4px;border-radius:6px;border:1px solid var(--line)}
 </style>
 </head>
-<body data-unit="2" data-title="리스트와 테이블" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 59~60쪽">
+<body data-stage data-unit="2" data-title="리스트와 테이블" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 59~60쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 구조화</span>
   <h1>리스트와 테이블</h1>
@@ -29,14 +29,14 @@ table.grid2 select{font:inherit;padding:2px 4px;border-radius:6px;border:1px sol
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="대기실은 순서대로 나열해요|주소록은 칸에 맞춰 정리해요|둘 다 똑같아요|잘 모르겠어">
       <p>병원 대기실 화면에는 이름이 순서대로 나와요. 반 주소록은 이름, 전화번호, 이메일이 칸에 맞춰 정리되어 있어요. 두 정리 방법은 무엇이 다를까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="번호(인덱스)가 어떻게 바뀌는지 잘 봐 📋">
       <h3>📋 리스트: 동아리 면접 대기 명단</h3>
       <p><b>리스트(목록)</b>는 데이터를 일정한 순서대로 나열하는 방법이에요. 각 데이터의 위치를 나타내는 번호(<b>인덱스</b>)로 데이터를 저장하거나 추가, 삭제, 수정할 수 있어요.</p>
       <div class="ctrl">
@@ -50,7 +50,7 @@ table.grid2 select{font:inherit;padding:2px 4px;border-radius:6px;border:1px sol
       <p class="hint">💬 앞사람이 빠지면 뒤 사람들의 번호는 어떻게 되나요? 층별 안내도, 최근 통화 내역도 리스트예요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="메모를 읽고 빈칸을 채워 표를 완성해 봐 📊">
       <h3>📊 테이블: 흩어진 데이터를 표로</h3>
       <p><b>테이블(표)</b>은 행과 열로 이루어진 바둑판 모양의 칸에 데이터를 저장하는 방법이에요. 아래 메모를 보고 빈칸을 골라 채워 보세요.</p>
       <div class="cards">
@@ -63,7 +63,7 @@ table.grid2 select{font:inherit;padding:2px 4px;border-radius:6px;border:1px sol
       <div class="feedback" id="fillFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="가로 줄이 행, 세로 줄이 열이야 🧭">
       <h3>🧭 행과 열 찾기</h3>
       <p>칸을 눌러 보세요. <b style="color:#3b6cf6">행(가로)</b>은 한 사람(항목)의 데이터, <b style="color:#0d7d71">열(세로)</b>은 같은 속성의 데이터가 모여 있어요.</p>
       <div class="scroll-x"><table class="grid2" id="rcT"></table></div>
@@ -72,11 +72,11 @@ table.grid2 select{font:inherit;padding:2px 4px;border-radius:6px;border:1px sol
       <p class="hint">테이블은 행이나 열을 추가·삭제하며 관리하고, 숫자 데이터를 쉽게 계산·비교할 수 있어요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="순서만 중요하면 리스트, 속성이 여러 개면 테이블! 🤔">
       <h3>🤔 리스트일까, 테이블일까?</h3>
       <div id="pick"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

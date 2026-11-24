@@ -17,7 +17,7 @@
 .case p{margin:0;flex:1 1 260px}
 </style>
 </head>
-<body data-unit="2" data-title="비트맵과 벡터 확대" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 47쪽">
+<body data-stage data-unit="2" data-title="비트맵과 벡터 확대" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 47쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>비트맵과 벡터 확대</h1>
@@ -25,14 +25,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="로고는 그림이 단순해서|로고는 계산식으로 그려서|로고는 해상도가 높아서|잘 모르겠어">
       <p>작은 아이콘 사진을 현수막 크기로 키우면 흐릿하고 울퉁불퉁해져요. 그런데 어떤 로고는 아무리 키워도 매끄러워요. 무엇이 다를까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="확대 막대를 끝까지 밀어 봐! 어느 쪽이 울퉁불퉁할까? 🔍">
       <h3>🔍 확대해 보기</h3>
       <div class="ctrl"><label for="zoom">확대</label><input type="range" id="zoom" min="1" max="8" value="1" style="flex:1;min-width:160px"><span class="pill" id="zoomN">1배</span></div>
       <div class="row" style="margin-top:12px">
@@ -48,7 +48,7 @@
       <p class="hint"><b>계단 현상</b>: 비트맵 그림을 확대하면 픽셀의 네모 모양이 커져서 계단처럼 각지게 보이는 현상이에요. 벡터 그림은 "중심 (8, 8), 반지름 6.5인 빨간 원"처럼 <b>계산식</b>으로 저장되어, 크기를 바꿀 때마다 다시 계산해서 그려요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="확장자를 보고 비트맵인지 벡터인지 골라 봐 🗂️">
       <h3>🗂️ 파일 형식 분류하기</h3>
       <p>파일 이름 끝의 <b>확장자</b>(예: image<b>.png</b>)를 보면 파일 형식을 알 수 있어요. 파일을 눌러 <b style="color:var(--brand)">비트맵</b> → <b style="color:#c2416a">벡터</b> → 미분류 순서로 바꿔 보세요.</p>
       <div class="files" id="files"></div>
@@ -56,7 +56,7 @@
       <div class="feedback" id="fileFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="사진처럼 색이 복잡하면? 로고처럼 크기가 자주 바뀌면? 🤔">
       <h3>🤔 어떤 방식이 알맞을까?</h3>
       <div id="cases"></div>
     </div>

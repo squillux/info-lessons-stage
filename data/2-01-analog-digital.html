@@ -14,7 +14,7 @@
 .benefits div{background:var(--brand-soft);border-radius:14px;padding:10px 14px;font-weight:600}
 </style>
 </head>
-<body data-unit="2" data-title="아날로그와 디지털" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 44~45, 57쪽">
+<body data-stage data-unit="2" data-title="아날로그와 디지털" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 44~45, 57쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 디지털 표현</span>
   <h1>아날로그와 디지털</h1>
@@ -22,7 +22,7 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="스마트폰|컴퓨터|클라우드(인터넷)|종이 공책">
       <p>오늘 하루 내가 사용한 데이터를 모두 골라 보세요. 이 데이터들은 어디에 저장되어 있을까요?</p>
       <div class="chips" id="today"></div>
       <p class="hint" id="todayN" style="margin-top:10px"></p>
@@ -31,7 +31,7 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="막대를 움직여서 노란 계단이 곡선을 얼마나 닮는지 봐 📈">
       <h3>📈 연속된 값을 끊어서 나타내기</h3>
       <p>파란 곡선은 하루 동안 <b>연속적으로</b> 변하는 기온(아날로그)이에요. 측정 간격을 바꾸면 끊어진 값(디지털)이 어떻게 달라지는지 보세요.</p>
       <canvas id="graph"></canvas>
@@ -43,12 +43,12 @@
       <p class="hint">💬 간격을 좁힐수록 노란 계단은 곡선과 어떻게 달라지나요? 디지털 데이터는 <b>정해진 값으로만</b> 표현하기 때문에 명확하고, 저장과 가공이 쉬워요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="시계 바늘처럼 이어지면 아날로그, 숫자로 끊기면 디지털이야 🗂️">
       <h3>🗂️ 아날로그일까, 디지털일까?</h3>
       <div id="sort"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="디지털로 바꾸면 좋은 점을 하나씩 확인해 봐 👍">
       <h3>👍 디지털로 바꾸면 무엇이 좋아질까?</h3>
       <div class="benefits" style="margin-bottom:14px">
         <div>💾 많은 양의 데이터를 저장</div>

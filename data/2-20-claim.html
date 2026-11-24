@@ -18,7 +18,7 @@ table.lt th{background:var(--bg)}
 .wbar{cursor:pointer}
 </style>
 </head>
-<body data-unit="2" data-title="데이터로 주장하기" data-sub="중1 Ⅱ단원 · 데이터의 해석 · 미래엔 67쪽">
+<body data-stage data-unit="2" data-title="데이터로 주장하기" data-sub="중1 Ⅱ단원 · 데이터의 해석 · 미래엔 67쪽">
 <main>
   <span class="badge">중1 Ⅱ단원 · 데이터의 해석</span>
   <h1>데이터로 주장하기</h1>
@@ -26,21 +26,21 @@ table.lt th{background:var(--bg)}
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="데이터와 그래프|많은 사람의 서명|감동적인 편지|잘 모르겠어">
       <p>"우리 학교 도서관에 책을 더 사 주세요!" 이 주장을 교장 선생님께 설득력 있게 전하려면 무엇을 함께 보여 주면 좋을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="그래프에서 우리 학교가 어디쯤인지 찾아봐 📚">
       <h3>📚 도서관 데이터를 그래프로</h3>
       <p>학교알리미 같은 공공 데이터에서 찾은 ‘학교 도서관 현황’을 정리했다고 생각해 봐요(가상 데이터).</p>
       <div class="scroll-x"><table class="lt" id="libT"></table></div>
       <svg id="libChart" viewBox="0 0 560 230" style="margin-top:10px"></svg>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="표와 그래프의 숫자를 근거로 써 봐 ✍️">
       <h3>✍️ 근거가 있는 주장 완성하기</h3>
       <p>표와 그래프를 보고 빈칸에 알맞은 수를 넣고, 낮다/높다를 고르세요.</p>
       <div class="claim" id="claim"></div>
@@ -48,7 +48,7 @@ table.lt th{background:var(--bg)}
       <div class="feedback" id="claimFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="20% 이하인 막대만 골라 봐. 이 그래프로 말할 수 없는 것도 생각해 보자 🍱">
       <h3>🍱 급식 잔반율 해석하기</h3>
       <p>급식 메뉴별 평균 잔반율(남긴 비율)이에요(가상 데이터). 막대를 눌러 <b>잔반율 20% 이하</b>인 메뉴를 모두 골라 보세요.</p>
       <svg id="wasteChart" viewBox="0 0 560 260"></svg>

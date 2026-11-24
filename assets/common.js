@@ -293,7 +293,7 @@ const BOT = {
     '어려운 문제는 작게 쪼개 봐! 그게 바로 분해야 🧩', '에러 메시지는 화내는 게 아니라 힌트를 주는 거야 💬',
     '나는 알고리즘대로 움직여. 너는 뭐든 할 수 있고 💪', '쉬는 시간엔 눈도 좀 쉬게 해 줘 👀', '나 너무 많이 누르면… 어지러워 @_@'],
 };
-const pick = a => a[Math.floor(Math.random() * a.length)];
+const botPick = a => a[Math.floor(Math.random() * a.length)];
 
 function stageMode(units){
   const P = infoProgress.state, N = units.length, root = document.documentElement, main = $('main');
@@ -348,17 +348,17 @@ function stageMode(units){
     stepT();
   }
   function jump(){ if (RM) return; bot.classList.remove('jump'); void bot.getBoundingClientRect(); bot.classList.add('jump'); setTimeout(() => bot.classList.remove('jump'), 700); }
-  const poke = () => say(pick(BOT.fun), {jump: true});
+  const poke = () => say(botPick(BOT.fun), {jump: true});
   bot.addEventListener('click', poke);
   bot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); poke(); } });
   function lineFor(i){
     const u = units[i];
-    let t = u.card.dataset.bot ? esc(u.card.dataset.bot) : u.kind === 'sum' && !u.card.querySelector('.blank') ? '오늘 배운 내용을 소리 내어 한 번 읽어 볼까? 📌' : pick(BOT[u.kind]);
+    let t = u.card.dataset.bot ? esc(u.card.dataset.bot) : u.kind === 'sum' && !u.card.querySelector('.blank') ? '오늘 배운 내용을 소리 내어 한 번 읽어 볼까? 📌' : botPick(BOT[u.kind]);
     if (i === 0) t = '안녕! 나는 정보 도우미 <b>코딩이</b>야 🤖 ' + t;
     return t;
   }
   // 정답·오답에 반응 (보기 버튼, 피드백 상자)
-  const react = ok => { if (Date.now() - lastSay < 900) return; say(pick(ok ? BOT.good : BOT.bad), {jump: ok}); };
+  const react = ok => { if (Date.now() - lastSay < 900) return; say(botPick(ok ? BOT.good : BOT.bad), {jump: ok}); };
   document.addEventListener('click', e => {
     const o = e.target.closest && e.target.closest('main .opt');
     if (!o) return;
