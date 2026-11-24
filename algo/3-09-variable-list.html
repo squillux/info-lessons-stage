@@ -17,6 +17,38 @@
 .lst li{display:flex;gap:8px;padding:3px 10px;border-bottom:1px dashed #ffe0c2}
 .lst li b{color:#ff7a00;min-width:1.5em}
 .two{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+
+/* ── 급식 메뉴 리스트 관리자 ── */
+.lm-msg{display:flex;gap:10px;align-items:flex-start;background:#eef8ff;border:2px solid #bfe0ff;border-radius:14px;padding:8px 12px;font-weight:700}
+.lm-msg .face{font-size:2rem;line-height:1}
+.lm-prog{display:flex;gap:4px;margin:8px 0}
+.lm-prog i{flex:1;height:8px;border-radius:999px;background:var(--bg)}
+.lm-prog i.ok{background:var(--mint)}.lm-prog i.cur{background:#ffb000}
+.lm-wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px;align-items:start}
+@media (max-width:640px){.lm-wrap{grid-template-columns:1fr}}
+.lm-tray{border-radius:18px;padding:10px;background:linear-gradient(#cfd6e3,#b6bfd0);box-shadow:inset 0 3px 8px #0003}
+.lm-tray .cap{font-weight:800;font-size:.8rem;color:#33405c;margin-bottom:6px}
+.lm-cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px}
+.lm-cell{border-radius:12px;background:#eef1f6;box-shadow:inset 0 2px 5px #0002;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;position:relative}
+.lm-cell i{font-style:normal;font-size:1.8rem;line-height:1.1}
+.lm-cell b{position:absolute;top:3px;left:6px;font-size:.68rem;color:#ff7a00}
+.lm-cell.new{animation:lmdrop .5s cubic-bezier(.2,1.4,.4,1)}
+.lm-cell.chg{animation:lmflip .5s}
+.lm-cell.out{animation:lmout .45s forwards}
+@keyframes lmdrop{from{transform:translateY(-40px) scale(.5);opacity:0}}
+@keyframes lmflip{50%{transform:rotateY(90deg)}}
+@keyframes lmout{to{transform:scale(.2) rotate(20deg);opacity:0}}
+.lm-var{display:inline-flex;flex-direction:column;align-items:center;margin-top:8px}
+.lm-var .lid{background:#dd47d8;color:#fff;border-radius:8px 8px 0 0;padding:2px 12px;font-size:.8rem;font-weight:800}
+.lm-var .bd{border:3px solid #dd47d8;border-radius:0 0 12px 12px;min-width:80px;padding:6px;text-align:center;font-size:1.3rem;font-weight:900;background:#fff}
+.lm-var .bd.pulse{animation:lmpulse .5s}
+@keyframes lmpulse{50%{transform:scale(1.25);color:#dd47d8}}
+.lm-make{display:grid;gap:6px}
+.lm-make select,.lm-make input{font:inherit;font-weight:800;border:2px solid var(--line);border-radius:10px;padding:4px 6px;background:#fff;color:var(--ink)}
+.lm-blk{border-radius:12px;padding:8px 10px;color:#fff;font-weight:800;line-height:2.1;font-size:.9rem}
+.lm-blk.ls{background:#ff9b3f}.lm-blk.vr{background:#dd47d8}
+.lm-blk select,.lm-blk input{border:0;border-radius:999px;padding:1px 6px}
+.lm-blk input{width:56px;text-align:center}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="입출력, 변수와 리스트" data-sub="중1 Ⅲ단원 · 데이터의 저장과 사용 · 미래엔 101~107쪽">
@@ -67,6 +99,19 @@
         </div>
       </div>
       <p class="hint" id="lmsg"></p>
+    </div>
+
+    <div class="card" data-bot="영양사 선생님 부탁대로 리스트와 변수 블록을 골라 실행해 봐 🍱">
+      <h3>🍱 급식 메뉴 리스트 관리자 <span class="tag-more">특색</span></h3>
+      <p>급식실 프로그램을 맡았어요! 영양사 선생님의 부탁을 읽고 알맞은 <b>리스트 블록</b>이나 <b>변수 블록</b>을 골라 실행하세요.</p>
+      <div class="lm-prog" id="lmProg"></div>
+      <div class="lm-msg" id="lmAsk"></div>
+      <div class="lm-wrap" style="margin-top:10px">
+        <div class="lm-tray"><div class="cap">📋 리스트: 오늘의 메뉴 (<span id="lmLen">0</span>개)</div><div class="lm-cells" id="lmCells"></div>
+          <div class="lm-var"><span class="lid">❤️ 좋아요 (변수)</span><span class="bd" id="lmLike">0</span></div></div>
+        <div class="lm-make"><label style="font-weight:800">🧩 블록 고르기 <select id="lmKind"></select></label><div id="lmBlk"></div><button class="btn" id="lmRun">▶ 블록 실행</button></div>
+      </div>
+      <div id="lmOut"></div>
     </div>
 
     <div class="card" data-bot="끝말잇기! 이미 나온 낱말은 안 돼 🔤">
@@ -123,6 +168,66 @@ $('#wgo').onclick = () => {
 };
 $('#w').onkeydown = e => { if (e.key === 'Enter') $('#wgo').click(); };
 $('#wre').onclick = newChain; newChain();
+
+
+/* ===== 급식 메뉴 리스트 관리자 ===== */
+const LMF = {'쌀밥': '🍚', '된장국': '🥣', '닭강정': '🍗', '샐러드': '🥗', '미역국': '🍜', '주먹밥': '🍙', '과일': '🍉'};
+const LMK = [['add', '📋 항목을 리스트에 추가하기'], ['chg', '📋 n번째 항목을 바꾸기'], ['del', '📋 n번째 항목을 삭제하기'], ['vadd', '📦 변수에 값 더하기'], ['vset', '📦 변수를 값으로 정하기']];
+const LMM = [
+  {ask: '오늘 메뉴에 <b>🥗 샐러드</b>를 추가해 주세요!', goal: {list: ['쌀밥', '된장국', '닭강정', '샐러드'], like: 120}, hint: '리스트 <b>맨 뒤에 새 항목</b>을 넣는 블록은 무엇일까요?'},
+  {ask: '국이 바뀌었어요. <b>2번째</b> 메뉴를 <b>🍜 미역국</b>으로 바꿔 주세요.', goal: {list: ['쌀밥', '미역국', '닭강정', '샐러드'], like: 120}, hint: '항목 번호(<b>2</b>)로 위치를 정하고 <b>바꾸기</b> 블록을 써요.'},
+  {ask: '알레르기가 있는 친구가 있어요. <b>3번째</b> 메뉴를 빼 주세요.', goal: {list: ['쌀밥', '미역국', '샐러드'], like: 120}, hint: '3번째 항목(🍗)을 <b>삭제</b>하면 뒤 항목이 앞으로 당겨져요.'},
+  {ask: '점심 투표에서 <b>좋아요 25개</b>가 더 나왔어요! 좋아요를 늘려 주세요.', goal: {list: ['쌀밥', '미역국', '샐러드'], like: 145}, hint: '지금 값에 <b>더하는</b> 변수 블록이 필요해요.'},
+  {ask: '새로운 한 주가 시작됐어요. 좋아요를 <b>0</b>부터 다시 세요.', goal: {list: ['쌀밥', '미역국', '샐러드'], like: 0}, hint: '변수에는 값이 <b>하나만</b> 저장돼요. 새 값으로 <b>정하기</b>를 쓰면 이전 값은 사라져요.'},
+];
+let lmList, lmLike, lmM, lmTried; const lmFirst = [];
+function lmStart(){ lmList = ['쌀밥', '된장국', '닭강정']; lmLike = 120; lmM = 0; lmFirst.length = 0; lmMission(); lmDraw(); }
+function lmDraw(anim){
+  $('#lmCells').innerHTML = lmList.map((f, i) => `<div class="lm-cell${anim && anim[0] === i ? ' ' + anim[1] : ''}"><b>${i + 1}</b><i>${LMF[f]}</i>${f}</div>`).join('');
+  $('#lmLen').textContent = lmList.length; $('#lmLike').textContent = lmLike;
+}
+function lmMission(){
+  lmTried = false; const M = LMM[lmM];
+  $('#lmProg').innerHTML = LMM.map((_, i) => `<i class="${i < lmM ? 'ok' : i === lmM ? 'cur' : ''}"></i>`).join('');
+  $('#lmAsk').innerHTML = `<span class="face">👩‍🍳</span><span>부탁 ${lmM + 1} / ${LMM.length}<br>${M.ask}</span>`;
+  $('#lmKind').innerHTML = '<option value="">블록을 골라요</option>' + LMK.map(([k, t]) => `<option value="${k}">${t}</option>`).join('');
+  $('#lmBlk').innerHTML = ''; $('#lmOut').innerHTML = '';
+}
+const lmFood = () => `<select id="lmV">${Object.keys(LMF).map(f => `<option>${f}</option>`).join('')}</select>`;
+$('#lmKind').onchange = () => {
+  const k = $('#lmKind').value;
+  $('#lmBlk').innerHTML = {
+    add: `<div class="lm-blk ls">${lmFood()} 을(를) 오늘의 메뉴 에 추가하기</div>`,
+    chg: `<div class="lm-blk ls"><input id="lmN" type="number" min="1" value="1"> 번째 항목을 ${lmFood()} (으)로 바꾸기</div>`,
+    del: `<div class="lm-blk ls"><input id="lmN" type="number" min="1" value="1"> 번째 항목을 오늘의 메뉴 에서 삭제하기</div>`,
+    vadd: `<div class="lm-blk vr">좋아요 에 <input id="lmX" type="number" value="10"> 만큼 더하기</div>`,
+    vset: `<div class="lm-blk vr">좋아요 를 <input id="lmX" type="number" value="10"> (으)로 정하기</div>`,
+  }[k] || '';
+};
+$('#lmRun').onclick = () => {
+  const k = $('#lmKind').value; if (!k){ $('#lmOut').innerHTML = '<p class="feedback show bad">먼저 블록을 골라요.</p>'; return; }
+  const before = [lmList.slice(), lmLike], n = $('#lmN') ? Math.trunc(+$('#lmN').value) : 0, v = $('#lmV') ? $('#lmV').value : '', x = $('#lmX') ? Math.trunc(+$('#lmX').value) : 0;
+  if ((k === 'chg' || k === 'del') && (n < 1 || n > lmList.length)){ lmTried = true; $('#lmOut').innerHTML = `<p class="feedback show bad">⚠️ ${n}번째 항목은 없어요! 지금 리스트에는 ${lmList.length}개가 있어요.</p>`; return; }
+  let anim = null;
+  if (k === 'add'){ lmList.push(v); anim = [lmList.length - 1, 'new']; }
+  if (k === 'chg'){ lmList[n - 1] = v; anim = [n - 1, 'chg']; }
+  if (k === 'vadd') lmLike += x; if (k === 'vset') lmLike = x;
+  const finish = () => {
+    lmDraw(anim); if (k[0] === 'v'){ const b = $('#lmLike'); b.classList.remove('pulse'); void b.offsetWidth; b.classList.add('pulse'); }
+    const G = LMM[lmM].goal, ok = lmList.join() === G.list.join() && lmLike === G.like; setTimeout(() => $('#lmOut').scrollIntoView({behavior: 'smooth', block: 'nearest'}), 50);
+    if (!ok){ lmTried = true;
+      $('#lmOut').innerHTML = `<p class="feedback show bad">😵 부탁과 결과가 달라요! 💡 ${LMM[lmM].hint}<br><button class="btn ghost" id="lmUndo" style="margin-top:6px">↶ 실행 취소</button></p>`;
+      $('#lmUndo').onclick = () => { [lmList, lmLike] = [before[0], before[1]]; lmDraw(); $('#lmOut').innerHTML = ''; };
+      return; }
+    lmFirst.push(!lmTried); lmM++;
+    if (lmM < LMM.length){ $('#lmOut').innerHTML = '<p class="feedback show ok">⭕ 부탁 완료! 👩‍🍳 "고마워요!"</p>'; setTimeout(lmMission, 1100); return; }
+    $('#lmProg').innerHTML = LMM.map(() => '<i class="ok"></i>').join('');
+    $('#lmOut').innerHTML = `<p class="feedback show ok">🎉 급식실 업무 끝! <b>리스트</b>는 여러 값을 순서대로 저장하고 <b>항목 번호</b>로 추가·수정·삭제해요. <b>변수</b>는 값을 <b>하나만</b> 저장해서, 새 값으로 정하면 이전 값이 사라져요.</p><button class="btn ghost" id="lmAgain">처음부터 다시 ↺</button>`;
+    $('#lmAgain').onclick = lmStart; reportQuiz('lunchlist', lmFirst.slice(0, 5));
+  };
+  if (k === 'del'){ const cells = $$('#lmCells .lm-cell'); cells[n - 1].classList.add('out'); lmList.splice(n - 1, 1); setTimeout(finish, 450); } else finish();
+};
+lmStart();
 
 renderQuiz($('#quiz'), [
   {q:'여러 개의 데이터를 순서대로 저장하는 공간은?', o:['변수','리스트','신호'], a:1, e:'리스트는 항목 번호로 여러 값을 관리해요.'},
