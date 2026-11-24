@@ -11,6 +11,21 @@
 .tbl2{border-collapse:collapse;font-size:.92rem;margin-top:8px}
 .tbl2 td,.tbl2 th{border:1px solid var(--line);padding:4px 10px;text-align:center}
 .tbl2 tr.done td{background:var(--mint-soft)}
+
+/* ── 배달 라이더 경주 ── */
+.rd-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.rd-tabs span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.82rem;background:var(--bg);color:var(--muted)}
+.rd-tabs span.cur{background:var(--brand);color:#fff}.rd-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.rd-order{display:flex;align-items:center;gap:10px;background:#fff7e6;border:2px solid #ffd27a;border-radius:14px;padding:8px 12px;font-weight:700;margin-bottom:8px}
+.rd-order .ic{font-size:1.6rem}
+.rd-map{width:100%;max-width:560px;display:block;border-radius:14px;background:linear-gradient(#eaf7ee,#dff1e6);border:2px solid var(--line)}
+.rd-map .nd{cursor:pointer}
+.rd-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-weight:800}
+.rd-bar .t{background:var(--bg);border-radius:10px;padding:4px 10px}
+.rd-race{display:grid;gap:6px;margin-top:8px}
+.rd-race .r{display:grid;grid-template-columns:80px minmax(0,1fr) 54px;gap:8px;align-items:center;font-weight:800;font-size:.88rem}
+.rd-race .g{height:14px;border-radius:999px;background:var(--bg);overflow:hidden}
+.rd-race .g i{display:block;height:100%;width:0;border-radius:999px}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="집에서 학교까지 가장 빠른 길" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 96~97쪽">
@@ -35,6 +50,16 @@
       <div class="scroll-x"><table class="tbl2" id="tbl"></table></div>
       <div class="feedback" id="fb"></div>
       <div class="ctrl" style="margin-top:6px"><button class="btn line" id="reset">처음부터</button></div>
+    </div>
+
+    <div class="card" data-bot="내 눈짐작으로 고른 길 vs 알고리즘이 계산한 길, 누가 더 빠를까? 🛵">
+      <h3>🛵 배달 라이더 경주 <span class="tag-more">특색</span></h3>
+      <p>배달 주문이 들어왔어요! 지도에서 <b>길로 이어진 장소를 차례로 눌러</b> 배달 경로를 만드세요. 그다음 알고리즘으로 길을 찾는 <b>🤖 내비 라이더</b>와 경주해요.</p>
+      <div class="rd-tabs" id="rdTabs"></div>
+      <div class="rd-order" id="rdOrder"></div>
+      <svg class="rd-map" id="rdMap" viewBox="0 0 560 320"></svg>
+      <div class="rd-bar"><span class="t" id="rdSum">내 경로: 🍕 가게</span><button class="btn ghost" id="rdUndo">↶ 한 칸 취소</button><button class="btn ghost" id="rdClear">↺ 다시 그리기</button></div>
+      <p class="feedback" id="rdFb"></p><div id="rdOut"></div>
     </div>
 
     <div class="card" data-bot="더 빠른 길이 생기면 시간을 고쳐야 해 🤔">
@@ -89,6 +114,78 @@ renderChoice($('#think'), [
   {icon:'🛣️', t:'집에서 문구점까지 바로 가는 길(12분)이 있는데도 다른 길을 거쳐 가는 이유는?', a:0, e:'편의점이나 공원을 거쳐 가는 것이 더 빨라요(4+5=9분, 6+3=9분).'},
   {icon:'🚧', t:'문구점 앞 길이 공사 중이라면?', a:1, e:'길(엣지)의 시간이 바뀌면 같은 알고리즘으로 다시 계산하면 돼요.'},
 ], ['거쳐 가는 길이 더 짧아서', '알고리즘으로 다시 계산한다']);
+
+
+/* ===== 배달 라이더 경주 ===== */
+const RN = [['🍕', '가게', 50, 160], ['🏦', '은행', 160, 60], ['⛲', '분수대', 170, 262], ['🏥', '병원', 290, 160], ['🏤', '우체국', 300, 40], ['🎡', '놀이터', 320, 280], ['🏢', '아파트', 460, 70], ['🏡', '주택', 470, 250]];
+const RE0 = [[0, 1, 5], [0, 2, 3], [0, 3, 11], [1, 3, 5], [1, 4, 6], [2, 3, 6], [2, 5, 8], [3, 4, 3], [3, 5, 4], [3, 6, 9], [3, 7, 8], [4, 6, 4], [5, 7, 3], [6, 7, 6]];
+const RR = [
+  {to: 6, who: '아파트 302호', food: '🍕 피자 1판', tip: ''},
+  {to: 7, who: '주택 2층', food: '🍗 치킨 1마리', tip: '가운데 큰길(병원 쪽)이 곧아 보이지요? 정말 빠를까요?'},
+  {to: 5, who: '놀이터 앞 벤치', food: '🥤 음료 4잔', tip: '🚧 분수대→놀이터 길이 공사 중! 10분이 더 걸려요.', work: [2, 5, 10]},
+];
+let rdR = 0, rdPath = [0], rdBusy = false; const rdFirst = [];
+const rdEdges = () => RE0.map(([a, b, w]) => { const k = RR[rdR].work; return [a, b, k && ((k[0] === a && k[1] === b) || (k[0] === b && k[1] === a)) ? w + k[2] : w]; });
+const rdW = (a, b) => { const e = rdEdges().find(([x, y]) => (x === a && y === b) || (x === b && y === a)); return e ? e[2] : 0; };
+const rdLen = p => p.slice(1).reduce((s, v, i) => s + rdW(p[i], v), 0);
+function rdBest(to){
+  const E = rdEdges(), d = RN.map(() => Infinity), pv = RN.map(() => -1), dn = RN.map(() => false); d[0] = 0;
+  for (;;){ let u = -1; d.forEach((x, i) => { if (!dn[i] && x < Infinity && (u < 0 || x < d[u])) u = i; }); if (u < 0) break; dn[u] = true;
+    E.forEach(([a, b, w]) => { const v = a === u ? b : b === u ? a : -1; if (v >= 0 && !dn[v] && d[u] + w < d[v]){ d[v] = d[u] + w; pv[v] = u; } }); }
+  const p = []; for (let v = to; v >= 0; v = pv[v]) p.unshift(v); return p;
+}
+function rdTabs(){ $('#rdTabs').innerHTML = RR.map((r, i) => `<span class="${i < rdR ? 'ok' : i === rdR ? 'cur' : ''}">${i < rdR ? '✓ ' : ''}주문 ${i + 1}</span>`).join(''); }
+function rdDraw(extra = ''){
+  const R = RR[rdR], on = new Set(rdPath.slice(1).map((v, i) => [rdPath[i], v].sort().join('-')));
+  $('#rdMap').innerHTML = rdEdges().map(([a, b, w]) => { const A = RN[a], B = RN[b], hot = on.has([a, b].sort().join('-')), wk = R.work && [a, b].sort().join('-') === [R.work[0], R.work[1]].sort().join('-');
+    const mx = (A[2] + B[2]) / 2, my = (A[3] + B[3]) / 2;
+    return `<line x1="${A[2]}" y1="${A[3]}" x2="${B[2]}" y2="${B[3]}" stroke="${hot ? '#ffb000' : wk ? '#ff6b6b' : '#a7b3c9'}" stroke-width="${hot ? 9 : 5}" stroke-linecap="round" ${wk ? 'stroke-dasharray="8 6"' : ''}/><rect x="${mx - 15}" y="${my - 11}" width="30" height="20" rx="6" fill="${wk ? '#ffe3e3' : '#fff'}" stroke="#ccd"/><text x="${mx}" y="${my + 4}" text-anchor="middle" font-size="12" font-weight="800">${wk ? '🚧' : ''}${w}</text>`; }).join('') +
+    extra + RN.map(([ic, n, x, y], i) => { const cur = i === rdPath[rdPath.length - 1], goal = i === R.to;
+      return `<g class="nd" data-i="${i}"><circle cx="${x}" cy="${y}" r="23" fill="${goal ? '#ffe9f0' : rdPath.includes(i) ? '#fff4d6' : '#fff'}" stroke="${cur ? '#ffb000' : goal ? '#ff7aa2' : '#1f2a44'}" stroke-width="${cur || goal ? 4 : 2.5}"/><text x="${x}" y="${y + 7}" text-anchor="middle" font-size="21">${ic}</text><text x="${x}" y="${y + 42}" text-anchor="middle" font-size="15" font-weight="800">${n}${goal ? ' 🎯' : ''}</text></g>`; }).join('') +
+    `<text id="rdMe" font-size="22" x="${RN[rdPath[rdPath.length - 1]][2] - 30}" y="${RN[rdPath[rdPath.length - 1]][3] - 18}">🛵</text>`;
+  $$('#rdMap .nd').forEach(g => g.onclick = () => rdClick(+g.dataset.i));
+  $('#rdSum').innerHTML = `내 경로: ${rdPath.map(i => RN[i][1]).join(' → ')} · <b>${rdLen(rdPath)}분</b>`;
+}
+function rdRound(){
+  rdPath = [0]; rdBusy = false; rdTabs(); const R = RR[rdR];
+  $('#rdOrder').innerHTML = `<span class="ic">🔔</span><span>주문 ${rdR + 1}: ${R.food} → <b>${RN[R.to][0]} ${R.who}</b>${R.tip ? `<br><small style="color:${R.work ? 'var(--bad)' : 'var(--muted)'}">${R.tip}</small>` : ''}</span>`;
+  $('#rdOut').innerHTML = ''; $('#rdFb').className = 'feedback'; rdDraw();
+}
+function rdClick(i){
+  if (rdBusy) return; const last = rdPath[rdPath.length - 1];
+  if (i === last) return;
+  if (rdPath.length > 1 && i === rdPath[rdPath.length - 2]){ rdPath.pop(); rdDraw(); return; }
+  if (!rdW(last, i)) return feedback($('#rdFb'), false, `${RN[last][1]}에서 ${RN[i][1]}(으)로 바로 가는 길이 없어요. 선으로 이어진 장소를 눌러요.`);
+  if (rdPath.includes(i)) return feedback($('#rdFb'), false, '같은 장소를 두 번 지나가면 시간만 늘어나요.');
+  rdPath.push(i); rdDraw(); $('#rdFb').className = 'feedback';
+  if (i === RR[rdR].to){ rdBusy = true; $('#rdOut').innerHTML = `<p class="feedback show ok">📦 도착 경로 완성! 내 경로는 <b>${rdLen(rdPath)}분</b>이에요.</p><button class="btn" id="rdGo">🏁 내비 라이더와 경주하기</button>`; $('#rdGo').onclick = rdRace; }
+}
+function rdRace(){
+  const me = rdPath.slice(), bot = rdBest(RR[rdR].to), tm = rdLen(me), tb = rdLen(bot), big = Math.max(tm, tb);
+  const pos = (p, t) => { let s = 0; for (let k = 1; k < p.length; k++){ const w = rdW(p[k - 1], p[k]); if (t <= s + w){ const f = (t - s) / w, A = RN[p[k - 1]], B = RN[p[k]]; return [A[2] + (B[2] - A[2]) * f, A[3] + (B[3] - A[3]) * f]; } s += w; } const Z = RN[p[p.length - 1]]; return [Z[2], Z[3]]; };
+  const botLine = `<polyline points="${bot.map(i => RN[i][2] + ',' + RN[i][3]).join(' ')}" fill="none" stroke="#7c5cff" stroke-width="4" stroke-dasharray="10 7" stroke-linecap="round"/>`;
+  rdDraw(botLine); $('#rdMe').remove(); $('#rdMap').scrollIntoView({behavior: 'smooth', block: 'start'});
+  $('#rdMap').insertAdjacentHTML('beforeend', '<text id="rdA" font-size="22">🛵</text><text id="rdB" font-size="22">🤖</text>');
+  $('#rdOut').innerHTML = `<div class="rd-race"><div class="r"><span>🛵 나</span><span class="g"><i id="rdGa" style="background:#ffb000"></i></span><span>${tm}분</span></div><div class="r"><span>🤖 내비</span><span class="g"><i id="rdGb" style="background:#7c5cff"></i></span><span>${tb}분</span></div></div><div id="rdRes"></div>`;
+  const t0 = performance.now(), SP = 160;
+  (function step(now){
+    const t = Math.min(big, (now - t0) / SP), a = pos(me, Math.min(t, tm)), b = pos(bot, Math.min(t, tb));
+    $('#rdA').setAttribute('x', a[0] - 30); $('#rdA').setAttribute('y', a[1] - 16); $('#rdB').setAttribute('x', b[0] + 6); $('#rdB').setAttribute('y', b[1] - 16);
+    $('#rdGa').style.width = Math.min(t, tm) / big * 100 + '%'; $('#rdGb').style.width = Math.min(t, tb) / big * 100 + '%';
+    if (t < big) requestAnimationFrame(step); else rdDone(tm, tb, bot);
+  })(t0);
+}
+function rdDone(tm, tb, bot){
+  const ok = tm === tb; rdFirst.push(ok); const R = RR[rdR];
+  const why = rdR === 1 ? '곧게 뻗은 병원 길은 시간이 오래 걸려요. 지도에서 <b>가까워 보이는 길</b>과 <b>시간이 짧은 길</b>은 다를 수 있어요.' : rdR === 2 ? '공사 때문에 길의 시간이 바뀌자 내비는 <b>같은 알고리즘으로 다시 계산</b>해서 새로운 가장 빠른 길을 찾았어요.' : '내비는 앞에서 해 본 <b>가장 가까운 곳부터 확정하는 알고리즘</b>으로 모든 길을 빠짐없이 따져 봐요.';
+  $('#rdRes').innerHTML = `<p class="feedback show ${ok ? 'ok' : 'bad'}">${ok ? '🤝 동점! 알고리즘과 똑같이 가장 빠른 길을 찾았어요.' : `🤖 내비가 ${tm - tb}분 먼저 도착! 가장 빠른 길: ${bot.map(i => RN[i][1]).join(' → ')} (${tb}분)`}<br>${why}</p>` +
+    (rdR < RR.length - 1 ? `<button class="btn" id="rdNext">다음 주문 ▶</button>` : `<p>🏆 배달 ${RR.length}건 중 <b>${rdFirst.filter(Boolean).length}건</b>을 가장 빠른 길로 배달했어요!<br>📌 눈짐작은 길이 많아지면 틀리기 쉬워요. <b>장소·길·시간으로 추상화</b>하고 <b>정해진 절차(알고리즘)</b>를 따르면 언제나 가장 빠른 길을 찾을 수 있어요. 길 찾기 앱도 이런 원리예요.</p><button class="btn ghost" id="rdAgain">처음부터 다시 ↺</button>`);
+  if ($('#rdNext')) $('#rdNext').onclick = () => { rdR++; rdRound(); };
+  else { $('#rdAgain').onclick = () => { rdR = 0; rdFirst.length = 0; rdRound(); }; reportQuiz('rider', rdFirst.slice(0, 3)); }
+}
+$('#rdUndo').onclick = () => { if (!rdBusy && rdPath.length > 1){ rdPath.pop(); rdDraw(); } };
+$('#rdClear').onclick = () => { if (!rdBusy){ rdPath = [0]; rdDraw(); $('#rdOut').innerHTML = ''; } };
+rdRound();
 
 renderQuiz($('#quiz'), [
   {q:'이 알고리즘에서 다음에 확정하는 장소는?', o:['집에서 가장 먼 곳','확정하지 않은 곳 중 집에서부터 시간이 가장 짧은 곳','이름이 가장 짧은 곳'], a:1, e:'가장 가까운 곳부터 차례로 확정해요.'},

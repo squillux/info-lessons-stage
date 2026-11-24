@@ -18,6 +18,28 @@
 .ride .gate{font-size:3rem}
 .sw{display:flex;gap:8px;flex-wrap:wrap}
 .sw button{min-width:120px}
+
+/* ── 입장 게이트 프로그래머 ── */
+.gt-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.gt-tabs span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.82rem;background:var(--bg);color:var(--muted)}
+.gt-tabs span.cur{background:var(--brand);color:#fff}.gt-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.gt-sign{background:#2b3a67;color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;text-align:center;border:4px solid #ffc233;box-shadow:0 6px 14px rgba(30,40,80,.2)}
+.gt-sign small{display:block;color:#ffd97a;font-weight:700}
+.gt-build{margin-top:10px;background:#f3f0ff;border:2px solid #d9d0ff;border-radius:14px;padding:10px 12px;font-weight:800;line-height:2.4}
+.gt-build select,.gt-build input{font:inherit;font-weight:800;border:2px solid #b9a8ff;border-radius:999px;padding:2px 8px;background:#fff;color:var(--ink)}
+.gt-build input{width:64px;text-align:center}
+.gt-build .cb{display:inline-block;background:#ffb000;color:#fff;border-radius:10px;padding:0 8px}
+.gt-build .c2[hidden]{display:none}
+.gt-road{position:relative;height:120px;margin-top:10px;border-radius:14px;background:linear-gradient(#cfe8ff 0 55%,#9ad08a 55%);overflow:hidden}
+.gt-gate{position:absolute;left:50%;top:18px;transform:translateX(-50%);font-size:2.6rem;z-index:1}
+.gt-light{position:absolute;left:calc(50% + 30px);top:10px;width:18px;height:18px;border-radius:50%;background:#bbb;box-shadow:0 0 0 3px #fff}
+.gt-light.g{background:#16b8a6;box-shadow:0 0 0 3px #fff,0 0 14px #16b8a6}.gt-light.r{background:#ff5b5b;box-shadow:0 0 0 3px #fff,0 0 14px #ff5b5b}
+.gt-p{position:absolute;top:44px;left:6%;text-align:center;font-size:.7rem;font-weight:800;transition:left .7s ease,opacity .4s;z-index:2}
+.gt-p i{display:block;font-style:normal;font-size:2rem;line-height:1.1}
+.gt-p b{display:block;background:#fff;border-radius:6px;padding:0 4px;white-space:nowrap}
+.gt-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:8px}
+.gt-list div{border:2px solid var(--line);border-radius:12px;padding:5px 8px;font-size:.82rem;font-weight:700;background:#fff}
+.gt-list div.ok{border-color:var(--mint);background:var(--mint-soft)}.gt-list div.no{border-color:var(--bad);background:var(--bad-soft)}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="연산 실험실" data-sub="중1 Ⅲ단원 · 다양한 연산 · 미래엔 108~110쪽">
@@ -62,6 +84,18 @@
         <span class="gate" id="gate"></span><b id="say"></b>
       </div>
       <p class="hint">기준값(100, 110)을 바꿔 다른 놀이 기구의 규칙도 만들어 보세요.</p>
+    </div>
+
+    <div class="card" data-bot="표지판 규칙을 비교 연산과 논리 연산으로 바꿔서 게이트를 프로그래밍해 봐 🎟️">
+      <h3>🎟️ 입장 게이트 프로그래머 <span class="tag-more">특색</span></h3>
+      <p>놀이공원 자동 게이트가 고장 났어요! 표지판의 규칙을 <b>비교 연산</b>과 <b>논리 연산</b>으로 바꿔 게이트에 입력하고, 손님들을 들여보내 확인하세요.</p>
+      <div class="gt-tabs" id="gtTabs"></div>
+      <div class="gt-sign" id="gtSign"></div>
+      <div class="gt-build" id="gtBuild"></div>
+      <p><button class="btn" id="gtRun">▶ 게이트 실행하기</button></p>
+      <div class="gt-road" id="gtRoad"><span class="gt-gate">⛩️</span><span class="gt-light" id="gtLight"></span></div>
+      <div class="gt-list" id="gtList"></div>
+      <div id="gtOut"></div>
     </div>
 
     <div class="card" data-bot="실행하기 전에 결과를 먼저 예측해 봐 🎯">
@@ -116,6 +150,55 @@ renderChoice($('#pred'), [
   {icon:'⚖️', t:'(8 > 3) 그리고 (2 > 5) 의 결과는?', a:3, e:'두 번째 조건이 거짓이라 "그리고"의 결과는 거짓이에요.'},
   {icon:'🔀', t:'(8 > 3) 또는 (2 > 5) 의 결과는?', a:2, e:'하나만 참이어도 "또는"의 결과는 참이에요.'},
 ], ['3', '2', '참', '거짓']);
+
+
+/* ===== 입장 게이트 프로그래머 ===== */
+const GTL = [
+  {sign: '🎢 롤러코스터', rule: '키 120cm 이상 탑승 가능', yes: '탑승', no: '탑승 불가', f: p => p.h >= 120,
+    ppl: [['🧒', 119, 9], ['👧', 120, 10], ['🧑', 135, 14], ['👦', 98, 7], ['🧑‍🦱', 121, 11]]},
+  {sign: '🌀 자이로드롭', rule: '키 130cm 이상 그리고 나이 10살 이상', yes: '탑승', no: '탑승 불가', f: p => p.h >= 130 && p.a >= 10,
+    ppl: [['🧑', 135, 12], ['👦', 128, 13], ['🧒', 140, 9], ['👧', 130, 10], ['🧒', 122, 8]]},
+  {sign: '🎫 매표소 무료 입장', rule: '나이 8살 이하 또는 나이 65살 이상은 무료', yes: '무료', no: '유료', f: p => p.a <= 8 || p.a >= 65,
+    ppl: [['👶', 92, 4], ['🧒', 125, 8], ['👦', 140, 9], ['🧑', 170, 30], ['👴', 168, 65], ['👵', 155, 64]]},
+];
+const GOP = {'≥': (x, y) => x >= y, '>': (x, y) => x > y, '≤': (x, y) => x <= y, '<': (x, y) => x < y, '=': (x, y) => x === y};
+let gtL = 0, gtTried = false, gtBusy = false; const gtFirst = [];
+const gtSel = (id, opts, v) => `<select id="${id}">${opts.map(o => `<option${o === v ? ' selected' : ''}>${o}</option>`).join('')}</select>`;
+const gtCond = n => `<span class="cb">${gtSel('gtV' + n, ['키', '나이'], '키')} ${gtSel('gtO' + n, Object.keys(GOP), '>')} <input id="gtN${n}" type="number" value="100"></span>`;
+function gtLevel(){
+  const L = GTL[gtL]; gtTried = false; gtBusy = false;
+  $('#gtTabs').innerHTML = GTL.map((x, i) => `<span class="${i < gtL ? 'ok' : i === gtL ? 'cur' : ''}">${i < gtL ? '✓ ' : ''}${i + 1}단계</span>`).join('');
+  $('#gtSign').innerHTML = `${L.sign}<br>"${L.rule}"<small>규칙에 맞으면 → ${L.yes} / 아니면 → ${L.no}</small>`;
+  $('#gtBuild').innerHTML = `만일 ${gtCond(1)} <select id="gtC"><option value="">(조건 끝)</option><option value="and">그리고</option><option value="or">또는</option></select> <span class="c2" id="gtC2" hidden>${gtCond(2)}</span> (이)라면 → <b>${L.yes}</b>, 아니면 → <b>${L.no}</b>`;
+  $('#gtC').onchange = () => { $('#gtC2').hidden = !$('#gtC').value; };
+  $('#gtList').innerHTML = ''; $('#gtOut').innerHTML = ''; $('#gtLight').className = 'gt-light'; $$('#gtRoad .gt-p').forEach(e => e.remove());
+}
+function gtMine(p){
+  const one = n => GOP[$('#gtO' + n).value]($('#gtV' + n).value === '키' ? p.h : p.a, +$('#gtN' + n).value);
+  const c = $('#gtC').value; return c === 'and' ? one(1) && one(2) : c === 'or' ? one(1) || one(2) : one(1);
+}
+$('#gtRun').onclick = async () => {
+  if (gtBusy) return; gtBusy = true; const L = GTL[gtL]; let bad = 0;
+  $('#gtList').innerHTML = ''; $('#gtOut').innerHTML = ''; $$('#gtRoad .gt-p').forEach(e => e.remove());
+  $$('#gtBuild select, #gtBuild input').forEach(e => e.disabled = true); $('#gtRoad').scrollIntoView({behavior: 'smooth', block: 'center'});
+  for (const [ic, h, a] of L.ppl){
+    const p = {h, a}, mine = gtMine(p), truth = L.f(p), ok = mine === truth; bad += !ok;
+    const el = document.createElement('div'); el.className = 'gt-p'; el.innerHTML = `<i>${ic}</i><b>${h}cm · ${a}살</b>`; $('#gtRoad').appendChild(el);
+    await new Promise(r => setTimeout(r, 60)); el.style.left = '36%'; await new Promise(r => setTimeout(r, 750));
+    $('#gtLight').className = 'gt-light ' + (mine ? 'g' : 'r');
+    el.style.left = mine ? '82%' : '36%'; if (!mine) el.style.opacity = '.35';
+    $('#gtList').insertAdjacentHTML('beforeend', `<div class="${ok ? 'ok' : 'no'}">${ic} ${h}cm·${a}살 → ${mine ? L.yes : L.no}${ok ? ' ✔' : ` ❌ (규칙대로면 ${truth ? L.yes : L.no})`}</div>`);
+    await new Promise(r => setTimeout(r, 700)); el.remove();
+  }
+  $$('#gtBuild select, #gtBuild input').forEach(e => e.disabled = false); gtBusy = false;
+  if (bad){ gtTried = true; $('#gtOut').innerHTML = `<p class="feedback show bad">🚨 ${bad}명을 잘못 판단했어요! ❌ 표시된 손님을 보고 고쳐 보세요. ${gtL === 0 ? '120cm인 손님은 탈 수 있을까요? <b>&gt;</b>(초과)와 <b>≥</b>(이상)는 달라요.' : gtL === 1 ? '두 조건을 <b>모두</b> 만족해야 할까요, <b>하나만</b> 만족하면 될까요?' : '두 조건 중 <b>하나만</b> 만족해도 무료예요.'}</p>`; return; }
+  gtFirst.push(!gtTried);
+  const tip = ['"이상"은 그 값도 포함하니 <b>≥</b>를 써요. ">"를 쓰면 딱 120cm인 손님이 못 타요.', '두 조건을 <b>모두</b> 만족해야 참이 되는 것은 <b>그리고(AND)</b>예요.', '두 조건 중 <b>하나라도</b> 만족하면 참이 되는 것은 <b>또는(OR)</b>예요.'][gtL];
+  $('#gtOut').innerHTML = `<p class="feedback show ok">⭕ 모든 손님을 규칙대로 안내했어요! ${tip}</p>` + (gtL < GTL.length - 1 ? '<button class="btn" id="gtNext">다음 게이트 ▶</button>' : `<p>🎉 게이트 3개 수리 완료! 컴퓨터는 <b>비교 연산</b>(≥, &lt; 등)으로 참·거짓을 만들고, <b>논리 연산</b>(그리고, 또는)으로 여러 조건을 묶어 판단해요.</p><button class="btn ghost" id="gtAgain">처음부터 다시 ↺</button>`);
+  if ($('#gtNext')) $('#gtNext').onclick = () => { gtL++; gtLevel(); };
+  else { $('#gtAgain').onclick = () => { gtL = 0; gtFirst.length = 0; gtLevel(); }; reportQuiz('gate', gtFirst.slice(0, 3)); }
+};
+gtLevel();
 
 renderQuiz($('#quiz'), [
   {q:'두 값의 크기를 비교해 참 또는 거짓을 결과로 내는 연산은?', o:['산술 연산','비교 연산','논리 연산'], a:1, e:'=, ≠, >, <, ≥, ≤가 비교 연산자예요.'},

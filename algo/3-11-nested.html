@@ -14,6 +14,23 @@
 .nums span{border-radius:8px;padding:2px 8px;font-weight:700}
 .nums .o{background:var(--yellow-soft)}
 .nums .e{background:var(--brand-soft)}
+
+/* ── 타일 장인 ── */
+.nt-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.nt-tabs span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.82rem;background:var(--bg);color:var(--muted)}
+.nt-tabs span.cur{background:var(--brand);color:#fff}.nt-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.nt-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;align-items:start}
+.nt-prog{font-weight:800;font-size:.9rem;line-height:1.5}
+.nt-b{border-radius:10px;padding:6px 10px;margin:3px 0;color:#fff}
+.nt-b select{font:inherit;font-weight:800;border:0;border-radius:999px;padding:1px 6px;background:#fff;color:var(--ink)}
+.nt-b.rp{background:#ffae2b}.nt-b.rp2{background:#ff9100;margin-left:14px}.nt-b.if{background:#3fbbb0;margin-left:28px}.nt-b.do{background:#7c6cf0;margin-left:28px}.nt-b.mv{background:#7c6cf0;margin-left:14px}
+.nt-boards{display:flex;gap:12px;flex-wrap:wrap}
+.nt-boards figure{margin:0;text-align:center;font-weight:800;font-size:.82rem}
+.nt-grid{display:grid;gap:3px;background:#eef1f7;border-radius:10px;padding:6px}
+.nt-grid span{width:30px;height:30px;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.15rem}
+.nt-grid span.hit{animation:ntpop .25s}
+.nt-grid span.bad{outline:3px solid var(--bad)}
+@keyframes ntpop{from{transform:scale(1.5)}}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="순차·선택·반복과 중첩 제어 구조" data-sub="중1 Ⅲ단원 · 중첩 제어 구조 · 미래엔 112~115쪽">
@@ -63,6 +80,16 @@
       <div class="ctrl" style="margin-top:6px"><button class="btn" id="oe">▶ 실행</button></div>
       <div class="nums" id="nums"></div>
       <p class="hint" id="oeMsg"></p>
+    </div>
+
+    <div class="card" data-bot="반복 안에 반복, 반복 안에 선택을 넣어 목표 무늬를 똑같이 만들어 봐 🧱">
+      <h3>🧱 타일 장인: 반복 속 반복 <span class="tag-more">특색</span></h3>
+      <p>도장 로봇이 왼쪽 위부터 한 칸씩 도장을 찍어요. 블록의 빈칸을 골라 <b>목표 무늬</b>와 똑같이 찍히도록 프로그램을 완성하세요.</p>
+      <div class="nt-tabs" id="ntTabs"></div>
+      <div class="nt-wrap"><div class="nt-prog" id="ntProg"></div>
+        <div class="nt-boards"><figure><div class="nt-grid" id="ntGoal"></div>🎯 목표</figure><figure><div class="nt-grid" id="ntMine"></div>🤖 실행 결과</figure></div></div>
+      <p><button class="btn" id="ntRun">▶ 실행</button></p>
+      <div id="ntOut"></div>
     </div>
 
     <div class="card" data-bot="실행 결과를 먼저 예측해 봐 🎯">
@@ -120,6 +147,47 @@ renderChoice($('#pred'), [
   {icon:'⬛', t:'"4번 반복하기 → 100만큼 움직이기, 90° 회전하기"를 실행하면?', a:0, e:'4번 직진하며 90°씩 돌면 정사각형이에요.'},
   {icon:'🔺', t:'"3번 반복하기 → 100만큼 움직이기, 120° 회전하기"를 실행하면?', a:1, e:'3번 직진하며 120°씩 돌면 정삼각형이에요.'},
 ], ['정사각형', '정삼각형', '12번', '7번']);
+
+
+/* ===== 타일 장인 ===== */
+const NTC = {'항상': () => true, '행 번호가 홀수': (r) => r % 2 === 1, '열 번호가 홀수': (r, c) => c % 2 === 1, '행 번호 + 열 번호가 짝수': (r, c) => (r + c) % 2 === 0};
+const NTL = [
+  {rows: 3, cols: 5, a: '⭐', b: '⭐', cond: '항상', ifOn: false, tip: '도장 15개를 하나씩 쓰면 블록이 30개 넘게 필요하지만, <b>반복 속 반복</b>을 쓰면 블록 몇 개로 끝나요. 안쪽 반복은 한 줄(열 5칸), 바깥쪽 반복은 줄 수(행 3줄)를 맡아요.'},
+  {rows: 4, cols: 4, a: '🍓', b: '🍋', cond: '행 번호가 홀수', ifOn: true, tip: '반복하면서 <b>조건에 따라</b> 다른 도장을 찍었어요. 반복 안에 선택이 들어간 <b>중첩 제어 구조</b>예요.'},
+  {rows: 4, cols: 5, a: '⬛', b: '⬜', cond: '행 번호 + 열 번호가 짝수', ifOn: true, tip: '체스판처럼 엇갈린 무늬도 반복 속 반복 안에 선택을 넣으면 만들 수 있어요. 홀수·짝수를 나누던 원리와 같아요.'},
+];
+let ntL = 0, ntTried = false, ntBusy = false; const ntFirst = [];
+const ntCell = (L, r, c) => (L.ifOn ? (NTC[L.cond](r, c) ? L.a : L.b) : L.a);
+const ntS = (id, opts, v) => `<select id="${id}">${opts.map(o => `<option${o === v ? ' selected' : ''}>${o}</option>`).join('')}</select>`;
+function ntGrid(el, L, f){ el.style.gridTemplateColumns = `repeat(${L.cols},30px)`; el.innerHTML = Array.from({length: L.rows * L.cols}, (_, k) => `<span>${f ? f(Math.floor(k / L.cols) + 1, k % L.cols + 1) : ''}</span>`).join(''); }
+function ntLevel(){
+  const L = NTL[ntL]; ntTried = false; ntBusy = false;
+  $('#ntTabs').innerHTML = NTL.map((x, i) => `<span class="${i < ntL ? 'ok' : i === ntL ? 'cur' : ''}">${i < ntL ? '✓ ' : ''}${i + 1}단계</span>`).join('');
+  const nums = ['1', '2', '3', '4', '5', '6'];
+  $('#ntProg').innerHTML = `<div class="nt-b rp">🔁 ${ntS('ntO', nums, '2')} 번 반복하기 <small>(행 번호 1, 2, 3…)</small></div>
+    <div class="nt-b rp2">🔁 ${ntS('ntI', nums, '2')} 번 반복하기 <small>(열 번호 1, 2, 3…)</small></div>
+    ${L.ifOn ? `<div class="nt-b if">만일 ${ntS('ntC', Object.keys(NTC), '항상')} (이)라면 ${L.a} 도장, 아니면 ${L.b} 도장</div>` : `<div class="nt-b do">${L.a} 도장 찍기</div>`}
+    <div class="nt-b do">➡️ 오른쪽으로 한 칸</div><div class="nt-b mv">↩️ 다음 줄 첫 칸으로</div>`;
+  ntGrid($('#ntGoal'), L, (r, c) => ntCell(L, r, c)); ntGrid($('#ntMine'), L); $('#ntOut').innerHTML = '';
+}
+$('#ntRun').onclick = async () => {
+  if (ntBusy) return; ntBusy = true; const L = NTL[ntL], O = +$('#ntO').value, I = +$('#ntI').value, C = $('#ntC') ? $('#ntC').value : '항상';
+  const mine = {}; ntGrid($('#ntMine'), L); const cells = $$('#ntMine span'); let out = false;
+  for (let r = 1; r <= O; r++) for (let c = 1; c <= I; c++){
+    const v = L.ifOn ? (NTC[C](r, c) ? L.a : L.b) : L.a;
+    if (r > L.rows || c > L.cols){ out = true; continue; }
+    mine[r + ',' + c] = v; const el = cells[(r - 1) * L.cols + c - 1]; el.textContent = v; el.classList.add('hit'); await new Promise(z => setTimeout(z, 110));
+  }
+  let bad = 0; cells.forEach((el, k) => { const r = Math.floor(k / L.cols) + 1, c = k % L.cols + 1; if ((mine[r + ',' + c] || '') !== ntCell(L, r, c)){ bad++; el.classList.add('bad'); } });
+  ntBusy = false;
+  if (bad || out){ ntTried = true; const hint = out ? '판 밖으로 도장을 찍으려고 했어요! 반복 횟수가 너무 많아요.' : (O !== L.rows || I !== L.cols) ? `목표는 <b>${L.rows}줄</b>, 한 줄에 <b>${L.cols}칸</b>이에요. 바깥쪽과 안쪽 반복 횟수를 확인해요.` : '반복 횟수는 맞아요! 어떤 칸에 어떤 도장이 찍혀야 하는지 행·열 번호로 따져 봐요.';
+    $('#ntOut').innerHTML = `<p class="feedback show bad">❌ 빨간 칸이 목표와 달라요. ${hint}</p>`; return; }
+  ntFirst.push(!ntTried);
+  $('#ntOut').innerHTML = `<p class="feedback show ok">⭕ 목표 무늬 완성! ${L.tip}</p>` + (ntL < NTL.length - 1 ? '<button class="btn" id="ntNext">다음 무늬 ▶</button>' : '<p>🎉 타일 장인 인증! 제어 구조 안에 또 다른 제어 구조를 넣는 <b>중첩 제어 구조</b>로 짧은 프로그램이 많은 일을 해요.</p><button class="btn ghost" id="ntAgain">처음부터 다시 ↺</button>');
+  if ($('#ntNext')) $('#ntNext').onclick = () => { ntL++; ntLevel(); };
+  else { $('#ntAgain').onclick = () => { ntL = 0; ntFirst.length = 0; ntLevel(); }; reportQuiz('tiles3', ntFirst.slice(0, 3)); }
+};
+ntLevel();
 
 renderQuiz($('#quiz'), [
   {q:'제어 구조 안에 또 다른 제어 구조가 포함된 것은?', o:['순차 구조','중첩 제어 구조','변수'], a:1, e:'반복 속 반복, 반복 속 선택 등이 중첩 제어 구조예요.'},
