@@ -22,7 +22,9 @@
 .ph-chips button.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .ph-chips .sep{flex:0 0 1px;background:var(--line);margin:2px 2px}
 .ph-grid{flex:1 1 auto;overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0 3px 3px;align-content:start}
-.ph-grid button{all:unset;cursor:pointer;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2rem;border-radius:4px;position:relative}
+.ph-grid button{all:unset;cursor:pointer;aspect-ratio:1;border-radius:4px;position:relative;background:#ddd center/cover;overflow:hidden}
+.btl{position:absolute;width:16%;transform:translate(-50%,-50%) rotate(-8deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+.btl svg{display:block;width:100%}
 .ph-grid button.seen::after{content:"ⓘ";position:absolute;right:4px;bottom:2px;font-size:.7rem;color:#fff;text-shadow:0 0 3px rgba(0,0,0,.5)}
 .ph-grid button.pick{outline:3px solid var(--on);outline-offset:-3px}
 .ph-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:.85rem;padding:30px 10px}
@@ -34,7 +36,8 @@
 .pv-top{display:flex;align-items:center;gap:8px;padding:30px 10px 6px}
 .pv-top button{all:unset;cursor:pointer;color:var(--brand);font-weight:800;font-size:.9rem;padding:2px 6px}
 .pv-top span{font-size:.78rem;color:var(--muted);font-weight:700}
-.pv-img{flex:1 1 auto;display:flex;align-items:center;justify-content:center;font-size:5.2rem;margin:0 8px;border-radius:12px}
+.pv-img{flex:1 1 auto;margin:0 8px;border-radius:12px;background:#111 center/cover no-repeat;position:relative;overflow:hidden}
+.pv-img .btl{width:12%}
 .pv-act{display:flex;justify-content:space-around;align-items:center;padding:10px 0 14px}
 .pv-act button{all:unset;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#27304a}
 .pv-act button.i{background:var(--brand-soft);color:var(--brand);font-weight:800;box-shadow:0 0 0 2px var(--brand-soft)}
@@ -60,7 +63,7 @@
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:8px}
 /* 올리기 전 점검 */
 .post{border:1.5px solid var(--line);border-radius:18px;overflow:hidden;max-width:340px;background:#fff}
-.post .pimg{height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#dff3ff,#c9e3ff)}
+.post .pimg{height:190px;background:#ddd center/cover}
 .post .pbody{padding:10px 14px}
 .mtag{display:inline-block;margin:3px 4px 0 0;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700;background:var(--bg)}
 .mtag.risk{background:var(--bad-soft);color:var(--bad)}
@@ -129,7 +132,7 @@
       <div class="ph-wrap">
         <div class="phone"><div class="ph-scr" id="ph3"></div></div>
         <div class="ph-side">
-          <p>체육 대회 날, 지우가 🥤 물병을 잃어버렸어요. 친구들이 그날 찍은 사진을 모아 보냈어요. 사진의 <b>ⓘ 정보</b>를 보고 물병이 <b>마지막으로 찍힌 사진</b>을 찾아보세요.</p>
+          <p>체육 대회 날, 지우가 <b>파란 물병(JW 스티커)</b>을 잃어버렸어요. 친구들이 그날 찍은 사진을 모아 보냈어요. 사진의 <b>ⓘ 정보</b>를 보고 물병이 <b>마지막으로 찍힌 사진</b>을 찾아보세요.</p>
           <div class="mission"><b class="t">🔎 단서 1</b>물병이 보이는 사진을 모두 열어 촬영 시간을 비교해요. 마지막 사진을 찾으면 사진을 크게 본 화면에서 <b>[이 사진이다!]</b>를 누르세요.</div>
           <div class="feedback" id="detFb"></div>
           <div id="where" style="margin-top:10px"></div>
@@ -142,7 +145,7 @@
       <p>물병을 찾은 지우가 집에 와서 "드디어 찾았다!" 사진을 찍어 SNS에 올리려고 해요. 그런데 사진의 메타데이터를 열어 보니…</p>
       <div class="ph-wrap">
         <div class="post">
-          <div class="pimg">🥤🎉</div>
+          <div class="pimg" style="background-image:url(../assets/photos/m_bottle.jpg)"></div>
           <div class="pbody"><b>지우</b> 드디어 찾았다!! 🥳<div id="ptags" style="margin-top:6px"></div></div>
         </div>
         <div class="ph-side">
@@ -173,6 +176,7 @@
       <p><b>메타데이터</b>는 데이터에 대한 데이터예요. 사진의 <b>촬영 날짜·위치·기기</b> 같은 메타데이터를 활용하면 폴더 없이도 여러 기준으로 <b>분류</b>할 수 있지만, 위치처럼 <b>개인 정보</b>가 드러날 수 있으니 공유하기 전에 확인해요.</p>
     </div>
   </section>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함, 물병 그림은 덧붙임)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:Bulguksa_temple_entrance_gate_stairs_flower_bed_and_blue_sky_in_Gyeongju_South_Korea.jpg" target="_blank" rel="noopener">Bulguksa temple entrance gate stairs flower bed and blue sky in Gyeongju South Korea.jpg</a> · Basile Morin · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Dabotap_Pagoda_01.jpg" target="_blank" rel="noopener">Dabotap Pagoda 01.jpg</a> · Bernard Gagnon · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Cheomseongdae_Night_Violet.jpg" target="_blank" rel="noopener">Cheomseongdae Night Violet.jpg</a> · Brinacor · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Bus_Akas_Asri_Pariwisata.jpg" target="_blank" rel="noopener">Bus Akas Asri Pariwisata.jpg</a> · Ardhan Febriansyah · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Relay_runner_(Unsplash).jpg" target="_blank" rel="noopener">Relay runner (Unsplash).jpg</a> · Braden Collum bradencollum · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:EMACS_gold_medal_2023_Pescara.jpg" target="_blank" rel="noopener">EMACS gold medal 2023 Pescara.jpg</a> · Emptywords · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:A_South_Korean_school_lunch.jpg" target="_blank" rel="noopener">A South Korean school lunch.jpg</a> · 570cjk · CC BY-SA 3.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Onigiri_002.jpg" target="_blank" rel="noopener">Onigiri 002.jpg</a> · Ocdp · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:Pontypool_Park_Cherry_Trees.jpg" target="_blank" rel="noopener">Pontypool Park Cherry Trees.jpg</a> · WelshDave · CC BY 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Brown_street_dog_01.jpg" target="_blank" rel="noopener">Brown street dog 01.jpg</a> · A S M Jobaer · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Hyeopjae_Beach_Scenery.jpg" target="_blank" rel="noopener">Hyeopjae Beach Scenery.jpg</a> · Lcarrion88 · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:2023_Mandarynki.jpg" target="_blank" rel="noopener">2023 Mandarynki.jpg</a> · Jacek Halicki · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Brisbane_City_Hall_Auditorium_stage_and_organs.jpg" target="_blank" rel="noopener">Brisbane City Hall Auditorium stage and organs.jpg</a> · Kgbo · CC BY-SA 4.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Flickr_cc_runner_wisconsin_u.jpg" target="_blank" rel="noopener">Flickr cc runner wisconsin u.jpg</a> · ms4denmark · CC BY-SA 2.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Random_Verna_bottled_water_photo.jpg" target="_blank" rel="noopener">Random Verna bottled water photo.jpg</a> · Khor letey · CC BY-SA 4.0</li></ul></details>
   <p class="src">미래엔 중학교 정보 52~53쪽(데이터의 분류) 내용을 바탕으로 재구성 · 메타데이터 참고: 씨마스 중학교 정보 67쪽 · 사진, 장소, 인물은 모두 가상 데이터</p>
 </main>
 <script src="../assets/contents.js"></script>
@@ -212,7 +216,13 @@ const DET = [
   {e: '🏁', bg: '#e8eefc,#c7d6f7', d: '2026-05-20', t: '14:10', p: 'ground', who: ['하준'], dv: 1, res: '4000×3000', mb: 3.1},
   {e: '🍱🥤', bg: '#ffeede,#ffd2b0', d: '2026-05-20', t: '12:20', p: 'lunch', who: ['지우', '민서'], dv: 1, res: '4000×3000', mb: 2.8},
 ];
+const IMG = ['m_bul', 'm_dabo', 'm_cheom', 'm_bus', 'm_start', 'm_medal', 'm_lunch', 'm_rice', 'm_blossom', 'm_puppy', 'm_beach', 'm_tang'];
+PICS.forEach((p, i) => p.img = IMG[i]);
+// 탐정 사진: [사진, 물병 위치(가로%, 세로%)] — 물병이 없는 사진은 null
+[['m_medal', [78, 70]], ['m_hall', null], ['m_start', [86, 62]], ['m_relay', null], ['m_lunch', [88, 30]]].forEach(([img, b], i) => { DET[i].img = img; DET[i].btl = b; });
 const ALL = PICS.concat(DET);   // 사진 번호(data-k)는 ALL 기준
+const BOTTLE = '<svg viewBox="0 0 24 48" aria-hidden="true"><rect x="8" y="1" width="8" height="6" rx="1.5" fill="#1f5fd6"/><rect x="9" y="7" width="6" height="3" fill="#cfe3ff"/><path d="M6 12 Q6 9 9 9 H15 Q18 9 18 12 V44 Q18 47 15 47 H9 Q6 47 6 44Z" fill="#5aa8ff" stroke="#1f5fd6" stroke-width="1.5"/><rect x="6.8" y="22" width="10.4" height="10" fill="#ffd45c"/><text x="12" y="29.5" font-size="6" text-anchor="middle" font-weight="700" fill="#1f2a3d">JW</text><path d="M9 14 V40" stroke="#fff" stroke-width="1.6" opacity=".6"/></svg>';
+const photoHTML = p => (p.btl ? `<span class="btl" style="left:${p.btl[0]}%;top:${p.btl[1]}%">${BOTTLE}</span>` : '');
 const fmtD = d => { const [y, m, dd] = d.split('-'); return `${y}년 ${+m}월 ${+dd}일`; };
 const fmtS = d => { const [, m, dd] = d.split('-'); return `${+m}월 ${+dd}일`; };
 const bgOf = p => `linear-gradient(135deg,${p.bg})`;
@@ -245,7 +255,7 @@ function phone(scr, opt){
   const grid = scr.querySelector('.ph-grid'), pv = scr.querySelector('.pv'), sheet = scr.querySelector('.sheet');
   let cur = null;
   const draw = list => {
-    grid.innerHTML = list.length ? list.map(p => `<button data-k="${ALL.indexOf(p)}" style="background:${bgOf(p)}" aria-label="사진 ${fmtS(p.d)}">${p.e}</button>`).join('') : '<div class="ph-empty">조건에 맞는 사진이 없어요.</div>';
+    grid.innerHTML = list.length ? list.map(p => `<button data-k="${ALL.indexOf(p)}" style="background-image:url(../assets/photos/${p.img}.jpg)" aria-label="사진 ${fmtS(p.d)}">${photoHTML(p)}</button>`).join('') : '<div class="ph-empty">조건에 맞는 사진이 없어요.</div>';
     scr.querySelector('.ph-head small').textContent = `사진 ${list.length}장`;
     grid.querySelectorAll('button').forEach(b => { if (opt.seen && opt.seen.has(+b.dataset.k)) b.classList.add('seen');
       b.onclick = () => open(ALL[+b.dataset.k]); });
@@ -253,7 +263,7 @@ function phone(scr, opt){
   const open = p => {
     cur = p; pv.hidden = false; sheet.classList.remove('open');
     pv.querySelector('.dt').textContent = fmtS(p.d);
-    const img = pv.querySelector('.pv-img'); img.style.background = bgOf(p); img.textContent = p.e;
+    const img = pv.querySelector('.pv-img'); img.style.backgroundImage = 'url(../assets/photos/' + p.img + '.jpg)'; img.innerHTML = photoHTML(p);
     pv.querySelector('.i').classList.toggle('hint', !(opt.seen && opt.seen.size));
     pv.querySelectorAll('.extra').forEach(x => x.remove());
     if (opt.viewExtra){ pv.querySelector('.pv-act').insertAdjacentHTML('afterend', `<div class="extra" style="text-align:center;padding:0 0 12px">${opt.viewExtra(p)}</div>`); opt.onView && opt.onView(p, pv); }
@@ -332,7 +342,7 @@ phone($('#ph3'), {list: DET, seen: seen3, title: '받은 사진',
   viewExtra: () => '<button class="btn" data-pick>🔎 이 사진이다!</button>',
   onView: (p, pv) => { pv.querySelector('[data-pick]').onclick = () => {
     if (detDone) return;
-    if (!p.e.includes('🥤')) return feedback($('#detFb'), false, '❌ 이 사진에는 물병이 보이지 않아요. 🥤가 찍힌 사진만 비교해요.');
+    if (!p.btl) return feedback($('#detFb'), false, '❌ 이 사진에는 지우의 파란 물병이 보이지 않아요. 물병이 찍힌 사진만 비교해요.');
     if (p !== ANSWER) return feedback($('#detFb'), false, `❌ 물병이 보이지만 ${p.t}보다 늦게 찍힌 물병 사진이 있어요. ⓘ로 촬영 시간을 비교해 보세요.`);
     if (!seen3.has(ALL.indexOf(p))) return feedback($('#detFb'), false, '🤔 맞는 것 같지만, 먼저 ⓘ를 눌러 이 사진의 촬영 시간과 장소를 확인해 보세요.');
     detDone = true;
