@@ -179,7 +179,7 @@ const BN = [
   {k: 'title', t: '🔤 축제 제목 글자', files: [['title.png', '비트맵 · 150×35 픽셀', 'bmp'], ['title.svg', '벡터 · 글자 윤곽 정보', 'vec']], good: 1,
    make: f => f === 0 ? lowres(TITLE, 150, 35, true) : TITLE, bad: '글자 테두리가 울퉁불퉁해요. 글자·도형은 <b>벡터</b>가 알맞아요.'},
   {k: 'photo', t: '📸 작년 축제 사진', files: [['메신저캡처.jpg', '비트맵 · 120×90 픽셀', 'bmp'], ['원본사진.jpg', '비트맵 · 4000×3000 픽셀', 'bmp']], good: 1,
-   make: f => f === 0 ? lowres(PHOTO, 120, 90) : `<img src="${PHOTO}" alt="축제 사진">`, bad: '사진이 모자이크처럼 보여요. 사진은 벡터로 만들 수 없으니, <b>픽셀이 많은(해상도가 높은) 원본</b>을 써야 해요.'},
+   make: f => f === 0 ? lowres(PHOTO, 120, 90) : `<img src="${PHOTO}" alt="축제 사진">`, bad: '사진이 모자이크처럼 보여요. 색이 복잡한 사진은 비트맵으로 나타내니까 <b>픽셀이 많은(해상도가 높은) 원본</b>을 써야 해요.'},
 ];
 const bnSel = {}; let bnTry = 0, bnFirst = null;
 function bnThumb(s, i){ const v = s.make(i); return typeof v === 'string' ? v : (() => { const d = document.createElement('div'); d.appendChild(v); return d.innerHTML; })(); }

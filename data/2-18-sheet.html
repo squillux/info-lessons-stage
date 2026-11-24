@@ -99,7 +99,7 @@ table.ss td.err{color:var(--bad)}
     </div>
     <div class="card" data-bot="점들이 어떤 모양으로 흩어져 있는지 보고 관계를 골라 봐 🔎">
       <h3>🔎 어떤 관계일까?</h3>
-      <p>점들이 <b>오른쪽 위로</b> 모이면 양의 관계, <b>오른쪽 아래로</b> 모이면 음의 관계, 흩어져 있으면 관계가 없다고 해요.</p>
+      <p>점들이 <b>오른쪽 위로</b> 모이면 <b>한쪽이 커질 때 다른 쪽도 커지는 관계</b>, <b>오른쪽 아래로</b> 모이면 <b>한쪽이 커질 때 다른 쪽은 작아지는 관계</b>, 흩어져 있으면 관계가 없다고 해요.</p>
       <div class="tr-mini" id="trMini"></div>
     </div>
     <div class="card" data-bot="시간이 있으면 진짜 스프레드시트로도 해 봐 📊">
@@ -278,7 +278,7 @@ const TRM = [
   {t: '📱 하루 게임 시간 ↔ 수면 시간', a: 1, pts: [[0.5, 9], [1, 8.6], [1.5, 8.8], [2, 8], [3, 7.6], [3.5, 7.1], [4, 7.3], [5, 6.4], [6, 6.1], [7, 5.5]]},
   {t: '👟 신발 크기 ↔ 좋아하는 숫자', a: 2, pts: [[230, 7], [235, 2], [240, 9], [245, 4], [250, 8], [255, 1], [260, 6], [265, 3], [270, 9], [275, 5]]},
 ];
-const TRN = ['↗️ 양의 관계', '↘️ 음의 관계', '🔀 관계 없음'];
+const TRN = ['↗️ 함께 커지는 관계', '↘️ 한쪽이 커지면 작아지는 관계', '🔀 관계 없음'];
 $('#trMini').innerHTML = TRM.map((d, i) => { const xs = d.pts.map(p => p[0]), ys = d.pts.map(p => p[1]), [a, b, c, e] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
   return `<div class="tr-m"><svg viewBox="0 0 160 110"><line x1="12" y1="98" x2="152" y2="98" stroke="#c9d2e3"/><line x1="12" y1="6" x2="12" y2="98" stroke="#c9d2e3"/>${d.pts.map(([x, y]) => `<circle cx="${18 + (x - a) / (b - a) * 128}" cy="${92 - (y - c) / (e - c) * 80}" r="4" fill="#7c5cff"/>`).join('')}</svg><b>${d.t}</b><div class="pick3">${TRN.map((n, k) => `<button data-i="${i}" data-k="${k}">${n}</button>`).join('')}</div></div>`; }).join('');
 const trMF = {};
