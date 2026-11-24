@@ -23,7 +23,7 @@
 @media (max-width:520px){.cyc{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
-<body data-unit="4" data-title="인공지능 모델이 만들어지는 과정" data-sub="중1 Ⅳ단원 · 인공지능 시스템 · 미래엔 152~155쪽">
+<body data-stage data-unit="4" data-title="인공지능 모델이 만들어지는 과정" data-sub="중1 Ⅳ단원 · 인공지능 시스템 · 미래엔 152~155쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능 시스템</span>
   <h1>인공지능 모델이 만들어지는 과정</h1>
@@ -31,14 +31,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="많이 보면서 스스로|어른이 규칙을 알려 줘서|책을 읽어서|잘 모르겠어">
       <p>어린아이는 새와 물고기를 어떻게 구별하게 될까요? 누가 "새는 날개가 있어"라고 규칙을 알려 주지 않아도, 많이 보면서 스스로 알게 되지 않나요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="버튼을 눌러 한 단계씩 모델을 만들어 봐 🐦">
       <h3>🐦🐟 새와 물고기 분류 모델 만들기</h3>
       <p><b>훈련 데이터</b>(데이터 + 정답)로 학습시키고, 처음 보는 <b>테스트 데이터</b>로 모델을 평가해요. 버튼을 눌러 한 단계씩 진행해 보세요.</p>
       <div class="cyc" id="cyc">
@@ -51,18 +51,18 @@
       <div id="stage" style="margin-top:10px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="문제를 해결하는 순서대로 눌러 봐 🔢">
       <h3>🔢 인공지능으로 문제를 해결하는 순서</h3>
       <p>인공지능 시스템으로 문제를 해결하는 과정을 순서대로 눌러 보세요.</p>
       <div class="order" id="order"></div>
       <div class="feedback" id="oFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="이 장면은 어느 단계일까? 🔍">
       <h3>🔍 어느 단계일까?</h3>
       <div id="which"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

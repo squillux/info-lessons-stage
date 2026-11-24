@@ -21,7 +21,7 @@
 .conf span.tr i{display:block;height:100%;background:var(--brand)}
 </style>
 </head>
-<body data-unit="4" data-title="나만의 이미지 분류 모델" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 163~167쪽">
+<body data-stage data-unit="4" data-title="나만의 이미지 분류 모델" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 163~167쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능의 활용</span>
   <h1>나만의 이미지 분류 모델</h1>
@@ -29,14 +29,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="10장 정도|100장 이상|여러 각도로 찍어야 해요|같은 각도면 충분해요">
       <p>엔트리에서 가위·바위·보 손 모양을 분류하는 모델을 만든다면, 손 사진을 몇 장쯤 찍어야 할까요? 모두 같은 각도로 찍어도 될까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="크기와 위치를 바꿔 가며 5개 이상 그려 봐 ✏️">
       <h3>✏️ 1단계 · 데이터 입력</h3>
       <p>칸에 <b>⭕ 동그라미</b> 또는 <b>✖ 가위표</b>를 그리고, 알맞은 클래스의 <b>[추가]</b>를 누르세요. 클래스마다 <b>5개 이상</b> 모아요. 크기와 위치를 조금씩 다르게 그리면 더 좋아요.</p>
       <div class="work">
@@ -46,7 +46,7 @@
       <p class="hint" id="cnt"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="학습시키고 새 그림을 분류해 봐 📚">
       <h3>📚 2단계 · 학습 &nbsp;→&nbsp; ✅ 3단계 · 결과 확인</h3>
       <p>데이터를 다 모았으면 학습시키고, 새로 그린 그림을 모델이 어떻게 분류하는지 확인해요.</p>
       <div class="ctrl"><button class="btn" id="train">📚 모델 학습하기</button><button class="btn line" id="test">🔍 지금 그린 그림 분류하기</button></div>
@@ -55,11 +55,11 @@
       <p class="hint" id="tip"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="모델이 왜 그렇게 분류했을지 생각해 봐 🔎">
       <h3>🔎 확인하기</h3>
       <div id="check"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

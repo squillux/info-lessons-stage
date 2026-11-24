@@ -15,7 +15,7 @@
 .plan textarea{font:inherit;width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);margin:4px 0}
 </style>
 </head>
-<body data-unit="4" data-title="인공지능의 가치와 윤리" data-sub="중1 Ⅳ단원 · 인공지능의 가치와 윤리 · 미래엔 178~182쪽">
+<body data-stage data-unit="4" data-title="인공지능의 가치와 윤리" data-sub="중1 Ⅳ단원 · 인공지능의 가치와 윤리 · 미래엔 178~182쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능 윤리</span>
   <h1>인공지능의 가치와 윤리</h1>
@@ -23,19 +23,19 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="개인 정보가 퍼져요|누군가 나를 흉내 낼 수 있어요|별문제 없어요|잘 모르겠어">
       <p>인공지능 챗봇이 친구들과 나눈 대화를 학습했는데, 그 안에 내 개인 정보가 들어 있었다면 어떤 문제가 생길까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="인공지능이 사회에서 하는 역할을 골라 봐 🌍">
       <h3>🌍 인공지능의 사회적 역할</h3>
       <div id="role"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="편향, 투명성… 하나씩 확인해 봐 ⚖️">
       <h3>⚖️ 인공지능을 개발하고 활용할 때 고려할 것</h3>
       <div class="five">
         <div><b>📊 데이터 편향</b>데이터가 성별·인종·출신 등에 치우치면 공정하지 못한 결과가 나와요.</div>
@@ -47,7 +47,7 @@
       <div id="five" style="margin-top:12px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="학습 데이터가 치우치면 번역이 어떻게 될까? 🔎">
       <h3>🔎 데이터 편향 실험: 번역기</h3>
       <p>성별 구분이 없는 언어의 문장을 영어로 번역하는 가상의 번역기예요. 학습 데이터에 "간호사=여자, 의사=남자" 문장이 훨씬 많았다면 결과는 어떻게 될까요?</p>
       <div class="trans">
@@ -57,20 +57,20 @@
       <div id="bias" style="margin-top:10px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="정답은 없어! 근거를 들어 투표해 봐 🗳️">
       <h3>🗳️ 자율 주행 사고, 누구의 책임일까? <span class="tag-opt">실시간 투표</span></h3>
       <p>자율 주행 자동차가 사고를 냈어요. 책임이 누구에게 있다고 생각하나요? 정답은 없어요. 투표한 뒤 <b>근거</b>를 들어 이야기하고, 나와 다른 의견도 끝까지 들어 봐요.</p>
-      <p class="hint">💻 선생님이 [교사] 버튼으로 방을 열면 학생들은 QR 코드로 참여해요. 이름은 저장되지 않아요.</p>
+      <p class="hint">💻 선생님이 보여 주는 방 코드를 입력하거나 QR 코드를 찍으면 바로 참여해요. 이름은 저장되지 않아요.</p>
       <div id="vote"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="법적, 사회적, 윤리적 관점으로 나눠 봐 🧭">
       <h3>🧭 해결 방안을 세 가지 관점으로</h3>
       <p>데이터 편향 문제의 해결 방안을 <b>법적·사회적·윤리적</b> 관점으로 나누어 보세요. 한 문제도 여러 측면에서 함께 해결해야 해요.</p>
       <div id="lens"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내가 할 수 있는 노력을 한 가지 써 봐 🤝">
       <h3>🤝 바람직한 인공지능을 위한 노력</h3>
       <div id="who"></div>
       <div class="plan" style="margin-top:10px"><b>✏️ 내가 할 수 있는 노력 한 가지</b><textarea rows="2" placeholder="예: 인공지능이 만든 답을 그대로 믿지 않고 다른 자료와 비교해 확인한다. (저장되지 않아요)"></textarea></div>

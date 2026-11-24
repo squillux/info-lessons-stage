@@ -203,7 +203,7 @@ const LIVE = (() => {
     el.querySelector('button').onclick = go; inp.onkeydown = e => { if (e.key === 'Enter') go(); };
     if (joinParam){ inp.value = joinParam; go(); }
   }
-  /* 모드 버튼: 학생 화면에는 '방 코드로 참여'(+ 혼자 하기)만, 교사 계정으로 로그인한 기기에는 교사 버튼까지 */
+  /* 모드 버튼: 학생 화면에는 '방 코드로 참여'만. 교사 버튼은 교사용 관리 화면에서 [▶ 실행]으로 연 탭(?host=1) + 교사 계정일 때만 */
   const TEACHER_ONLY = ['teacher', 'hand'];
   const goCard = box => setTimeout(() => { if (window.stageShow && window.stageShow(box)) return; const all = document.getElementById('allBtn'); if (all && document.querySelector('main .locked')) all.click(); box.scrollIntoView({block: 'start'}); window.scrollBy(0, -80); }, 300);
   function bar(box, modes, onPick, start){
@@ -217,12 +217,13 @@ const LIVE = (() => {
       b.querySelectorAll('.btn').forEach(x => x.onclick = () => pick(x.dataset.m));
       b.hidden = list.length < 2; paint();
     };
-    const sm = modes.filter(m => !TEACHER_ONLY.includes(m[0]));
+    // 학생 화면: 방 코드 입력만 (혼자 하기·교사 버튼 없음). 교사 버튼은 교사용 관리 화면의 [▶ 실행]으로 연 탭(?host)에서, 교사 계정일 때만
+    const sm = modes.filter(m => m[0] === 'student');
     draw(sm);
     if (joinParam && sm.some(m => m[0] === 'student')){ pick('student'); goCard(box); }   // 학생용 주소(?join=코드): 펼치고 이 카드로 이동해 바로 참여
-    else pick(sm.some(m => m[0] === start) ? start : 'student');
+    else pick('student');
     isTeacher().then(t => {
-      if (!t) return;
+      if (!t || !hostParam) return;
       teacherOn = true; draw(modes);
       if (hostParam && box === document.querySelector('.lv-bar')?.parentElement){ pick('teacher'); goCard(box); }   // 교사용 관리 화면에서 [▶ 실행]
       else if (!joinParam && cur === 'student' && start && start !== 'student') pick(start);

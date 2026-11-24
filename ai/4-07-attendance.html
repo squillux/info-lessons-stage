@@ -17,7 +17,7 @@
 .roll div.in{border-color:var(--mint);background:var(--mint-soft)}
 </style>
 </head>
-<body data-unit="4" data-title="자동 출석부 설계하기" data-sub="중1 Ⅳ단원 · 스마트 교실 프로젝트 · 미래엔 172~175쪽">
+<body data-stage data-unit="4" data-title="자동 출석부 설계하기" data-sub="중1 Ⅳ단원 · 스마트 교실 프로젝트 · 미래엔 172~175쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능의 활용</span>
   <h1>자동 출석부 설계하기</h1>
@@ -25,32 +25,32 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>문제 이해</h2>
-    <div class="card">
+    <div class="card" data-think="카메라가 자동으로 출석 확인|학생이 직접 버튼 누르기|지금처럼 이름 부르기|잘 모르겠어">
       <p>지금은 선생님이 한 명씩 이름을 불러 출석을 확인해요(현재 상태). 우리가 원하는 모습(목표 상태)은 무엇일까요? 친구들의 얼굴 사진을 모을 때 꼭 지켜야 할 것은 무엇일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>설계 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="현재 상태와 목표 상태를 정해 봐 🎯">
       <h3>🎯 문제 정의하기</h3>
       <div id="state"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="얼굴은 민감한 개인 정보야. 알맞은 행동을 골라 봐 📸">
       <h3>📸 데이터 수집 계획 점검</h3>
       <p>얼굴은 <b>민감한 개인 정보</b>예요. 데이터를 모을 때 알맞은 행동을 골라 보세요.</p>
       <div id="collect"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="프로그램 동작을 순서대로 눌러 봐 🔢">
       <h3>🔢 프로그램이 동작하는 순서</h3>
       <p>완성된 자동 출석부 프로그램의 동작을 순서대로 눌러 보세요.</p>
       <div class="order" id="order"></div>
       <div class="feedback" id="oFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="학습하지 않은 사람이 오면 어떻게 될까? 🖥️">
       <h3>🖥️ 동작 시뮬레이션</h3>
       <p>가상의 학생(번호로만 표시)이 카메라 앞에 서면 모델이 얼굴을 인식해 출석을 표시해요. 학습하지 않은 사람이 오면 어떻게 될까요?</p>
       <div class="sim"><div class="cam" id="cam">📷</div><div class="roll" id="roll"></div></div>

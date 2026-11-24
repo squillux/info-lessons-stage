@@ -22,7 +22,7 @@
 .checks label{display:block;padding:5px 0}
 </style>
 </head>
-<body data-unit="4" data-title="사람을 위한 착한 인공지능" data-sub="중1 Ⅳ단원 · 창의·융합 프로젝트 · 미래엔 184~185쪽">
+<body data-stage data-unit="4" data-title="사람을 위한 착한 인공지능" data-sub="중1 Ⅳ단원 · 창의·융합 프로젝트 · 미래엔 184~185쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 창의·융합 프로젝트</span>
   <h1>사람을 위한 착한 인공지능</h1>
@@ -31,7 +31,7 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>문제에 대한 공감하기</h2>
-    <div class="card">
+    <div class="card" data-think="건강|교육|환경|빈곤">
       <p>우리 주변에서 어려움을 겪는 사람은 누구일까요? 국제 연합(UN)의 지속 가능 발전 목표(빈곤, 건강, 교육, 환경 등)를 참고해 모둠 주제를 골라 보세요.</p>
       <div class="sdg" id="sdg"></div>
     </div>
@@ -39,7 +39,7 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>정의하고, 아이디어 내고, 만들기</h2>
-    <div class="card">
+    <div class="card" data-bot="모둠 기획서를 차근차근 채워 봐 📝">
       <h3>📝 기획서 작성</h3>
       <p>모둠별로 적으면 아래에 기획 카드가 만들어져요. (저장되지 않아요. 완성되면 캡처하거나 인쇄하세요.)</p>
       <div class="ed">
@@ -53,7 +53,7 @@
       <p style="margin-top:8px"><button class="btn line" onclick="print()">🖨️ 인쇄하기</button></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="완성한 기획 카드를 보내고 다른 모둠 것도 살펴봐 📡">
       <h3>📡 모둠 기획 갤러리 <span class="tag-opt">실시간</span></h3>
       <p>완성한 기획 카드를 보내면 반 전체의 기획이 한 화면에 모여요. 다른 모둠의 기획을 보고 좋은 점과 보완할 점을 이야기해요. (모둠당 2개까지, 이름은 저장되지 않아요.)</p>
       <div id="live"></div>
@@ -62,7 +62,7 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">3</span>평가하기</h2>
-    <div class="card">
+    <div class="card" data-bot="완성한 시스템을 체크리스트로 점검해 봐 ✅">
       <p>완성한 인공지능 시스템을 점검해 보세요.</p>
       <div class="checks" id="checks"></div>
       <p class="hint" id="chkMsg"></p>

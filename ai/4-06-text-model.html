@@ -16,7 +16,7 @@
 .tbl2 td,.tbl2 th{border:1px solid var(--line);padding:4px 8px}
 </style>
 </head>
-<body data-unit="4" data-title="텍스트 분류 모델: 감정과 스팸" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 169~171쪽">
+<body data-stage data-unit="4" data-title="텍스트 분류 모델: 감정과 스팸" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 169~171쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능의 활용</span>
   <h1>텍스트 분류 모델: 감정과 스팸</h1>
@@ -24,14 +24,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="ㅠㅠ 같은 표현|느낌표|낱말의 뜻|잘 모르겠어">
       <p>"오늘 시험 망쳤어 ㅠㅠ"와 "드디어 방학이다!!"를 읽으면 바로 기분을 알 수 있죠. 우리는 어떤 단서로 기분을 알아챘을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="모델을 고르고 예시 문장을 고쳐 봐 📝">
       <h3>📝 모델 고르기와 데이터 입력</h3>
       <div class="seg" id="mode"><button data-m="emo" class="active">😊 감정 인식 (기쁨/슬픔)</button><button data-m="spam">📩 문자 분류 (필요한 문자/스팸)</button></div>
       <p>클래스마다 한 줄에 한 문장씩 입력해요. 예시 문장(가상)을 고치거나 더 추가해도 돼요.</p>
@@ -43,7 +43,7 @@
       <p class="hint" id="tinfo"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="새 문장을 넣고 분류해 봐 🔍">
       <h3>🔍 결과 확인</h3>
       <p>새 문장을 입력하고 분류해 보세요.</p>
       <div class="ctrl"><input class="inp" id="q" style="width:min(100%,380px)"><button class="btn" id="go">분류하기</button></div>
@@ -51,13 +51,13 @@
       <div class="words" id="why"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="데이터를 바꾸면 정확도가 어떻게 달라질까? 📏">
       <h3>📏 모델 평가하기</h3>
       <p>학습에 쓰지 않은 <b>테스트 문장 8개</b>로 정확도를 재 봐요. 학습 데이터를 늘리거나 고친 뒤 다시 평가하면 정확도가 어떻게 바뀔까요?</p>
       <div class="ctrl"><button class="btn line" id="eval">📏 정확도 평가</button></div>
       <div id="evalOut"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

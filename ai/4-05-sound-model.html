@@ -20,7 +20,7 @@
 .res{font-size:1.15rem;font-weight:800}
 </style>
 </head>
-<body data-unit="4" data-title="소리 분류 모델" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 163, 168쪽 · 참고: 비상교육 186~188쪽">
+<body data-stage data-unit="4" data-title="소리 분류 모델" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 163, 168쪽 · 참고: 비상교육 186~188쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능의 활용</span>
   <h1>소리 분류 모델</h1>
@@ -28,27 +28,27 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="소리의 높이|소리의 크기|반복되는 방식|모두 다">
       <p>눈을 감고도 친구의 웃음소리와 박수 소리를 구별할 수 있어요. 우리는 소리의 무엇을 듣고 구별할까요? 높이? 크기? 반복되는 방식?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="소리를 하나씩 눌러 들어 봐. 소리를 켜 줘 🎧">
       <h3>🎧 1단계 · 훈련 데이터 듣기</h3>
       <p>클래스(이름표)가 붙은 소리를 눌러 들어 보세요. 테두리 색이 클래스예요. (가상으로 만든 소리예요. 🔊 소리를 켜 주세요.)</p>
       <div class="snd" id="train"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="모델이 어떤 특징을 찾았는지 봐 📚">
       <h3>📚 2단계 · 학습: 모델이 찾은 특징</h3>
       <p>모델은 소리마다 <b>높이</b>, <b>반복 빠르기</b>, <b>잡음 정도</b> 같은 특징을 숫자로 바꿔 클래스별 공통점을 찾아요.</p>
       <div class="ctrl"><button class="btn" id="learn">📚 학습하기</button></div>
       <div id="learned"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내 생각과 모델의 예측을 비교해 봐 ✅">
       <h3>✅ 3단계 · 처음 듣는 소리 분류하기</h3>
       <p>이름표가 없는 소리를 눌러 들어 보고, 모델의 예측과 내 생각을 비교해 보세요.</p>
       <div class="snd" id="test"></div>
@@ -56,11 +56,11 @@
       <div class="feat" id="feat"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="소리를 모을 때 주의할 점을 골라 봐 🔊">
       <h3>🔊 소리 데이터를 모을 때는?</h3>
       <div id="collect"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

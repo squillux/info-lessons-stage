@@ -13,7 +13,7 @@
 @media (max-width:520px){.fill{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
-<body data-unit="4" data-title="Ⅳ단원 정리 퀴즈" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
+<body data-stage data-unit="4" data-title="Ⅳ단원 정리 퀴즈" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 단원 정리</span>
   <h1>Ⅳ단원 정리 퀴즈</h1>
@@ -21,25 +21,25 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="데이터|전기|코드|잘 모르겠어">
       <p>인공지능이 똑똑한 이유를 한 단어로 말한다면? 힌트: 인공지능은 ○○○를 먹고 자라요.</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>정리 퀴즈</h2>
-    <div class="card">
+    <div class="card" data-bot="낱말을 순서대로 눌러 빈칸을 채워 봐 🔄">
       <h3>🔄 인공지능 모델 개발 과정 채우기</h3>
       <p>낱말을 순서대로 눌러 빈칸을 채워 보세요.</p>
       <div class="fill" id="fill"></div>
       <div class="opts" id="words"></div>
       <div class="feedback" id="fFb"></div>
     </div>
-    <div class="card">
+    <div class="card" data-bot="인공지능의 이해와 데이터를 점검해 봐 🤖">
       <h3>🤖 인공지능의 이해와 데이터</h3>
       <div id="q1"></div>
     </div>
-    <div class="card">
+    <div class="card" data-bot="인공지능의 활용과 윤리를 점검해 봐 ⚖️">
       <h3>⚖️ 인공지능의 활용과 윤리</h3>
       <div id="q2"></div>
     </div>

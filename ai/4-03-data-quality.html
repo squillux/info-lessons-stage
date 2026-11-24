@@ -15,7 +15,7 @@
 @media (max-width:640px){.lab{grid-template-columns:1fr}}
 </style>
 </head>
-<body data-unit="4" data-title="좋은 데이터 실험실" data-sub="중1 Ⅳ단원 · 인공지능 시스템과 데이터 · 미래엔 156~159쪽">
+<body data-stage data-unit="4" data-title="좋은 데이터 실험실" data-sub="중1 Ⅳ단원 · 인공지능 시스템과 데이터 · 미래엔 156~159쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 인공지능과 데이터</span>
   <h1>좋은 데이터 실험실</h1>
@@ -23,14 +23,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="알아볼 수 있어요|못 알아볼 것 같아요|반반이에요|잘 모르겠어">
       <p>사과 사진을 딱 한 장만 보고 배운 친구가 처음 보는 초록 사과를 사과라고 알아볼 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="학습 데이터를 바꿔 가며 정확도를 비교해 봐 🍎">
       <h3>🍎🍊 사과와 귤 분류 실험</h3>
       <p>학습 데이터를 바꿔 가며 같은 인공지능을 학습시키고, 처음 보는 <b>테스트 과일 20개</b>(빨간 사과 7, 초록 사과 3, 귤 10)를 얼마나 맞히는지 비교해 보세요.</p>
       <div class="seg" id="sets"></div>
@@ -40,23 +40,23 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="실험에서 어떤 조건이 부족했을까? 📋">
       <h3>📋 좋은 데이터의 네 가지 조건</h3>
       <p>실험에서 본 문제는 어떤 조건이 부족했기 때문일까요?</p>
       <div id="cond"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="이 데이터로 학습해도 될지 골라 봐 🐱">
       <h3>🐱 이 데이터, 학습에 써도 될까?</h3>
       <div id="cat"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="기능마다 어떤 데이터가 필요할까? 🚲">
       <h3>🚲 자율 주행 자전거에 필요한 데이터</h3>
       <p>자율 주행 자전거를 만들려고 해요. 기능마다 어떤 유형의 데이터가 필요할까요?</p>
       <div id="bike"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">
