@@ -16,7 +16,7 @@
 .log{background:var(--bg);border-radius:12px;padding:8px 12px;font-size:.9rem;max-height:160px;overflow:auto}
 </style>
 </head>
-<body data-unit="3" data-title="강 건너기 퍼즐" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 98쪽">
+<body data-stage data-unit="3" data-title="강 건너기 퍼즐" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 98쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 알고리즘 설계</span>
   <h1>강 건너기 퍼즐</h1>
@@ -24,14 +24,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>문제 이해</h2>
-    <div class="card">
+    <div class="card" data-think="염소부터 태워요|개부터 태워요|배추부터 태워요|잘 모르겠어">
       <p><b>조건</b> ① 농부는 개, 염소, 배추 중 하나만 배에 태울 수 있어요. ② 농부가 없을 때 개와 염소가 함께 있으면 개가 염소를 물어요. ③ 농부가 없을 때 염소와 배추가 함께 있으면 염소가 배추를 먹어요.</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="배에 태우고 건너기! 누가 누구를 먹는지 조심해 ⛵">
       <h3>⛵ 강 건너기</h3>
       <p>농부가 있는 쪽의 동물·채소를 눌러 배에 태우거나 내려요. <b>[건너기]</b>를 누르면 농부가 배를 몰고 건너가요.</p>
       <div class="river"><div class="bank" id="L"></div><div class="water"><div class="boat" id="boat"></div></div><div class="bank" id="R"></div></div>
@@ -42,7 +42,7 @@
       <div class="log" id="log"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="핵심 요소와 알고리즘을 정리해 봐 🧩">
       <h3>🧩 핵심 요소와 알고리즘 정리</h3>
       <div id="key"></div>
     </div>

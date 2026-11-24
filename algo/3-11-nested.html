@@ -16,7 +16,7 @@
 .nums .e{background:var(--brand-soft)}
 </style>
 </head>
-<body data-unit="3" data-title="순차·선택·반복과 중첩 제어 구조" data-sub="중1 Ⅲ단원 · 중첩 제어 구조 · 미래엔 112~115쪽">
+<body data-stage data-unit="3" data-title="순차·선택·반복과 중첩 제어 구조" data-sub="중1 Ⅲ단원 · 중첩 제어 구조 · 미래엔 112~115쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 프로그래밍</span>
   <h1>순차·선택·반복과 중첩 제어 구조</h1>
@@ -24,19 +24,19 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="원 모양|꽃 모양|정사각형 하나|잘 모르겠어">
       <p>정사각형 하나를 그리는 명령을 36번 반복하면서 조금씩 회전하면 어떤 모양이 나올까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="순차, 선택, 반복 중 무엇일까? 🧭">
       <h3>🧭 어떤 제어 구조일까?</h3>
       <div id="kind"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="반복 횟수와 각도를 바꿔서 꽃을 그려 봐 🌸">
       <h3>🌸 반복 속 반복: 꽃 모양 그리기</h3>
       <p>값을 바꾸고 실행해 보세요. 바깥 반복 × 안쪽 반복만큼 선이 그려져요.</p>
       <div class="wrap">
@@ -52,7 +52,7 @@
       <p class="hint">💡 안쪽 반복을 3, 회전을 120으로 바꾸면? 5와 144로 바꾸면?</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="반복하면서 홀수와 짝수를 나눠 봐 🔢">
       <h3>🔢 반복 속 선택: 홀수와 짝수 나누기</h3>
       <div class="code">
         <span class="line"><span class="blk vr">숫자 를 <span class="v">1</span> (으)로 정하기</span></span>
@@ -65,12 +65,12 @@
       <p class="hint" id="oeMsg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="실행 결과를 먼저 예측해 봐 🎯">
       <h3>🎯 실행 결과 예측하기</h3>
       <div id="pred"></div>
     </div>
-    <div class="card" id="entryMission"></div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

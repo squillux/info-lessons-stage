@@ -15,7 +15,7 @@
 @media (max-width:640px){.dbg{grid-template-columns:1fr}}
 </style>
 </head>
-<body data-unit="3" data-title="디버깅 탐정" data-sub="중1 Ⅲ단원 · 함수와 디버깅 · 미래엔 124~125쪽">
+<body data-stage data-unit="3" data-title="디버깅 탐정" data-sub="중1 Ⅲ단원 · 함수와 디버깅 · 미래엔 124~125쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 프로그래밍</span>
   <h1>디버깅 탐정</h1>
@@ -23,14 +23,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="처음부터 한 줄씩|변수 값부터|결과만 다시 봐요|잘 모르겠어">
       <p>프로그램이 실행은 되는데 결과가 이상할 때, 어디서부터 확인해야 할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="한 단계씩 실행하면서 변수 값을 살펴봐 🐞">
       <h3>🐞 사건 파일</h3>
       <div class="seg" id="cases"></div>
       <p id="desc"></p>
@@ -41,7 +41,7 @@
       <div class="ctrl" style="margin-top:8px"><button class="btn" id="step">⏭ 한 단계씩 실행</button><button class="btn line" id="runall">▶ 끝까지 실행</button><button class="btn line" id="restart">처음부터</button><button class="btn line" id="fix">🛠 고른 줄 고치기</button></div>
       <div class="feedback" id="fb"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 디버깅해 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

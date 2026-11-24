@@ -20,7 +20,7 @@
 .sw button{min-width:120px}
 </style>
 </head>
-<body data-unit="3" data-title="연산 실험실" data-sub="중1 Ⅲ단원 · 다양한 연산 · 미래엔 108~110쪽">
+<body data-stage data-unit="3" data-title="연산 실험실" data-sub="중1 Ⅲ단원 · 다양한 연산 · 미래엔 108~110쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 프로그래밍</span>
   <h1>연산 실험실</h1>
@@ -28,27 +28,27 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="키가 110 이상인지 비교|키를 더하기|키를 나누기|잘 모르겠어">
       <p>놀이 기구 입구의 "키 110cm 이상 탑승 가능" 표지판을 컴퓨터가 판단한다면, 어떤 계산이 필요할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="연산자를 바꿔 가며 결과를 확인해 봐 🧮">
       <h3>🧮 산술 연산과 비교 연산</h3>
       <div class="lab"><input id="x" type="number" value="10"><select id="op"><option>+</option><option>-</option><option>×</option><option>/</option><option value="%">나머지</option><option>=</option><option>!=</option><option>&gt;</option><option>&lt;</option><option>≥</option><option>≤</option></select><input id="y" type="number" value="3"> → <span class="res" id="r"></span></div>
       <p class="hint" id="rk"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="참·거짓을 바꿔 보면 결과가 어떻게 될까? 🔀">
       <h3>🔀 논리 연산: 그리고(AND), 또는(OR), 아니다(NOT)</h3>
       <p>두 조건의 참·거짓을 바꿔 가며 결과를 확인하세요.</p>
       <div class="sw"><button class="btn line" id="A"></button><button class="btn line" id="B"></button></div>
       <div class="scroll-x"><table class="tbl" id="logic" style="margin-top:8px"></table></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="키를 넣어 보고 어떤 안내가 나오는지 봐 🎢">
       <h3>🎢 놀이 기구 탑승 안내 프로그램</h3>
       <div class="code">
         <span class="line"><span class="blk ev">▶ 시작하기 버튼을 클릭했을 때</span></span>
@@ -64,11 +64,11 @@
       <p class="hint">기준값(100, 110)을 바꿔 다른 놀이 기구의 규칙도 만들어 보세요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="실행하기 전에 결과를 먼저 예측해 봐 🎯">
       <h3>🎯 결과 예측하기</h3>
       <div id="pred"></div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

@@ -19,7 +19,7 @@
 .two{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
 </style>
 </head>
-<body data-unit="3" data-title="입출력, 변수와 리스트" data-sub="중1 Ⅲ단원 · 데이터의 저장과 사용 · 미래엔 101~107쪽">
+<body data-stage data-unit="3" data-title="입출력, 변수와 리스트" data-sub="중1 Ⅲ단원 · 데이터의 저장과 사용 · 미래엔 101~107쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 프로그래밍</span>
   <h1>입출력, 변수와 리스트</h1>
@@ -27,21 +27,21 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="숫자를 기억하는 상자|글자를 쓰는 칠판|계산기|잘 모르겠어">
       <p>농구 경기 전광판은 점수가 바뀔 때마다 숫자가 바뀌어요. 점수를 기억해 두는 "상자"가 있다면 어떤 상자일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="이름을 입력하고 실행해 봐 ⌨️">
       <h3>⌨️ 입력과 출력</h3>
       <div class="code"><span class="line"><span class="blk ev">▶ 시작하기 버튼을 클릭했을 때</span></span><span class="line"><span class="blk fl">이름을 입력하세요. 을(를) 묻고 대답 기다리기</span></span><span class="line"><span class="blk lk">저의 이름은 + <span class="v">대답</span> + 입니다. 을(를) 말하기</span></span></div>
       <div class="ctrl" style="margin-top:8px"><input class="inp" id="nm" placeholder="대답 입력 (가상의 이름도 좋아요)" style="width:min(100%,260px)"><button class="btn" id="say">▶ 실행</button></div>
       <div class="stage" id="out">🤖 …</div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="블록을 누를 때마다 값이 어떻게 바뀔까? 📦">
       <h3>📦 변수: 하나의 값을 저장하는 상자</h3>
       <p>블록을 눌러 '점수' 변수의 값이 어떻게 바뀌는지 보세요. 변수에는 <b>마지막에 저장한 값 하나만</b> 남아요.</p>
       <div class="two">
@@ -56,7 +56,7 @@
       <p class="hint" id="vmsg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="항목 번호로 바꾸고 지울 수 있어 📋">
       <h3>📋 리스트: 소망 목록 만들기</h3>
       <p>방학에 하고 싶은 일을 리스트로 관리해요. <b>항목 번호(인덱스)</b>로 원하는 위치의 값을 바꾸거나 지울 수 있어요.</p>
       <div class="two">
@@ -69,7 +69,7 @@
       <p class="hint" id="lmsg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="끝말잇기! 이미 나온 낱말은 안 돼 🔤">
       <h3>🔤 리스트로 만드는 끝말잇기</h3>
       <p>낱말이 규칙에 맞으면 '끝말잇기' 리스트에 추가돼요. 이미 나온 낱말은 쓸 수 없어요. (낱말은 저장되지 않아요.)</p>
       <div class="two">
@@ -77,7 +77,7 @@
         <div style="flex:1;min-width:220px"><div class="ctrl"><input class="inp" id="w" placeholder="낱말 입력" style="width:160px"><button class="btn" id="wgo">말하기</button><button class="btn line" id="wre">새 게임</button></div><p id="wmsg" class="hint"></p></div>
       </div>
     </div>
-    <div class="card" id="entryMission"></div>
+    <div class="card" data-bot="엔트리에서 직접 만들어 볼 차례야 🚀" id="entryMission"></div>
   </section>
 
   <section class="step">

@@ -20,7 +20,7 @@
 .sumx>div{border-radius:14px;padding:10px 12px;background:var(--bg)}
 </style>
 </head>
-<body data-unit="3" data-title="숫자 맞히기 업다운 게임" data-sub="중1 Ⅲ단원 · 알고리즘의 비교·분석 · 미래엔 90~91쪽">
+<body data-stage data-unit="3" data-title="숫자 맞히기 업다운 게임" data-sub="중1 Ⅲ단원 · 알고리즘의 비교·분석 · 미래엔 90~91쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 알고리즘</span>
   <h1>숫자 맞히기 업다운 게임</h1>
@@ -28,21 +28,21 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="첫 쪽부터 넘겨요|중간을 펼쳐 좁혀 가요|색인을 봐요|잘 모르겠어">
       <p>두꺼운 사전에서 단어를 찾을 때 첫 쪽부터 한 장씩 넘기나요, 아니면 중간쯤을 펼쳐 앞뒤로 좁혀 가나요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="범위를 반씩 줄이면 금방 맞힐 수 있어 🎮">
       <h3>🎮 내가 직접 맞히기</h3>
       <p>컴퓨터가 1~100 중 하나를 골랐어요. 숫자를 입력해 맞혀 보세요.</p>
       <div class="chat" id="chat"></div>
       <div class="ctrl" style="margin-top:8px"><input class="inp" id="g" type="number" min="1" max="100" style="width:120px"><button class="btn" id="go">말하기</button><button class="btn line" id="again">새 게임</button></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="두 알고리즘 중 누가 먼저 맞힐까? 🏁">
       <h3>🏁 두 알고리즘 경주</h3>
       <p>친구가 생각한 수를 정하고, 두 알고리즘이 각각 몇 번 만에 맞히는지 비교해 보세요. 회색은 정답이 아니라고 지워진 범위예요.</p>
       <div class="ctrl">친구가 생각한 수 <input class="inp" id="t" type="number" min="1" max="100" value="78" style="width:110px"><button class="btn" id="race">▶ 경주 시작</button></div>
@@ -53,7 +53,7 @@
       <p class="hint" id="rmsg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="덧셈 횟수를 비교해 봐 ➕">
       <h3>➕ 1부터 100까지 더하기도 알고리즘에 따라</h3>
       <div class="sumx">
         <div><b>알고리즘 1 · 순서대로 더하기</b><br>1+2+3+…+100<br>덧셈 <b id="o1"></b>번</div>
@@ -61,7 +61,7 @@
       </div>
       <p>끝 수 <input class="inp" id="nn" type="number" value="100" min="2" max="1000000" style="width:130px"> → 합계 <b id="sv"></b></p>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

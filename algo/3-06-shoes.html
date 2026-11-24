@@ -16,7 +16,7 @@
 @media (max-width:520px){.shelf{grid-template-columns:repeat(5,1fr)}}
 </style>
 </head>
-<body data-unit="3" data-title="신발 찾기: 정렬과 탐색" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 94~95쪽">
+<body data-stage data-unit="3" data-title="신발 찾기: 정렬과 탐색" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 94~95쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 알고리즘 설계</span>
   <h1>신발 찾기: 정렬과 탐색</h1>
@@ -24,21 +24,21 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>문제 이해</h2>
-    <div class="card">
+    <div class="card" data-think="정리되지 않은 진열대|크기순 진열대|둘 다 같아요|잘 모르겠어">
       <p>초기 상태: 원하는 신발을 찾지 못한 상태 → 목표 상태: 230mm와 250mm 신발을 모두 찾은 상태. 어느 쪽 진열대에서 찾는 것이 빠를까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="상자를 하나씩 열어 봐. 몇 번 만에 찾을까? 📦">
       <h3>📦 정리되지 않은 진열대 (알고리즘 1)</h3>
       <p>상자를 하나씩 눌러 열어 보세요. 열어 본 상자 수가 비교 횟수예요.</p>
       <div class="shelf" id="sh1"></div>
       <p>비교 횟수 <span class="cnt" id="n1">0</span> <span id="f1"></span></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="정리된 진열대에서는 몇 번 만에 찾을까? 📏">
       <h3>📏 크기순으로 정리된 진열대 (알고리즘 2)</h3>
       <p>앞(작은 쪽)에서부터 하나씩 비교해요. 230mm를 찾은 뒤에는 <b>그 다음 칸부터</b> 250mm를 찾으면 돼요. 정렬되어 있으니 원하는 크기보다 큰 신발이 나오면 더 볼 필요도 없어요.</p>
       <div class="shelf" id="sh2"></div>
@@ -46,7 +46,7 @@
       <p>비교 횟수 <span class="cnt" id="n2">0</span> <span id="f2"></span></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="정렬과 탐색의 차이를 정리해 봐 🧠">
       <h3>🧠 정렬 알고리즘과 탐색 알고리즘</h3>
       <div class="two">
         <div><b>정렬 알고리즘</b><br>데이터를 크기 등 일정한 규칙에 따라 순서대로 나열하는 방법이에요.</div>

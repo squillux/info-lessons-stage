@@ -18,7 +18,7 @@
 .algo{background:var(--bg);border-radius:12px;padding:8px 12px;font-size:.92rem}
 </style>
 </head>
-<body data-unit="3" data-title="줄서기 알고리즘 설계" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 92~93쪽">
+<body data-stage data-unit="3" data-title="줄서기 알고리즘 설계" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 92~93쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 알고리즘 설계</span>
   <h1>줄서기 알고리즘 설계</h1>
@@ -26,14 +26,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>문제 이해</h2>
-    <div class="card">
+    <div class="card" data-think="계산대마다 3명씩 서요|한 줄로 서요|잘 모르겠어">
       <p>계산대는 3대, 손님은 9명이에요. 맨 앞 손님은 물건이 많아 계산에 10분이 걸리고, 나머지 8명은 3분씩 걸려요. 모든 손님이 계산을 가장 빨리 마치려면 줄을 어떻게 서야 할까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="두 방법으로 시뮬레이션하고 끝나는 시간을 비교해 봐 🛒">
       <h3>🛒 두 알고리즘 시뮬레이션</h3>
       <div class="algo"><b>알고리즘 1 · 여러 줄 서기</b>: 계산대마다 3명씩 줄을 서서 자기 줄에서만 기다려요.<br><b>알고리즘 2 · 한 줄 서기</b>: 한 줄로 서 있다가, 빈 계산대가 생기면 맨 앞 사람이 그곳으로 가요.</div>
       <p style="margin-top:10px">손님별 계산 시간(분)을 바꿔 볼 수도 있어요.</p>
@@ -46,7 +46,7 @@
       <p class="hint" id="msg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="한 줄 서기 알고리즘을 순서대로 놓아 봐 🔢">
       <h3>🔢 알고리즘 2를 순서대로 표현하기</h3>
       <div id="steps"></div>
     </div>

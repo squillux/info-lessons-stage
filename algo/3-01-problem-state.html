@@ -16,7 +16,7 @@
 .route{font-weight:700;margin:6px 0}
 </style>
 </head>
-<body data-unit="3" data-title="문제의 상태와 추상화" data-sub="중1 Ⅲ단원 · 문제의 이해와 추상화 · 미래엔 81~84쪽">
+<body data-stage data-unit="3" data-title="문제의 상태와 추상화" data-sub="중1 Ⅲ단원 · 문제의 이해와 추상화 · 미래엔 81~84쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 문제 해결</span>
   <h1>문제의 상태와 추상화</h1>
@@ -24,20 +24,20 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="역 순서와 연결만 있으면 돼서|지도가 정확해서|역 이름이 커서|잘 모르겠어">
       <p>지하철 노선도는 실제 지도와 다르게 역 사이 거리나 건물이 그려져 있지 않아요. 그래도 길을 찾는 데 문제가 없는 이유는 무엇일까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="초기·현재·목표 상태를 하나씩 찾아봐 🧭">
       <h3>🧭 초기·현재·목표 상태</h3>
       <p>최대 200kg까지 실을 수 있는 엘리베이터로 이삿짐 상자들을 최소 횟수로 옮기려고 해요.</p>
       <div id="state"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="꼭 필요한 것만 남기는 게 추상화야 🔍">
       <h3>🔍 핵심 요소 고르기</h3>
       <p><b>① 벽돌 깨기 게임</b>을 만들 때 꼭 필요한 요소 3가지를 고르세요.</p>
       <div class="picks" id="p1"></div>
@@ -47,7 +47,7 @@
       <p class="hint" id="m2"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="출발역부터 이어진 역을 눌러 가 봐. 갈아타면 4분 더! 🚇">
       <h3>🚇 추상화한 노선도로 가장 빠른 길 찾기</h3>
       <p>가상의 노선도예요. 역 사이 숫자는 걸리는 시간(분)이고, <b>갈아타면 4분</b>이 더 걸려요. <b>출발역</b>에서 시작해 이어진 역을 차례로 눌러 <b>도착역</b>까지 가 보세요.</p>
       <svg class="map" id="map" viewBox="0 0 560 300"></svg>

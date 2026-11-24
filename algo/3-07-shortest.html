@@ -13,7 +13,7 @@
 .tbl2 tr.done td{background:var(--mint-soft)}
 </style>
 </head>
-<body data-unit="3" data-title="집에서 학교까지 가장 빠른 길" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 96~97쪽">
+<body data-stage data-unit="3" data-title="집에서 학교까지 가장 빠른 길" data-sub="중1 Ⅲ단원 · 알고리즘 설계 · 미래엔 96~97쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 알고리즘 설계</span>
   <h1>집에서 학교까지 가장 빠른 길</h1>
@@ -21,14 +21,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>알고리즘 이해</h2>
-    <div class="card">
+    <div class="card" data-bot="알고리즘 ①~④를 먼저 읽어 봐. 다음 화면에서 직접 해 볼 거야 📖">
       <p><b>알고리즘</b> ① 집에서 갈 수 있는 장소까지의 시간을 적는다. ② 아직 확정하지 않은 장소 중 <b>집에서부터 걸리는 시간이 가장 짧은 곳</b>을 확정한다. ③ 확정한 곳을 거쳐 갈 수 있는 장소의 시간을 계산해 더 짧으면 고친다. ④ 학교가 확정될 때까지 ②~③을 반복한다.</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="아직 확정하지 않은 곳 중 가장 짧은 곳을 눌러 봐 🗺️">
       <h3>🗺️ 한 단계씩 확정하기</h3>
       <p>표에서 <b>아직 확정하지 않은 곳 중 시간이 가장 짧은 장소</b>를 지도에서 눌러 확정하세요.</p>
       <svg class="map" id="map" viewBox="0 0 560 320"></svg>
@@ -37,7 +37,7 @@
       <div class="ctrl" style="margin-top:6px"><button class="btn line" id="reset">처음부터</button></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="더 빠른 길이 생기면 시간을 고쳐야 해 🤔">
       <h3>🤔 생각해 보기</h3>
       <div id="think"></div>
     </div>

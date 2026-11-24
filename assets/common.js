@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     [...step.children].forEach(el => {
       if (el.classList.contains('step-h')) return;
       pending.push(el);
+      if (el.id === 'rubric' && units.length && units[units.length - 1].step === step){ units[units.length - 1].els.push(...pending); pending = []; return; }   // 교사용 평가 기준표는 앞 화면(확인 미션)에 붙임
       if (el.classList.contains('card')){ units.push({step, els: pending, card: el}); pending = []; }
     });
     if (pending.length && units.length) units[units.length - 1].els.push(...pending);
