@@ -12,6 +12,20 @@
 .stack .slot{border:2px dashed var(--line);border-radius:14px;padding:10px;text-align:center;color:var(--muted);min-height:1.5em}
 .stack .slot.ok{border-style:solid;border-color:var(--mint);background:var(--mint-soft);color:var(--ink);font-weight:700}
 .pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.deck-h{margin:12px 0 6px;font-weight:800}.deck-h small{font-weight:400;color:var(--muted)}
+.swpool{display:flex;flex-wrap:wrap;gap:8px}
+.swpool button{border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:8px 12px;font-weight:700;color:var(--ink);box-shadow:0 3px 0 #eef1f7}
+.swpool button.done{opacity:.35;pointer-events:none}
+.pcbox{margin-top:10px;border-radius:18px;overflow:hidden;border:1.5px solid var(--line)}
+.shelf{padding:10px 12px}.shelf>b{display:block;font-size:.88rem;margin-bottom:4px}
+.shelf.app{background:var(--pink-soft)}.shelf.sys{background:var(--brand-soft)}.shelf.hw{background:#e9ebf0;font-size:.88rem;color:var(--muted)}
+.shelf span{display:inline-block;margin:2px 4px 2px 0;border-radius:10px;padding:3px 10px;background:#fff;font-size:.85rem;font-weight:700}
+.shelf span.empty{background:none;color:var(--muted);font-weight:400}
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.tasks button{border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:10px 12px;text-align:left;font-weight:700;color:var(--ink)}
+.tasks button.ok{border-color:var(--ok);background:var(--ok-soft)}
+.tasks button.no{animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="소프트웨어 분류하기" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 구성 · 미래엔 13~14쪽">
@@ -29,11 +43,21 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card" data-bot="다른 프로그램을 돕는지, 내가 직접 쓰는지 생각해 봐 🗂️">
-      <h3>🗂️ 시스템 소프트웨어 vs 응용 소프트웨어</h3>
-      <p><b>시스템 소프트웨어</b>는 응용 소프트웨어가 잘 작동하도록 환경을 제공해요(운영체제, 유틸리티). <b>응용 소프트웨어</b>는 사용자가 특정한 문제를 해결하려고 쓰는 소프트웨어예요.</p>
-      <div id="sort"></div>
+    <div class="card" data-bot="게임부터 설치하면 어떻게 될까? 순서를 직접 겪어 봐 💻">
+      <h3>💻 새 컴퓨터 설정하기</h3>
+      <p><b>시스템 소프트웨어</b>는 응용 소프트웨어가 잘 작동하도록 환경을 제공해요(운영체제, 유틸리티). <b>응용 소프트웨어</b>는 사용자가 특정한 문제를 해결하려고 쓰는 소프트웨어예요. 텅 빈 새 컴퓨터에 프로그램을 설치하고 <b>할 일</b>을 해결해 보세요.</p>
+      <p class="deck-h">📦 설치할 프로그램 <small>눌러서 설치</small></p>
+      <div class="swpool" id="swPool"></div>
+      <div class="pcbox">
+        <div class="shelf app"><b>📱 응용 소프트웨어</b><div id="shApp"><span class="empty">비어 있어요</span></div></div>
+        <div class="shelf sys"><b>⚙️ 시스템 소프트웨어</b><div id="shSys"><span class="empty">비어 있어요</span></div></div>
+        <div class="shelf hw"><b>🔩 하드웨어</b> CPU · 램 · SSD · 프린터</div>
+      </div>
+      <p class="deck-h">✅ 할 일 <small>눌러서 해 보기</small></p>
+      <div class="tasks" id="tasks"></div>
+      <div class="feedback" id="swFb"></div>
     </div>
+
 
     <div class="card" data-bot="사용자와 하드웨어 사이에는 누가 있을까? 🧱">
       <h3>🧱 사용자, 소프트웨어, 하드웨어의 관계</h3>
@@ -65,14 +89,31 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-renderChoice($('#sort'), [
-  {icon:'🪟', t:'윈도', a:0, e:'운영체제(시스템 소프트웨어)예요.'},
-  {icon:'🤖', t:'안드로이드', a:0, e:'스마트폰 운영체제(시스템 소프트웨어)예요.'},
-  {icon:'🧹', t:'디스크 정리 프로그램', a:0, e:'컴퓨터를 관리하는 유틸리티(시스템 소프트웨어)예요.'},
-  {icon:'📝', t:'워드 프로세서', a:1, e:'문서를 만드는 응용 소프트웨어예요.'},
-  {icon:'🎨', t:'이미지 편집기', a:1, e:'그림을 편집하는 응용 소프트웨어예요.'},
-  {icon:'🎵', t:'음악 재생 프로그램', a:1, e:'음악을 듣는 응용 소프트웨어예요.'},
-], ['⚙️ 시스템 소프트웨어', '📱 응용 소프트웨어']);
+/* ===== 새 컴퓨터 설정하기 ===== */
+const SW = {os: ['🪟', '운영체제(윈도)', 'sys', '하드웨어를 관리하고 다른 프로그램이 실행될 환경을 만들어요.'], drv: ['🖨️', '프린터 드라이버', 'sys', '운영체제가 프린터를 쓸 수 있게 연결해 줘요.'],
+  av: ['🛡️', '백신 프로그램', 'sys', '컴퓨터를 지키는 유틸리티(시스템 소프트웨어)예요.'], zip: ['🗜️', '압축 프로그램', 'sys', '파일을 작게 묶는 유틸리티(시스템 소프트웨어)예요.'],
+  game: ['🎮', '게임', 'app', '즐기려고 쓰는 응용 소프트웨어예요.'], word: ['📝', '워드 프로세서', 'app', '문서를 만드는 응용 소프트웨어예요.'], paint: ['🎨', '이미지 편집기', 'app', '그림을 꾸미는 응용 소프트웨어예요.']};
+const TASKS = [['🎮 게임하기', ['os', 'game']], ['🖨️ 숙제 문서 인쇄하기', ['os', 'word', 'drv']], ['🛡️ 바이러스 검사하기', ['os', 'av']], ['🗜️ 사진 100장 압축해서 보내기', ['os', 'zip']], ['🎨 사진 꾸미기', ['os', 'paint']]];
+const inst = new Set(), tDone = new Set();
+let noOS = 0;
+const drawSW = () => {
+  $('#swPool').innerHTML = Object.entries(SW).map(([k, [i, n]]) => `<button data-k="${k}" class="${inst.has(k) ? 'done' : ''}">${i} ${n}</button>`).join('');
+  const sh = t => [...inst].filter(k => SW[k][2] === t).map(k => `<span>${SW[k][0]} ${SW[k][1]}</span>`).join('') || '<span class="empty">비어 있어요</span>';
+  $('#shApp').innerHTML = sh('app'); $('#shSys').innerHTML = sh('sys');
+  $('#tasks').innerHTML = TASKS.map(([n], i) => `<button data-i="${i}" class="${tDone.has(i) ? 'ok' : ''}">${tDone.has(i) ? '✅' : '⬜'} ${n}</button>`).join('');
+  $$('#swPool button').forEach(b => b.onclick = () => {
+    const k = b.dataset.k, [i, n, t, d] = SW[k];
+    if (k !== 'os' && !inst.has('os')){ noOS++; return feedback($('#swFb'), false, `⛔ ${i} ${n}을(를) 설치할 수 없어요! 운영체제가 없어서 설치 프로그램조차 실행되지 않아요. 응용 소프트웨어도, 유틸리티도 운영체제 위에서 동작해요.`); }
+    inst.add(k); drawSW(); feedback($('#swFb'), true, `📥 ${i} ${n} 설치 완료 → ${t === 'sys' ? '⚙️ 시스템' : '📱 응용'} 소프트웨어 칸에 들어갔어요. ${d}`);
+  });
+  $$('#tasks button').forEach(b => b.onclick = () => {
+    const i = +b.dataset.i, [n, need] = TASKS[i], miss = need.filter(k => !inst.has(k));
+    if (miss.length){ b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); return feedback($('#swFb'), false, `❌ ${n} 실패! ${miss.map(k => SW[k][0] + ' ' + SW[k][1]).join(', ')}이(가) 필요해요.${miss.includes('drv') && !miss.includes('word') ? ' 워드 프로세서는 있지만, 드라이버가 없어서 운영체제가 프린터를 찾지 못해요.' : ''}`); }
+    tDone.add(i); drawSW();
+    feedback($('#swFb'), true, tDone.size === TASKS.length ? `🎉 할 일을 모두 해결했어요! 사용자는 📱 응용 소프트웨어로 일을 하고, ⚙️ 시스템 소프트웨어(운영체제·드라이버·유틸리티)가 🔩 하드웨어를 관리해 줘요.${noOS ? '' : ' (운영체제 없이 다른 프로그램부터 설치해 보면 어떻게 될까요?)'}` : `✅ ${n} 성공! (${tDone.size} / ${TASKS.length})`);
+  });
+};
+drawSW();
 
 const ORDER = ['🙋 사용자', '📱 응용 소프트웨어', '⚙️ 시스템 소프트웨어(운영체제)', '🔩 하드웨어'];
 let pos = 0;

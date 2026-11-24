@@ -14,6 +14,17 @@
 .pipe p{margin:4px 0 0;font-size:.85rem;color:var(--muted)}
 .scr{background:var(--bg);border-radius:14px;padding:12px;min-height:60px;text-align:center}
 @media (max-width:520px){.pipe{grid-template-columns:1fr}}
+.pnt{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+@media (max-width:620px){.pnt{grid-template-columns:1fr}}
+.ptools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}
+.ptools .c{width:26px;height:26px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line);margin-right:4px;cursor:pointer}
+.ptools .c.on{box-shadow:0 0 0 3px var(--brand)}
+#pc{width:100%;height:auto;border:1.5px solid var(--line);border-radius:14px;background:#fff;touch-action:none;cursor:crosshair}
+.pipe2{display:grid;gap:6px}
+.pipe2>div{border-radius:12px;padding:6px 10px;background:var(--bg);transition:background .2s,box-shadow .2s}
+.pipe2 b{display:block;font-size:.88rem}.pipe2 small{color:var(--muted);font-size:.75rem}
+.pipe2 code{display:block;font-size:.78rem;color:#3a4256}
+.pipe2>div.on{background:#fff6db;box-shadow:0 0 0 2px #ffc233}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="입력·처리·출력 따라가기" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 동작 · 미래엔 16~17쪽">
@@ -43,11 +54,23 @@
       <div class="scr" id="scr">목적지를 고르고 시작하세요.</div>
     </div>
 
-    <div class="card" data-bot="그리기는 입력, 계산은 처리, 눈에 보이는 건 출력! 🎨">
-      <h3>🎨 그림판에서는?</h3>
-      <p>그림판으로 그림을 그려 저장하는 과정이에요. 각 장면은 어느 단계일까요?</p>
-      <div id="paint"></div>
+    <div class="card" data-bot="직접 그려 봐! 그리는 동안 오른쪽 단계에 불이 들어와 🎨">
+      <h3>🎨 미니 그림판으로 확인하기</h3>
+      <p>그림을 그리고 <b>💾 저장</b>, <b>🖨️ 인쇄</b>까지 해 보세요. 내가 하는 일이 어느 단계인지 오른쪽에 불이 켜져요.</p>
+      <div class="pnt">
+        <div><div class="ptools"><span id="cols"></span><button class="btn line" id="pClr">지우기</button><button class="btn line" id="pSave">💾 저장</button><button class="btn line" id="pPrint">🖨️ 인쇄</button></div>
+          <canvas id="pc" width="640" height="400" aria-label="그림판"></canvas></div>
+        <div class="pipe2">
+          <div id="sIn"><b>⌨️🖱️ 입력</b><small>마우스 위치를 읽어요</small><code id="vIn">-</code></div>
+          <div id="sCpu"><b>🧠 처리 (CPU)</b><small>선을 계산해요</small><code id="vCpu">-</code></div>
+          <div id="sRam"><b>🧩 주기억 장치</b><small>그리는 중인 그림</small><code id="vRam">-</code></div>
+          <div id="sOut"><b>🖥️🖨️ 출력</b><small>화면·프린터로 보여 줘요</small><code id="vOut">-</code></div>
+          <div id="sSsd"><b>💽 보조 기억 장치</b><small>저장한 파일</small><code id="vSsd">없음</code></div>
+        </div>
+      </div>
+      <div class="feedback" id="pFb"></div>
     </div>
+
   </section>
 
   <section class="step">
@@ -80,11 +103,27 @@ $('#go').onclick = () => {
 };
 $('#reset').onclick = () => { st = 0; $$('#pipe div').forEach(x => x.classList.remove('on')); $('#scr').textContent = '목적지를 고르고 시작하세요.'; };
 
-renderChoice($('#paint'), [
-  {icon:'🖱️', t:'마우스로 원하는 모양을 그려요.', a:0, e:'입력 장치(마우스)로 데이터를 입력해요.'},
-  {icon:'🧠', t:'입력한 모양을 주기억 장치에 저장하고 CPU가 그림 작업을 처리해요.', a:1, e:'CPU와 주기억 장치가 처리를 담당해요.'},
-  {icon:'🖨️', t:'완성한 그림을 모니터로 보여 주고 프린터로 인쇄해요.', a:2, e:'출력 장치로 결과를 보여 줘요.'},
-], ['입력', '처리', '출력']);
+/* ===== 미니 그림판 ===== */
+const pc = $('#pc'), cx = pc.getContext('2d'), COLS = ['#1f2a3d', '#3b6cf6', '#ff7aa2', '#16b8a6'];
+let col = COLS[0], drawing = false, last = null, pts = 0, lines = 0, saved = 0, printed = false;
+$('#cols').innerHTML = COLS.map((c, i) => `<span class="c${i ? '' : ' on'}" data-c="${c}" style="background:${c}" role="button" aria-label="색 ${i + 1}"></span>`).join('');
+$$('#cols .c').forEach(s => s.onclick = () => { col = s.dataset.c; $$('#cols .c').forEach(x => x.classList.toggle('on', x === s)); });
+const flash = ids => { ids.forEach(id => { const el = $('#' + id); el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 450); }); };
+const posOf = e => { const r = pc.getBoundingClientRect(); return [Math.round((e.clientX - r.left) * pc.width / r.width), Math.round((e.clientY - r.top) * pc.height / r.height)]; };
+pc.onpointerdown = e => { drawing = true; last = posOf(e); pc.setPointerCapture(e.pointerId); };
+pc.onpointermove = e => {
+  if (!drawing) return; const p = posOf(e);
+  cx.strokeStyle = col; cx.lineWidth = 6; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(...last); cx.lineTo(...p); cx.stroke();
+  last = p; pts++; lines++;
+  $('#vIn').textContent = `마우스 (${p[0]}, ${p[1]})`; $('#vCpu').textContent = `선 ${lines}개 계산`; $('#vRam').textContent = `점 ${pts}개 기억 중`; $('#vOut').textContent = '화면에 선을 그림';
+  flash(['sIn', 'sCpu', 'sRam', 'sOut']);
+};
+pc.onpointerup = pc.onpointercancel = () => { drawing = false; check(); };
+$('#pClr').onclick = () => { cx.clearRect(0, 0, pc.width, pc.height); pts = 0; $('#vRam').textContent = '비어 있음'; flash(['sCpu', 'sRam', 'sOut']); };
+$('#pSave').onclick = () => { if (!pts) return feedback($('#pFb'), false, '먼저 그림을 그려 보세요.'); saved++; $('#vSsd').textContent = `📄 내그림${saved}.png 저장됨`; flash(['sRam', 'sSsd']); feedback($('#pFb'), true, '💾 주기억 장치에 있던 그림을 보조 기억 장치(SSD)에 파일로 저장했어요.'); check(); };
+$('#pPrint').onclick = () => { if (!pts) return feedback($('#pFb'), false, '먼저 그림을 그려 보세요.'); printed = true; $('#vOut').textContent = '🖨️ 프린터로 인쇄 중…'; flash(['sCpu', 'sOut']); feedback($('#pFb'), true, '🖨️ CPU가 처리한 그림을 출력 장치(프린터)로 내보냈어요.'); check(); };
+let pDone = false;
+function check(){ if (!pDone && pts >= 20 && saved && printed){ pDone = true; feedback($('#pFb'), true, '🎉 그리기(입력) → 계산(처리) → 화면·프린터(출력), 그리고 저장(기억)까지 모두 해 봤어요! 우리가 컴퓨터로 하는 일은 모두 입력 → 처리 → 출력의 반복이에요.'); } }
 
 renderQuiz($('#quiz'), [
   {q:'컴퓨팅 시스템의 동작 과정을 순서대로 나타낸 것은?', o:['처리 → 입력 → 출력','입력 → 처리 → 출력','출력 → 처리 → 입력'], a:1, e:'입력된 데이터를 처리하고 결과를 출력해요.'},

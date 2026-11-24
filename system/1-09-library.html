@@ -17,6 +17,15 @@
 .gal div{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;font-size:.9rem}
 .gal b{color:var(--brand)}
 .checks label{display:block;padding:5px 0}
+.fp{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;max-width:420px;margin:10px auto 0;position:relative}
+.fp button{aspect-ratio:1;border:0;border-radius:8px;font-size:1.2rem;padding:0;position:relative}
+.fp .z1{background:#e3ecff}.fp .z2{background:#fff3d6}.fp .z3{background:#ffe6d6}.fp .z4{background:#eceff4}
+.fp button.cov{box-shadow:inset 0 0 0 2px rgba(59,108,246,.35)}
+.fp button.covt{box-shadow:inset 0 0 0 2px rgba(255,122,162,.5)}
+.fp button.ev{outline:3px solid #ffc233;outline-offset:-3px}
+.fpkey{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:.8rem;color:var(--muted);margin-top:6px}
+.fpkey i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:3px}
+.fplog{display:grid;gap:4px;margin-top:10px;font-size:.9rem}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="쾌적한 도서관 만들기" data-sub="중1 Ⅰ단원 · 창의·융합 프로젝트 · 미래엔 38~39쪽">
@@ -34,10 +43,15 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>설계와 시뮬레이션</h2>
-    <div class="card" data-bot="문제를 알아채려면 무엇을 재야 할까? 🔍">
-      <h3>🔍 문제 해결에 필요한 센서 찾기</h3>
-      <div id="need"></div>
+    <div class="card" data-bot="센서는 가까운 곳만 감지해! 어디에 둬야 다 잡아낼까? 🗺️">
+      <h3>🗺️ 도서관 평면도에 센서 배치하기</h3>
+      <p>소음과 더위를 알아채려면 <b>소리 센서</b>와 <b>온도 센서</b>가 필요해요. 그런데 센서는 <b>가까운 곳(주변 두 칸)</b>만 감지할 수 있어요. 센서를 골라 평면도에 놓고 <b>▶ 하루 시뮬레이션</b>을 눌러 보세요.</p>
+      <div class="ctrl"><b>놓을 센서</b><button class="btn" data-t="s" id="tS">🔊 소리 센서 (2개)</button><button class="btn line" data-t="t" id="tT">🌡️ 온도 센서 (1개)</button><button class="btn ghost" id="fpRun">▶ 하루 시뮬레이션</button></div>
+      <div class="fp" id="fp"></div>
+      <div class="fplog" id="fpLog"></div>
+      <div class="feedback" id="fpFb"></div>
     </div>
+
 
     <div class="card" data-bot="기준값을 바꾸고 막대를 움직여 시험해 봐 📝">
       <h3>📝 시스템의 동작 원리 설계</h3>
@@ -86,10 +100,49 @@
 <script src="../assets/common.js"></script>
 <script src="../assets/live.js"></script>
 <script>
-renderChoice($('#need'), [
-  {icon:'🗣️', t:'떠드는 소리가 크면 조용히 하라고 안내하고 싶어요.', a:0, e:'소리 센서로 소리 크기를 측정해요.'},
-  {icon:'🥵', t:'도서관이 더우면 자동으로 냉방 장치를 켜고 싶어요.', a:1, e:'온도 센서로 실내 온도를 측정해요.'},
-], ['🔊 소리 센서', '🌡️ 온도 센서', '📏 거리 센서']);
+/* ===== 도서관 평면도 ===== */
+// 8 x 5 칸. 구역: 1 열람실(위 두 줄), 2 서가(왼쪽 아래), 3 창가(오른쪽 아래), 4 입구
+const zone = (x, y) => y <= 1 ? 1 : x >= 5 ? 3 : y === 4 ? 4 : 2;
+const ZN = {1: '📖 열람실', 2: '📚 서가', 3: '🪟 창가', 4: '🚪 입구'};
+const EVS = [{x: 1, y: 1, k: 's', t: '🗣️ 열람실 왼쪽에서 친구들이 떠들어요'}, {x: 6, y: 1, k: 's', t: '📱 열람실 오른쪽에서 휴대폰이 크게 울려요'}, {x: 3, y: 3, k: 's', t: '🤣 서가 사이에서 웃음소리가 나요'},
+  {x: 7, y: 4, k: 't', t: '🥵 창가 구석이 햇빛 때문에 32℃까지 올라가요'}, {x: 7, y: 2, k: 't', t: '☀️ 창가 위쪽도 더워져요'}];
+const LIM = {s: 2, t: 1}, put = {};
+let tool = 's';
+const near = (a, b) => Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) <= 2;
+function fpDraw(hi){
+  const sens = Object.entries(put).map(([p, k]) => { const [x, y] = p.split(',').map(Number); return {x, y, k}; });
+  let s = '';
+  for (let y = 0; y < 5; y++) for (let x = 0; x < 8; x++){
+    const k = put[x + ',' + y], c = {x, y};
+    const cov = sens.some(q => q.k === 's' && near(q, c)), covt = sens.some(q => q.k === 't' && near(q, c));
+    s += `<button class="z${zone(x, y)}${covt ? ' covt' : cov ? ' cov' : ''}${hi && hi.x === x && hi.y === y ? ' ev' : ''}" data-p="${x},${y}" aria-label="${ZN[zone(x, y)]} ${x + 1}열 ${y + 1}행">${k === 's' ? '🔊' : k === 't' ? '🌡️' : hi && hi.x === x && hi.y === y ? hi.t.split(' ')[0] : ''}</button>`;
+  }
+  $('#fp').innerHTML = s;
+  $$('#fp button').forEach(b => b.onclick = () => {
+    const p = b.dataset.p;
+    if (put[p]){ delete put[p]; return fpDraw(); }
+    if (Object.values(put).filter(v => v === tool).length >= LIM[tool]) return feedback($('#fpFb'), false, `${tool === 's' ? '🔊 소리' : '🌡️ 온도'} 센서는 ${LIM[tool]}개만 쓸 수 있어요. 이미 놓은 센서를 눌러 빼고 다른 곳에 놓아 보세요.`);
+    put[p] = tool; fpDraw();
+  });
+}
+const setTool = t => { tool = t; $('#tS').className = t === 's' ? 'btn' : 'btn line'; $('#tT').className = t === 't' ? 'btn' : 'btn line'; };
+$('#tS').onclick = () => setTool('s'); $('#tT').onclick = () => setTool('t');
+$('#fpRun').onclick = () => {
+  const sens = Object.entries(put).map(([p, k]) => { const [x, y] = p.split(',').map(Number); return {x, y, k}; });
+  if (!sens.length) return feedback($('#fpFb'), false, '먼저 평면도에 센서를 놓아 보세요.');
+  $('#fpLog').innerHTML = ''; let i = 0, hit = 0;
+  const step = () => {
+    if (i >= EVS.length){ fpDraw();
+      return feedback($('#fpFb'), hit === EVS.length, hit === EVS.length ? '🎉 하루 동안 생긴 문제 5건을 모두 감지했어요! 센서를 고르는 것만큼 어디에 두는지도 중요해요.' : `🔎 5건 중 ${hit}건을 감지했어요. 놓친 곳 가까이로 센서를 옮겨 다시 시뮬레이션해 보세요.`); }
+    const e = EVS[i++], got = sens.some(q => q.k === e.k && near(q, e)); if (got) hit++;
+    fpDraw(e);
+    $('#fpLog').insertAdjacentHTML('beforeend', `<div>${got ? '✅' : '❌'} ${e.t} → ${got ? (e.k === 's' ? '"조용히 해 주세요" 안내 + 빨간 LED' : '냉방 장치 켜기') : '센서가 멀어서 알아채지 못했어요'}</div>`);
+    setTimeout(step, 700);
+  };
+  step();
+};
+$('#fp').insertAdjacentHTML('afterend', '<div class="fpkey"><span><i style="background:#e3ecff"></i>열람실</span><span><i style="background:#fff3d6"></i>서가</span><span><i style="background:#ffe6d6"></i>창가</span><span><i style="background:#eceff4"></i>입구</span><span>파란 테두리: 소리 센서 감지 범위 · 분홍 테두리: 온도 센서 감지 범위</span></div>');
+fpDraw();
 
 const OUT = {msg: '📢 "조용히 해 주세요!"', led: '🔴 빨간 LED 켜짐', both: '📢 "조용히 해 주세요!" + 🔴 LED'};
 function sim(){
