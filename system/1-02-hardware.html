@@ -18,6 +18,36 @@
 .flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;justify-content:center;margin:10px 0}
 .flow div{background:var(--brand-soft);border-radius:12px;padding:8px 12px;font-weight:700}
 .flow .mem{background:var(--yellow-soft)}
+/* 컴퓨터 조립 */
+.pc{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr;grid-template-areas:"mon case" "kb case";gap:10px;padding:14px;border-radius:18px;background:linear-gradient(#f4f6fb,#e9edf6)}
+.pc-mon{grid-area:mon;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pc-scr{width:100%;aspect-ratio:16/10;border-radius:10px;border:6px solid #2b3245;background:#111;color:#cfe;display:flex;align-items:center;justify-content:center;text-align:center;font-size:.85rem;padding:8px;line-height:1.5}
+.pc-scr.on{background:#e8f0ff;color:#1f2a3d}
+.pc-scr.bios{background:#0b1a4a;color:#e8ecff;font-family:var(--body)}
+.pc-scr.off{background:#111}
+.pc-case{grid-area:case;border-radius:14px;background:#2b3245;color:#fff;padding:10px;display:flex;flex-direction:column;gap:6px;position:relative}
+.pc-case>b{font-size:.85rem;opacity:.8}
+.pc-kb{grid-area:kb;display:flex;justify-content:center}
+.slot{border:2px dashed #aab4c8;border-radius:12px;background:rgba(255,255,255,.08);color:inherit;padding:8px 10px;font-weight:800;font-size:.85rem;width:100%;text-align:left}
+.pc-mon .slot,.pc-kb .slot{color:var(--ink);background:#fff}
+.slot.in{border-style:solid;border-color:var(--mint);background:var(--mint-soft);color:#0d6b61}
+.pc-case .slot.in{background:#1f8f80;border-color:#7ee0d2;color:#fff}
+.led{position:absolute;right:12px;top:12px;width:10px;height:10px;border-radius:50%;background:#555}
+.led.on{background:#3cf08a;box-shadow:0 0 8px #3cf08a}
+.lab{display:flex;flex-wrap:wrap;gap:6px}
+.lab span{border-radius:999px;padding:3px 11px;font-size:.82rem;font-weight:700;background:var(--bg);color:#b5bccb;border:1.5px dashed var(--line)}
+.lab span.got{background:var(--yellow-soft);color:#8a5a00;border:1.5px solid #f5dc92}
+.shake{animation:shk .35s}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media (max-width:560px){.pc{grid-template-columns:1fr;grid-template-areas:"mon" "case" "kb"}}
+/* 정전 실험 */
+.mem2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.mbox{border:1.5px solid var(--line);border-radius:16px;padding:12px;background:#fff;transition:background .4s,opacity .4s}
+.mbox>b{display:block}.mbox>small{display:block;color:var(--muted);margin-bottom:6px}
+.mbox textarea{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:10px;padding:8px;font:inherit;resize:vertical}
+.mbox.off{background:#e9ebf0;opacity:.7}
+.mbox ul{margin:0;padding-left:1.1em}
+.mbox.ssd{background:var(--mint-soft);border-color:#bfe8e1}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="하드웨어 분류소" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 구성 · 미래엔 12, 15쪽">
@@ -52,9 +82,29 @@
       <div class="feedback" id="fb"></div>
     </div>
 
-    <div class="card" data-bot="전원을 끄면 사라지는지가 힌트야 💡">
-      <h3>💾 주기억 장치와 보조 기억 장치</h3>
-      <div id="mem"></div>
+    <div class="card" data-bot="부품을 끼우고 전원을 켜 봐. 일부러 하나씩 빼고 켜 보면 더 재밌어 🔧">
+      <h3>🔧 컴퓨터 조립하고 전원 켜기</h3>
+      <p>자리를 눌러 부품을 <b>끼우거나 빼고</b>, <b>⏻ 전원</b>을 눌러 보세요. 부품을 <b>하나씩 빼고</b> 켜 보면 각 장치가 왜 필요한지 알 수 있어요.</p>
+      <div class="pc">
+        <div class="pc-mon"><div class="pc-scr" id="pcScr">⬛</div><button class="slot" data-p="mon"></button></div>
+        <div class="pc-case"><b>🖥️ 본체</b><button class="slot" data-p="cpu"></button><button class="slot" data-p="ram"></button><button class="slot" data-p="ssd"></button><span class="led" id="pcLed"></span></div>
+        <div class="pc-kb"><button class="slot" data-p="kb"></button></div>
+      </div>
+      <div class="ctrl" style="margin-top:10px"><button class="btn" id="pcPower">⏻ 전원 켜기</button><span class="hint" id="pcSound"></span></div>
+      <div class="feedback" id="pcFb"></div>
+      <p style="margin:12px 0 4px"><b>🧪 실험 도감</b> <span class="hint" id="pcN"></span></p>
+      <div class="lab" id="pcLab"></div>
+    </div>
+
+    <div class="card" data-bot="저장하지 않고 전원을 끄면 어떻게 될까? 직접 해 봐 💡">
+      <h3>💡 정전 실험: 주기억 장치와 보조 기억 장치</h3>
+      <p>문서를 쓰다가 갑자기 전원이 꺼지면 어떻게 될까요? 메모를 고쳐 쓴 다음, <b>저장하지 않고</b> 꺼 보고, <b>저장하고</b> 꺼 보기도 해 보세요.</p>
+      <div class="mem2">
+        <div class="mbox" id="ramBox"><b>🧩 주기억 장치(램)</b><small>지금 작업 중인 내용 · 빠르지만 전원이 꺼지면 사라져요</small><textarea id="ramTxt" rows="4" maxlength="200">오늘 정보 시간에 배운 것: 하드웨어는 입력, 처리, 기억, 출력 장치로 나뉜다.</textarea></div>
+        <div class="mbox ssd"><b>💽 보조 기억 장치(SSD)</b><small>저장한 파일 · 전원이 꺼져도 남아요</small><ul id="ssdList"><li>📄 자기소개.txt</li></ul></div>
+      </div>
+      <div class="ctrl" style="margin-top:10px"><button class="btn line" id="memSave">💾 SSD에 저장</button><button class="btn" id="memPower">⚡ 전원 끄기</button><button class="btn ghost" id="memOpen" hidden>📂 저장한 메모 열기</button></div>
+      <div class="feedback" id="memFb"></div>
     </div>
 
     <div class="card" data-bot="내 스마트폰 안에도 이 부품들이 다 있어 📱">
@@ -101,10 +151,64 @@ renderChoice($('#body'), [
   {icon:'🗣️', t:'입으로 말하고 손으로 글을 써요.', a:3, e:'결과를 표현하는 출력 장치예요.'},
 ], ['⌨️ 입력', '🧠 CPU', '💾 기억', '🖥️ 출력']);
 
-renderChoice($('#mem'), [
-  {icon:'🧩', t:'처리 속도가 빠르지만, 전원이 꺼지면 저장된 내용이 사라져요. 지금 실행 중인 프로그램과 데이터를 잠시 저장해요.', a:0, e:'주기억 장치(램, RAM)예요.'},
-  {icon:'💽', t:'전원이 꺼져도 내용이 남아 있어 사진, 문서 같은 파일을 오래 보관해요.', a:1, e:'보조 기억 장치(SSD, 하드 디스크, USB 메모리 등)예요.'},
-], ['주기억 장치', '보조 기억 장치']);
+/* ===== 컴퓨터 조립하고 전원 켜기 ===== */
+const PC = {cpu: ['🧠', 'CPU'], ram: ['🧩', '램(RAM)'], ssd: ['💽', 'SSD'], mon: ['🖥️', '모니터'], kb: ['⌨️', '키보드']};
+const pcIn = new Set(), pcGot = new Set();
+const LAB = [['cpu', '🧠 CPU 없이'], ['ram', '🧩 램 없이'], ['mon', '🖥️ 모니터 없이'], ['ssd', '💽 SSD 없이'], ['kb', '⌨️ 키보드 없이'], ['ok', '✅ 모두 끼우고']];
+let pcOn = false;
+const drawPC = () => {
+  $$('.pc .slot').forEach(s => { const p = s.dataset.p, [i, n] = PC[p], on = pcIn.has(p);
+    s.classList.toggle('in', on); s.textContent = on ? `${i} ${n} ✓` : `➕ ${n} 끼우기`; s.setAttribute('aria-pressed', on); });
+  $('#pcLab').innerHTML = LAB.map(([k, t]) => `<span class="${pcGot.has(k) ? 'got' : ''}">${pcGot.has(k) ? t : '❓ ' + t.slice(t.indexOf(' ') + 1)}</span>`).join('');
+  $('#pcN').textContent = `${pcGot.size} / ${LAB.length}`;
+};
+const pcOff = () => { pcOn = false; $('#pcScr').className = 'pc-scr off'; $('#pcScr').textContent = '⬛'; $('#pcLed').classList.remove('on'); $('#pcPower').textContent = '⏻ 전원 켜기'; $('#pcSound').textContent = ''; };
+const beep = n => { try { const A = new (window.AudioContext || window.webkitAudioContext)(); for (let i = 0; i < n; i++){ const o = A.createOscillator(), g = A.createGain(); o.type = 'square'; o.frequency.value = 880; g.gain.value = .04; o.connect(g); g.connect(A.destination); o.start(A.currentTime + i * .45); o.stop(A.currentTime + i * .45 + .25); } setTimeout(() => A.close(), n * 500 + 300); } catch (e){} };
+$$('.pc .slot').forEach(s => s.onclick = () => { const p = s.dataset.p; pcIn.has(p) ? pcIn.delete(p) : pcIn.add(p); if (pcOn) pcOff(); drawPC(); });
+$('#pcPower').onclick = () => {
+  if (pcOn) return pcOff();
+  if (!pcIn.size) return feedback($('#pcFb'), false, '아무 부품도 없어요. 먼저 자리를 눌러 부품을 끼워 보세요.');
+  pcOn = true; $('#pcPower').textContent = '⏻ 전원 끄기';
+  const scr = $('#pcScr'), has = p => pcIn.has(p);
+  let k, msg, ok = false;
+  $('#pcLed').classList.toggle('on', true);
+  if (!has('cpu')){ k = 'cpu'; scr.className = 'pc-scr off'; scr.textContent = '⬛'; $('#pcSound').textContent = '🔊 위이잉~ (팬만 돌아요)'; msg = '🧠 팬만 돌고 아무 일도 일어나지 않아요. 명령을 해석하고 계산하는 <b>중앙 처리 장치(CPU)</b>가 없으면 컴퓨터는 아무것도 처리할 수 없어요.'; }
+  else if (!has('ram')){ k = 'ram'; scr.className = 'pc-scr off'; scr.textContent = '⬛'; $('#pcSound').textContent = '🔊 삐- 삐- 삐-'; beep(3); msg = '🧩 경고음만 울려요. CPU가 처리할 프로그램과 데이터를 잠시 올려 둘 <b>주기억 장치(램)</b>가 없으면 실행을 시작할 수 없어요.'; }
+  else if (!has('mon')){ k = 'mon'; scr.className = 'pc-scr off'; scr.textContent = '⬛'; msg = '🖥️ 본체 불빛은 켜졌는데 아무것도 보이지 않아요. 컴퓨터는 일을 하고 있지만, 결과를 보여 줄 <b>출력 장치</b>가 없어요.'; }
+  else if (!has('ssd')){ k = 'ssd'; scr.className = 'pc-scr bios'; scr.innerHTML = '<div>⚠️ 운영체제를 찾을 수 없습니다.<br>부팅할 장치가 없어요.</div>'; msg = '💽 화면은 나오지만 운영체제가 실행되지 않아요. 운영체제와 파일을 오래 저장해 두는 <b>보조 기억 장치(SSD)</b>가 없어요.'; }
+  else if (!has('kb')){ k = 'kb'; scr.className = 'pc-scr on'; scr.innerHTML = '<div>🔒 로그인<br>비밀번호: ▯<br><small>키보드를 찾을 수 없어요</small></div>'; msg = '⌨️ 로그인 화면까지 켜졌지만 비밀번호를 칠 수 없어요. 데이터를 받아들이는 <b>입력 장치</b>가 없어요.'; }
+  else { k = 'ok'; ok = true; scr.className = 'pc-scr on'; scr.innerHTML = '<div><b style="font-size:1.1rem">🙂 환영합니다!</b><br><small>⌨️ 입력 → 🧠 처리 → 🧩 램에 잠시 저장 → 🖥️ 출력</small></div>'; msg = '✅ 컴퓨터가 켜졌어요! 키보드로 <b>입력</b>하면 CPU가 <b>처리</b>하고, 램과 SSD에 <b>기억</b>하고, 모니터로 <b>출력</b>해요.'; }
+  const first = !pcGot.has(k); pcGot.add(k); drawPC();
+  if (!ok) $('.pc').classList.remove('shake'), void $('.pc').offsetWidth, $('.pc').classList.add('shake');
+  const done = pcGot.size === LAB.length;
+  feedback($('#pcFb'), ok, msg.replace(/<[^>]+>/g, '') + (done && first ? ' 🎉 실험 도감 완성! 장치가 하나라도 빠지면 컴퓨터가 제대로 동작하지 않아요.' : first && !ok ? ' (새 실험 발견!)' : ''));
+};
+drawPC();
+
+/* ===== 정전 실험 ===== */
+let memPowered = true, dirty = false, saved = null, lost = false, kept = false;
+$('#ramTxt').oninput = () => { dirty = true; };
+$('#memSave').onclick = () => {
+  if (!memPowered) return feedback($('#memFb'), false, '전원이 꺼져 있어서 저장할 수 없어요.');
+  saved = $('#ramTxt').value; dirty = false;
+  $('#ssdList').innerHTML = '<li>📄 자기소개.txt</li><li>📄 정보 메모.txt <small class="hint">(방금 저장)</small></li>';
+  feedback($('#memFb'), true, '💾 램에 있던 내용을 SSD에 파일로 저장했어요. 이제 전원을 꺼 볼까요?');
+};
+$('#memPower').onclick = () => {
+  if (memPowered){
+    memPowered = false; const wasDirty = dirty || saved === null;
+    $('#ramBox').classList.add('off'); $('#ramTxt').value = ''; $('#ramTxt').disabled = true; $('#memPower').textContent = '🔌 전원 켜기'; $('#memOpen').hidden = true;
+    if (wasDirty){ lost = true; feedback($('#memFb'), false, '⚡ 정전! 저장하지 않은 내용이 램에서 모두 사라졌어요. 램(주기억 장치)은 전원이 꺼지면 내용이 지워져요.' + (saved === null ? ' SSD에는 아무것도 저장되지 않았어요.' : '')); }
+    else { kept = true; feedback($('#memFb'), true, '⚡ 정전! 램의 내용은 사라졌지만, SSD에 저장한 파일은 그대로 남아 있어요. 전원을 다시 켜고 파일을 열어 보세요.'); }
+  } else {
+    memPowered = true; dirty = false;
+    $('#ramBox').classList.remove('off'); $('#ramTxt').disabled = false; $('#memPower').textContent = '⚡ 전원 끄기'; $('#memOpen').hidden = saved === null;
+    if (lost && kept) feedback($('#memFb'), true, '🎉 두 실험 모두 해 봤어요! 램은 빠르지만 전원이 꺼지면 내용이 사라지는 주기억 장치, SSD는 전원이 꺼져도 남는 보조 기억 장치예요.');
+    else feedback($('#memFb'), true, '🔌 다시 켜졌어요. 램은 비어 있어요.' + (saved !== null ? ' [📂 저장한 메모 열기]로 SSD의 파일을 램으로 불러와 보세요.' : ' 이번에는 [💾 SSD에 저장]을 누른 뒤 꺼 보세요.'));
+  }
+};
+$('#memOpen').onclick = () => { $('#ramTxt').value = saved; dirty = false; $('#memOpen').hidden = true; feedback($('#memFb'), true, '📂 SSD에 저장한 파일을 램으로 불러왔어요. 프로그램을 실행하거나 파일을 열면 보조 기억 장치 → 주기억 장치로 데이터가 옮겨져요.' + (lost && kept ? '' : lost ? '' : ' 이번에는 저장하지 않고 꺼 보세요.')); };
+
 
 renderChoice($('#phone'), [
   {icon:'👆', t:'지문 센서, 터치 패드, 카메라, 마이크', a:0, e:'사용자의 지문·터치·영상·소리를 받아들이는 입력 장치예요.'},

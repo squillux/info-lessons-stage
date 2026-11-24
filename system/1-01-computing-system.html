@@ -14,6 +14,20 @@
 .two-col .neg{background:var(--pink-soft)}
 .two-col h4{margin:0 0 6px}
 .two-col ul{margin:0;padding-left:1.2em}
+.scene{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1.5px solid var(--line)}
+.scene .bg{position:absolute;inset:0;width:100%;height:100%}
+.obj{position:absolute;transform:translate(-50%,-50%);border:0;background:none;padding:0;font-size:clamp(24px,4.6vw,44px);line-height:1;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15));transition:transform .12s}
+.obj:hover{transform:translate(-50%,-50%) scale(1.15)}
+.obj.found::after{content:"✓";position:absolute;right:-8px;top:-8px;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.obj.found{filter:drop-shadow(0 0 6px rgba(31,157,85,.9))}
+.obj.no{animation:nope .4s}
+.obj.glow{animation:glow 1s ease-in-out 3}
+@keyframes nope{25%{transform:translate(-56%,-50%)}75%{transform:translate(-44%,-50%)}}
+@keyframes glow{50%{transform:translate(-50%,-50%) scale(1.35);filter:drop-shadow(0 0 10px #ffc233)}}
+.scene-info{margin-top:10px;border-radius:16px;padding:12px 14px;background:var(--bg);min-height:64px}
+.scene-info.ok{background:var(--ok-soft)}.scene-info.bad{background:var(--bad-soft)}
+.ipo3{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.ipo3 span{border-radius:999px;padding:3px 10px;font-size:.84rem;font-weight:700;background:#fff}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="우리 주변의 컴퓨팅 시스템" data-sub="중1 Ⅰ단원 · 컴퓨팅 시스템의 구성 · 미래엔 11, 14쪽">
@@ -31,15 +45,21 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card" data-bot="데이터를 받아서 스스로 처리하는지 살펴봐! 🔍">
-      <h3>🔍 컴퓨팅 시스템일까?</h3>
-      <p>데이터를 입력받아 <b>정해진 절차에 따라 자동으로 처리</b>하면 컴퓨팅 시스템이에요.</p>
-      <div id="judge"></div>
-    </div>
-
-    <div class="card" data-bot="각 시스템이 사람 대신 해 주는 일을 찾아봐 🏠">
-      <h3>🏠 어떤 문제를 해결해 줄까?</h3>
-      <div id="role"></div>
+    <div class="card" data-bot="교실 곳곳을 눌러 봐! 데이터를 스스로 처리하는 물건만 찾아야 해 🔍">
+      <h3>🔍 교실 숨은 컴퓨팅 시스템 찾기</h3>
+      <p>데이터를 입력받아 <b>정해진 절차에 따라 자동으로 처리</b>하면 컴퓨팅 시스템이에요. 교실 그림에서 컴퓨팅 시스템 <b>6개</b>를 찾아 눌러 보세요. 아닌 물건도 숨어 있어요!</p>
+      <div class="scene" id="scene">
+        <svg class="bg" viewBox="0 0 160 100" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="160" height="100" fill="#fdf6ec"/><rect y="70" width="160" height="30" fill="#ecdcc6"/><path d="M0 70 H160" stroke="#d9c4a6" stroke-width="1"/>
+          <rect x="4" y="30" width="22" height="40" rx="1.5" fill="#d9b48a" stroke="#b98d60"/><circle cx="22" cy="51" r="1" fill="#8a6a45"/>
+          <rect x="54" y="8" width="54" height="32" rx="2" fill="#2f3b52"/><rect x="56.5" y="10.5" width="49" height="27" rx="1" fill="#e6f0ff"/>
+          <rect x="120" y="22" width="30" height="26" rx="1.5" fill="#cfe8ff" stroke="#9bbcd9" stroke-width="1.5"/><path d="M135 22 V48 M120 35 H150" stroke="#9bbcd9" stroke-width="1"/>
+          <rect x="34" y="62" width="34" height="5" rx="1" fill="#b98d60"/><rect x="36" y="67" width="3" height="12" fill="#a57a4f"/><rect x="63" y="67" width="3" height="12" fill="#a57a4f"/>
+          <rect x="88" y="66" width="28" height="4" rx="1" fill="#c9a072"/><rect x="90" y="70" width="2.5" height="10" fill="#a57a4f"/><rect x="111" y="70" width="2.5" height="10" fill="#a57a4f"/>
+        </svg>
+      </div>
+      <div class="ctrl" style="margin-top:8px"><b id="foundN">찾은 컴퓨팅 시스템 0 / 6</b><button class="btn line" id="hintBtn">💡 힌트</button></div>
+      <div class="scene-info" id="sceneInfo"><p class="hint" style="margin:0">물건을 눌러 보세요. 컴퓨팅 시스템이면 어떻게 데이터를 처리하는지 알려 줘요.</p></div>
     </div>
 
     <div class="card" data-bot="좋은 점일까, 걱정되는 점일까? 하나씩 나눠 보자 ⚖️">
@@ -76,19 +96,43 @@
 <script src="../assets/common.js"></script>
 <script src="../assets/live.js"></script>
 <script>
-renderChoice($('#judge'), [
-  {icon:'🧹', t:'방 안의 장애물을 감지해 스스로 방향을 바꾸며 청소하는 로봇 청소기', a:0, e:'센서로 데이터를 입력받아 자동으로 처리해요.'},
-  {icon:'🪑', t:'나무로 만든 교실 의자', a:1, e:'데이터를 입력받거나 처리하지 않아요.'},
-  {icon:'🧊', t:'남은 식품의 유통 기한을 알려 주는 스마트 냉장고', a:0, e:'식품 정보를 저장하고 처리해 알려 줘요.'},
-  {icon:'🪞', t:'벽에 걸린 거울', a:1, e:'빛을 반사할 뿐, 데이터를 처리하지 않아요.'},
-  {icon:'🛂', t:'지문과 얼굴을 인식해 출입국 심사를 하는 자동 출입국 심사대', a:0, e:'생체 정보를 입력받아 본인인지 자동으로 확인해요.'},
-], ['💻 컴퓨팅 시스템', '❌ 아니에요']);
-
-renderChoice($('#role'), [
-  {icon:'🍔', t:'키오스크', a:0, e:'주문과 결제를 사람 대신 자동으로 처리해요.'},
-  {icon:'🚗', t:'자율 주행 자동차', a:1, e:'주변을 인식해 안전하게 스스로 운전해요.'},
-  {icon:'🏭', t:'공장의 산업용 로봇', a:2, e:'반복적인 일을 빠르고 정확하게 해 생산성을 높여요.'},
-], ['주문·결제를 대신해요', '스스로 운전해요', '반복 작업을 정확하게 해요']);
+/* ===== 교실 숨은 컴퓨팅 시스템 찾기 ===== */
+// [아이콘, 이름, x%, y%, 컴퓨팅 시스템?, 입력, 처리, 출력, 해결하는 문제] / 아니면 [.., 0, 이유]
+const OBJ = [
+  ['🖥️', '전자칠판', 50, 24, 1, '펜·손가락 터치', '터치한 위치를 계산해 글씨로 바꿔요', '화면에 글씨와 자료를 보여 줘요', '수업 자료를 크게 보여 주고 바로 고쳐 쓸 수 있어요.'],
+  ['💻', '노트북', 44, 56, 1, '키보드·마우스', 'CPU가 명령을 처리해요', '화면과 스피커로 보여 줘요', '문서 작성, 검색, 수업 준비를 빠르게 해요.'],
+  ['🤖', '로봇 청소기', 74, 88, 1, '장애물 감지 센서', '피해 갈 방향을 계산해요', '바퀴를 돌려 움직이며 청소해요', '사람 대신 바닥을 스스로 청소해요.'],
+  ['❄️', '스마트 에어컨', 84, 10, 1, '온도 센서', '설정 온도와 비교해요', '바람 세기를 조절해요', '교실 온도를 알맞게 자동으로 맞춰요.'],
+  ['🔐', '디지털 도어록', 12, 50, 1, '번호 입력·카드', '저장된 번호와 비교해요', '모터로 문을 열어요', '열쇠 없이도 안전하게 문을 열고 잠가요.'],
+  ['📱', '스마트폰', 64, 61, 1, '터치·카메라·마이크', 'CPU가 앱을 실행해요', '화면·소리·진동으로 알려요', '연락, 검색, 사진 찍기를 손안에서 해요.'],
+  ['🪑', '의자', 30, 84, 0, '앉는 데 쓰는 물건일 뿐, 데이터를 입력받거나 처리하지 않아요.'],
+  ['📚', '책', 56, 57, 0, '정보는 담겨 있지만 스스로 데이터를 처리하지는 않아요.'],
+  ['🕰️', '태엽 벽시계', 28, 18, 0, '태엽과 톱니바퀴로 움직일 뿐, 데이터를 처리하지 않아요. (시간을 스스로 맞추는 스마트 시계라면 컴퓨팅 시스템이에요!)'],
+  ['🪴', '화분', 94, 64, 0, '식물을 키우는 그릇이에요. (센서와 물 펌프가 달린 스마트 화분이라면 컴퓨팅 시스템이에요!)'],
+  ['🧹', '빗자루', 5, 86, 0, '사람이 손으로 쓰는 청소 도구예요. 로봇 청소기와 비교해 보세요.'],
+  ['🎒', '가방', 54, 86, 0, '물건을 담는 가방이에요. 데이터와 상관없어요.'],
+];
+const TOTAL = OBJ.filter(o => o[4]).length, gotObj = new Set();
+let miss = 0;
+$('#scene').insertAdjacentHTML('beforeend', OBJ.map((o, i) => `<button class="obj" data-i="${i}" style="left:${o[2]}%;top:${o[3]}%" aria-label="${o[1]}">${o[0]}</button>`).join(''));
+$$('#scene .obj').forEach(b => b.onclick = () => {
+  const k = +b.dataset.i, o = OBJ[k], info = $('#sceneInfo');
+  if (o[4]){
+    const first = !gotObj.has(k); gotObj.add(k); b.classList.add('found');
+    info.className = 'scene-info ok';
+    info.innerHTML = `<b>${o[0]} ${o[1]}</b> · 컴퓨팅 시스템이에요!<div class="ipo3"><span>📥 입력: ${o[5]}</span><span>⚙️ 처리: ${o[6]}</span><span>📤 출력: ${o[7]}</span></div>🏠 ${o[8]}<div class="feedback" id="sceneFb"></div>`;
+    $('#foundN').textContent = `찾은 컴퓨팅 시스템 ${gotObj.size} / ${TOTAL}`;
+    if (first) feedback($('#sceneFb'), true, gotObj.size === TOTAL
+      ? `🎉 6개를 모두 찾았어요!${miss ? ' (함정에 ' + miss + '번 걸렸어요)' : ' 함정에 한 번도 안 걸렸어요!'} 학교 밖에서도 주문을 받는 키오스크, 스스로 운전하는 자율 주행 자동차, 반복 작업을 하는 산업용 로봇처럼 컴퓨팅 시스템이 사람 대신 많은 일을 해요.`
+      : `⭕ 찾았어요! 남은 컴퓨팅 시스템 ${TOTAL - gotObj.size}개`);
+  } else {
+    miss++; b.classList.remove('no'); void b.offsetWidth; b.classList.add('no');
+    info.className = 'scene-info bad';
+    info.innerHTML = `<b>${o[0]} ${o[1]}</b> · 컴퓨팅 시스템이 아니에요.<br>${o[5]}<div class="feedback" id="sceneFb"></div>`;
+    feedback($('#sceneFb'), false, '❌ 함정이에요! 데이터를 입력받아 자동으로 처리하는지 다시 생각해 보세요.');
+  }
+});
+$('#hintBtn').onclick = () => { const i = OBJ.findIndex((o, k) => o[4] && !gotObj.has(k)); if (i < 0) return; const b = $(`#scene .obj[data-i="${i}"]`); b.classList.remove('glow'); void b.offsetWidth; b.classList.add('glow'); };
 
 renderChoice($('#impact'), [
   {icon:'⚡', t:'은행 일을 자동으로 처리해 몇 초 만에 송금할 수 있어요.', a:0, e:'일을 자동화해 빠르고 정확하게 처리해요.'},

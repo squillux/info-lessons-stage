@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅳ단원 정리 퀴즈</title>
+<title>Ⅳ단원 AI 보스전</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
 .fill{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:520px;margin:10px 0}
@@ -11,12 +11,28 @@
 .fill div.ok{border-style:solid;border-color:var(--mint);background:var(--mint-soft)}
 .self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}
 @media (max-width:520px){.fill{grid-template-columns:repeat(2,1fr)}}
+.arena{border-radius:20px;padding:16px;background:linear-gradient(160deg,#1f1b3a,#3b2f6b);color:#fff}
+.boss{display:flex;align-items:center;gap:14px}
+.boss .face{font-size:3.6rem;line-height:1}
+.boss .face.hit{animation:hit .45s}
+.boss .face.ok{animation:none}
+@keyframes hit{20%{transform:translateX(-8px) rotate(-8deg)}40%{transform:translateX(8px) rotate(6deg)}60%{transform:translateX(-4px)}}
+.hp{flex:1}.hp b{font-size:.9rem}
+.hpbar{height:14px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:4px}
+.hpbar i{display:block;height:100%;background:linear-gradient(90deg,#ff5a7a,#ffb35c);transition:width .4s}
+.me{margin-top:10px;font-size:1.2rem;letter-spacing:2px}
+.dmg{font-weight:800;color:#ffd45c;min-height:1.4em}
+.qbox{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px}
+.qbox .q{font-weight:800;margin:0 0 10px}
+.qbox .opts{display:grid;gap:8px}
+.win{text-align:center}.win .big{font-size:3rem}
+.badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
 </style>
 </head>
-<body data-stage data-unit="4" data-title="Ⅳ단원 정리 퀴즈" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
+<body data-stage data-unit="4" data-title="Ⅳ단원 AI 보스전" data-sub="중1 Ⅳ단원 · 단원 정리 · 미래엔 161, 183, 186쪽">
 <main>
   <span class="badge">중1 Ⅳ단원 · 단원 정리</span>
-  <h1>Ⅳ단원 정리 퀴즈</h1>
+  <h1>Ⅳ단원 AI 보스전</h1>
   <p class="lead">인공지능의 개념과 특성, 인공지능 시스템과 데이터, 활용과 윤리를 정리해 봐요.</p>
 
   <section class="step think">
@@ -27,7 +43,7 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>정리 퀴즈</h2>
+    <h2 class="step-h"><span class="no">2</span>AI 보스전</h2>
     <div class="card" data-bot="낱말을 순서대로 눌러 빈칸을 채워 봐 🔄">
       <h3>🔄 인공지능 모델 개발 과정 채우기</h3>
       <p>낱말을 순서대로 눌러 빈칸을 채워 보세요.</p>
@@ -35,13 +51,10 @@
       <div class="opts" id="words"></div>
       <div class="feedback" id="fFb"></div>
     </div>
-    <div class="card" data-bot="인공지능의 이해와 데이터를 점검해 봐 🤖">
-      <h3>🤖 인공지능의 이해와 데이터</h3>
-      <div id="q1"></div>
-    </div>
-    <div class="card" data-bot="인공지능의 활용과 윤리를 점검해 봐 ⚖️">
-      <h3>⚖️ 인공지능의 활용과 윤리</h3>
-      <div id="q2"></div>
+    <div class="card" data-bot="정답을 맞힐 때마다 버그봇의 체력이 깎여! 목숨은 3개야 👾">
+      <h3>👾 고장 난 AI '버그봇'을 고쳐라!</h3>
+      <p>편향된 데이터를 먹고 고장 난 인공지능 <b>버그봇</b>이 나타났어요. 문제를 맞혀 버그봇의 오류를 하나씩 고쳐 주세요. 틀리면 내 목숨 ❤️이 줄어요.</p>
+      <div class="arena" id="arena"></div>
     </div>
   </section>
 
@@ -74,18 +87,47 @@ $$('#words .opt').forEach(b => b.onclick = () => {
   const c = $$('#fill div')[at]; c.textContent = ORD[at]; c.classList.add('ok'); b.disabled = true; at++;
   feedback($('#fFb'), true, at === 4 ? '🎉 데이터 입력 → 학습 → 모델 생성 → 모델 평가!' : '⭕');
 });
-renderQuiz($('#q1'), [
-  {q:'인공지능의 특성 중 이미지, 소리, 글자 등을 알아보는 것은?', o:['추론','인식','생성'], a:1, e:'센서 등으로 외부 세계를 알아보는 인식이에요.'},
-  {q:'인공지능 소프트웨어와 일반 소프트웨어의 가장 큰 차이는?', o:['화면 색깔','데이터로 스스로 규칙을 학습하는지 여부','사용하는 컴퓨터의 크기'], a:1, e:'인공지능 소프트웨어는 데이터로 학습해 모델을 만들어요.'},
-  {q:'모델의 성능을 평가할 때 사용하는 데이터는?', o:['훈련 데이터','테스트 데이터'], a:1, e:'학습에 쓰지 않은 새로운 데이터로 평가해요.'},
-  {q:'좋은 학습 데이터의 조건이 아닌 것은?', o:['충분한 양','한쪽에 치우친 데이터','특징이 드러난 데이터'], a:1, e:'데이터는 대표성이 있어야 해요.'},
-]);
-renderQuiz($('#q2'), [
-  {q:'인공지능으로 문제를 해결하는 과정의 첫 단계는?', o:['모델 개발','문제 이해','실행 및 적용'], a:1, e:'먼저 해결할 문제를 발견하고 정의해요.'},
-  {q:'얼굴 사진으로 자동 출석부를 만들 때 반드시 지켜야 할 것은?', o:['사진 주인의 동의를 받는다','사진을 많이 공유한다','아무 사진이나 모은다'], a:0, e:'얼굴은 개인 정보이므로 동의를 받고 수집해요.'},
-  {q:'인공지능이 내린 판단의 근거를 알 수 있어야 한다는 원칙은?', o:['투명성','데이터 편향','저작권'], a:0, e:'투명해야 결과를 믿을 수 있어요.'},
-  {q:'바람직한 인공지능을 위해 정부가 할 수 있는 노력은?', o:['인공지능 관련 법과 제도 마련','윤리 지침에 따라 제품 개발','결과를 다른 자료와 비교해 확인'], a:0, e:'기업은 윤리 지침 준수, 개인은 비판적 활용을 실천해요.'},
-]);
+/* ===== AI 보스전 ===== */
+const QS = [
+  {q: '인공지능의 특성 중 이미지, 소리, 글자 등을 알아보는 것은?', o: ['추론', '인식', '생성'], a: 1, e: '센서 등으로 외부 세계를 알아보는 것은 인식이에요.'},
+  {q: '인공지능 소프트웨어와 일반 소프트웨어의 가장 큰 차이는?', o: ['화면 색깔', '데이터로 스스로 규칙을 학습하는지 여부', '가격'], a: 1, e: '인공지능은 데이터로 스스로 규칙을 찾아요.'},
+  {q: '모델의 성능을 평가할 때 사용하는 데이터는?', o: ['훈련 데이터', '테스트 데이터'], a: 1, e: '학습에 쓰지 않은 새로운 데이터로 평가해요.'},
+  {q: '좋은 학습 데이터의 조건이 아닌 것은?', o: ['충분한 양', '한쪽에 치우친 데이터', '특징이 드러난 데이터'], a: 1, e: '데이터는 대표성 있게 고르게 모아야 해요.'},
+  {q: '인공지능으로 문제를 해결하는 과정의 첫 단계는?', o: ['모델 개발', '문제 이해', '실행 및 적용'], a: 1, e: '먼저 해결할 문제를 정확히 이해해요.'},
+  {q: '얼굴 사진으로 자동 출석부를 만들 때 반드시 지켜야 할 것은?', o: ['사진 주인의 동의를 받는다', '사진을 많이 공유한다', '사진을 SNS에 올린다'], a: 0, e: '얼굴은 민감한 개인 정보라 동의가 필요해요.'},
+  {q: '인공지능이 내린 판단의 근거를 알 수 있어야 한다는 원칙은?', o: ['투명성', '데이터 편향', '저작권'], a: 0, e: '투명해야 결과를 믿을 수 있어요.'},
+  {q: '바람직한 인공지능을 위해 정부가 할 수 있는 노력은?', o: ['인공지능 관련 법과 제도 마련', '윤리 지침에 따라 제품 개발', '사용 시간 줄이기'], a: 0, e: '정부는 법과 제도를 마련해요.'},
+];
+const BOSS_LINES = ['ERROR: 고양이 = 강아지?!', '편향 데이터 냠냠…', '근거? 그런 건 몰라!', '삐빅… 오류 수정 중…', '데이터가… 고르게…?', '으악, 정답이다!', '시스템… 복구… 중…', '거의 다 고쳐졌어…!'];
+const BS = {};
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+function bossStart(){ Object.assign(BS, {hp: QS.length, life: 3, queue: shuffle(QS.map((_, i) => i)), first: {}}); bossDraw(''); }
+function bossDraw(msg){
+  if (BS.hp <= 0) return bossWin();
+  if (BS.life <= 0) return bossLose();
+  const qi = BS.queue[0], Q = QS[qi];
+  $('#arena').innerHTML = `<div class="boss"><div class="face" id="face">👾</div><div class="hp"><b>버그봇 오류 ${BS.hp} / ${QS.length}</b><div class="hpbar"><i style="width:${BS.hp / QS.length * 100}%"></i></div><div class="dmg" id="dmg">${msg || '💬 ' + BOSS_LINES[QS.length - BS.hp]}</div></div></div>
+    <div class="me">내 목숨 ${'❤️'.repeat(BS.life)}${'🤍'.repeat(3 - BS.life)}</div>
+    <div class="qbox"><p class="q">⚔️ ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="bsFb"></div></div>`;
+  $$('#arena .opt').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.k === Q.a; if (!(qi in BS.first)) BS.first[qi] = ok;
+    $$('#arena .opt').forEach(x => x.disabled = true); b.classList.add(ok ? 'right' : 'wrong');
+    if (ok){ BS.hp--; BS.queue.shift(); $('#face').classList.add('hit'); $('#dmg').textContent = '💥 오류 하나 수정! (-1)'; feedback($('#bsFb'), true, '⭕ ' + Q.e); setTimeout(() => bossDraw(''), 1500); }
+    else { BS.life--; BS.queue.push(BS.queue.shift()); feedback($('#bsFb'), false, '❌ ' + Q.e + ' (버그봇의 반격! 목숨 -1)'); setTimeout(() => bossDraw('😈 버그봇의 반격!'), 2200); }
+  });
+}
+function bossWin(){
+  const r = Object.values(BS.first), n = r.filter(Boolean).length;
+  $('#arena').innerHTML = `<div class="win"><div class="big">🤖✨</div><h4 style="font-size:1.4rem;margin:6px 0">버그봇 수리 완료!</h4><p>버그봇이 공정하고 투명한 착한 AI로 돌아왔어요. 남은 목숨 ${'❤️'.repeat(BS.life)} · 한 번에 맞힌 문제 <b>${n} / ${r.length}</b></p><span class="badge2">${BS.life === 3 ? '🏆 완벽한 AI 엔지니어' : BS.life === 2 ? '🥈 믿음직한 AI 수리공' : '🥉 아슬아슬 AI 구조대'}</span><div class="feedback" id="bsFb"></div><p><button class="btn line" id="again">🔄 다시 도전</button></p></div>`;
+  feedback($('#bsFb'), true, '🎉 Ⅳ단원 보스전 승리!'); $('#again').onclick = bossStart;
+  reportQuiz('boss4', r);
+}
+function bossLose(){
+  $('#arena').innerHTML = `<div class="win"><div class="big">👾😈</div><h4 style="font-size:1.3rem;margin:6px 0">앗, 목숨을 모두 잃었어요</h4><p>버그봇의 남은 오류 ${BS.hp}개. 틀린 문제의 해설을 떠올리며 다시 도전해 보세요!</p><div class="feedback" id="bsFb"></div><p><button class="btn" id="again">🔄 다시 도전</button></p></div>`;
+  feedback($('#bsFb'), false, '괜찮아요. 다시 도전하면 이길 수 있어요!'); $('#again').onclick = bossStart;
+}
+bossStart();
+
 const SELF = ['인공지능의 개념과 특성을 설명하고, 인공지능 소프트웨어를 구별할 수 있다.', '인공지능 모델이 만들어지는 과정과 훈련·테스트 데이터를 설명할 수 있다.', '좋은 학습 데이터의 조건을 알고 데이터를 고를 수 있다.', '이미지·텍스트 데이터로 분류 모델을 만들고 평가할 수 있다.', '인공지능으로 해결할 수 있는 문제를 찾고 시스템을 구상할 수 있다.', '인공지능의 윤리적 문제를 알고 해결 방안을 제시할 수 있다.'];
 $('#self').innerHTML = SELF.map(s => `<label><input type="checkbox"> ${s}</label>`).join('');
 $$('#self input').forEach(i => i.onchange = () => { const n = $$('#self input:checked').length; $('#selfMsg').textContent = n === SELF.length ? '🎉 Ⅳ단원을 완벽하게 정리했어요!' : `${n} / ${SELF.length} · 체크하지 못한 내용은 해당 활동을 다시 해 보세요.`; });

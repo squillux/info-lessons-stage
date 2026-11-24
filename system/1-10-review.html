@@ -3,15 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅰ단원 정리 퀴즈</title>
+<title>Ⅰ단원 방 탈출</title>
 <link rel="stylesheet" href="../assets/common.css">
-<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}</style>
+<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}.esc-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.rooms{display:flex;gap:6px;align-items:center}
+.rooms span{border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:800;background:var(--bg);color:var(--muted)}
+.rooms span.cur{background:var(--brand);color:#fff}.rooms span.done{background:var(--ok-soft);color:var(--ok)}
+.timer{font-weight:800;color:var(--muted)}
+.room{border-radius:20px;padding:16px;background:linear-gradient(160deg,#2f3b52,#46557a);color:#fff}
+.room h4{margin:0 0 4px;font-size:1.15rem}
+.room .sub{opacity:.8;font-size:.88rem}
+.qbox{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px}
+.qbox .q{font-weight:800;margin:0 0 10px}
+.qbox .opts{display:grid;gap:8px}
+.qbox .opt{text-align:left}
+.clues{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.clue{min-width:64px;border-radius:12px;padding:6px 10px;background:rgba(255,255,255,.12);text-align:center;font-size:.78rem}
+.clue b{display:block;font-size:1.5rem;letter-spacing:.05em}
+.clue.got{background:#ffc233;color:#3a2a00}
+.lockp{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px;text-align:center}
+.dials{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.dials input{width:52px;height:60px;text-align:center;font-size:1.8rem;font-weight:800;border:2px solid var(--line);border-radius:12px}
+.door{font-size:3rem;text-align:center}
+.door.open{animation:dopen .6s ease}
+@keyframes dopen{0%{transform:scale(.8)}60%{transform:scale(1.2)}100%{transform:none}}
+.win{text-align:center;padding:10px}
+.win .big{font-size:3rem}
+.badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+</style>
 </head>
-<body data-stage data-unit="1" data-title="Ⅰ단원 정리 퀴즈" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
+<body data-stage data-unit="1" data-title="Ⅰ단원 방 탈출" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 단원 정리</span>
-  <h1>Ⅰ단원 정리 퀴즈</h1>
-  <p class="lead">컴퓨팅 시스템의 구성과 동작, 피지컬 컴퓨팅 시스템을 정리해 봐요.</p>
+  <h1>Ⅰ단원 방 탈출</h1>
+  <p class="lead">컴퓨터실에 갇혔어요! 방마다 문제를 풀어 <b>자물쇠 번호</b>를 모으고, 세 개의 문을 열어 탈출해 보세요. 컴퓨팅 시스템과 피지컬 컴퓨팅을 정리하는 게임이에요.</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
@@ -21,14 +46,10 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>정리 퀴즈</h2>
-    <div class="card" data-bot="1부 정리! 기억나는 대로 풀어 봐 💻">
-      <h3>💻 컴퓨팅 시스템의 구성과 동작</h3>
-      <div id="q1"></div>
-    </div>
-    <div class="card" data-bot="2부 정리! 센서와 액추에이터를 떠올려 봐 🔌">
-      <h3>🔌 피지컬 컴퓨팅 시스템</h3>
-      <div id="q2"></div>
+    <h2 class="step-h"><span class="no">2</span>방 탈출 게임</h2>
+    <div class="card" data-bot="문제를 맞히면 자물쇠 번호를 얻어! 번호를 잘 기억해 둬 🔐">
+      <h3>🔐 컴퓨터실 방 탈출</h3>
+      <div class="esc" id="esc"></div>
     </div>
   </section>
 
@@ -52,18 +73,77 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-renderQuiz($('#q1'), [
-  {q:'컴퓨팅 시스템을 구성하는 두 요소는?', o:['하드웨어와 소프트웨어','센서와 모니터','CPU와 프린터'], a:0, e:'물리적 장치(하드웨어)와 명령어의 모음(소프트웨어)으로 구성돼요.'},
-  {q:'하드웨어 중 데이터를 계산하고 명령을 해석하는 장치는?', o:['입력 장치','중앙 처리 장치(CPU)','출력 장치'], a:1, e:'CPU는 제어 장치와 연산 장치로 구성돼요.'},
-  {q:'운영체제와 유틸리티는 어떤 소프트웨어일까?', o:['응용 소프트웨어','시스템 소프트웨어'], a:1, e:'응용 소프트웨어가 잘 작동하도록 환경을 제공해요.'},
-  {q:'새 프린터를 연결했을 때 운영체제가 드라이버를 찾아 연결해 주는 기능은?', o:['파일 관리','입출력 장치 관리','프로세스 관리'], a:1, e:'입출력 장치 관리예요.'},
-]);
-renderQuiz($('#q2'), [
-  {q:'센서, 마이크로컨트롤러, 액추에이터 등으로 현실 세계와 상호 작용하는 시스템은?', o:['피지컬 컴퓨팅 시스템','운영체제','클라우드'], a:0, e:'현실 세계의 데이터를 입력받아 처리하고 물리적으로 출력해요.'},
-  {q:'다음 중 액추에이터는?', o:['빛 센서','서보 모터','소리 센서'], a:1, e:'서보 모터는 신호에 따라 정해진 각도로 움직이는 액추에이터예요.'},
-  {q:'피지컬 컴퓨팅 시스템의 동작 과정으로 알맞은 순서는?', o:['액추에이터 제어 → 데이터 수집 → 프로그램 실행','데이터 수집 → 데이터 처리 → 프로그램 실행 → 액추에이터 제어','프로그램 실행 → 데이터 수집 → 데이터 처리'], a:1, e:'센서로 수집하고 처리한 뒤 프로그램에 따라 액추에이터를 제어해요.'},
-  {q:'센서 보드의 아날로그 센서 값의 범위는?', o:['0~1023','0 또는 1','1~10'], a:0, e:'아날로그 센서는 0~1023의 값을 입력해요.'},
-]);
+/* ===== 방 탈출 게임 ===== */
+const ROOMS = [
+  {n: '🧪 1번 방 · 하드웨어 실험실', s: '부품이 흩어져 있는 실험실이에요.', qs: [
+    {q: '컴퓨팅 시스템을 구성하는 두 요소는?', o: ['하드웨어와 소프트웨어', '센서와 모니터', 'CPU와 프린터'], a: 0, e: '물리적 장치(하드웨어)와 프로그램(소프트웨어)이 함께 동작해요.'},
+    {q: '명령을 해석하고 데이터를 계산하는 하드웨어는?', o: ['입력 장치', '중앙 처리 장치(CPU)', '출력 장치'], a: 1, e: 'CPU는 제어 장치와 연산 장치로 이루어져요.'},
+    {q: '전원이 꺼지면 저장된 내용이 사라지는 기억 장치는?', o: ['SSD', '램(RAM)', 'USB 메모리'], a: 1, e: '램은 주기억 장치로, 실행 중인 데이터를 잠시 저장해요.'},
+  ]},
+  {n: '⚙️ 2번 방 · 운영체제 관제실', s: '모니터가 잔뜩 켜진 관제실이에요.', qs: [
+    {q: '운영체제와 유틸리티는 어떤 소프트웨어일까?', o: ['응용 소프트웨어', '시스템 소프트웨어'], a: 1, e: '응용 소프트웨어가 잘 작동하도록 환경을 제공해요.'},
+    {q: '새 프린터를 연결하면 운영체제가 드라이버를 찾아 연결해 줘요. 어떤 기능일까?', o: ['파일 관리', '입출력 장치 관리', '프로세스 관리'], a: 1, e: '운영체제는 드라이버로 입출력 장치를 관리해요.'},
+    {q: '길 찾기 앱이 목적지를 받아 경로를 계산하고 화면에 보여 주는 순서는?', o: ['출력 → 처리 → 입력', '입력 → 처리 → 출력', '처리 → 입력 → 출력'], a: 1, e: '컴퓨팅 시스템은 입력 → 처리 → 출력을 반복해요.'},
+  ]},
+  {n: '🔌 3번 방 · 피지컬 컴퓨팅 공방', s: '센서와 모터가 가득한 공방이에요. 마지막 문이에요!', qs: [
+    {q: '다음 중 액추에이터는?', o: ['빛 센서', '서보 모터', '소리 센서'], a: 1, e: '서보 모터는 신호에 따라 정해진 각도로 움직이는 액추에이터예요.'},
+    {q: '피지컬 컴퓨팅 시스템의 동작 순서로 알맞은 것은?', o: ['액추에이터 제어 → 데이터 수집 → 프로그램 실행', '센서로 데이터 수집 → 데이터 처리 → 프로그램 실행 → 액추에이터 제어', '프로그램 실행 → 센서 → 끝'], a: 1, e: '센서 → 마이크로컨트롤러 처리 → 프로그램 실행 → 액추에이터 제어 순서예요.'},
+    {q: '센서 보드의 아날로그 센서 값의 범위는?', o: ['0~1023', '0 또는 1', '1~10'], a: 0, e: '아날로그 센서는 0~1023의 값을, 버튼은 0 또는 1을 입력해요.'},
+  ]},
+];
+const G = {};
+function escStart(){
+  Object.assign(G, {room: 0, qi: 0, wrong: 0, t0: Date.now(), res: [], tried: false, codes: ROOMS.map(() => [0, 1, 2].map(() => Math.floor(Math.random() * 10)))});
+  clearInterval(G.tm); G.tm = setInterval(() => { const t = $('#escT'); if (t) t.textContent = '⏱ ' + fmtT(); }, 1000);
+  drawRoom();
+}
+const fmtT = () => { const s = Math.floor((Date.now() - G.t0) / 1000); return `${Math.floor(s / 60)}분 ${String(s % 60).padStart(2, '0')}초`; };
+function escTop(){ return `<div class="esc-top"><div class="rooms">${ROOMS.map((r, i) => `<span class="${i < G.room ? 'done' : i === G.room ? 'cur' : ''}">${i < G.room ? '🔓' : '🔒'} ${i + 1}번 방</span>`).join('')}</div><span class="timer" id="escT">⏱ ${fmtT()}</span></div>`; }
+function drawRoom(){
+  const R = ROOMS[G.room], code = G.codes[G.room];
+  const clues = code.map((d, i) => `<div class="clue${i < G.qi ? ' got' : ''}">${i + 1}번째 숫자<b>${i < G.qi ? d : '?'}</b></div>`).join('');
+  let body;
+  if (G.qi < R.qs.length){
+    const Q = R.qs[G.qi];
+    body = `<div class="qbox"><p class="q">🔎 문제 ${G.qi + 1} / ${R.qs.length}. ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="escFb"></div></div>`;
+  } else {
+    body = `<div class="lockp"><div class="door" id="door">🚪🔒</div><b>모은 숫자 3개를 순서대로 넣어 자물쇠를 여세요.</b><div class="dials">${[0, 1, 2].map(i => `<input inputmode="numeric" maxlength="1" aria-label="${i + 1}번째 숫자">`).join('')}</div><button class="btn" id="unlock">🔑 열기</button><div class="feedback" id="lockFb"></div></div>`;
+  }
+  $('#esc').innerHTML = escTop() + `<div class="room"><h4>${R.n}</h4><div class="sub">${R.s}</div>${body}<div class="clues">${clues}</div></div>`;
+  if (G.qi < R.qs.length){
+    const Q = R.qs[G.qi];
+    $$('#esc .opt').forEach(b => b.onclick = () => {
+      const ok = +b.dataset.k === Q.a;
+      if (!G.tried) G.res.push(ok);
+      G.tried = true;
+      if (ok){
+        b.classList.add('right'); $$('#esc .opt').forEach(x => x.disabled = true);
+        feedback($('#escFb'), true, `⭕ 정답! ${Q.e} 🔢 단서: ${G.qi + 1}번째 숫자는 ${code[G.qi]}`);
+        setTimeout(() => { G.qi++; G.tried = false; drawRoom(); }, 1600);
+      } else { G.wrong++; b.classList.add('wrong'); b.disabled = true; feedback($('#escFb'), false, '❌ 자물쇠가 꿈쩍도 안 해요. 다시 생각해 보세요.'); }
+    });
+  } else {
+    const ins = $$('#esc .dials input');
+    ins.forEach((inp, i) => inp.oninput = () => { inp.value = inp.value.replace(/\D/g, '').slice(-1); if (inp.value && ins[i + 1]) ins[i + 1].focus(); });
+    ins[0].focus({preventScroll: true});
+    $('#unlock').onclick = () => {
+      if (ins.map(x => x.value).join('') !== code.join('')) return feedback($('#lockFb'), false, '❌ 번호가 틀렸어요. 아래의 단서 숫자를 순서대로 확인해 보세요.');
+      $('#door').textContent = '🚪🔓'; $('#door').classList.add('open');
+      feedback($('#lockFb'), true, G.room < ROOMS.length - 1 ? '🔓 철컥! 문이 열렸어요. 다음 방으로!' : '🔓 철컥! 마지막 문이 열렸어요!');
+      setTimeout(() => { G.room++; G.qi = 0; G.room < ROOMS.length ? drawRoom() : win(); }, 1300);
+    };
+  }
+}
+function win(){
+  clearInterval(G.tm);
+  const n = G.res.filter(Boolean).length;
+  $('#esc').innerHTML = escTop() + `<div class="win"><div class="big">🏃‍♂️💨🚪</div><h4 style="font-size:1.4rem;margin:6px 0">탈출 성공!</h4><p>걸린 시간 <b>${fmtT()}</b> · 한 번에 맞힌 문제 <b>${n} / ${G.res.length}</b></p><span class="badge2">${n === G.res.length ? '🏆 컴퓨팅 시스템 탈출 마스터' : n >= 6 ? '🥈 침착한 탈출러' : '🥉 끈기의 탈출러'}</span><div class="feedback" id="winFb"></div><p><button class="btn line" id="again">🔄 처음부터 다시 도전</button></p></div>`;
+  feedback($('#winFb'), true, n === G.res.length ? '🎉 모든 문제를 한 번에 맞혔어요!' : '틀렸던 문제는 아래 [한 줄 정리]에서 다시 확인해 보세요.');
+  $('#again').onclick = escStart;
+  reportQuiz('escape1', G.res);
+}
+escStart();
+
 const SELF = ['컴퓨팅 시스템의 개념과 생활 속 사례를 말할 수 있다.', '하드웨어와 소프트웨어의 종류를 구분할 수 있다.', '컴퓨팅 시스템의 동작 과정과 운영체제의 기능을 설명할 수 있다.', '피지컬 컴퓨팅 시스템의 구성 요소(센서, 액추에이터)를 구분할 수 있다.', '문제 해결에 필요한 센서와 액추에이터를 골라 시스템을 설계할 수 있다.'];
 $('#self').innerHTML = SELF.map(s => `<label><input type="checkbox"> ${s}</label>`).join('');
 $$('#self input').forEach(i => i.onchange = () => { const n = $$('#self input:checked').length; $('#selfMsg').textContent = n === SELF.length ? '🎉 Ⅰ단원을 완벽하게 정리했어요!' : `${n} / ${SELF.length} · 체크하지 못한 내용은 해당 활동을 다시 해 보세요.`; });

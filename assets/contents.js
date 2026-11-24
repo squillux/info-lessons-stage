@@ -48,7 +48,7 @@ const contentsList = [
   {unit: 1, sub: '1-2-1', icon: '🔌', lesson: true, badge: '45분 종합 수업', title: '센서와 액추에이터의 세계', desc: '현실 세계를 감지하는 센서, 판단하는 마이크로컨트롤러, 움직이는 액추에이터로 피지컬 컴퓨팅 시스템을 정리해요. (교과서 25~31쪽)', href: 'lesson/1-2-1.html',},
   {unit: 1, sub: '1-2-2', icon: '🏫', badge: '중1 Ⅰ단원 · 피지컬 컴퓨팅', title: '스마트 교실 시뮬레이터', desc: '소리로 켜지는 자동 전등, 시간 신호등, 버튼 신호등을 시뮬레이션으로 확인해요. (교과서 32~36쪽)', href: 'system/1-08-smart-class.html', tags: ['체험','엔트리'], std: '01-03', core: true},
   {unit: 1, sub: '1-2-2', icon: '📚', badge: '중1 Ⅰ단원 · 창의·융합 프로젝트', title: '쾌적한 도서관 만들기', desc: '소음과 온도 문제를 해결하는 시스템을 입력·처리·출력으로 설계하고 반 전체 설계를 모아 봐요. (교과서 38~39쪽)', href: 'system/1-09-library.html', tags: ['프로젝트'], live: true, std: '01-03', core: true, key: true},
-  {unit: 1, sub: '1-2-2', icon: '🧭', badge: '중1 Ⅰ단원 · 단원 정리', title: 'Ⅰ단원 정리 퀴즈', desc: '컴퓨팅 시스템과 피지컬 컴퓨팅 핵심 개념을 퀴즈로 정리하고 스스로 점검해요. (교과서 23, 37, 40쪽)', href: 'system/1-10-review.html', tags: ['정리'], std: '01-01~03', core: false},
+  {unit: 1, sub: '1-2-2', icon: '🔐', badge: '중1 Ⅰ단원 · 단원 정리', title: 'Ⅰ단원 방 탈출', desc: '컴퓨터실에 갇혔어요! 방마다 문제를 풀어 자물쇠 번호를 모으고 세 개의 문을 열며 컴퓨팅 시스템과 피지컬 컴퓨팅을 정리해요. (교과서 23, 37, 40쪽)', href: 'system/1-10-review.html', tags: ['정리','게임'], std: '01-01~03', core: false},
   {unit: 1, sub: '1-2-2', icon: '🏫', lesson: true, badge: '45분 종합 수업', title: '스마트 교실 설계 종합', desc: '교실과 도서관의 불편함을 센서, 조건, 액추에이터로 해결하는 과정을 정리하며 Ⅰ단원을 마무리해요. (교과서 23~40쪽)', href: 'lesson/1-2-2.html',},
 
   {unit: 2, sub: '2-1-1', icon: '🌡️', badge: '중1 Ⅱ단원 · 디지털 표현', title: '아날로그와 디지털', desc: '하루 기온 곡선을 끊어서 나타내 보고, 생활 속 사례를 분류하며 디지털 데이터의 장점을 찾아요. (교과서 44~45, 57쪽)', href: 'data/2-01-analog-digital.html', tags: ['체험'], std: '02-01', core: true},
@@ -99,7 +99,7 @@ const contentsList = [
   {unit: 3, sub: '3-2-2', icon: '🐞', badge: '중1 Ⅲ단원 · 프로그래밍', title: '디버깅 탐정', desc: '디버거처럼 한 단계씩 실행하며 변수 값을 살펴 세 가지 사건의 오류를 찾아 고쳐요. (교과서 124~125쪽)', href: 'algo/3-13-debugging.html', tags: ['체험','엔트리'], std: '03-07', core: true},
   {unit: 3, sub: '3-2-2', icon: '🔁', lesson: true, badge: '45분 종합 수업', title: '반복·함수·디버깅 종합', desc: '중첩 제어 구조와 함수로 프로그램을 짧고 똑똑하게 만들고, 디버깅으로 오류를 고치는 방법을 정리해요. (교과서 112~125쪽)', href: 'lesson/3-2-2.html',},
   {unit: 3, sub: '3-2-3', icon: '🗳️', badge: '중1 Ⅲ단원 · 프로젝트', title: '투표 프로그램 프로젝트', desc: '실시간 전자 투표를 체험하고, 추상화·알고리즘 설계·역할 분담으로 투표 프로그램을 계획해요. (교과서 126~138쪽)', href: 'algo/3-14-vote-project.html', tags: ['프로젝트','엔트리'], live: true, std: '03-08, 03-09', core: true, key: true},
-  {unit: 3, sub: '3-2-3', icon: '🧭', badge: '중1 Ⅲ단원 · 단원 정리', title: 'Ⅲ단원 정리 퀴즈', desc: '문제 해결·알고리즘·프로그래밍 핵심 개념을 퀴즈로 정리하고 스스로 점검해요. (교과서 99, 139, 142쪽)', href: 'algo/3-15-review.html', tags: ['정리'], std: '03-01~09', core: false},
+  {unit: 3, sub: '3-2-3', icon: '🎲', badge: '중1 Ⅲ단원 · 단원 정리', title: 'Ⅲ단원 알고리즘 보드게임', desc: '문제를 맞히면 주사위를 굴려 전진! 지름길 🪜과 버그 🐛 칸을 지나 결승점까지 가며 알고리즘과 프로그래밍을 정리해요. (교과서 99, 139, 142쪽)', href: 'algo/3-15-review.html', tags: ['정리','게임'], std: '03-01~09', core: false},
   {unit: 3, sub: '3-2-3', icon: '🗳️', lesson: true, badge: '45분 종합 수업', title: '프로그램으로 문제 해결하기', desc: '투표 프로그램 프로젝트를 돌아보며 문제 이해 → 추상화 → 알고리즘 → 프로그래밍 → 디버깅 과정을 정리하고 Ⅲ단원을 마무리해요. (교과서 99~142쪽)', href: 'lesson/3-2-3.html',},
 
   {unit: 4, sub: '4-1-1', icon: '🤖', badge: '중1 Ⅳ단원 · 인공지능의 이해', title: '인공지능의 개념과 특성', desc: '내가 경험한 인공지능에 투표하고, 추론·학습·인식·생성 특성과 일반/인공지능 소프트웨어를 구분해요. (교과서 147~151쪽)', href: 'ai/4-01-ai-concept.html', tags: ['개념'], live: true, std: '04-01', core: true},
@@ -116,7 +116,7 @@ const contentsList = [
   {unit: 4, sub: '4-2-2', icon: '📸', lesson: true, badge: '45분 종합 수업', title: '인공지능으로 학교 문제 해결하기', desc: '자동 출석부와 편의점 아이디어를 바탕으로, 인공지능으로 해결할 문제를 찾고 설계하는 과정을 정리해요. (교과서 172~177쪽)', href: 'lesson/4-2-2.html',},
   {unit: 4, sub: '4-2-3', icon: '⚖️', badge: '중1 Ⅳ단원 · 인공지능 윤리', title: '인공지능의 가치와 윤리', desc: '사회적 역할과 다섯 가지 고려 사항을 알고, 데이터 편향 사례와 책임 문제를 근거를 들어 토론해요. (교과서 178~182쪽)', href: 'ai/4-09-ai-ethics.html', tags: ['개념','토의'], live: true, std: '04-05', core: true, key: true},
   {unit: 4, sub: '4-2-3', icon: '💡', badge: '중1 Ⅳ단원 · 창의·융합 프로젝트', title: '사람을 위한 착한 인공지능', desc: '디자인 싱킹 5단계로 사회 문제를 해결하는 인공지능을 기획하고 모둠 기획을 모아 봐요. (교과서 184~185쪽)', href: 'ai/4-10-design-thinking.html', tags: ['프로젝트','토의'], live: true, std: '04-04, 04-05', core: true},
-  {unit: 4, sub: '4-2-3', icon: '🧭', badge: '중1 Ⅳ단원 · 단원 정리', title: 'Ⅳ단원 정리 퀴즈', desc: '모델 개발 과정 채우기와 퀴즈로 인공지능 단원을 정리하고 스스로 점검해요. (교과서 161, 183, 186쪽)', href: 'ai/4-11-review.html', tags: ['정리'], std: '04-01~05', core: false},
+  {unit: 4, sub: '4-2-3', icon: '👾', badge: '중1 Ⅳ단원 · 단원 정리', title: 'Ⅳ단원 AI 보스전', desc: '모델 개발 과정을 채운 뒤, 문제를 맞혀 편향된 데이터로 고장 난 AI 버그봇을 고쳐요. 목숨은 3개! (교과서 161, 183, 186쪽)', href: 'ai/4-11-review.html', tags: ['정리','게임'], std: '04-01~05', core: false},
   {unit: 4, sub: '4-2-3', icon: '⚖️', lesson: true, badge: '45분 종합 수업', title: '착하고 공정한 인공지능', desc: '인공지능의 가치와 윤리 문제를 살피고, 사람을 위한 인공지능을 설계하는 방법을 정리하며 Ⅳ단원을 마무리해요. (교과서 161~186쪽)', href: 'lesson/4-2-3.html',},
 
   {unit: 5, sub: '5-1-1', icon: '🏙️', badge: '중1 Ⅴ단원 · 디지털 사회', title: '디지털 사회와 스마트 시티', desc: '디지털 사회의 네 가지 모습을 찾고, 스마트 시티 속 디지털 기술을 살펴보며 정보 격차를 줄이는 방법을 알아봐요. (교과서 191~194쪽)', href: 'culture/5-01-digital-society.html', tags: ['개념'], std: '05-01', core: true, key: true},
@@ -134,7 +134,7 @@ const contentsList = [
   {unit: 5, sub: '5-2-2', icon: '🔐', lesson: true, badge: '45분 종합 수업', title: '내 개인 정보 지키기', desc: '개인 정보의 범위를 알고, 안전한 비밀번호와 보안 수칙으로 내 정보를 지키는 방법을 정리해요. (교과서 210~213쪽)', href: 'lesson/5-2-2.html',},
   {unit: 5, sub: '5-2-3', icon: '⚖️', badge: '중1 Ⅴ단원 · 저작권 보호', title: '저작권 판정소', desc: '저작 인격권과 저작 재산권을 구분하고, 보호 기간 계산과 저작물 이용 5단계를 익혀 침해 여부를 판정해요. (교과서 214, 216~218쪽)', href: 'culture/5-10-copyright.html', tags: ['개념'], std: '05-03', core: true, key: true},
   {unit: 5, sub: '5-2-3', icon: '🎛️', badge: '중1 Ⅴ단원 · 저작권 보호', title: '디지털 저작물과 CCL 조합기', desc: '소프트웨어 사용 범위와 공공누리 유형을 알아보고, CCL 조건을 조합해 이용할 수 있는 범위를 확인해요. (교과서 215쪽)', href: 'culture/5-11-license.html', tags: ['개념'], std: '05-03', core: true},
-  {unit: 5, sub: '5-2-3', icon: '🧩', badge: '중1 Ⅴ단원 · 단원 정리', title: 'Ⅴ단원 용어 퍼즐', desc: '설명과 초성 힌트로 디지털 문화 단원의 핵심 용어를 맞히고 스스로 점검해요. (교과서 219, 222쪽)', href: 'culture/5-12-puzzle.html', tags: ['정리','게임'], std: '05-01~03', core: false},
+  {unit: 5, sub: '5-2-3', icon: '🧩', badge: '중1 Ⅴ단원 · 단원 정리', title: 'Ⅴ단원 글자 타일 퍼즐', desc: '설명을 읽고 섞인 글자 타일을 순서대로 눌러 디지털 사회·윤리·개인 정보·저작권 용어를 완성해요. (교과서 219, 222쪽)', href: 'culture/5-12-puzzle.html', tags: ['정리','게임'], std: '05-01~03', core: false},
   {unit: 5, sub: '5-2-3', icon: '📰', badge: '중1 Ⅴ단원 · 창의·융합 프로젝트', title: '카드 뉴스 기획실', desc: '디지털 윤리 주제를 골라 사례를 정리하고, 3장짜리 카드 뉴스 개요를 미리 보기로 만들어 봐요. (교과서 220~221쪽)', href: 'culture/5-13-card-news.html', tags: ['프로젝트','토의'], live: true, std: '05-02, 05-03', core: false},
   {unit: 5, sub: '5-2-3', icon: '©️', lesson: true, badge: '45분 종합 수업', title: '저작권 지키며 만들고 나누기', desc: '저작권과 CCL을 이해하고, 저작물을 바르게 이용하고 나누는 방법을 정리하며 Ⅴ단원을 마무리해요. (교과서 214~222쪽)', href: 'lesson/5-2-3.html',},
 ];

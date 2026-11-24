@@ -22,6 +22,35 @@
 .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
 .cmp>div{border:2px solid var(--line);border-radius:16px;padding:12px;background:#fff}
 .bulb{font-size:2rem;margin-left:10px;vertical-align:middle}
+/* 발명 카드 조합기 */
+.deck-h{margin:12px 0 6px;font-weight:800}
+.deck-h small{font-weight:400;color:var(--muted)}
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.gcard{border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:8px 6px;font-size:.82rem;font-weight:700;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 3px 0 #eef1f7;transition:transform .12s}
+.gcard span{font-size:1.6rem;line-height:1.2}
+.gcard:hover{transform:translateY(-2px)}
+.gcard.s.on{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 3px 0 #b9c8f5}
+.gcard.a.on{border-color:var(--pink);background:var(--pink-soft);box-shadow:0 3px 0 #ffc2d6}
+.inv{margin-top:14px;border:2px dashed var(--line);border-radius:18px;padding:14px;background:#fcfdff;min-height:80px}
+.ipo{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;text-align:center}
+.ipo>div{min-width:96px;border-radius:14px;padding:8px;background:var(--bg)}
+.ipo>div span{display:block;font-size:1.8rem}
+.ipo>div b{display:block;font-size:.85rem}
+.ipo>div small{color:var(--muted);font-size:.75rem}
+.ipo .i1{background:var(--brand-soft)}.ipo .i3{background:var(--pink-soft)}
+.ipo i{font-style:normal;color:var(--muted);font-weight:800}
+.pulse{animation:pls 1.4s ease-in-out infinite}
+.wig{animation:wig 1.4s ease-in-out infinite .4s}
+@keyframes pls{50%{transform:scale(1.15)}}
+@keyframes wig{20%{transform:rotate(-12deg)}40%{transform:rotate(10deg)}60%{transform:none}}
+@media (prefers-reduced-motion:reduce){.pulse,.wig{animation:none}}
+.rule{text-align:center;margin:10px 0}
+.ires{display:flex;gap:12px;align-items:center;border-radius:14px;padding:10px 14px;background:var(--yellow-soft);border:1.5px solid #f5dc92}
+.ires.new{background:var(--mint-soft);border-color:#bfe8e1}
+.ires .big{font-size:2.4rem}
+.dex{display:flex;flex-wrap:wrap;gap:6px}
+.dex span{border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;background:var(--bg);color:#b5bccb;border:1.5px dashed var(--line)}
+.dex span.got{background:var(--yellow-soft);color:#8a5a00;border:1.5px solid #f5dc92}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="피지컬 컴퓨팅과 디지털 도어록" data-sub="중1 Ⅰ단원 · 피지컬 컴퓨팅 시스템의 구성 · 미래엔 25~27쪽">
@@ -63,15 +92,22 @@
       </div>
     </div>
 
-    <div class="card" data-bot="무엇을 감지하고 무엇을 움직이는지 찾아봐 🏙️">
-      <h3>🏙️ 생활 속 피지컬 컴퓨팅 사례</h3>
-      <p>사례마다 무엇을 <b>입력(센서)</b>받아 무엇을 <b>출력(액추에이터)</b>하는지 골라 보세요.</p>
-      <div id="cases"></div>
+    <div class="card" data-bot="센서 카드와 액추에이터 카드를 하나씩 골라 봐. 엉뚱한 조합도 괜찮아 🧩">
+      <h3>🧩 발명 카드 조합기</h3>
+      <p><b>센서 카드(입력)</b> 하나와 <b>액추에이터 카드(출력)</b> 하나를 골라 피지컬 컴퓨팅 시스템을 발명해 보세요. 먼저 <b>실제 사례</b>부터 살펴봐도 좋아요.</p>
+      <div class="ctrl"><b>🏙️ 실제 사례로 시작하기</b><span id="presets"></span></div>
+      <p class="deck-h">📥 센서 카드 <small>무엇을 감지할까?</small></p>
+      <div class="deck" id="sDeck"></div>
+      <p class="deck-h">📤 액추에이터 카드 <small>어떻게 움직일까?</small></p>
+      <div class="deck" id="aDeck"></div>
+      <div class="inv" id="inv"><p class="hint">카드를 한 장씩 고르면 발명품이 만들어져요.</p></div>
+      <p style="margin:12px 0 4px"><b>📒 발명 도감</b> <span class="hint" id="dexN"></span></p>
+      <div class="dex" id="dex"></div>
     </div>
 
     <div class="card" data-bot="정답은 없어! 이유를 함께 생각해 봐 ⚖️">
       <h3>⚖️ 가장 가치 있는 시스템은? <span class="tag-opt">실시간 투표</span></h3>
-      <p>앞에서 살펴본 사례 중 우리 생활에 <b>가장 꼭 필요하다</b>고 생각하는 시스템에 투표하고, 그렇게 생각한 이유(편리함, 안전, 시간 절약, 건강 등)를 친구들과 이야기해 보세요. 정답은 없어요.</p>
+      <p>발명 카드 조합기의 <b>실제 사례</b> 4가지 중 우리 생활에 <b>가장 꼭 필요하다</b>고 생각하는 시스템에 투표하고, 그렇게 생각한 이유(편리함, 안전, 시간 절약, 건강 등)를 친구들과 이야기해 보세요. 정답은 없어요.</p>
       <p class="hint">💻 선생님이 보여 주는 방 코드를 입력하거나 QR 코드를 찍으면 바로 참여해요. 이름은 저장되지 않아요.</p>
       <div id="value"></div>
     </div>
@@ -123,12 +159,51 @@ renderChoice($('#sa'), [
   {icon:'📢', t:'버저', a:1, e:'전기 신호에 따라 소리를 내요.'},
 ], ['📥 센서(입력)', '📤 액추에이터(출력)']);
 
-renderChoice($('#cases'), [
-  {icon:'⌚', t:'스마트 워치가 걸음과 심박을 재서 화면에 운동량을 보여 줘요.', a:0, e:'움직임·심박 센서로 입력받아 화면(디스플레이)으로 출력해요.'},
-  {icon:'📺', t:'스마트 TV가 사용자의 목소리를 알아듣고 채널을 바꿔요.', a:1, e:'소리(마이크)로 입력받아 화면을 바꾸는 출력을 해요.'},
-  {icon:'🛂', t:'자동 출입국 심사대가 지문과 얼굴을 확인하고 문을 열어 줘요.', a:2, e:'지문·카메라로 입력받아 모터로 문을 여는 출력을 해요.'},
-  {icon:'🌃', t:'스마트 가로등이 어두워지면 스스로 켜져요.', a:3, e:'빛 센서로 입력받아 LED 조명을 켜요.'},
-], ['움직임 → 화면', '소리 → 화면', '지문·얼굴 → 문 열기', '빛 → 조명']);
+/* ===== 발명 카드 조합기 ===== */
+const SEN = {
+  rain: ['🌧️', '빗물 센서', '빗물이 감지되면'], dist: ['📏', '거리 센서', '물체가 가까이 오면'], light: ['☀️', '빛 센서', '주변이 어두워지면'],
+  temp: ['🌡️', '온도 센서', '온도가 30℃보다 높으면'], sound: ['🎤', '소리 센서(마이크)', '목소리나 큰 소리가 들리면'], move: ['👋', '움직임 센서', '사람이 움직이면'],
+  heart: ['❤️', '심박 센서', '심장 박동이 측정되면'], finger: ['👆', '지문 센서', '등록된 지문이면'], soil: ['🪴', '흙 습도 센서', '흙이 말라 있으면'],
+};
+const ACT = {
+  motor: ['⚙️', '모터', '모터를 돌려요'], buzzer: ['🔔', '부저', '경고음을 울려요'], led: ['💡', 'LED', '불을 켜요'], screen: ['🖥️', '화면', '화면에 보여 줘요'],
+  speaker: ['🔊', '스피커', '안내 음성을 내보내요'], fan: ['💨', '선풍기(팬)', '바람을 보내요'], pump: ['💧', '물 펌프', '물을 뿜어요'],
+};
+// [센서, 액추에이터] → [발명품 이름, 아이콘, 쓰임, 실제 사례인지]
+const INV = {
+  'light|led': ['스마트 가로등', '🌃', '해가 지면 스스로 켜져서 밤길을 밝혀요.', 1], 'heart|screen': ['스마트 워치', '⌚', '심박과 운동량을 재서 화면에 보여 줘요.', 1],
+  'sound|screen': ['음성 인식 스마트 TV', '📺', '목소리를 알아듣고 채널과 화면을 바꿔요.', 1], 'finger|motor': ['자동 출입국 심사대·지문 도어록', '🛂', '지문을 확인하고 모터로 문을 열어 줘요.', 1],
+  'rain|motor': ['자동 창문', '🪟', '비가 오면 모터가 창문을 닫아 줘요.'], 'dist|buzzer': ['자동차 후방 경보기', '🚗', '뒤에 장애물이 가까워지면 삐삐 소리로 알려 줘요.'],
+  'dist|motor': ['자동문', '🚪', '사람이 다가오면 모터가 문을 열어 줘요.'], 'temp|fan': ['자동 선풍기', '🌀', '더워지면 스스로 바람을 보내요.'],
+  'move|led': ['현관 자동 조명', '🏠', '사람이 들어오면 불이 켜졌다가 저절로 꺼져요.'], 'soil|pump': ['스마트 화분', '🌱', '흙이 마르면 물을 줘서 식물을 키워요.'],
+  'temp|screen': ['체온 측정기', '🤒', '체온을 재서 화면에 숫자로 보여 줘요.'], 'move|speaker': ['자동 안내 방송기', '📢', '사람이 지나가면 안내 음성을 들려줘요.'],
+  'sound|led': ['박수 전등', '👏', '박수 소리가 나면 불이 켜져요.'], 'light|motor': ['자동 블라인드', '🪟', '햇빛이 강해지면 블라인드를 내려 줘요.'],
+  'rain|speaker': ['비 알림 스피커', '☔', '비가 오기 시작하면 "우산 챙기세요!" 하고 알려 줘요.'], 'finger|buzzer': ['지문 금고 경보기', '🔐', '등록되지 않은 지문이면 경고음을 울려요.'],
+};
+const REAL = ['light|led', 'heart|screen', 'sound|screen', 'finger|motor'];
+let pickS = null, pickA = null;
+const found = new Set();
+const deck = (el, D, kind) => { el.innerHTML = Object.entries(D).map(([k, [i, n]]) => `<button class="gcard ${kind}" data-k="${k}"><span>${i}</span>${n}</button>`).join('');
+  el.querySelectorAll('.gcard').forEach(b => b.onclick = () => { kind === 's' ? pickS = b.dataset.k : pickA = b.dataset.k; make(); }); };
+deck($('#sDeck'), SEN, 's'); deck($('#aDeck'), ACT, 'a');
+$('#presets').innerHTML = REAL.map(k => `<button class="btn ghost" data-k="${k}">${INV[k][1]} ${INV[k][0].split('·')[0]}</button>`).join('');
+$$('#presets button').forEach(b => b.onclick = () => { [pickS, pickA] = b.dataset.k.split('|'); make(); });
+function make(){
+  $$('#sDeck .gcard').forEach(b => b.classList.toggle('on', b.dataset.k === pickS));
+  $$('#aDeck .gcard').forEach(b => b.classList.toggle('on', b.dataset.k === pickA));
+  if (!pickS || !pickA){ $('#inv').innerHTML = `<p class="hint">${pickS ? '이제 📤 액추에이터 카드를 골라요.' : '먼저 📥 센서 카드를 골라요.'}</p>`; return; }
+  const s = SEN[pickS], a = ACT[pickA], key = pickS + '|' + pickA, iv = INV[key];
+  $('#inv').innerHTML = `<div class="ipo"><div class="i1"><span class="pulse">${s[0]}</span><b>입력</b><small>${s[1]}</small></div><i>→</i><div class="i2"><span>🔲</span><b>처리</b><small>마이크로컨트롤러가 판단</small></div><i>→</i><div class="i3"><span class="wig">${a[0]}</span><b>출력</b><small>${a[1]}</small></div></div>
+    <p class="rule">만약 <b>${s[2]}</b> → <b>${a[2]}</b></p>
+    ${iv ? `<div class="ires"><span class="big">${iv[1]}</span><div><b>${iv[0]}</b>${iv[3] ? ' <span class="tag-opt">실제 사례</span>' : ''}<br>${iv[2]}</div></div>`
+      : `<div class="ires new"><span class="big">💡</span><div><b>새로운 발명품!</b> 이름을 지어 볼까요? <input class="inp" id="myName" maxlength="20" placeholder="예: 비 오면 노래하는 창문" style="width:min(100%,260px);font-size:1rem"><br><small class="hint">어디에 쓰면 좋을지 짝과 이야기해 보세요. (저장되지 않아요)</small></div></div>`}`;
+  if (iv && !found.has(key)){ found.add(key); drawDex(); feedback($('#inv').appendChild(Object.assign(document.createElement('div'), {className: 'feedback'})), true, found.size === Object.keys(INV).length ? '🎉 발명 도감을 모두 채웠어요!' : `📒 발명 도감에 "${iv[0]}"을(를) 등록했어요!`); }
+}
+function drawDex(){
+  $('#dex').innerHTML = Object.entries(INV).map(([k, [n, i]]) => found.has(k) ? `<span class="got" title="${n}">${i} ${n.split('·')[0]}</span>` : '<span>❓</span>').join('');
+  $('#dexN').textContent = `${found.size} / ${Object.keys(INV).length} 발견`;
+}
+drawDex();
 liveVote($('#value'), {act: '1-06', items: [{t: '우리 생활에 가장 꼭 필요한 피지컬 컴퓨팅 시스템은?', opts: ['⌚ 스마트 워치', '📺 스마트 TV', '🛂 자동 출입국 심사대', '🌃 스마트 가로등']}]});
 
 let code = '';

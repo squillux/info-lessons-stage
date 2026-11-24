@@ -176,6 +176,14 @@ function renderQuiz(box, items){
   });
 }
 
+/* 게임형 정리 퀴즈(방 탈출·보드게임 등)의 결과를 퀴즈와 같은 진도 신호로 보냄. results = 문제별 첫 시도 정답 여부 */
+function reportQuiz(id, results){
+  const rec = infoProgress.state.quiz[id] = infoProgress.state.quiz[id] || {tries: 0}, sc = results.filter(Boolean).length;
+  rec.tries++; rec.score = sc; rec.total = results.length; rec.best = Math.max(rec.best || 0, sc);
+  rec.wrong = results.map((ok, i) => ok ? -1 : i).filter(i => i >= 0);
+  infoProgress.emit('quiz', Object.assign({id}, rec));
+}
+
 /* 상황 카드 분류: 상황마다 보기 버튼 중 하나를 고르면 바로 채점.
    items = [{t:상황, a:정답 보기 번호, e:해설}], options = ['보기1', ...] */
 function renderChoice(box, items, options, onDone){

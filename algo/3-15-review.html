@@ -3,15 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ⅲ단원 정리 퀴즈</title>
+<title>Ⅲ단원 알고리즘 보드게임</title>
 <link rel="stylesheet" href="../assets/common.css">
-<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}</style>
+<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}
+.bd-top{display:flex;justify-content:space-between;font-weight:800;color:var(--muted);margin-bottom:8px}
+.board{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:400px;margin:0 auto}
+.cell{aspect-ratio:1;border-radius:14px;background:#fff;border:1.5px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.cell small{position:absolute;left:6px;top:3px;font-size:.7rem;font-weight:800;color:var(--muted)}
+.cell.lad{background:#e9f8ef;border-color:#b6e2c6}.cell.bug{background:#fdecec;border-color:#f5c2c2}.cell.goal{background:#fff6db;border-color:#f5dc92}.cell.start{background:var(--brand-soft)}
+.cell .tok{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.9rem;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.bd-panel{margin-top:12px;border-radius:16px;padding:14px;background:var(--bg)}
+.bd-panel .q{font-weight:800;margin:0 0 8px}
+.bd-panel .opts{display:grid;gap:8px}
+.dice{font-size:2.6rem;text-align:center;margin:4px 0}
+.win{text-align:center}.win .big{font-size:3rem}
+.badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+</style>
 </head>
-<body data-stage data-unit="3" data-title="Ⅲ단원 정리 퀴즈" data-sub="중1 Ⅲ단원 · 단원 정리 · 미래엔 99, 139, 142쪽">
+<body data-stage data-unit="3" data-title="Ⅲ단원 알고리즘 보드게임" data-sub="중1 Ⅲ단원 · 단원 정리 · 미래엔 99, 139, 142쪽">
 <main>
   <span class="badge">중1 Ⅲ단원 · 단원 정리</span>
-  <h1>Ⅲ단원 정리 퀴즈</h1>
-  <p class="lead">문제 해결과 알고리즘, 프로그래밍의 핵심 개념을 정리해 봐요.</p>
+  <h1>Ⅲ단원 알고리즘 보드게임</h1>
+  <p class="lead">문제를 맞히면 주사위를 굴려 앞으로! 🪜 효율적인 알고리즘 칸은 지름길, 🐛 버그 칸은 뒤로 미끄러져요. 결승점 🏁에 도착하며 알고리즘과 프로그래밍을 정리해요.</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
@@ -21,14 +34,12 @@
   </section>
 
   <section class="step">
-    <h2 class="step-h"><span class="no">2</span>정리 퀴즈</h2>
-    <div class="card" data-bot="문제 해결과 알고리즘을 다시 떠올려 봐 🧭">
-      <h3>🧭 문제 해결과 알고리즘</h3>
-      <div id="q1"></div>
-    </div>
-    <div class="card" data-bot="프로그래밍 개념을 하나씩 점검해 봐 💻">
-      <h3>💻 프로그래밍</h3>
-      <div id="q2"></div>
+    <h2 class="step-h"><span class="no">2</span>보드게임</h2>
+    <div class="card" data-bot="맞히면 주사위를 굴릴 수 있어! 🪜는 지름길, 🐛는 조심해 🎲">
+      <h3>🎲 알고리즘 보드게임</h3>
+      <div class="bd-top"><span id="bdTurn">🎯 0턴</span><span id="bdPos">📍 출발</span></div>
+      <div class="board" id="board"></div>
+      <div class="bd-panel" id="bdPanel"></div>
     </div>
   </section>
 
@@ -52,20 +63,69 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-renderQuiz($('#q1'), [
-  {q:'문제를 풀기 전의 처음 모습을 무엇이라고 할까?', o:['목표 상태','초기 상태','현재 상태'], a:1, e:'초기 상태 → 현재 상태 → 목표 상태로 문제를 정의해요.'},
-  {q:'복잡한 문제에서 핵심 요소만 남기는 과정은?', o:['추상화','디버깅','반복'], a:0, e:'추상화로 문제를 단순하게 만들어요.'},
-  {q:'알고리즘의 조건 중 "정해진 단계 뒤에 반드시 끝나야 한다"는 것은?', o:['명확성','유한성','입력'], a:1, e:'끝없이 실행되면 알고리즘이 아니에요.'},
-  {q:'1~100 중 한 수를 반으로 나누어 찾을 때 최대 비교 횟수는?', o:['7번','50번','100번'], a:0, e:'한 번에 후보가 절반씩 줄어요.'},
-  {q:'신발이 크기순으로 정리되어 있으면 더 빨리 찾을 수 있는 이유는?', o:['데이터가 정렬되어 있어서','상자가 예뻐서','신발이 적어서'], a:0, e:'정렬된 데이터는 탐색이 빨라요.'},
-]);
-renderQuiz($('#q2'), [
-  {q:'여러 데이터를 순서대로 저장하는 구조는?', o:['변수','리스트','함수'], a:1, e:'리스트는 항목 번호로 데이터를 관리해요.'},
-  {q:'(5 > 3) 그리고 (2 > 4)의 결과는?', o:['참','거짓'], a:1, e:'"그리고"는 두 조건이 모두 참이어야 참이에요.'},
-  {q:'반복 구조 안에 선택 구조가 들어 있는 것을 무엇이라고 할까?', o:['중첩 제어 구조','순차 구조','매개변수'], a:0, e:'제어 구조 안에 다른 제어 구조가 들어 있어요.'},
-  {q:'여러 명령을 하나로 묶어 이름을 붙이고 다시 쓸 수 있게 한 것은?', o:['함수','리스트','디버거'], a:0, e:'함수에 매개변수를 두면 다양하게 활용해요.'},
-  {q:'프로그램의 오류를 찾아 고치는 과정은?', o:['추상화','디버깅','정렬'], a:1, e:'한 단계씩 실행하며 변수 값을 살펴요.'},
-]);
+/* ===== 알고리즘 보드게임 ===== */
+const QS = [
+  {q: '문제를 풀기 전의 처음 모습을 무엇이라고 할까?', o: ['목표 상태', '초기 상태', '현재 상태'], a: 1, e: '초기 상태 → 현재 상태 → 목표 상태로 문제를 정의해요.'},
+  {q: '복잡한 문제에서 핵심 요소만 남기는 과정은?', o: ['추상화', '디버깅', '반복'], a: 0, e: '추상화로 문제를 단순하게 만들어요.'},
+  {q: '알고리즘의 조건 중 "정해진 단계 뒤에 반드시 끝나야 한다"는 것은?', o: ['명확성', '유한성', '입력'], a: 1, e: '끝없이 실행되면 알고리즘이 아니에요.'},
+  {q: '1~100 중 한 수를 반으로 나누어 찾을 때 최대 비교 횟수는?', o: ['7번', '50번', '100번'], a: 0, e: '한 번에 후보가 절반씩 줄어요.'},
+  {q: '신발이 크기순으로 정리되어 있으면 더 빨리 찾을 수 있는 이유는?', o: ['데이터가 정렬되어 있어서', '상자가 예뻐서', '신발이 적어서'], a: 0, e: '정렬된 데이터는 탐색 범위를 줄일 수 있어요.'},
+  {q: '여러 데이터를 순서대로 저장하는 구조는?', o: ['변수', '리스트', '함수'], a: 1, e: '리스트는 항목 번호로 데이터를 관리해요.'},
+  {q: '(5 > 3) 그리고 (2 > 4)의 결과는?', o: ['참', '거짓'], a: 1, e: '"그리고"는 두 조건이 모두 참이어야 참이에요.'},
+  {q: '반복 구조 안에 선택 구조가 들어 있는 것을 무엇이라고 할까?', o: ['중첩 제어 구조', '순차 구조', '매개변수'], a: 0, e: '제어 구조를 겹쳐 쓰면 복잡한 문제도 짧게 해결해요.'},
+  {q: '여러 명령을 하나로 묶어 이름을 붙이고 다시 쓸 수 있게 한 것은?', o: ['함수', '리스트', '디버거'], a: 0, e: '함수에 매개변수를 주면 다양한 결과를 만들 수 있어요.'},
+  {q: '프로그램의 오류를 찾아 고치는 과정은?', o: ['추상화', '디버깅', '정렬'], a: 1, e: '한 단계씩 실행하며 변수 값을 살펴요.'},
+];
+const END = 20, JUMP = {4: [9, '🪜 정렬해 두었더니 탐색이 빨라졌어요! 지름길로 9번 칸까지!'], 8: [14, '🪜 반으로 나누어 찾기! 14번 칸까지 점프!'], 12: [6, '🐛 버그 발생! 디버깅하러 6번 칸으로 돌아가요.'], 17: [11, '🐛 무한 반복에 빠졌어요! 조건을 고치러 11번 칸으로.']};
+const B = {};
+const sh = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+function bdStart(){ Object.assign(B, {pos: 0, turn: 0, queue: sh(QS.map((_, i) => i)), first: {}, busy: false}); drawBoard(); ask(); }
+function drawBoard(){
+  const order = [];
+  for (let r = 0; r < 4; r++){ const row = [1, 2, 3, 4, 5].map(c => r * 5 + c); order.push(...(r % 2 ? row.reverse() : row)); }
+  $('#board').innerHTML = order.map(n => { const j = JUMP[n], cls = n === END ? 'goal' : j ? (j[0] > n ? 'lad' : 'bug') : n === 1 ? 'start' : '';
+    return `<div class="cell ${cls}"><small>${n}</small>${n === END ? '🏁' : j ? (j[0] > n ? '🪜' : '🐛') : ''}${B.pos === n ? '<span class="tok">🧑‍🚀</span>' : ''}</div>`; }).join('');
+  $('#bdTurn').textContent = `🎯 ${B.turn}턴`; $('#bdPos').textContent = B.pos ? `📍 ${B.pos}번 칸` : '📍 출발 전';
+}
+function ask(){
+  if (!B.queue.length) B.queue = sh(QS.map((_, i) => i));
+  const qi = B.queue.shift(), Q = QS[qi];
+  $('#bdPanel').innerHTML = `<p class="q">❓ ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="bdFb"></div><div id="bdNext"></div>`;
+  $$('#bdPanel .opt').forEach(b => b.onclick = () => {
+    if (B.busy) return; B.busy = true; B.turn++;
+    const ok = +b.dataset.k === Q.a; if (!(qi in B.first)) B.first[qi] = ok;
+    $$('#bdPanel .opt').forEach(x => x.disabled = true); b.classList.add(ok ? 'right' : 'wrong');
+    if (ok){ feedback($('#bdFb'), true, '⭕ ' + Q.e); $('#bdNext').innerHTML = '<div style="text-align:center;margin-top:8px"><button class="btn" id="roll">🎲 주사위 굴리기</button></div>'; $('#roll').onclick = roll; B.busy = false; }
+    else { feedback($('#bdFb'), false, '❌ ' + Q.e + ' 이번 턴은 쉬어요.'); B.queue.push(qi); $('#bdNext').innerHTML = '<div style="text-align:center;margin-top:8px"><button class="btn line" id="nx">다음 문제 ▶</button></div>'; $('#nx').onclick = () => { B.busy = false; ask(); }; }
+    drawBoard();
+  });
+}
+function roll(){
+  $('#roll').disabled = true;
+  const faces = ['⚀', '⚁', '⚂'], v = 1 + Math.floor(Math.random() * 3);
+  $('#bdNext').innerHTML = '<div class="dice" id="dice">🎲</div>';
+  let k = 0; const t = setInterval(() => { $('#dice').textContent = faces[k++ % 3]; if (k > 7){ clearInterval(t); $('#dice').textContent = faces[v - 1] + ' ' + v + '칸!'; move(v); } }, 90);
+}
+function move(v){
+  let left = v; const step = () => {
+    if (left-- <= 0 || B.pos >= END) return land();
+    B.pos++; drawBoard(); setTimeout(step, 260);
+  }; setTimeout(step, 300);
+}
+function land(){
+  const j = JUMP[B.pos];
+  if (B.pos >= END) return setTimeout(bdWin, 400);
+  if (j){ const up = j[0] > B.pos; setTimeout(() => { B.pos = j[0]; drawBoard(); feedback($('#bdFb'), up, j[1]); setTimeout(ask, 1500); }, 500); feedback($('#bdFb'), true, `${B.pos}번 칸 도착!`); }
+  else setTimeout(ask, 700);
+}
+function bdWin(){
+  const r = Object.values(B.first), n = r.filter(Boolean).length;
+  $('#bdPanel').innerHTML = `<div class="win"><div class="big">🏁🧑‍🚀🎉</div><h4 style="font-size:1.4rem;margin:6px 0">결승점 도착!</h4><p><b>${B.turn}턴</b> 만에 도착 · 처음 본 문제 중 한 번에 맞힌 문제 <b>${n} / ${r.length}</b></p><span class="badge2">${B.turn <= 10 ? '🏆 효율 끝판왕 알고리즘' : B.turn <= 14 ? '🥈 꾸준한 탐색자' : '🥉 끈기의 디버거'}</span><div class="feedback" id="bdFb"></div><p><button class="btn line" id="again">🔄 다시 하기</button></p></div>`;
+  feedback($('#bdFb'), true, '🎉 Ⅲ단원 보드게임 완주!'); $('#again').onclick = bdStart;
+  reportQuiz('board3', r);
+}
+bdStart();
+
 const SELF = ['문제의 초기·현재·목표 상태를 정의하고 핵심 요소를 찾을 수 있다.', '알고리즘을 자연어·의사 코드·순서도로 표현할 수 있다.', '여러 알고리즘을 비교해 더 효율적인 것을 고를 수 있다.', '변수와 리스트를 활용한 프로그램을 만들 수 있다.', '논리 연산과 중첩 제어 구조를 활용할 수 있다.', '함수를 만들고, 디버깅으로 오류를 고칠 수 있다.', '실생활 문제를 친구들과 협력해 프로그래밍으로 해결할 수 있다.'];
 $('#self').innerHTML = SELF.map(s => `<label><input type="checkbox"> ${s}</label>`).join('');
 $$('#self input').forEach(i => i.onchange = () => { const n = $$('#self input:checked').length; $('#selfMsg').textContent = n === SELF.length ? '🎉 Ⅲ단원을 완벽하게 정리했어요!' : `${n} / ${SELF.length} · 체크하지 못한 내용은 해당 활동을 다시 해 보세요.`; });
