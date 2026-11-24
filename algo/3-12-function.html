@@ -13,6 +13,23 @@
 .cmpx{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
 .cmpx>div{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff}
 .cmpx .big{font-family:var(--cute);font-size:1.8rem;color:var(--brand)}
+
+/* ── 로봇 안무가 ── */
+.fn-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.fn-tabs span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.82rem;background:var(--bg);color:var(--muted)}
+.fn-tabs span.cur{background:var(--brand);color:#fff}.fn-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.fn-tl{display:flex;flex-wrap:wrap;gap:3px;min-height:40px;align-items:center;background:#1f2540;border-radius:12px;padding:6px 8px}
+.fn-tl span{font-size:1.4rem;line-height:1.2}
+.fn-tl span.no{background:#ff5b5b55;border-radius:6px}
+.fn-tl.mine span{animation:fnpop .25s}
+@keyframes fnpop{from{transform:translateY(-10px) scale(1.4)}}
+.fn-lab{font-weight:800;font-size:.85rem;margin:8px 0 3px}
+.fn-def{border:2px dashed #b38bff;border-radius:14px;padding:6px 8px;background:#faf6ff;margin-top:8px}
+.fn-blk{display:inline-flex;align-items:center;gap:4px;border-radius:10px;padding:4px 8px;margin:3px 2px;color:#fff;font-weight:800;font-size:.88rem;background:#8f5cf7}
+.fn-blk.main{background:#2fb7a6}
+.fn-blk select{font:inherit;font-weight:800;border:0;border-radius:999px;padding:1px 4px;background:#fff;color:var(--ink)}
+.fn-blk select[hidden]{display:none}
+.fn-robot{font-size:2.6rem;text-align:center;transition:transform .2s}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="함수 만들기와 매개변수" data-sub="중1 Ⅲ단원 · 함수와 디버깅 · 미래엔 118~122, 125쪽">
@@ -54,6 +71,19 @@
         <div><b>함수를 쓰면</b><br>함수 정의 8개 + 호출 프로그램 6개<div class="big" id="b2"></div></div>
       </div>
       <p class="hint">함수의 장점: 같은 코드를 여러 번 쓰지 않아도 되고, 고칠 때 함수 한 곳만 고치면 돼요. 복잡한 프로그램을 작은 작업으로 나누어 만들 수도 있어요.</p>
+    </div>
+
+    <div class="card" data-bot="자주 쓰는 동작을 함수로 묶으면 안무 프로그램이 짧아져 🕺">
+      <h3>🕺 로봇 안무가: 함수로 춤 만들기 <span class="tag-more">특색</span></h3>
+      <p>학교 축제 무대에 설 로봇의 안무 프로그램을 만들어요. <b>함수</b>를 불러 써서 <b>목표 안무</b>와 똑같이 춤추게 하세요. 프로그램 칸은 3개뿐이에요!</p>
+      <div class="fn-tabs" id="fnTabs"></div>
+      <div class="fn-lab">🎯 목표 안무</div><div class="fn-tl" id="fnGoal"></div>
+      <div id="fnDef"></div>
+      <div class="fn-lab">▶ 시작하기 버튼을 클릭했을 때 (프로그램 칸 3개)</div><div id="fnMain"></div>
+      <p><button class="btn" id="fnRun">▶ 춤추기</button></p>
+      <div class="fn-robot" id="fnBot">🤖</div>
+      <div class="fn-lab">🤖 로봇의 춤</div><div class="fn-tl mine" id="fnMine"></div>
+      <div id="fnOut"></div>
     </div>
 
     <div class="card" data-bot="함수와 매개변수를 확인해 봐 🎯">
@@ -100,6 +130,54 @@ renderChoice($('#pred'), [
   {icon:'🔢', t:'"집 그리기 (50)"에서 50처럼 함수에 전달하는 값을 받는 것은?', a:1, e:'매개변수가 값을 받아 함수 안에서 사용해요.'},
   {icon:'🛠️', t:'모든 집의 지붕 모양을 바꾸려면 어디를 고치면 될까?', a:2, e:'함수 정의 한 곳만 고치면 모든 호출에 반영돼요.'},
 ], ['함수', '매개변수', '함수 정의 한 곳']);
+
+
+/* ===== 로봇 안무가 ===== */
+const FNI = {박수: '👏', 점프: '🦘', 회전: '🔄'};
+const FNL = [
+  {goal: '👏👏👏🦘🦘🔄', funcs: ['박수', '점프', '회전'], def: null, tip: '이미 만들어진 함수 <b>박수(횟수)</b>에 <b>매개변수</b> 값을 넣어 부르면, 같은 함수로 박수 횟수를 바꿀 수 있어요.'},
+  {goal: '👏👏🦘👏👏🦘👏👏🦘', funcs: ['박수', '점프', '후렴'], def: {name: '후렴', params: ['1', '2', '3']}, tip: '반복되는 동작 묶음을 <b>후렴()</b> 함수로 정의하고 3번 불렀어요. 함수가 없으면 블록 6개가 필요하지만 함수로 3칸이면 돼요!'},
+  {goal: '👏🦘👏👏🦘🦘👏👏👏🦘🦘🦘', funcs: ['콤보'], def: {name: '콤보', params: ['1', '2', '3', 'n'], arg: 'n'}, tip: '함수 안에서 <b>매개변수 n</b>을 쓰면, 부를 때 넣은 값(1, 2, 3)에 따라 다른 동작을 해요. 하나의 함수로 크기가 다른 집을 그렸던 것과 같은 원리예요.'},
+];
+let fnL = 0, fnTried = false, fnBusy = false; const fnFirst = [];
+const fnSel = (cls, opts, v = '') => `<select class="${cls}">${opts.map(o => `<option${o === v ? ' selected' : ''}>${o}</option>`).join('')}</select>`;
+function fnLevel(){
+  const L = FNL[fnL]; fnTried = false; fnBusy = false;
+  $('#fnTabs').innerHTML = FNL.map((x, i) => `<span class="${i < fnL ? 'ok' : i === fnL ? 'cur' : ''}">${i < fnL ? '✓ ' : ''}${i + 1}단계</span>`).join('');
+  $('#fnGoal').innerHTML = fnSplit(L.goal).map(c => `<span>${c}</span>`).join('');
+  $('#fnDef').innerHTML = L.def ? `<div class="fn-def"><div class="fn-lab" style="margin-top:0">🧩 함수 정의하기: <b>${L.def.name}(${L.def.arg || ''})</b></div>${[0, 1].map(() => `<span class="fn-blk">${fnSel('fdF', ['박수', '점프'])}${fnSel('fdP', L.def.params)}</span>`).join('')}</div>` : '';
+  $('#fnMain').innerHTML = [0, 1, 2].map(() => `<span class="fn-blk main">${fnSel('fmF', L.funcs)}${fnSel('fmP', ['1', '2', '3'])}</span>`).join('');
+  $$('#fnMain .fn-blk').forEach(b => { const f = b.querySelector('.fmF'), p = b.querySelector('.fmP'); f.onchange = () => { p.hidden = f.value === '후렴'; }; f.onchange(); });
+  $('#fnMine').innerHTML = ''; $('#fnOut').innerHTML = '';
+}
+const fnSplit = s => s.match(/👏|🦘|🔄/g) || [];
+function fnExpand(){
+  const L = FNL[fnL], out = [];
+  const body = $$('#fnDef .fn-blk').map(b => [b.querySelector('.fdF').value, b.querySelector('.fdP').value]);
+  $$('#fnMain .fn-blk').forEach(b => {
+    const f = b.querySelector('.fmF').value, p = b.querySelector('.fmP').value;
+    if (FNI[f]){ for (let i = 0; i < +p; i++) out.push(FNI[f]); return; }
+    body.forEach(([g, q]) => { const k = q === 'n' ? +p : +q; for (let i = 0; i < k; i++) out.push(FNI[g]); });
+  });
+  return out;
+}
+$('#fnRun').onclick = async () => {
+  if (fnBusy) return; fnBusy = true; const L = FNL[fnL], goal = fnSplit(L.goal), mine = fnExpand();
+  $('#fnMine').innerHTML = ''; $('#fnOut').innerHTML = ''; $('#fnBot').scrollIntoView({behavior: 'smooth', block: 'center'});
+  for (let i = 0; i < mine.length; i++){
+    $('#fnBot').textContent = mine[i] === '👏' ? '🙌' : mine[i] === '🦘' ? '🤸' : '💃'; $('#fnBot').style.transform = mine[i] === '🦘' ? 'translateY(-14px)' : mine[i] === '🔄' ? 'rotate(360deg)' : 'scale(1.15)';
+    $('#fnMine').insertAdjacentHTML('beforeend', `<span class="${mine[i] === goal[i] ? '' : 'no'}">${mine[i]}</span>`);
+    await new Promise(r => setTimeout(r, 260)); $('#fnBot').style.transform = '';
+  }
+  $('#fnBot').textContent = '🤖'; fnBusy = false;
+  const ok = mine.length === goal.length && mine.every((c, i) => c === goal[i]);
+  if (!ok){ fnTried = true; $('#fnOut').innerHTML = `<p class="feedback show bad">❌ 목표 안무와 달라요(빨간 칸). 목표는 동작 ${goal.length}개, 로봇은 ${mine.length}개를 했어요. ${fnL === 0 ? '박수는 몇 번인가요? 함수에 넣는 값(매개변수)을 바꿔 봐요.' : fnL === 1 ? '목표에서 되풀이되는 묶음을 찾아 후렴() 함수 안에 넣어 봐요.' : '콤보 안에서 숫자 대신 <b>n</b>을 쓰면, 부를 때 넣은 값만큼 동작해요.'}</p>`; return; }
+  fnFirst.push(!fnTried);
+  $('#fnOut').innerHTML = `<p class="feedback show ok">⭕ 목표 안무 완성! ${L.tip}</p>` + (fnL < FNL.length - 1 ? '<button class="btn" id="fnNext">다음 안무 ▶</button>' : '<p>🎉 축제 무대 준비 완료! <b>함수</b>는 자주 쓰는 명령을 묶어 이름을 붙인 것이고, <b>매개변수</b>로 값을 바꿔 가며 다시 쓸 수 있어요. 프로그램이 짧아지고 고치기도 쉬워져요.</p><button class="btn ghost" id="fnAgain">처음부터 다시 ↺</button>');
+  if ($('#fnNext')) $('#fnNext').onclick = () => { fnL++; fnLevel(); };
+  else { $('#fnAgain').onclick = () => { fnL = 0; fnFirst.length = 0; fnLevel(); }; reportQuiz('dance', fnFirst.slice(0, 3)); }
+};
+fnLevel();
 
 renderQuiz($('#quiz'), [
   {q:'함수를 사용할 때의 장점이 아닌 것은?', o:['반복되는 코드를 줄인다','프로그램을 고치기 쉽다','프로그램이 항상 더 느려진다'], a:2, e:'함수는 코드를 짧고 이해하기 쉽게 만들어요.'},
