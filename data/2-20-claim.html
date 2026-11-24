@@ -16,6 +16,35 @@ table.lt th{background:var(--bg)}
 .claim .good{border-color:var(--ok);background:var(--ok-soft)}
 .claim .bad{border-color:var(--bad);background:var(--bad-soft)}
 .wbar{cursor:pointer}
+
+/* ── 학생회 데이터 토론 ── */
+.db-stage{border-radius:18px;background:linear-gradient(#2b3a67,#1c2541);color:#fff;padding:14px;position:relative;overflow:hidden}
+.db-stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(#8a5a44,#6e4434)}
+.db-claim{position:relative;z-index:1;background:#fffdf5;color:#3a2a00;border-radius:14px;padding:10px 14px;font-weight:800;text-align:center;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.db-claim small{display:block;font-weight:600;color:#8a6a2a;font-size:.78rem}
+.db-gauge{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin:10px 0;font-weight:800;font-size:.88rem}
+.db-gauge .g{flex:1;height:16px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden}
+.db-gauge .g i{display:block;height:100%;width:20%;border-radius:999px;background:linear-gradient(90deg,#ffc233,#16b8a6);transition:width .5s}
+.db-board{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:30px}
+.db-slot{min-height:92px;border:2px dashed rgba(255,255,255,.35);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:rgba(255,255,255,.6);padding:6px;text-align:center}
+.db-slot.full{border:0;background:#fff;color:var(--ink);animation:dbin .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes dbin{from{transform:scale(.5) rotate(-6deg);opacity:0}}
+.db-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px}
+.db-c{border:2px solid var(--line);border-radius:14px;background:#fff;padding:8px 10px;text-align:left;color:var(--ink);font-size:.84rem;line-height:1.45}
+.db-c:hover{border-color:var(--brand)}
+.db-c .ic{font-size:1.3rem}
+.db-c svg{display:block;width:100%;height:46px;margin-top:4px}
+.db-c.used{opacity:.35;pointer-events:none}
+.db-c.x{border-color:var(--bad);background:var(--bad-soft);opacity:.55;pointer-events:none}
+.db-msg{margin-top:8px;border-radius:12px;padding:9px 12px;font-size:.9rem;line-height:1.5}
+.db-msg.ok{background:var(--ok-soft)}.db-msg.bad{background:var(--bad-soft)}
+.db-opp{display:flex;gap:10px;align-items:flex-start;margin:10px 0}
+.db-opp .face{font-size:2rem}
+.db-opp .say{flex:1;background:#ffeef3;border-radius:14px;padding:9px 12px;font-weight:700;line-height:1.5}
+.db-vote{display:grid;gap:6px;margin-top:8px}
+.db-vote .r{display:grid;grid-template-columns:60px 1fr 48px;gap:8px;align-items:center;font-weight:800;font-size:.9rem}
+.db-vote i{display:block;height:20px;border-radius:10px;animation:vgrow 1.4s ease}
+@keyframes vgrow{from{width:0!important}}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="데이터로 주장하기" data-sub="중1 Ⅱ단원 · 데이터의 해석 · 미래엔 67쪽">
@@ -58,6 +87,19 @@ table.lt th{background:var(--bg)}
       <div id="judge"></div>
       <p class="src" style="text-align:left;margin-top:8px">참고: 비상교육 중학교 정보 82쪽 (급식 메뉴별 잔반율 해석 활동)</p>
     </div>
+    <div class="card" data-bot="주장을 뒷받침하는 믿을 만한 데이터 카드만 골라 봐 ⚖️">
+      <h3>⚖️ 학생회 데이터 토론 <span class="tag-more">특색</span></h3>
+      <p>학생회 회의에서 아래 주장을 발표하려고 해요. <b>증거 카드 3장</b>을 골라 근거판에 붙이세요. 그럴듯해 보여도 <b>근거가 약한 카드</b>가 섞여 있어요!</p>
+      <div class="db-stage">
+        <div class="db-claim">📢 "우리 학교 도서관에 <u>새 책(신간)</u>을 더 들여와야 합니다!"<small>발표자: 나 · 학생회 정기 회의</small></div>
+        <div class="db-gauge">설득력 <span class="g"><i id="dbG"></i></span><span id="dbP">20%</span></div>
+        <div class="db-board" id="dbBoard"></div>
+      </div>
+      <div class="db-cards" id="dbCards"></div>
+      <div id="dbMsg"></div>
+      <div id="dbNext"></div>
+    </div>
+
   </section>
 
   <section class="step">
@@ -136,6 +178,47 @@ renderChoice($('#judge'), [
   {t:'"치킨은 잔반율이 10% 미만이다."', a:0, e:'8%로 그래프에서 바로 확인할 수 있어요.'},
   {t:'"나물무침 조리법을 바꾸면 잔반이 반드시 줄어든다."', a:1, e:'아직 확인하지 않은 예측이에요. 조리법을 바꾼 뒤 다시 조사해 봐야 알 수 있어요.'},
 ], ['📊 데이터로 말할 수 있어요', '🤔 더 확인이 필요해요']);
+
+
+/* ===== 학생회 데이터 토론 ===== */
+const DBC = [
+  {ic: '📊', t: '1인당 장서 수: 우리 학교 15.4권, 전국 평균 33.5권', ok: 1, svg: '<svg viewBox="0 0 160 46"><rect x="4" y="8" width="35" height="12" rx="3" fill="#3b6cf6"/><rect x="4" y="26" width="76" height="12" rx="3" fill="#c9d2e3"/><text x="44" y="18" font-size="9">우리 학교</text><text x="84" y="36" font-size="9">전국</text></svg>', e: '공식 통계로 우리 학교 책이 부족하다는 것을 보여 줘요.'},
+  {ic: '💬', t: '"내 친구가 도서관 책이 재미없대."', ok: 0, e: '한 사람의 의견은 전체를 대표하지 못해요. 데이터 근거가 아니에요.'},
+  {ic: '📋', t: '전교생 설문(312명): "읽고 싶은 책이 없어서 도서관에 안 간다" 54%', ok: 1, svg: '<svg viewBox="0 0 160 46"><rect x="4" y="16" width="150" height="14" rx="7" fill="#e3e8f2"/><rect x="4" y="16" width="81" height="14" rx="7" fill="#ffb35c"/><text x="88" y="27" font-size="9" font-weight="700">54%</text></svg>', e: '많은 학생에게 물은 설문으로 신간이 필요한 이유를 보여 줘요.'},
+  {ic: '🗓️', t: '2009년 설문: "만화책을 늘려 주세요" 60%', ok: 0, e: '17년 전 데이터라 지금 학생들의 생각을 보여 주지 못해요. 최신 데이터가 필요해요.'},
+  {ic: '📈', t: '신간이 들어온 달에는 대출 수가 평소의 2배', ok: 1, svg: '<svg viewBox="0 0 160 46"><polyline points="6,36 36,34 66,35 96,12 126,33 154,34" fill="none" stroke="#16b8a6" stroke-width="3"/><text x="86" y="9" font-size="9" fill="#0d7d71" font-weight="700">신간 입고</text></svg>', e: '신간을 들여오면 실제로 이용이 늘어난다는 직접적인 근거예요.', rebut: true},
+  {ic: '🍦', t: '여름에 아이스크림 판매량과 대출 수가 함께 늘었다', ok: 0, e: '함께 변했다고 원인이 되는 건 아니에요. 주장과 관계없는 데이터예요.'},
+];
+let dbPicked = [], dbScore = 20, dbFirst = [];
+function dbDraw(){
+  $('#dbBoard').innerHTML = [0, 1, 2].map(i => dbPicked[i] !== undefined ? `<div class="db-slot full">${DBC[dbPicked[i]].ic} ${DBC[dbPicked[i]].t}</div>` : `<div class="db-slot">근거 ${i + 1}<br>카드를 골라요</div>`).join('');
+  $('#dbG').style.width = dbScore + '%'; $('#dbP').textContent = dbScore + '%';
+}
+$('#dbCards').innerHTML = DBC.map((c, i) => `<button class="db-c" data-i="${i}"><span class="ic">${c.ic}</span> ${c.t}${c.svg || ''}</button>`).join('');
+$$('#dbCards .db-c').forEach(b => b.onclick = () => {
+  const i = +b.dataset.i, c = DBC[i];
+  if (dbPicked.length >= 3) return;
+  if (!c.ok){ dbFirst.push(false); b.classList.add('x'); dbScore = Math.max(5, dbScore - 10); dbDraw(); $('#dbMsg').innerHTML = `<div class="db-msg bad">❌ 학생회 위원: "그건 근거로 부족해요." — ${c.e}</div>`; return; }
+  dbFirst.push(true); dbPicked.push(i); b.classList.add('used'); dbScore = Math.min(100, dbScore + 22); dbDraw();
+  $('#dbMsg').innerHTML = `<div class="db-msg ok">⭕ ${c.e}</div>`;
+  if (dbPicked.length === 3) setTimeout(dbRebut, 900);
+});
+function dbRebut(){
+  $('#dbNext').innerHTML = `<div class="db-opp"><span class="face">🙋‍♂️</span><div class="say">상대 측: "책이 적어도 상관없어요. 대출이 적은 건 원래 학생들이 책을 안 좋아해서예요!"</div></div>
+    <p><b>어떤 데이터로 반박할까요?</b></p><div class="db-cards">${dbPicked.map(i => `<button class="db-c" data-r="${i}"><span class="ic">${DBC[i].ic}</span> ${DBC[i].t}</button>`).join('')}</div><div id="dbR"></div>`;
+  $('#dbNext').scrollIntoView({behavior: 'smooth', block: 'center'});
+  let tried = false;
+  $$('#dbNext .db-c').forEach(b => b.onclick = () => {
+    const c = DBC[+b.dataset.r];
+    if (!c.rebut){ tried = true; b.classList.add('x'); $('#dbR').innerHTML = '<div class="db-msg bad">🤔 좋은 근거지만, "학생들이 책을 싫어한다"는 말을 직접 반박하지는 못해요. 새 책이 들어오면 학생들이 어떻게 행동했나요?</div>'; return; }
+    dbFirst.push(!tried); dbScore = 100; dbDraw();
+    $('#dbR').innerHTML = `<div class="db-msg ok">⭕ "신간이 들어온 달에는 대출이 <b>2배</b>로 늘었어요. 학생들은 책을 싫어하는 게 아니라 <b>읽고 싶은 새 책</b>이 부족했던 거예요!"</div>
+      <p style="margin-top:10px"><b>🗳️ 학생회 투표 결과</b></p><div class="db-vote"><div class="r"><span>찬성</span><i style="width:82%;background:#16b8a6"></i><span>82%</span></div><div class="r"><span>반대</span><i style="width:18%;background:#c9d2e3"></i><span>18%</span></div></div>
+      <p>🎉 주장이 받아들여졌어요! <b>주장</b>에 <b>믿을 만한 데이터 근거</b>(공식 통계·충분한 설문·직접 관련된 기록)를 더하고, 반론에도 데이터로 답하면 설득력이 커져요. 개인 의견, 오래된 자료, 관계없는 자료는 근거가 되기 어려워요.</p>`;
+    reportQuiz('debate', dbFirst.slice(0, 6));
+  });
+}
+dbDraw();
 
 renderQuiz($('#quiz'), [
   {q:'설득력 있는 주장에 꼭 필요한 것은?', o:['큰 목소리','데이터에 근거한 이유','많은 사람의 찬성'], a:1, e:'데이터를 근거로 들면 주장이 논리적이고 설득력이 생겨요.'},
