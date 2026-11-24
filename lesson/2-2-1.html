@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>데이터에 구조를 입혀라</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="2" data-title="데이터에 구조를 입혀라" data-sub="중1 Ⅱ단원 · 45분 종합 수업 · 미래엔 58~63쪽">
+<main>
+  <span class="badge">중1 Ⅱ단원 · 45분 종합 수업</span>
+  <h1>🌳 데이터에 구조를 입혀라</h1>
+  <p class="lead">흩어진 데이터를 <b>리스트</b>, <b>테이블</b>, <b>다이어그램</b>으로 구조화하면 무엇이 좋아지는지 정리해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">2-2-1 데이터의 구조화와 해석 · 01 데이터의 구조화</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../data/2-14-family.html">🌳 가계도 퍼즐</a></li><li><a href="../data/2-15-list-table.html">📋 리스트와 테이블</a></li><li><a href="../data/2-16-diagram.html">🕸️ 다이어그램: 계층형과 그래프형</a></li><li><a href="../data/2-17-nightingale.html">🌹 나이팅게일의 장미 도표</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="달력이 찾기 쉬워요|말로 들어도 충분해요|둘 다 같아요|잘 모르겠어">
+      <p>반 친구 30명의 생일을 말로만 들었을 때와 달력에 정리했을 때, 무엇이 다를까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>어떤 방법으로 구조화하면 좋을까요?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p>데이터를 <b>리스트</b>, <b>테이블</b>, <b>다이어그램</b>(계층형·그래프형)으로 <b>구조화</b>하면 의미를 빠르게 이해하고 관계를 찾을 수 있어요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 58~63쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["🧱","구조화","데이터의 특성을 파악해 체계적으로 정리하는 것이에요. 빠른 이해, 효과적인 전달, 연관성 발견에 도움이 돼요."],["📋","리스트","데이터를 순서대로 나열하고 번호(인덱스)로 추가·삭제·수정해요."],["📊","테이블","행과 열로 된 칸에 많은 데이터를 간결하게 정리해 비교·계산하기 쉬워요."],["🌳","계층형(트리)","조직도, 대진표, 폴더처럼 위아래 관계를 보여 줘요."],["🕸️","그래프형","노선도, 네트워크처럼 데이터를 선으로 이어 연관성을 보여 줘요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"🏥","t":"병원 대기 순서","a":0,"e":"순서만 중요하니 리스트예요."},{"icon":"🏃","t":"친구들의 50m 달리기·멀리뛰기 기록","a":1,"e":"여러 사람의 여러 속성은 테이블이에요."},{"icon":"🏆","t":"토너먼트 대진표","a":2,"e":"위아래로 올라가는 계층형이에요."},{"icon":"🚇","t":"지하철 역 사이의 연결","a":3,"e":"연결 관계는 그래프형이에요."}], ["리스트","테이블","계층형","그래프형"]);
+renderQuiz($('#quiz'), [{"q":"데이터를 구조화하는 까닭이 아닌 것은?","o":["의미를 빠르게 이해하려고","데이터를 일부러 숨기려고","데이터 사이의 관계를 찾으려고"],"a":1,"e":"구조화는 이해·전달·관계 발견을 돕는 일이에요."},{"q":"테이블에서 한 사람의 데이터가 모여 있는 가로 줄은?","o":["행","열","셀 주소"],"a":0,"e":"가로 줄은 행, 세로 줄은 열이에요."},{"q":"컴퓨터 폴더 구조와 같은 다이어그램은?","o":["그래프형","계층형","원그래프"],"a":1,"e":"폴더 안에 폴더가 있는 계층형이에요."},{"q":"나이팅게일이 감염병이 가장 큰 원인임을 밝힌 방법은?","o":["데이터를 구조화하고 시각화했다","의사들에게 투표를 받았다","병원을 옮겼다"],"a":0,"e":"기록을 표로 정리하고 장미 도표로 시각화했어요."}]);
+</script>
+</body>
+</html>

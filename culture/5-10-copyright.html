@@ -18,7 +18,7 @@
 .order button .n{display:inline-block;min-width:1.6em;font-weight:800;color:var(--mint)}
 </style>
 </head>
-<body data-unit="5" data-title="저작권 판정소" data-sub="중1 Ⅴ단원 · 저작권 보호 · 미래엔 214, 216~218쪽">
+<body data-stage data-unit="5" data-title="저작권 판정소" data-sub="중1 Ⅴ단원 · 저작권 보호 · 미래엔 214, 216~218쪽">
 <main>
   <span class="badge">중1 Ⅴ단원 · 저작권 보호</span>
   <h1>저작권 판정소</h1>
@@ -26,14 +26,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="속상해요|저작권이 있어요|저작권은 없어요|잘 모르겠어">
       <p>내가 공책에 그린 캐릭터를 친구가 몰래 티셔츠로 만들어 판다면 기분이 어떨까요? 내 그림에도 저작권이 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="넘길 수 있는 권리와 없는 권리를 비교해 봐 ⚖️">
       <h3>⚖️ 저작권의 두 가지 권리</h3>
       <div class="two">
         <div class="a"><h4>🧑‍🎨 저작 인격권</h4>저작자의 명예와 인격을 보호하는 권리예요. <b>다른 사람에게 넘기거나 물려줄 수 없고</b>, 저작자가 사망하면 사라져요.</div>
@@ -42,30 +42,30 @@
       <div id="right" style="margin-top:12px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="작가가 세상을 떠난 해를 넣어 봐 ⏳">
       <h3>⏳ 저작 재산권은 언제까지?</h3>
       <p>가상의 작가가 세상을 떠난 해를 넣어 보세요.</p>
       <div class="calc"><input class="inp" id="yr" type="number" value="1955" style="width:140px"> 년에 사망 → <b id="until"></b></div>
       <p class="hint"><span class="tag-more">심화</span> 정확히는 사망한 다음 해 1월 1일부터 계산해 70년이 되는 해의 말일까지 보호돼요.</p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="저작물 이용 5단계를 순서대로 눌러 봐 🪜">
       <h3>🪜 저작물 이용 5단계</h3>
       <p>올바른 순서대로 눌러 보세요.</p>
       <div class="order" id="order"></div>
       <div class="feedback" id="oFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="침해일까, 아닐까? 🔨">
       <h3>🔨 침해일까, 아닐까?</h3>
       <div id="judge"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="개인과 사회가 할 수 있는 일을 나눠 봐 🤝">
       <h3>🤝 저작권을 지키는 방법: 개인과 사회</h3>
       <div id="who"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">

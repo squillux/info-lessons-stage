@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디지털 시민으로 살아가기</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="5" data-title="디지털 시민으로 살아가기" data-sub="중1 Ⅴ단원 · 45분 종합 수업 · 미래엔 203~209쪽">
+<main>
+  <span class="badge">중1 Ⅴ단원 · 45분 종합 수업</span>
+  <h1>🤝 디지털 시민으로 살아가기</h1>
+  <p class="lead"><b>디지털 윤리</b>를 실천하고 <b>사이버 폭력·범죄·중독</b>을 예방하는 방법을 정리해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">5-2-1 디지털 윤리 · 01 디지털 윤리의 실천</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../culture/5-04-ethics.html">🚦 디지털 윤리 상황판</a></li><li><a href="../culture/5-05-cyber-violence.html">🛑 사이버 폭력 멈춰!</a></li><li><a href="../culture/5-06-cyber-crime.html">🎣 사이버 범죄 예방 훈련</a></li><li><a href="../culture/5-07-addiction.html">⏰ 사이버 중독 예방하기</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="같이 웃어요|모른 척해요|멈추자고 말하고 도움을 요청해요|잘 모르겠어">
+      <p>단체 채팅방에서 한 친구를 놀리는 글이 올라왔어요. 나는 어떻게 해야 할까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>어떤 문제일까요?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p><b>디지털 윤리</b>를 실천하며 상대를 존중하고, <b>사이버 폭력</b>·<b>사이버 범죄</b>·<b>사이버 중독</b>을 예방하는 수칙을 지켜요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 203~209쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["🤝","디지털 윤리","상대의 입장을 생각하고 정보와 권리를 존중하며 익명 공간에서도 예의를 지켜요."],["🛑","사이버 폭력","익명성과 빠른 확산 때문에 피해가 커요. 증거를 남기고 도움을 요청해요."],["🦠","사이버 범죄 예방","백신 최신 유지, 비밀번호 변경, 모르는 링크 열지 않기, 금전 요구는 직접 확인해요."],["📱","사이버 중독","사용 시간을 정해 지키고, 사회는 예방 교육과 상담을 제공해요."],["🗳️","민주적 규칙 만들기","서로 다른 의견을 존중하며 논의해 규칙을 정하고 함께 지켜요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"😢","t":"친구의 사진을 허락 없이 올리고 놀려요.","a":0,"e":"다른 사람을 괴롭히는 사이버 폭력이에요."},{"icon":"🎣","t":"'택배 확인' 문자 속 링크를 누르니 돈이 빠져나갔어요.","a":1,"e":"스미싱, 사이버 범죄예요."},{"icon":"🎮","t":"게임 때문에 잠을 못 자고 숙제도 못 해요.","a":2,"e":"일상에 지장을 주는 사이버 중독이에요."},{"icon":"💸","t":"친구를 사칭해 메신저로 돈을 빌려 달래요.","a":1,"e":"메신저 피싱, 사이버 범죄예요."}], ["사이버 폭력","사이버 범죄","사이버 중독"]);
+renderQuiz($('#quiz'), [{"q":"사이버 폭력을 목격했을 때 알맞은 행동은?","o":["증거를 남기고 어른께 알린다","퍼 나른다","모른 척한다"],"a":0,"e":"증거를 남기고 도움을 요청해요."},{"q":"사이버 범죄 예방 수칙이 아닌 것은?","o":["백신 최신 유지","모르는 파일 바로 열기","비밀번호 주기적 변경"],"a":1,"e":"출처를 알 수 없는 파일은 열지 않아요."},{"q":"사이버 범죄 피해를 신고하는 곳은?","o":["사이버 범죄 신고 시스템(ECRM)","게임 고객 센터만","아무 데도 안 함"],"a":0,"e":"경찰청 사이버 범죄 신고 시스템에 신고해요."},{"q":"사이버 중독을 예방하는 개인의 노력은?","o":["사용 시간을 정해 지킨다","알림을 모두 켠다","밤새 사용한다"],"a":0,"e":"스스로 사용 시간을 정하고 지켜요."}]);
+</script>
+</body>
+</html>

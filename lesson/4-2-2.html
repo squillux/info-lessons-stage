@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인공지능으로 학교 문제 해결하기</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="4" data-title="인공지능으로 학교 문제 해결하기" data-sub="중1 Ⅳ단원 · 45분 종합 수업 · 미래엔 172~177쪽">
+<main>
+  <span class="badge">중1 Ⅳ단원 · 45분 종합 수업</span>
+  <h1>📸 인공지능으로 학교 문제 해결하기</h1>
+  <p class="lead">자동 출석부와 편의점 아이디어를 바탕으로, 인공지능으로 <b>해결할 문제를 찾고 설계</b>하는 과정을 정리해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">4-2-2 인공지능의 활용 · 02 스마트 교실: 자동 출석부 만들기</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../ai/4-07-attendance.html">📸 자동 출석부 설계하기</a></li><li><a href="../ai/4-08-ai-problems.html">🏪 인공지능으로 해결할 문제 찾기</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="출석 확인|급식 메뉴 추천|분실물 찾기|모두 좋아요">
+      <p>학교생활에서 인공지능이 도와주면 좋을 일은 무엇일까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>인공지능이 필요할까요?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p>인공지능으로 문제를 해결하려면 <b>문제를 정의</b>하고 알맞은 <b>기술</b>과 <b>데이터</b>를 고르며, <b>개인 정보</b> 같은 고려할 점을 함께 살펴요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 172~177쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["🎯","문제 정의","현재 상태와 목표 상태로 무엇을 해결할지 정해요."],["🧠","기술 고르기","인식, 분류, 예측 등 어떤 인공지능 기술이 필요한지 정해요."],["📸","데이터 계획","어떤 데이터를 얼마나, 어떻게 모을지 정하고 동의를 받아요."],["🔐","개인 정보","얼굴 같은 민감한 정보는 목적 외로 쓰지 않고 안전하게 관리해요."],["🤔","꼭 인공지능일까?","정해진 규칙대로 하면 되는 일은 일반 소프트웨어로도 충분해요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"📷","t":"카메라로 얼굴을 알아보고 출석을 체크해요.","a":0,"e":"얼굴 인식은 인공지능이 알맞아요."},{"icon":"⏰","t":"매일 8시 50분에 종을 울려요.","a":1,"e":"정해진 규칙이면 일반 소프트웨어로 충분해요."},{"icon":"🛒","t":"손님 표정을 보고 만족도를 예측해요.","a":0,"e":"감정 인식은 인공지능이 필요해요."},{"icon":"➕","t":"물건값을 모두 더해 합계를 내요.","a":1,"e":"단순 계산은 일반 소프트웨어로 충분해요."}], ["인공지능이 알맞아요","일반 소프트웨어로 충분해요"]);
+renderQuiz($('#quiz'), [{"q":"얼굴 사진을 모을 때 꼭 해야 할 일은?","o":["본인의 동의를 받는다","몰래 찍는다","SNS에 올린다"],"a":0,"e":"민감한 개인 정보라 동의가 필요해요."},{"q":"학습하지 않은 사람이 카메라 앞에 서면 자동 출석부는?","o":["알 수 없음으로 처리하도록 설계해야 한다","아무 학생으로 출석 처리한다","꺼진다"],"a":0,"e":"예외 상황도 설계에 넣어야 해요."},{"q":"인공지능으로 해결할 문제를 찾을 때 함께 생각할 것이 아닌 것은?","o":["필요한 기술","사용할 데이터","광고 문구의 글꼴"],"a":2,"e":"기술, 데이터, 고려할 점을 함께 생각해요."},{"q":"편의점 계산 줄을 줄이는 데 알맞은 인공지능 기술은?","o":["상품 인식","날씨 예보","작곡"],"a":0,"e":"카메라로 상품을 인식해 자동 계산해요."}]);
+</script>
+</body>
+</html>

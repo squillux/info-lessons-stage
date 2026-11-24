@@ -20,7 +20,7 @@
 .gal .board h4{font-size:1.1rem}
 </style>
 </head>
-<body data-unit="5" data-title="디지털 기술로 사회 문제 해결하기" data-sub="중1 Ⅴ단원 · 디지털 사회의 의미와 특성 · 미래엔 195쪽">
+<body data-stage data-unit="5" data-title="디지털 기술로 사회 문제 해결하기" data-sub="중1 Ⅴ단원 · 디지털 사회의 의미와 특성 · 미래엔 195쪽">
 <main>
   <span class="badge">중1 Ⅴ단원 · 디지털 사회</span>
   <h1>디지털 기술로 사회 문제 해결하기</h1>
@@ -28,20 +28,20 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="교통이 불편해요|안전이 걱정돼요|환경 문제가 있어요|잘 모르겠어">
       <p>우리 동네나 학교에서 "이건 정말 불편해!"라고 느낀 일이 있나요? 그 문제를 디지털 기술로 해결할 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="문제에 가장 도움이 될 기술을 골라 봐 🧭">
       <h3>🧭 분야별 문제와 어울리는 기술</h3>
       <p>문제를 읽고 가장 도움이 될 기술을 골라 보세요. (가상 사례)</p>
       <div id="match"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="우리 모둠 해결안을 차근차근 채워 봐 🛠️">
       <h3>🛠️ 우리 모둠 해결안 만들기</h3>
       <p>분야와 문제를 정하고, 쓸 기술을 고른 뒤 해결 방법을 적어 보세요. 아래에 발표용 보드가 만들어져요. (저장되지 않으니 발표 후 캡처하거나 인쇄하세요.)</p>
       <div class="plan">
@@ -53,13 +53,13 @@
       <div class="board" id="board" style="margin-top:12px"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="완성한 해결안을 보내고 다른 모둠 것도 살펴봐 🖼️">
       <h3>🖼️ 모둠 해결안 갤러리 <span class="tag-opt">실시간</span></h3>
       <p>완성한 해결안 보드를 보내면 반 전체의 해결안이 한 화면에 모여요. 선생님이 결과를 공개하면 다른 모둠의 해결안도 볼 수 있어요. (모둠당 2개까지, 이름은 저장되지 않아요.)</p>
       <div id="gallery"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="발표를 마치고 스스로 점검해 봐 ✅">
       <h3>✅ 활동 평가하기</h3>
       <p>발표를 마친 뒤 스스로 점검해 보세요.</p>
       <div class="checks" id="checks"></div>
@@ -112,7 +112,7 @@ $$('#checks input').forEach(i => i.onchange = () => { const n = $$('#checks inpu
 liveBoard($('#gallery'), {act: '5-02', title: '우리 모둠 해결안 보내기', limit: 2,
   text: v => { try { return JSON.parse(v).p.slice(0, 30); } catch(e){ return '?'; } },
   input(el, send){
-    el.innerHTML = '<p class="hint">위의 ①~④를 채운 뒤 보내요.</p><button class="btn">📤 우리 모둠 해결안 보내기</button>';
+    el.innerHTML = '<p class="hint">앞 화면의 ①~④를 채운 뒤 보내요.</p><button class="btn">📤 우리 모둠 해결안 보내기</button>';
     el.querySelector('button').onclick = () => {
       const d = {f: $('#field').value, p: $('#prob').value.trim().slice(0, 300), t: [...chosen].join(', '), h: $('#how').value.trim().slice(0, 500)};
       if (!d.p || !d.h) return alert('문제(②)와 해결 방법(④)을 먼저 적어 주세요.');

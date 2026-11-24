@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인공지능은 어떻게 배울까?</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="4" data-title="인공지능은 어떻게 배울까?" data-sub="중1 Ⅳ단원 · 45분 종합 수업 · 미래엔 147~155쪽">
+<main>
+  <span class="badge">중1 Ⅳ단원 · 45분 종합 수업</span>
+  <h1>🤖 인공지능은 어떻게 배울까?</h1>
+  <p class="lead">인공지능의 <b>특성</b>과, <b>데이터로 학습</b>해 모델을 만드는 과정을 한 번에 정리해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">4-1-1 인공지능의 이해 · 01 인공지능의 개념과 특성 · 02 인공지능 시스템</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../ai/4-01-ai-concept.html">🤖 인공지능의 개념과 특성</a></li><li><a href="../ai/4-02-ai-system.html">🧩 인공지능 모델이 만들어지는 과정</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="누가 규칙을 알려 줘서|많은 사진으로 스스로 배워서|우연히|잘 모르겠어">
+      <p>사진 앱이 내 얼굴을 알아보는 건 누가 규칙을 알려 줘서일까요, 스스로 배워서일까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>인공지능의 어떤 특성일까요?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p>인공지능은 <b>추론·학습·인식·생성</b>의 특성을 가지며, <b>훈련 데이터</b>로 학습해 모델을 만들고 <b>테스트 데이터</b>로 평가해요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 147~155쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["🤖","인공지능","인간의 지능을 모방한 컴퓨팅 시스템이에요."],["🧩","추론·학습·인식·생성","인공지능의 네 가지 특성이에요. 결론을 이끌고, 데이터로 배우고, 알아보고, 새로 만들어요."],["⚖️","일반 SW vs AI SW","일반 소프트웨어는 사람이 정한 규칙대로, 인공지능은 데이터에서 스스로 규칙을 찾아요."],["📚","훈련 데이터","정답이 붙어 있어 모델을 학습시키는 데 써요."],["🧪","테스트 데이터","처음 보는 데이터로 모델이 잘 맞히는지 평가해요."],["🔄","모델 개발 과정","데이터 입력 → 학습 → 모델 생성 → 모델 평가 순서예요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"🕵️","t":"단서들을 모아 범인을 찾아내요.","a":0,"e":"지식을 바탕으로 결론을 이끄는 추론이에요."},{"icon":"📈","t":"바둑을 수없이 두며 실력이 늘어요.","a":1,"e":"경험(데이터)으로 배우는 학습이에요."},{"icon":"👀","t":"카메라로 사람 얼굴을 알아봐요.","a":2,"e":"이미지·소리를 알아보는 인식이에요."},{"icon":"🎨","t":"글을 읽고 새로운 그림을 그려요.","a":3,"e":"새로운 것을 만드는 생성이에요."}], ["추론","학습","인식","생성"]);
+renderQuiz($('#quiz'), [{"q":"모델이 잘 학습됐는지 평가할 때 쓰는 데이터는?","o":["훈련 데이터","테스트 데이터","아무 데이터"],"a":1,"e":"처음 보는 테스트 데이터로 평가해요."},{"q":"인공지능 모델 개발 순서로 알맞은 것은?","o":["학습 → 데이터 입력 → 평가","데이터 입력 → 학습 → 모델 생성 → 평가","평가 → 학습"],"a":1,"e":"데이터를 넣고 학습시켜 모델을 만든 뒤 평가해요."},{"q":"계산기는 어떤 소프트웨어에 가까울까?","o":["정해진 규칙대로 동작하는 일반 소프트웨어","스스로 학습하는 인공지능","생성형 인공지능"],"a":0,"e":"계산기는 정해진 규칙대로 계산해요."},{"q":"인공지능으로 문제를 해결하는 첫 단계는?","o":["모델 활용","문제 이해","실행 및 적용"],"a":1,"e":"문제 이해 → 데이터 수집과 가공 → 모델 개발 → 활용 → 적용 순서예요."}]);
+</script>
+</body>
+</html>

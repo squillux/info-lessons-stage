@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>센서와 액추에이터의 세계</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="1" data-title="센서와 액추에이터의 세계" data-sub="중1 Ⅰ단원 · 45분 종합 수업 · 미래엔 25~31쪽">
+<main>
+  <span class="badge">중1 Ⅰ단원 · 45분 종합 수업</span>
+  <h1>🔌 센서와 액추에이터의 세계</h1>
+  <p class="lead">현실 세계를 감지하는 <b>센서</b>, 판단하는 <b>마이크로컨트롤러</b>, 움직이는 <b>액추에이터</b>로 피지컬 컴퓨팅 시스템을 정리해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">1-2-1 피지컬 컴퓨팅 시스템 · 01 피지컬 컴퓨팅 시스템의 구성</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../system/1-06-physical.html">🚪 피지컬 컴퓨팅과 디지털 도어록</a></li><li><a href="../system/1-07-sensor-board.html">🎛️ 가상 센서 보드</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="버튼 입력을 비교해서|사람이 원격으로 열어 줘서|문이 저절로 기억해서|잘 모르겠어">
+      <p>현관문 도어록은 어떻게 내 비밀번호가 맞는지 알고 문을 열어 줄까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>센서일까, 액추에이터일까?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p>피지컬 컴퓨팅 시스템은 <b>센서</b>로 데이터를 수집하고 <b>마이크로컨트롤러</b>가 처리해 <b>액추에이터</b>를 제어해요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 25~31쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["🖐️","피지컬 컴퓨팅","센서로 현실 세계의 데이터를 받아 처리하고, 액추에이터로 현실 세계에 반응하는 컴퓨팅이에요."],["🌡️","센서","빛, 소리, 온도, 거리, 움직임 등을 감지해 데이터로 바꿔요."],["🔲","마이크로컨트롤러","센서 데이터를 받아 프로그램에 따라 처리하는 작은 컴퓨터예요."],["💡","액추에이터","LED, 모터, 스피커처럼 처리 결과에 따라 움직이거나 빛·소리를 내요."],["🎚️","아날로그 입력 값","빛·소리 센서 등은 0~1023 사이의 값을, 버튼은 0 또는 1을 입력해요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"☀️","t":"주변이 얼마나 밝은지 재는 빛 센서","a":0,"e":"빛을 감지하는 센서예요."},{"icon":"🔆","t":"어두워지면 켜지는 가로등 LED","a":1,"e":"빛을 내는 액추에이터예요."},{"icon":"⚙️","t":"문을 여는 모터","a":1,"e":"움직임을 만드는 액추에이터예요."},{"icon":"📏","t":"장애물까지 거리를 재는 초음파 센서","a":0,"e":"거리를 감지하는 센서예요."},{"icon":"🔔","t":"경고음을 내는 부저","a":1,"e":"소리를 내는 액추에이터예요."}], ["센서","액추에이터"]);
+renderQuiz($('#quiz'), [{"q":"피지컬 컴퓨팅 시스템의 동작 순서는?","o":["액추에이터 제어 → 센서 수집 → 처리","센서로 수집 → 마이크로컨트롤러가 처리 → 액추에이터 제어","처리 → 센서 → 출력 없음"],"a":1,"e":"센서 → 처리 → 프로그램 실행 → 액추에이터 제어 순서예요."},{"q":"센서 보드의 소리 센서가 보내는 값의 범위는?","o":["0 또는 1","0~1023","-100~100"],"a":1,"e":"아날로그 센서는 0~1023의 값을 보내요."},{"q":"'어두우면 LED를 켠다'에서 판단 기준이 되는 것은?","o":["LED 색","빛 센서 값","보드 무게"],"a":1,"e":"빛 센서 값이 기준보다 작으면 LED를 켜요."},{"q":"다음 중 피지컬 컴퓨팅 시스템의 예가 아닌 것은?","o":["자율 주행 자동차","스마트 가로등","종이 공책"],"a":2,"e":"종이 공책은 센서도 처리 장치도 없어요."}]);
+</script>
+</body>
+</html>

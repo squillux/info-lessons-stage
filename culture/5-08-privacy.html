@@ -21,7 +21,7 @@
 .post .tx button{all:unset;cursor:pointer;border-bottom:2px dotted var(--pink);padding:0 2px}
 </style>
 </head>
-<body data-unit="5" data-title="개인 정보 탐정" data-sub="중1 Ⅴ단원 · 개인 정보 보호 · 미래엔 210~211, 213쪽">
+<body data-stage data-unit="5" data-title="개인 정보 탐정" data-sub="중1 Ⅴ단원 · 개인 정보 보호 · 미래엔 210~211, 213쪽">
 <main>
   <span class="badge">중1 Ⅴ단원 · 개인 정보 보호</span>
   <h1>개인 정보 탐정</h1>
@@ -29,14 +29,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="다니는 학교|사는 곳|얼굴과 이름|모두 알아낼 수 있어요">
       <p>내 SNS 프로필 사진이나 게시물만 보고 낯선 사람이 나에 대해 무엇을 알아낼 수 있을까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="단서를 하나씩 더해 봐. 남은 사람이 줄어들어 🧩">
       <h3>🧩 정보가 합쳐지면 누군지 알 수 있어요</h3>
       <p>가상의 학생 300명이 있어요. 단서를 하나씩 더해 보세요.</p>
       <div class="clues" id="clues"></div>
@@ -45,12 +45,12 @@
       <p class="hint" id="cMsg"></p>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="개인 정보의 유형을 나눠 봐 🗃️">
       <h3>🗃️ 개인 정보의 유형</h3>
       <div id="type"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="올리기 전에 가려야 할 정보를 모두 눌러 봐 🕵️">
       <h3>🕵️ 게시물 속 개인 정보 가리기</h3>
       <p>가상의 SNS 게시물이에요. 올리기 전에 가려야 할 개인 정보를 모두 눌러 가려 보세요.</p>
       <div class="post">
@@ -65,7 +65,7 @@
       <div class="feedback" id="pFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="개인 정보 침해, 이렇게 대처해 🚨">
       <h3>🚨 개인 정보 침해, 이렇게 대처해요</h3>
       <div id="cope"></div>
     </div>

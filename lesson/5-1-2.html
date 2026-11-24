@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디지털 사회의 직업과 나</title>
+<link rel="stylesheet" href="../assets/common.css">
+<style>
+.flow45{margin:14px 0 0;border:2px dashed #f7dd8f;background:#fffdf3;border-radius:14px;padding:8px 14px}
+.flow45 summary{cursor:pointer;font-weight:700;color:#a06d00}
+.flow45 table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.flow45 td{border-top:1px solid #f3e6b8;padding:6px 4px;vertical-align:top}
+.flow45 td:first-child{white-space:nowrap;font-weight:700}
+.flow45 ul{margin:4px 0 6px;padding-left:1.2em}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:10px}
+.cc{all:unset;box-sizing:border-box;cursor:pointer;min-height:118px;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s,background .15s}
+.cc:hover{transform:translateY(-2px);border-color:#b9c8f5}
+.cc:focus-visible{outline:3px solid #b9c8f5;outline-offset:2px}
+.cc .ci{font-size:1.6rem;line-height:1}
+.cc b{font-size:1.02rem}
+.cc .cd{display:none;font-size:.9rem;line-height:1.55;color:#3a4256}
+.cc .tap{font-size:.78rem;color:#8a93a8}
+.cc.open{background:#f3f7ff;border-color:#9db5f4}
+.cc.open .cd{display:block}
+.cc.open .tap{display:none}
+</style>
+</head>
+<body data-stage data-unit="5" data-title="디지털 사회의 직업과 나" data-sub="중1 Ⅴ단원 · 45분 종합 수업 · 미래엔 196~200쪽">
+<main>
+  <span class="badge">중1 Ⅴ단원 · 45분 종합 수업</span>
+  <h1>💼 디지털 사회의 직업과 나</h1>
+  <p class="lead">디지털 기술이 바꾸는 <b>직업의 변화</b>를 살펴보고, 앞으로 필요한 <b>역량</b>과 나의 진로를 연결해요.</p>
+  <details class="flow45"><summary>⏱ 45분 수업 흐름 (교사용)</summary>
+    <p class="hint" style="margin:6px 0 0">5-1-2 디지털 사회와 직업 · 02 디지털 사회와 직업의 변화</p>
+    <table><tr><td>도입</td><td>5분</td><td>생각 열기: 질문에 내 생각 고르기</td></tr><tr><td>개념 정리</td><td>10분</td><td>핵심 개념 카드를 뒤집으며 설명하기</td></tr><tr><td>적용</td><td>15분</td><td>상황에 맞는 개념 고르기 · 시간이 있으면 아래 활동 중 하나를 함께 해 보기</td></tr><tr><td>확인</td><td>10분</td><td>확인 미션 4문제</td></tr><tr><td>정리</td><td>5분</td><td>한 줄 정리 빈칸 열기</td></tr></table>
+    <b>이 소단원의 활동</b>
+    <ul><li><a href="../culture/5-03-jobs.html">🚀 디지털 사회와 직업의 변화</a></li></ul>
+  </details>
+
+  <section class="step think">
+    <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
+    <div class="card" data-think="은행 창구 직원|계산원|통역사|잘 모르겠어">
+      <p>지금 있는 직업 중 10년 뒤 사라지거나 크게 바뀔 것 같은 직업은 무엇일까요?</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+    <div class="card" data-bot="카드를 하나씩 눌러서 뒤집어 봐. 모두 설명할 수 있으면 성공이야 🗂️">
+      <h3>🗂️ 핵심 개념 카드</h3>
+      <p>카드를 누르면 설명이 나와요. 먼저 설명을 떠올려 보고 눌러 확인해 보세요.</p>
+      <div class="cgrid" id="cards"></div>
+      <div class="row" style="margin-top:10px"><button class="btn line" id="ccAll">👀 모두 펼치기</button></div>
+      <div class="feedback" id="ccFb"></div>
+    </div>
+    <div class="card" data-bot="배운 개념을 실제 상황에 적용해 봐 🧩">
+      <h3>🧩 상황에 맞는 개념 고르기</h3>
+      <p>어떤 변화일까요?</p>
+      <div id="match"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2 class="step-h"><span class="no">3</span>확인 미션</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section class="step sum">
+    <h2 class="step-h"><span class="no">4</span>한 줄 정리</h2>
+    <div class="card">
+      <p>디지털 기술로 직업이 <b>사라지고</b>, <b>새로 생기고</b>, 일하는 모습이 <b>바뀌어요</b>. 필요한 <b>역량</b>을 키우며 진로를 준비해요.</p>
+    </div>
+  </section>
+  <p class="src">미래엔 중학교 정보 196~200쪽 내용을 바탕으로 소단원 활동을 종합해 재구성</p>
+</main>
+<script src="../assets/contents.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+const CONCEPTS = [["📉","사라지는 직업","자동화로 단순 반복 업무는 줄어들 수 있어요."],["🆕","새로 생기는 직업","데이터 과학자, 인공지능 개발자, 드론 조종사처럼 새 직업이 생겨요."],["🔄","바뀌는 일하는 모습","원격 근무, 협업 도구 사용 등 일하는 방식이 달라져요."],["🧠","필요한 역량","문제 해결력, 창의성, 협업, 디지털 활용 능력이 중요해져요."],["🧭","진로 준비","변화를 이해하고 나의 관심과 강점을 찾아 준비해요."]];
+$('#cards').innerHTML = CONCEPTS.map(([i, t, s], k) => `<button class="cc" data-k="${k}" aria-expanded="false"><span class="ci">${i}</span><b>${t}</b><span class="tap">눌러서 설명 보기</span><span class="cd">${s}</span></button>`).join('');
+const ccCheck = () => {
+  const n = $$('#cards .cc.open').length;
+  if (n === CONCEPTS.length) feedback($('#ccFb'), true, '🎉 핵심 개념 ' + n + '개를 모두 확인했어요! 친구에게 하나씩 설명해 보세요.');
+};
+$$('#cards .cc').forEach(b => b.onclick = () => { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); ccCheck(); });
+$('#ccAll').onclick = () => { $$('#cards .cc').forEach(b => { b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }); ccCheck(); };
+renderChoice($('#match'), [{"icon":"🚁","t":"드론으로 농약을 뿌리는 드론 조종사","a":0,"e":"기술 발달로 새로 생긴 직업이에요."},{"icon":"🎫","t":"톨게이트 요금을 손으로 받는 일","a":1,"e":"자동 결제로 줄어드는 일이에요."},{"icon":"🏠","t":"집에서 화상 회의로 일해요.","a":2,"e":"원격 근무, 일하는 모습의 변화예요."},{"icon":"📊","t":"빅데이터를 분석하는 데이터 과학자","a":0,"e":"데이터 시대에 새로 생긴 직업이에요."}], ["새로 생긴 직업","사라지거나 줄어드는 일","일하는 모습의 변화"]);
+renderQuiz($('#quiz'), [{"q":"디지털 사회에서 더 중요해지는 역량은?","o":["단순 암기만","문제 해결력과 협업","손글씨 속도"],"a":1,"e":"문제 해결, 창의성, 협업이 중요해요."},{"q":"자동화로 줄어들 가능성이 큰 일은?","o":["단순 반복 업무","창의적인 기획","사람을 돌보는 일"],"a":0,"e":"규칙대로 반복하는 일은 자동화되기 쉬워요."},{"q":"진로를 준비하는 바람직한 자세는?","o":["변화를 이해하고 나의 강점을 찾는다","인기 직업만 따라간다","아무것도 하지 않는다"],"a":0,"e":"변화를 이해하며 준비해요."},{"q":"새로 생긴 직업의 예는?","o":["인공지능 윤리 전문가","전화 교환원","우편 마차 마부"],"a":0,"e":"인공지능과 함께 생긴 직업이에요."}]);
+</script>
+</body>
+</html>

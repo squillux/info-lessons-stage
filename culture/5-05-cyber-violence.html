@@ -18,7 +18,7 @@
 .msg button:focus-visible{outline:3px solid var(--brand)}
 </style>
 </head>
-<body data-unit="5" data-title="사이버 폭력 멈춰!" data-sub="중1 Ⅴ단원 · 디지털 윤리의 실천 · 미래엔 204쪽">
+<body data-stage data-unit="5" data-title="사이버 폭력 멈춰!" data-sub="중1 Ⅴ단원 · 디지털 윤리의 실천 · 미래엔 204쪽">
 <main>
   <span class="badge">중1 Ⅴ단원 · 디지털 윤리</span>
   <h1>사이버 폭력 멈춰!</h1>
@@ -26,14 +26,14 @@
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
-    <div class="card">
+    <div class="card" data-think="사라져요|계속 남아요|선생님만 볼 수 있어요|잘 모르겠어">
       <p>교실에서 한 말은 시간이 지나면 사라지지만, 단체 대화방에 쓴 말은 어떻게 될까요?</p>
     </div>
   </section>
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
-    <div class="card">
+    <div class="card" data-bot="사이버 폭력이 더 위험한 까닭을 살펴봐 ⚡">
       <h3>⚡ 사이버 폭력은 왜 더 위험할까?</h3>
       <div class="feat">
         <div><b>🎭</b>익명성 때문에 쉽게 일어나요</div>
@@ -43,23 +43,23 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="사이버 폭력에 해당하는 말풍선을 모두 찾아봐 📱">
       <h3>📱 단체 대화방 속 사이버 폭력 찾기</h3>
       <p>가상의 대화방이에요. 사이버 폭력에 해당하는 말풍선을 모두 눌러 보세요.</p>
       <div class="chat" id="chat"></div>
       <div class="feedback" id="chatFb"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="어떤 유형인지 골라 봐 🏷️">
       <h3>🏷️ 사이버 폭력의 유형</h3>
       <div id="type"></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-bot="내가 목격했다면 어떻게 할까? 🙋">
       <h3>🙋 내가 목격했다면?</h3>
       <div id="act"></div>
     </div>
-    <div class="card" id="explainIt"></div>
+    <div class="card" data-bot="친구에게 설명하듯이 내 말로 써 봐 ✍️" id="explainIt"></div>
   </section>
 
   <section class="step">
