@@ -47,7 +47,10 @@
 .ph-grid button.pick::before{content:"";position:absolute;inset:0;background:rgba(59,108,246,.22)}
 .ph-head button{all:unset;cursor:pointer;font-size:.8rem;font-weight:800;color:var(--brand);padding:2px 4px}
 .ph-tab span{cursor:pointer}
-.selbar{flex:0 0 auto;display:none;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px 12px;border-top:1px solid var(--line);font-size:.8rem;font-weight:800}
+.selbar{flex:0 0 50px;height:50px;box-sizing:border-box;display:none;align-items:center;justify-content:space-between;gap:6px;padding:0 10px;border-top:1px solid var(--line);font-size:.78rem;font-weight:800;white-space:nowrap}
+.selbar .seln{overflow:hidden;text-overflow:ellipsis}
+.ph-tab{height:50px;box-sizing:border-box;align-items:center;padding:0!important}
+.ph-grid{scrollbar-width:none}.ph-grid::-webkit-scrollbar{display:none}
 .ph-scr.selmode .selbar{display:flex}.ph-scr.selmode .ph-tab{display:none}
 .selbar button{border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.78rem;background:var(--brand);color:#fff}
 .selbar button:disabled{opacity:.4}
@@ -173,7 +176,7 @@
       <div class="fgrid" id="other"></div>
     </div>
 
-    <div class="card" data-bot="폴더를 만들지 말고, 위쪽 조건만 눌러서 사진을 모아 봐 🗂️">
+    <div class="card" data-bot="[선택]을 누르고 미션에 맞는 사진을 골라 앨범에 넣어 봐. 위쪽 조건을 쓰면 빨라 🗂️">
       <h3>🗂️ ② 메타데이터로 앨범 만들기</h3>
       <div class="ph-wrap">
         <div class="phone"><div class="ph-scr" id="ph2"></div></div>
