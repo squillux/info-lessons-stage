@@ -5,38 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ⅰ단원 방 탈출</title>
 <link rel="stylesheet" href="../assets/common.css">
-<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}.esc-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
-.rooms{display:flex;gap:6px;align-items:center}
-.rooms span{border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:800;background:var(--bg);color:var(--muted)}
-.rooms span.cur{background:var(--brand);color:#fff}.rooms span.done{background:var(--ok-soft);color:var(--ok)}
-.timer{font-weight:800;color:var(--muted)}
-.room{border-radius:20px;padding:16px;background:linear-gradient(160deg,#2f3b52,#46557a);color:#fff}
-.room h4{margin:0 0 4px;font-size:1.15rem}
-.room .sub{opacity:.8;font-size:.88rem}
-.qbox{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px}
-.qbox .q{font-weight:800;margin:0 0 10px}
-.qbox .opts{display:grid;gap:8px}
-.qbox .opt{text-align:left}
-.clues{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.clue{min-width:64px;border-radius:12px;padding:6px 10px;background:rgba(255,255,255,.12);text-align:center;font-size:.78rem}
-.clue b{display:block;font-size:1.5rem;letter-spacing:.05em}
-.clue.got{background:#ffc233;color:#3a2a00}
-.lockp{margin-top:12px;border-radius:16px;background:#fff;color:var(--ink);padding:14px;text-align:center}
-.dials{display:flex;gap:8px;justify-content:center;margin:10px 0}
-.dials input{width:52px;height:60px;text-align:center;font-size:1.8rem;font-weight:800;border:2px solid var(--line);border-radius:12px}
-.door{font-size:3rem;text-align:center}
-.door.open{animation:dopen .6s ease}
-@keyframes dopen{0%{transform:scale(.8)}60%{transform:scale(1.2)}100%{transform:none}}
-.win{text-align:center;padding:10px}
-.win .big{font-size:3rem}
+<style>.self label{display:block;padding:6px 0;border-bottom:1px dashed var(--line)}.er-wrap{position:relative;container-type:inline-size}
+.er-hud{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:800}
+#erTime{font-variant-numeric:tabular-nums;background:#1f2a3d;color:#ffd45c;border-radius:10px;padding:3px 10px}
+#erTime.low{color:#ff6b6b;animation:blink 1s infinite}
+#erGoal{flex:1;min-width:180px;font-size:.88rem;color:var(--muted)}
+.room{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:#1b2233;user-select:none}
+.wall{position:absolute;inset:0 0 32% 0;background:linear-gradient(#323c55,#283149)}
+.floor{position:absolute;inset:68% 0 0 0;background:repeating-linear-gradient(90deg,#3a3142 0 12%,#352d3d 12% 24%)}
+.door{position:absolute;left:3%;top:20%;width:14%;height:50%;perspective:500px;background:#0e1220;border-radius:4px}
+.door-light{position:absolute;inset:0;background:radial-gradient(circle at 50% 60%,#fff6c9,#ffd45c 60%,#f5a623);opacity:0;transition:opacity 1s}
+.door-panel{position:absolute;inset:0;background:linear-gradient(90deg,#7b5a3c,#8d6a47);border:3px solid #5e4129;border-radius:4px;transform-origin:left center;transition:transform 1.4s cubic-bezier(.3,.7,.3,1)}
+.knob{position:absolute;right:10%;top:52%;width:12%;aspect-ratio:1;border-radius:50%;background:#e8c25a}
+.door.open .door-panel{transform:rotateY(-80deg)}
+.door.open .door-light{opacity:1}
+.shelf{position:absolute;left:20%;top:16%;width:15%;height:52%;background:#5b4632;border:3px solid #4a3828;border-radius:3px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:4px;align-content:space-around}
+.shelf i{height:22px;border-radius:2px;background:#4f7cd6}.shelf i.b2{background:#d65f7c}.shelf i.b3{background:#4fb39c}
+.shelf.glow i:nth-child(5){box-shadow:0 0 10px 3px #ffd45c;background:#ffd45c}
+.desk{position:absolute;left:38%;top:60%;width:38%;height:6%;background:#8d6a47;border-radius:3px}
+.drawer{position:absolute;left:43%;top:66%;width:16%;height:12%;background:#7b5a3c;border:2px solid #5e4129;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#e8c25a;font-size:.8rem;transition:transform .8s cubic-bezier(.3,1.4,.5,1)}
+.drawer.open{transform:translateY(60%) scale(1.08);background:#5e4129;box-shadow:inset 0 10px 0 #2a1d12}
+.monitor{position:absolute;left:44%;top:30%;width:20%;height:28%;background:#111;border:5px solid #2b3245;border-radius:6px}
+.monitor::after{content:"";position:absolute;left:40%;bottom:-24%;width:20%;height:20%;background:#2b3245}
+.scr{position:absolute;inset:0;background:#05070d;color:#a7f3c0;font-size:clamp(9px,1.4vw,13px);line-height:1.35;padding:6%;font-family:ui-monospace,Consolas,monospace;transition:background .8s,box-shadow .8s;overflow:hidden}
+.monitor.on .scr{background:#0b2a4a;box-shadow:0 0 22px 4px rgba(120,190,255,.55)}
+.tower{position:absolute;left:68%;top:38%;width:6%;height:22%;background:#2b3245;border-radius:4px}
+.tower .pled{position:absolute;left:30%;top:10%;width:30%;aspect-ratio:1;border-radius:50%;background:#555}
+.tower.on .pled{background:#3cf08a;box-shadow:0 0 8px #3cf08a}
+.tower .slot{position:absolute;left:25%;top:45%;width:50%;height:6%;background:#0e1220}
+.tower.usb .slot{background:#ffc233}
+.trash{position:absolute;left:79%;top:72%;width:7%;height:16%;background:linear-gradient(#8a95ab,#6b7489);border-radius:2px 2px 8px 8px}
+.corner{position:absolute;right:0;top:12%;width:13%;height:58%;background:#05060a;overflow:hidden;border-radius:6px 0 0 6px}
+.corner .board{position:absolute;inset:18% 10%;background:#1f8f5f;border-radius:6px;padding:6px;color:#fff;font-size:.7rem;opacity:0;transition:opacity 1s}
+.corner.lit{background:#2a2f3f}
+.corner.lit .board{opacity:1}
+.corner.beam::after{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,246,200,.9) 0 14%,transparent 30%);animation:beam 1.6s ease-in-out}
+@keyframes beam{0%{transform:translate(-30%,-30%)}50%{transform:translate(20%,10%)}100%{transform:translate(0,0);opacity:0}}
+.leds{display:grid;gap:5px;margin-top:6px}
+.leds span{display:flex;align-items:center;gap:4px;font-weight:800;font-size:.8rem}
+.leds span i{width:14px;height:14px;border-radius:50%;background:#333;display:inline-block}
+.leds span.on i{box-shadow:0 0 10px 3px currentColor}
+.dim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 100%);animation:flick 6s infinite}
+@keyframes flick{0%,96%,100%{opacity:1}97%{opacity:.6}98%{opacity:1}99%{opacity:.7}}
+.room.free .dim{opacity:0;animation:none;transition:opacity 1.2s}
+.hs{position:absolute;transform:translate(-50%,-50%);border:0;background:rgba(255,255,255,.08);border-radius:50%;width:clamp(30px,6vw,46px);height:clamp(30px,6vw,46px);font-size:clamp(15px,2.6vw,22px);cursor:pointer;z-index:3;box-shadow:0 0 0 2px rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
+.hs:hover{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 3px #ffd45c,0 0 14px #ffd45c}
+.hs.done{opacity:.45}
+.hs.hint{animation:hsp 1s ease-in-out 3}
+@keyframes hsp{50%{transform:translate(-50%,-50%) scale(1.35);box-shadow:0 0 0 4px #ffd45c,0 0 20px #ffd45c}}
+.keypad{left:15%;top:48%}.h-shelf{left:27.5%;top:42%}.h-drawer{left:51%;top:72%}.h-mon{left:63%;top:31%}.h-tower{left:71%;top:49%}.h-trash{left:82.5%;top:80%}.h-corner{left:93.5%;top:41%}
+.modal{position:absolute;left:8%;right:8%;top:calc(46px + 2cqw);max-height:calc(62.5cqw - 4cqw);z-index:5;background:#fff;color:var(--ink);border-radius:16px;padding:14px 16px;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,.45);animation:pop .3s cubic-bezier(.3,1.4,.5,1)}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.modal.shake{animation:shk .35s}
+.modal h4{margin:0 0 4px;font-size:1.05rem}
+.modal .q{font-weight:800;margin:8px 0}
+.modal .opts{display:grid;gap:6px}
+.modal .x{position:absolute;right:10px;top:8px;border:0;background:none;font-size:1.2rem;cursor:pointer}
+.paper{background:#fffbe8;border:1.5px dashed #e8c25a;border-radius:10px;padding:10px;margin-top:8px;animation:unfold .5s ease}
+@keyframes unfold{0%{transform:scaleY(.1) rotate(-3deg)}100%{transform:none}}
+.wheels{display:flex;gap:10px;justify-content:center;margin:10px 0}
+.wheel{display:flex;flex-direction:column;align-items:center;gap:2px}
+.wheel b{width:48px;height:56px;border-radius:10px;background:#1f2a3d;color:#ffd45c;font-size:1.8rem;display:flex;align-items:center;justify-content:center}
+.wheel button{border:0;background:var(--bg);border-radius:8px;width:48px;font-size:.9rem;cursor:pointer}
+.kp{display:grid;grid-template-columns:repeat(3,52px);gap:6px;justify-content:center;margin:8px 0}
+.kp button{height:46px;border:0;border-radius:10px;background:#2b3245;color:#fff;font-size:1.1rem;font-weight:800;cursor:pointer}
+.kpd{text-align:center;font-size:1.6rem;letter-spacing:.3em;font-weight:800;background:#0e1220;color:#3cf08a;border-radius:10px;padding:4px;margin:6px auto;max-width:180px;min-height:42px}
+.inv{display:flex;align-items:center;gap:8px;margin-top:8px;border-radius:14px;background:var(--bg);padding:8px 12px}
+.inv #inv{display:flex;gap:6px;flex-wrap:wrap}
+.inv #inv span{border-radius:10px;padding:3px 10px;background:#fff;font-weight:700;font-size:.88rem;border:1.5px solid var(--line)}
+.inv #inv span.empty{background:none;border:0;color:var(--muted);font-weight:400}
+.intro,.outro{position:absolute;inset:0;z-index:6;background:rgba(8,10,18,.88);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px}
+.intro[hidden]{display:none}
+.alarm{font-size:1.6rem;font-weight:800;color:#ff6b6b;animation:blink .8s infinite}
+@keyframes blink{50%{opacity:.3}}
+.outro{background:radial-gradient(circle at 10% 45%,rgba(255,246,200,.95),rgba(255,212,92,.92) 30%,rgba(20,24,40,.92) 75%);color:#1f2a3d;animation:fadein 1s}
+.outro .card2{background:#fff;border-radius:16px;padding:14px 18px;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.fly{position:absolute;z-index:7;font-size:1.8rem;pointer-events:none}
 .badge2{display:inline-block;margin:8px 0;border-radius:999px;padding:6px 16px;background:linear-gradient(90deg,#ffc233,#ff9f5a);color:#3a2a00;font-weight:800}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.dim,.alarm,#erTime.low{animation:none}}
+@media (max-width:560px){.room{aspect-ratio:4/3}.modal{position:relative;left:auto;right:auto;top:auto;max-height:none;margin-top:8px;border:2px solid #ffd45c;box-shadow:0 6px 18px rgba(0,0,0,.15)}.corner{width:18%}.h-corner{left:91%}}
 </style>
 </head>
 <body data-stage data-unit="1" data-title="Ⅰ단원 방 탈출" data-sub="중1 Ⅰ단원 · 단원 정리 · 미래엔 23, 37, 40쪽">
 <main>
   <span class="badge">중1 Ⅰ단원 · 단원 정리</span>
   <h1>Ⅰ단원 방 탈출</h1>
-  <p class="lead">컴퓨터실에 갇혔어요! 방마다 문제를 풀어 <b>자물쇠 번호</b>를 모으고, 세 개의 문을 열어 탈출해 보세요. 컴퓨팅 시스템과 피지컬 컴퓨팅을 정리하는 게임이에요.</p>
+  <p class="lead">⚡ 정전! 컴퓨터실 문이 잠겨 버렸어요. 방 안의 물건을 <b>조사</b>해 단서와 아이템을 모으고, 문 비밀번호를 알아내 <b>15분 안에</b> 탈출하세요. 컴퓨팅 시스템과 피지컬 컴퓨팅을 정리하는 게임이에요.</p>
 
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
@@ -47,9 +103,34 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>방 탈출 게임</h2>
-    <div class="card" data-bot="문제를 맞히면 자물쇠 번호를 얻어! 번호를 잘 기억해 둬 🔐">
+    <div class="card" data-bot="방 안의 물건을 하나씩 눌러 조사해 봐. 얻은 아이템은 아래 가방에 들어가 🔦">
       <h3>🔐 컴퓨터실 방 탈출</h3>
-      <div class="esc" id="esc"></div>
+      <div class="er-wrap" id="erWrap">
+        <div class="er-hud"><span id="erTime">⏳ 15:00</span><span id="erGoal">🎯 방 안을 조사해 보세요</span><button class="btn line" id="erHint">💡 힌트</button></div>
+        <div class="room" id="room">
+          <div class="wall"></div><div class="floor"></div>
+          <div class="door" id="door"><div class="door-light"></div><div class="door-panel"><span class="knob"></span></div></div>
+          <button class="hs keypad" data-o="keypad" aria-label="문 키패드">🔢</button>
+          <div class="shelf"><i></i><i></i><i class="b2"></i><i></i><i class="b3"></i><i></i><i class="b2"></i><i></i><i class="b3"></i><i></i><i></i><i class="b2"></i></div>
+          <button class="hs h-shelf" data-o="shelf" aria-label="책장">📚</button>
+          <div class="desk"></div>
+          <div class="drawer" id="drawer"><span>━</span></div>
+          <button class="hs h-drawer" data-o="drawer" aria-label="책상 서랍">🗄️</button>
+          <div class="monitor" id="monitor"><div class="scr" id="scr"></div></div>
+          <button class="hs h-mon" data-o="monitor" aria-label="모니터">🖥️</button>
+          <div class="tower" id="tower"><span class="pled"></span><span class="slot"></span></div>
+          <button class="hs h-tower" data-o="tower" aria-label="컴퓨터 본체">🖲️</button>
+          <div class="trash"></div>
+          <button class="hs h-trash" data-o="trash" aria-label="휴지통">🗑️</button>
+          <div class="corner" id="corner"><div class="board" id="board"><b>센서 보드</b><div class="leds" id="leds"></div></div></div>
+          <button class="hs h-corner" data-o="corner" aria-label="어두운 구석">🌑</button>
+          <div class="dim" id="dim"></div>
+          <div class="intro" id="intro"><div class="alarm">⚡ 정전 경보 ⚡</div><p>수업이 끝나고 혼자 남았는데 전기가 나갔어요.<br>컴퓨터실 문이 <b>전자 잠금</b>으로 잠겼어요!</p><button class="btn" id="erStart">🔦 탈출 시작</button></div>
+        </div>
+        <div class="modal" id="modal" hidden></div>
+        <div class="inv"><b>🎒 가방</b><div id="inv"><span class="empty">아직 없어요</span></div></div>
+        <div class="feedback" id="erFb"></div>
+      </div>
     </div>
   </section>
 
@@ -73,76 +154,152 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-/* ===== 방 탈출 게임 ===== */
-const ROOMS = [
-  {n: '🧪 1번 방 · 하드웨어 실험실', s: '부품이 흩어져 있는 실험실이에요.', qs: [
-    {q: '컴퓨팅 시스템을 구성하는 두 요소는?', o: ['하드웨어와 소프트웨어', '센서와 모니터', 'CPU와 프린터'], a: 0, e: '물리적 장치(하드웨어)와 프로그램(소프트웨어)이 함께 동작해요.'},
-    {q: '명령을 해석하고 데이터를 계산하는 하드웨어는?', o: ['입력 장치', '중앙 처리 장치(CPU)', '출력 장치'], a: 1, e: 'CPU는 제어 장치와 연산 장치로 이루어져요.'},
-    {q: '전원이 꺼지면 저장된 내용이 사라지는 기억 장치는?', o: ['SSD', '램(RAM)', 'USB 메모리'], a: 1, e: '램은 주기억 장치로, 실행 중인 데이터를 잠시 저장해요.'},
-  ]},
-  {n: '⚙️ 2번 방 · 운영체제 관제실', s: '모니터가 잔뜩 켜진 관제실이에요.', qs: [
-    {q: '운영체제와 유틸리티는 어떤 소프트웨어일까?', o: ['응용 소프트웨어', '시스템 소프트웨어'], a: 1, e: '응용 소프트웨어가 잘 작동하도록 환경을 제공해요.'},
-    {q: '새 프린터를 연결하면 운영체제가 드라이버를 찾아 연결해 줘요. 어떤 기능일까?', o: ['파일 관리', '입출력 장치 관리', '프로세스 관리'], a: 1, e: '운영체제는 드라이버로 입출력 장치를 관리해요.'},
-    {q: '길 찾기 앱이 목적지를 받아 경로를 계산하고 화면에 보여 주는 순서는?', o: ['출력 → 처리 → 입력', '입력 → 처리 → 출력', '처리 → 입력 → 출력'], a: 1, e: '컴퓨팅 시스템은 입력 → 처리 → 출력을 반복해요.'},
-  ]},
-  {n: '🔌 3번 방 · 피지컬 컴퓨팅 공방', s: '센서와 모터가 가득한 공방이에요. 마지막 문이에요!', qs: [
-    {q: '다음 중 액추에이터는?', o: ['빛 센서', '서보 모터', '소리 센서'], a: 1, e: '서보 모터는 신호에 따라 정해진 각도로 움직이는 액추에이터예요.'},
-    {q: '피지컬 컴퓨팅 시스템의 동작 순서로 알맞은 것은?', o: ['액추에이터 제어 → 데이터 수집 → 프로그램 실행', '센서로 데이터 수집 → 데이터 처리 → 프로그램 실행 → 액추에이터 제어', '프로그램 실행 → 센서 → 끝'], a: 1, e: '센서 → 마이크로컨트롤러 처리 → 프로그램 실행 → 액추에이터 제어 순서예요.'},
-    {q: '센서 보드의 아날로그 센서 값의 범위는?', o: ['0~1023', '0 또는 1', '1~10'], a: 0, e: '아날로그 센서는 0~1023의 값을, 버튼은 0 또는 1을 입력해요.'},
-  ]},
-];
-const G = {};
-function escStart(){
-  Object.assign(G, {room: 0, qi: 0, wrong: 0, t0: Date.now(), res: [], tried: false, codes: ROOMS.map(() => [0, 1, 2].map(() => Math.floor(Math.random() * 10)))});
-  clearInterval(G.tm); G.tm = setInterval(() => { const t = $('#escT'); if (t) t.textContent = '⏱ ' + fmtT(); }, 1000);
-  drawRoom();
+/* ===== 방 탈출: 정전된 컴퓨터실 ===== */
+const QZ = {
+  monitor: {q: '모니터를 켜려면 컴퓨팅 시스템의 두 요소가 모두 필요해요. 두 요소는?', o: ['하드웨어와 소프트웨어', '센서와 모니터', 'CPU와 프린터'], a: 0, e: '물리적 장치(하드웨어)와 프로그램(소프트웨어)이 함께 동작해요.'},
+  shelf: {q: '「운영체제 사용 설명서」 책 표지에 적힌 질문: 운영체제와 유틸리티는 어떤 소프트웨어일까?', o: ['응용 소프트웨어', '시스템 소프트웨어'], a: 1, e: '응용 소프트웨어가 잘 작동하도록 환경을 제공하는 시스템 소프트웨어예요.'},
+  trash: {q: '구겨진 쪽지에 적힌 질문: 정전이 되면 내용이 모두 사라지는 기억 장치는?', o: ['SSD', '램(RAM)', 'USB 메모리'], a: 1, e: '램은 주기억 장치라서 전원이 꺼지면 내용이 사라져요.'},
+  usb1: {q: '💾 USB를 꽂자 "새 장치 발견! 드라이버를 찾는 중…" 이건 운영체제의 어떤 기능일까?', o: ['파일 관리', '입출력 장치 관리', '프로세스 관리'], a: 1, e: '운영체제는 드라이버로 입출력 장치를 연결하고 관리해요.'},
+  usb2: {q: 'USB 속 파일 「탈출.exe」를 실행하려면 컴퓨터가 어떤 순서로 일할까?', o: ['출력 → 처리 → 입력', '입력 → 처리 → 출력', '처리 → 입력 → 출력'], a: 1, e: '컴퓨팅 시스템은 입력 → 처리 → 출력을 반복해요.'},
+  b1: {q: '센서 보드 1번 칸: 다음 중 액추에이터를 꽂아야 LED가 켜져요. 액추에이터는?', o: ['빛 센서', '서보 모터', '소리 센서'], a: 1, e: '서보 모터는 신호에 따라 움직이는 액추에이터예요.'},
+  b2: {q: '센서 보드 2번 칸: 피지컬 컴퓨팅 시스템의 동작 순서는?', o: ['액추에이터 제어 → 데이터 수집 → 프로그램 실행', '센서로 데이터 수집 → 데이터 처리 → 프로그램 실행 → 액추에이터 제어'], a: 1, e: '센서 → 마이크로컨트롤러 처리 → 프로그램 실행 → 액추에이터 제어 순서예요.'},
+  b3: {q: '센서 보드 3번 칸: 빛 센서 같은 아날로그 센서가 보내는 값의 범위는?', o: ['0~1023', '0 또는 1', '1~10'], a: 0, e: '아날로그 센서는 0~1023, 버튼은 0 또는 1이에요.'},
+};
+const QORDER = ['monitor', 'shelf', 'trash', 'usb1', 'usb2', 'b1', 'b2', 'b3'];
+const ER = {};
+const COLORS = [['빨강', '#ff5a5a'], ['초록', '#3cf08a'], ['파랑', '#5aa8ff']];
+const d10 = () => Math.floor(Math.random() * 10);
+function erInit(){
+  Object.assign(ER, {t: 15 * 60, started: false, first: {}, inv: [], dcode: [d10(), d10(), d10()], ecode: [d10(), d10(), d10()], clue: [null, null, null], usbQ: 0,
+    done: {}, ledOn: [], wheel: [0, 0, 0], kp: '', hints: 0, wrong: 0, ledPos: [0, 1, 2].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1])});
+  clearInterval(ER.tm);
+  $('#room').className = 'room'; $('#door').className = 'door'; $('#drawer').className = 'drawer'; $('#monitor').className = 'monitor'; $('#tower').className = 'tower'; $('#corner').className = 'corner';
+  $('.shelf').classList.remove('glow'); $('#scr').innerHTML = ''; $('#modal').hidden = true;
+  $$('#room .hs').forEach(b => b.classList.remove('done'));
+  $('#room').querySelector('.outro')?.remove(); $('#intro').hidden = false;
+  drawInv(); drawLeds(); goal(); timeTxt();
 }
-const fmtT = () => { const s = Math.floor((Date.now() - G.t0) / 1000); return `${Math.floor(s / 60)}분 ${String(s % 60).padStart(2, '0')}초`; };
-function escTop(){ return `<div class="esc-top"><div class="rooms">${ROOMS.map((r, i) => `<span class="${i < G.room ? 'done' : i === G.room ? 'cur' : ''}">${i < G.room ? '🔓' : '🔒'} ${i + 1}번 방</span>`).join('')}</div><span class="timer" id="escT">⏱ ${fmtT()}</span></div>`; }
-function drawRoom(){
-  const R = ROOMS[G.room], code = G.codes[G.room];
-  const clues = code.map((d, i) => `<div class="clue${i < G.qi ? ' got' : ''}">${i + 1}번째 숫자<b>${i < G.qi ? d : '?'}</b></div>`).join('');
-  let body;
-  if (G.qi < R.qs.length){
-    const Q = R.qs[G.qi];
-    body = `<div class="qbox"><p class="q">🔎 문제 ${G.qi + 1} / ${R.qs.length}. ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="escFb"></div></div>`;
-  } else {
-    body = `<div class="lockp"><div class="door" id="door">🚪🔒</div><b>모은 숫자 3개를 순서대로 넣어 자물쇠를 여세요.</b><div class="dials">${[0, 1, 2].map(i => `<input inputmode="numeric" maxlength="1" aria-label="${i + 1}번째 숫자">`).join('')}</div><button class="btn" id="unlock">🔑 열기</button><div class="feedback" id="lockFb"></div></div>`;
-  }
-  $('#esc').innerHTML = escTop() + `<div class="room"><h4>${R.n}</h4><div class="sub">${R.s}</div>${body}<div class="clues">${clues}</div></div>`;
-  if (G.qi < R.qs.length){
-    const Q = R.qs[G.qi];
-    $$('#esc .opt').forEach(b => b.onclick = () => {
-      const ok = +b.dataset.k === Q.a;
-      if (!G.tried) G.res.push(ok);
-      G.tried = true;
-      if (ok){
-        b.classList.add('right'); $$('#esc .opt').forEach(x => x.disabled = true);
-        feedback($('#escFb'), true, `⭕ 정답! ${Q.e} 🔢 단서: ${G.qi + 1}번째 숫자는 ${code[G.qi]}`);
-        setTimeout(() => { G.qi++; G.tried = false; drawRoom(); }, 1600);
-      } else { G.wrong++; b.classList.add('wrong'); b.disabled = true; feedback($('#escFb'), false, '❌ 자물쇠가 꿈쩍도 안 해요. 다시 생각해 보세요.'); }
-    });
-  } else {
-    const ins = $$('#esc .dials input');
-    ins.forEach((inp, i) => inp.oninput = () => { inp.value = inp.value.replace(/\D/g, '').slice(-1); if (inp.value && ins[i + 1]) ins[i + 1].focus(); });
-    ins[0].focus({preventScroll: true});
-    $('#unlock').onclick = () => {
-      if (ins.map(x => x.value).join('') !== code.join('')) return feedback($('#lockFb'), false, '❌ 번호가 틀렸어요. 아래의 단서 숫자를 순서대로 확인해 보세요.');
-      $('#door').textContent = '🚪🔓'; $('#door').classList.add('open');
-      feedback($('#lockFb'), true, G.room < ROOMS.length - 1 ? '🔓 철컥! 문이 열렸어요. 다음 방으로!' : '🔓 철컥! 마지막 문이 열렸어요!');
-      setTimeout(() => { G.room++; G.qi = 0; G.room < ROOMS.length ? drawRoom() : win(); }, 1300);
+const timeTxt = () => { const t = Math.max(0, ER.t); $('#erTime').textContent = `⏳ ${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; $('#erTime').classList.toggle('low', t > 0 && t <= 60); };
+$('#erStart').onclick = () => { $('#intro').hidden = true; ER.started = true; ER.t0 = Date.now(); ER.tm = setInterval(() => { ER.t--; timeTxt(); if (ER.t === 0) say('⏰ 시간이 다 됐어요! 그래도 끝까지 탈출해 보세요.', false); }, 1000); };
+const say = (m, ok) => feedback($('#erFb'), ok, m);
+function goal(){
+  const g = !ER.done.drawer ? (ER.clue.every(c => c !== null) ? '🗄️ 서랍 자물쇠를 열어 보세요' : '🔎 서랍 비밀번호 숫자 3개를 찾아요 (모니터, 책장, 휴지통)')
+    : !ER.done.tower ? '💾 USB를 어디에 꽂아 볼까요?' : !ER.done.corner ? '🔦 어두운 구석을 비춰 보세요' : ER.ledOn.length < 3 ? '🔌 센서 보드의 LED 3개를 모두 켜요' : '🔢 문 키패드에 비밀번호를 넣어 탈출!';
+  $('#erGoal').textContent = '🎯 ' + g;
+}
+function drawInv(){ $('#inv').innerHTML = ER.inv.length ? ER.inv.map(i => `<span>${i}</span>`).join('') : '<span class="empty">아직 없어요</span>'; }
+function drawLeds(){
+  $('#leds').innerHTML = ER.ledPos.map(c => { const on = ER.ledOn.includes(c); return `<span class="${on ? 'on' : ''}" style="color:${COLORS[c][1]}"><i style="background:${on ? COLORS[c][1] : '#333'}"></i>${on ? ER.ecode[c] : '?'}</span>`; }).join('');
+}
+function fly(icon, fromEl){
+  const room = $('#room'), r0 = room.getBoundingClientRect(), a = fromEl.getBoundingClientRect(), b = $('#inv').getBoundingClientRect();
+  const el = document.createElement('div'); el.className = 'fly'; el.textContent = icon; room.appendChild(el);
+  el.style.left = (a.left - r0.left + a.width / 2) + 'px'; el.style.top = (a.top - r0.top) + 'px';
+  el.animate([{transform: 'scale(1)'}, {transform: `translate(${b.left - a.left}px,${b.top - a.top + 20}px) scale(.6)`, opacity: .3}], {duration: 900, easing: 'cubic-bezier(.5,0,.5,1)'}).onfinish = () => el.remove();
+}
+function modal(html){ const m = $('#modal'); m.hidden = false; m.innerHTML = '<button class="x" aria-label="닫기">✕</button>' + html; m.querySelector('.x').onclick = () => { m.hidden = true; }; if (matchMedia('(max-width:560px)').matches) setTimeout(() => m.scrollIntoView({block: 'nearest', behavior: 'smooth'}), 50); return m; }
+function quiz(key, title, onOk){
+  const Q = QZ[key];
+  const m = modal(`<h4>${title}</h4><p class="q">❓ ${Q.q}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div><div class="feedback" id="mFb"></div><div id="mOut"></div>`);
+  m.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.k === Q.a; if (!(key in ER.first)) ER.first[key] = ok;
+    if (!ok){ ER.wrong++; b.classList.add('wrong'); b.disabled = true; m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake'); return feedback($('#mFb'), false, '❌ 삐빅! 아무 일도 일어나지 않아요. 다시 생각해 보세요.'); }
+    b.classList.add('right'); m.querySelectorAll('.opt').forEach(x => x.disabled = true); feedback($('#mFb'), true, '⭕ ' + Q.e);
+    onOk(m.querySelector('#mOut'));
+  });
+}
+function clueFound(i, where, out){
+  ER.clue[i] = ER.dcode[i];
+  out.innerHTML = `<div class="paper">📝 <b>${where}</b>에서 찾은 단서<br>서랍 비밀번호 <b>${i + 1}번째 숫자는 ${ER.dcode[i]}</b></div>`;
+  ER.inv.push(`📝 서랍 ${i + 1}번째: ${ER.dcode[i]}`); drawInv(); goal();
+}
+const ACT = {
+  monitor(btn){
+    if (ER.done.monitor) return say(ER.done.tower ? '🖥️ 화면: "문 비밀번호 = LED 숫자를 빨강 → 초록 → 파랑 순서로"' : '🖥️ 화면에 서랍 비밀번호 첫 번째 숫자가 떠 있어요.', true);
+    quiz('monitor', '🖥️ 꺼진 모니터', out => { ER.done.monitor = 1; btn.classList.add('done'); $('#monitor').classList.add('on'); $('#scr').innerHTML = `&gt; 비상 전원 연결…<br>&gt; 단서: 서랍 1번째 = ${ER.dcode[0]}`; clueFound(0, '모니터', out); });
+  },
+  shelf(btn){
+    if (ER.done.shelf) return say('📚 책장은 이미 살펴봤어요.', true);
+    $('.shelf').classList.add('glow');
+    quiz('shelf', '📚 책장 속 빛나는 책', out => { ER.done.shelf = 1; btn.classList.add('done'); clueFound(1, '운영체제 사용 설명서', out); });
+  },
+  trash(btn){
+    if (ER.done.trash) return say('🗑️ 휴지통은 이제 비어 있어요.', true);
+    quiz('trash', '🗑️ 휴지통 속 구겨진 쪽지', out => { ER.done.trash = 1; btn.classList.add('done'); clueFound(2, '구겨진 쪽지', out); });
+  },
+  drawer(btn){
+    if (ER.done.drawer) return say('🗄️ 서랍은 이미 열려 있어요.', true);
+    const m = modal(`<h4>🗄️ 책상 서랍 · 3자리 자물쇠</h4><p class="hint">▲▼를 눌러 숫자를 맞춘 뒤 [열기]를 누르세요.</p><div class="wheels">${[0, 1, 2].map(i => `<div class="wheel"><button data-w="${i}" data-d="1" aria-label="${i + 1}번째 올리기">▲</button><b id="w${i}">${ER.wheel[i]}</b><button data-w="${i}" data-d="-1" aria-label="${i + 1}번째 내리기">▼</button></div>`).join('')}</div><div style="text-align:center"><button class="btn" id="dOpen">🔓 열기</button></div><div class="feedback" id="mFb"></div>`);
+    m.querySelectorAll('.wheel button').forEach(b => b.onclick = () => { const i = +b.dataset.w; ER.wheel[i] = (ER.wheel[i] + +b.dataset.d + 10) % 10; const w = m.querySelector('#w' + i); w.textContent = ER.wheel[i]; w.animate([{transform: `translateY(${b.dataset.d > 0 ? 8 : -8}px)`, opacity: .3}, {transform: 'none', opacity: 1}], {duration: 180}); });
+    m.querySelector('#dOpen').onclick = () => {
+      if (ER.wheel.join('') !== ER.dcode.join('')){ ER.wrong++; m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake'); return feedback($('#mFb'), false, ER.clue.some(c => c === null) ? '❌ 철컥… 안 열려요. 아직 찾지 못한 숫자가 있어요.' : '❌ 철컥… 안 열려요. 가방 속 단서 숫자를 순서대로 맞춰 보세요.'); }
+      m.hidden = true; ER.done.drawer = 1; btn.classList.add('done'); $('#drawer').classList.add('open');
+      setTimeout(() => { fly('🔦', $('#drawer')); setTimeout(() => fly('💾', $('#drawer')), 250); ER.inv = ER.inv.filter(x => !x.startsWith('📝')); ER.inv.push('🔦 손전등', '💾 USB'); drawInv(); goal(); say('🗄️ 서랍이 열렸어요! 🔦 손전등과 💾 USB를 얻었어요.', true); }, 600);
     };
-  }
+  },
+  tower(btn){
+    if (ER.done.tower) return say('🖲️ 본체가 켜져 있어요. 모니터를 확인해 보세요.', true);
+    if (!ER.inv.includes('💾 USB')) return say('🖲️ 본체 앞에 USB 꽂는 곳이 비어 있어요. USB가 어디 있을까요?', false);
+    $('#tower').classList.add('usb');
+    const step = () => quiz(ER.usbQ ? 'usb2' : 'usb1', '🖲️ 컴퓨터 본체 · USB 연결', out => {
+      if (!ER.usbQ){ ER.usbQ = 1; out.innerHTML = '<div style="text-align:center;margin-top:8px"><button class="btn" id="nx">다음 ▶</button></div>'; out.querySelector('#nx').onclick = step; return; }
+      ER.done.tower = 1; btn.classList.add('done'); $('#tower').classList.add('on'); $('#monitor').classList.add('on');
+      $('#scr').innerHTML = '&gt; 탈출.exe 실행 완료<br>&gt; 문 비밀번호 =<br>&nbsp; LED 숫자를<br>&nbsp; <span style="color:#ff5a5a">빨강</span>→<span style="color:#3cf08a">초록</span>→<span style="color:#5aa8ff">파랑</span> 순서로';
+      ER.inv = ER.inv.filter(x => x !== '💾 USB'); ER.inv.push('📜 문 비밀번호 규칙'); drawInv(); goal();
+      out.innerHTML = '<div class="paper">🖥️ 모니터에 메시지가 떴어요: <b>문 비밀번호 = 센서 보드 LED 숫자를 빨강 → 초록 → 파랑 순서로</b></div>';
+    });
+    step();
+  },
+  corner(btn){
+    if (ER.done.corner){ return ER.ledOn.length < 3 ? ACT.board() : say('🔌 센서 보드의 LED가 모두 켜졌어요!', true); }
+    if (!ER.inv.includes('🔦 손전등')) return say('🌑 너무 어두워서 아무것도 보이지 않아요. 비출 만한 것이 있을까요?', false);
+    $('#corner').classList.add('beam');
+    setTimeout(() => { $('#corner').classList.remove('beam'); $('#corner').classList.add('lit'); ER.done.corner = 1; goal(); say('🔦 손전등으로 비추자 구석에 숨겨진 🔌 센서 보드가 보여요! 다시 눌러 조사해 보세요.', true); }, 1200);
+  },
+  board(){
+    const next = ['b1', 'b2', 'b3'][ER.ledOn.length];
+    quiz(next, '🔌 숨겨진 센서 보드', out => {
+      const c = ER.ledOn.length; ER.ledOn.push(c); drawLeds(); goal();
+      out.innerHTML = `<div class="paper">💡 <b style="color:${COLORS[c][1]}">${COLORS[c][0]} LED</b>가 켜졌어요! 숫자 <b>${ER.ecode[c]}</b>${ER.ledOn.length < 3 ? '<div style="margin-top:6px"><button class="btn" id="nx">다음 칸 ▶</button></div>' : ''}</div>`;
+      ER.inv.push(`💡 ${COLORS[c][0]}: ${ER.ecode[c]}`); drawInv();
+      out.querySelector('#nx')?.addEventListener('click', ACT.board);
+      if (ER.ledOn.length === 3) $$('#room .hs.h-corner').forEach(b => b.classList.add('done'));
+    });
+  },
+  keypad(){
+    const m = modal(`<h4>🔢 문 전자 키패드</h4><p class="hint">비밀번호 3자리를 누르세요.</p><div class="kpd" id="kpd">${ER.kp.replace(/./g, '●') || '&nbsp;'}</div><div class="kp">${[1, 2, 3, 4, 5, 6, 7, 8, 9, '⌫', 0, '✔'].map(k => `<button data-k="${k}">${k}</button>`).join('')}</div><div class="feedback" id="mFb"></div>`);
+    m.querySelectorAll('.kp button').forEach(b => b.onclick = () => {
+      const k = b.dataset.k;
+      if (k === '⌫') ER.kp = ER.kp.slice(0, -1); else if (k !== '✔'){ if (ER.kp.length < 3) ER.kp += k; }
+      m.querySelector('#kpd').innerHTML = ER.kp.replace(/./g, '●') || '&nbsp;';
+      if (k !== '✔') return;
+      if (ER.kp !== ER.ecode.join('')){ ER.wrong++; ER.kp = ''; m.querySelector('#kpd').innerHTML = '<span style="color:#ff6b6b">ERROR</span>'; m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake');
+        return feedback($('#mFb'), false, ER.ledOn.length < 3 ? '❌ 삐-! 아직 모르는 숫자가 있어요. 센서 보드를 찾아보세요.' : !ER.done.tower ? '❌ 삐-! 숫자는 모았지만 순서를 몰라요. 본체에 무언가 꽂아 볼까요?' : '❌ 삐-! 순서를 다시 확인해요: 빨강 → 초록 → 파랑'); }
+      m.hidden = true; escape();
+    });
+  },
+};
+$$('#room .hs').forEach(b => b.onclick = () => { if (!ER.started) return; ACT[b.dataset.o](b); });
+$('#erHint').onclick = () => {
+  if (!ER.started) return; ER.hints++;
+  const t = !ER.done.drawer ? (ER.clue.every(c => c !== null) ? 'drawer' : ['monitor', 'shelf', 'trash'].find(k => !ER.done[k])) : !ER.done.tower ? 'tower' : !ER.done.corner || ER.ledOn.length < 3 ? 'corner' : 'keypad';
+  const b = $(`#room .hs[data-o="${t}"]`); b.classList.remove('hint'); void b.offsetWidth; b.classList.add('hint');
+};
+function escape(){
+  clearInterval(ER.tm); ER.started = false; $('#door').classList.add('open'); $('#room').classList.add('free');
+  const used = 15 * 60 - ER.t, mm = Math.floor(Math.max(0, used) / 60), ss = Math.max(0, used) % 60;
+  const res = QORDER.map(k => !!ER.first[k]), n = res.filter(Boolean).length;
+  setTimeout(() => {
+    $('#room').insertAdjacentHTML('beforeend', `<div class="outro"><div class="card2"><div style="font-size:2.6rem">🚪✨🏃</div><h4 style="font-size:1.4rem;margin:4px 0">탈출 성공!</h4>
+      <p style="margin:4px 0">걸린 시간 <b>${mm}분 ${String(ss).padStart(2, '0')}초</b>${ER.t < 0 ? ' (시간 초과)' : ''} · 한 번에 맞힌 문제 <b>${n} / ${res.length}</b> · 힌트 ${ER.hints}번</p>
+      <span class="badge2">${n === res.length && ER.hints === 0 ? '🏆 전설의 탈출 마스터' : n >= 6 ? '🥈 침착한 탈출러' : '🥉 끈기의 탈출러'}</span>
+      <p style="margin:6px 0 0"><button class="btn line" id="again">🔄 다시 도전</button></p></div></div>`);
+    $('#again').onclick = erInit;
+    say('🎉 문이 열렸어요! 컴퓨팅 시스템(하드웨어·소프트웨어·운영체제)과 피지컬 컴퓨팅(센서·액추에이터)을 모두 정리했어요.', true);
+    reportQuiz('escape1', res);
+  }, 1500);
 }
-function win(){
-  clearInterval(G.tm);
-  const n = G.res.filter(Boolean).length;
-  $('#esc').innerHTML = escTop() + `<div class="win"><div class="big">🏃‍♂️💨🚪</div><h4 style="font-size:1.4rem;margin:6px 0">탈출 성공!</h4><p>걸린 시간 <b>${fmtT()}</b> · 한 번에 맞힌 문제 <b>${n} / ${G.res.length}</b></p><span class="badge2">${n === G.res.length ? '🏆 컴퓨팅 시스템 탈출 마스터' : n >= 6 ? '🥈 침착한 탈출러' : '🥉 끈기의 탈출러'}</span><div class="feedback" id="winFb"></div><p><button class="btn line" id="again">🔄 처음부터 다시 도전</button></p></div>`;
-  feedback($('#winFb'), true, n === G.res.length ? '🎉 모든 문제를 한 번에 맞혔어요!' : '틀렸던 문제는 아래 [한 줄 정리]에서 다시 확인해 보세요.');
-  $('#again').onclick = escStart;
-  reportQuiz('escape1', G.res);
-}
-escStart();
+erInit();
 
 const SELF = ['컴퓨팅 시스템의 개념과 생활 속 사례를 말할 수 있다.', '하드웨어와 소프트웨어의 종류를 구분할 수 있다.', '컴퓨팅 시스템의 동작 과정과 운영체제의 기능을 설명할 수 있다.', '피지컬 컴퓨팅 시스템의 구성 요소(센서, 액추에이터)를 구분할 수 있다.', '문제 해결에 필요한 센서와 액추에이터를 골라 시스템을 설계할 수 있다.'];
 $('#self').innerHTML = SELF.map(s => `<label><input type="checkbox"> ${s}</label>`).join('');
