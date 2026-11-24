@@ -14,6 +14,32 @@
 .map{width:100%;max-width:560px;background:#fff;border:2px solid var(--line);border-radius:14px}
 .map .st{cursor:pointer}
 .route{font-weight:700;margin:6px 0}
+
+/* ── 엘리베이터 이사 작전 ── */
+.ev-state{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.ev-state span{border-radius:999px;padding:4px 12px;font-weight:800;font-size:.84rem;background:var(--bg);color:var(--muted);transition:all .3s}
+.ev-state span.on{background:#ff7aa2;color:#fff;transform:scale(1.08);box-shadow:0 4px 10px #ff7aa255}
+.ev-scene{display:grid;grid-template-columns:minmax(0,1fr) 96px minmax(0,1fr);gap:8px;align-items:stretch;border-radius:18px;padding:10px;background:linear-gradient(#cfe9ff,#eef7ff 70%,#d7c3a5 70%);min-height:270px}
+.ev-floor{display:flex;flex-direction:column;border-radius:14px;padding:6px;background:rgba(255,255,255,.75)}
+.ev-floor h4{margin:0 0 4px;font-size:.82rem;text-align:center}
+.ev-floor.top{justify-content:flex-start}.ev-floor.bot{justify-content:flex-end}
+.ev-boxes{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.ev-box{border:0;border-radius:10px;padding:4px 6px;min-width:58px;background:linear-gradient(#e8c48f,#c99a5b);color:#3a2400;font-weight:800;font-size:.72rem;line-height:1.2;box-shadow:0 3px 0 #9b6f37;cursor:pointer;animation:evin .35s cubic-bezier(.2,1.4,.4,1)}
+.ev-box i{display:block;font-style:normal;font-size:1.3rem}
+.ev-box:disabled{cursor:default}
+@keyframes evin{from{transform:scale(.4);opacity:0}}
+.ev-shaft{position:relative;border-radius:12px;background:repeating-linear-gradient(#6b7790 0 3px,#8a96ad 3px 22px);box-shadow:inset 0 0 10px #0006}
+.ev-car{position:absolute;left:6px;right:6px;bottom:6px;height:118px;border-radius:10px;background:linear-gradient(#f6f8fc,#d9dfeb);border:3px solid #3b4660;display:flex;flex-direction:column;align-items:center;padding:3px;transition:transform 1s cubic-bezier(.5,0,.3,1)}
+.ev-car.shake{animation:evshake .4s}
+@keyframes evshake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.ev-car .kg{font-family:var(--cute);font-size:1rem}
+.ev-car .gauge{width:90%;height:8px;border-radius:999px;background:#c9d2e3;overflow:hidden;margin:2px 0}
+.ev-car .gauge b{display:block;height:100%;background:#16b8a6;transition:width .3s}
+.ev-car .gauge b.over{background:#ff5b5b}
+.ev-car .in{display:flex;flex-wrap:wrap;gap:1px;justify-content:center;font-size:1.05rem}
+@media (max-width:640px){.ev-scene{grid-template-columns:minmax(0,1fr) 70px minmax(0,1fr);padding:8px;gap:6px}.ev-box{min-width:0;width:48px;padding:3px 2px;font-size:.62rem}.ev-box .nm{display:none}.ev-car{height:100px}}
+.ev-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.ev-trip{font-weight:800;background:var(--bg);border-radius:10px;padding:4px 10px}
 </style>
 </head>
 <body data-stage data-unit="3" data-title="문제의 상태와 추상화" data-sub="중1 Ⅲ단원 · 문제의 이해와 추상화 · 미래엔 81~84쪽">
@@ -31,6 +57,19 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
+
+    <div class="card" data-bot="상자를 엘리베이터에 싣고 올려 봐. 200kg을 넘으면 삐! 🛗">
+      <h3>🛗 엘리베이터 이사 작전 <span class="tag-more">특색</span></h3>
+      <p>최대 <b>200kg</b>까지 실을 수 있는 엘리베이터로 이삿짐을 5층 새 집으로 옮겨요. 상자를 눌러 싣고 <b>⬆ 올리기</b>! 가장 <b>적은 횟수</b>로 옮겨 보세요. 문제의 <b>상태</b>가 어떻게 바뀌는지도 살펴봐요.</p>
+      <div class="ev-state" id="evState"><span>📦 초기 상태</span><span>🔄 현재 상태</span><span>🏁 목표 상태</span></div>
+      <div class="ev-scene" id="evScene">
+        <div class="ev-floor bot"><h4>🚚 1층 · 이삿짐</h4><div class="ev-boxes" id="evDown"></div></div>
+        <div class="ev-shaft" id="evShaft"><div class="ev-car" id="evCar"><span class="kg" id="evKg">0kg</span><span class="gauge"><b id="evG"></b></span><div class="in" id="evIn"></div></div></div>
+        <div class="ev-floor top"><h4>🏠 5층 · 새 집</h4><div class="ev-boxes" id="evUp"></div></div>
+      </div>
+      <div class="ev-ctrl"><button class="btn" id="evGo">⬆ 올리기</button><button class="btn ghost" id="evOut">⬇ 다 내리기</button><span class="ev-trip" id="evTrip">이동 0회</span></div>
+      <div id="evMsg"></div>
+    </div>
     <div class="card" data-bot="초기·현재·목표 상태를 하나씩 찾아봐 🧭">
       <h3>🧭 초기·현재·목표 상태</h3>
       <p>최대 200kg까지 실을 수 있는 엘리베이터로 이삿짐 상자들을 최소 횟수로 옮기려고 해요.</p>
@@ -117,6 +156,52 @@ function draw(){
 $('#undo').onclick = () => { if (path.length > 1) path.pop(); draw(); };
 $('#clear').onclick = () => { path = [0]; draw(); };
 draw();
+
+
+/* ===== 엘리베이터 이사 작전 ===== */
+const EVB = [['🛋️', '소파', 120], ['📺', 'TV', 80], ['🗄️', '서랍장', 70], ['📚', '책', 60], ['🪴', '화분', 50], ['👕', '옷', 40], ['🎮', '게임기', 30]];
+const EVMIN = 3, EVCAP = 200;
+let evWhere, evCar, evTrips, evBusy, evOver = 0;
+const evSum = () => evCar.reduce((s, i) => s + EVB[i][2], 0);
+function evState(k){ $$('#evState span').forEach((s, i) => s.classList.toggle('on', i === k)); }
+function evDraw(){
+  const bx = i => `<button class="ev-box" data-i="${i}"><i>${EVB[i][0]}</i><span class="nm">${EVB[i][1]}<br></span>${EVB[i][2]}kg</button>`;
+  $('#evDown').innerHTML = EVB.map((_, i) => i).filter(i => evWhere[i] === 0 && !evCar.includes(i)).map(bx).join('');
+  $('#evUp').innerHTML = EVB.map((_, i) => i).filter(i => evWhere[i] === 1).map(bx).join('');
+  $$('#evUp .ev-box').forEach(b => b.disabled = true);
+  const s = evSum(); $('#evKg').textContent = s + 'kg'; $('#evG').style.width = Math.min(100, s / EVCAP * 100) + '%'; $('#evG').classList.toggle('over', s > EVCAP);
+  $('#evIn').innerHTML = evCar.map(i => `<span title="${EVB[i][1]}">${EVB[i][0]}</span>`).join('');
+  $$('#evDown .ev-box').forEach(b => b.onclick = () => { if (evBusy) return; evCar.push(+b.dataset.i); evDraw(); });
+  $('#evIn').onclick = () => { if (evBusy || !evCar.length) return; evCar.pop(); evDraw(); };
+  $('#evTrip').textContent = `이동 ${evTrips}회`;
+}
+function evStart(){ evWhere = EVB.map(() => 0); evCar = []; evTrips = 0; evBusy = false; evOver = 0; evState(0); $('#evMsg').innerHTML = '<p class="hint">💡 지금은 아무것도 옮기지 않은 <b>초기 상태</b>예요. 엘리베이터 안의 상자를 누르면 다시 내려요.</p>'; evDraw(); }
+$('#evOut').onclick = () => { if (!evBusy){ evCar = []; evDraw(); } };
+$('#evGo').onclick = async () => {
+  if (evBusy) return;
+  if (!evCar.length){ $('#evMsg').innerHTML = '<p class="feedback show bad">먼저 상자를 눌러 엘리베이터에 실어요.</p>'; return; }
+  if (evSum() > EVCAP){ evOver++; const c = $('#evCar'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); $('#evMsg').innerHTML = `<p class="feedback show bad">🚨 삐-! 정원 초과! ${evSum()}kg은 ${EVCAP}kg을 넘어요. 상자를 내려요.</p>`; return; }
+  evBusy = true; const c = $('#evCar'); c.style.setProperty('--evh', ($('#evShaft').clientHeight - c.offsetHeight - 12) + 'px');
+  c.style.transform = `translateY(-${$('#evShaft').clientHeight - c.offsetHeight - 12}px)`; await new Promise(r => setTimeout(r, 1050));
+  evCar.forEach(i => evWhere[i] = 1); evCar = []; evTrips++; evDraw();
+  const left = evWhere.filter(w => w === 0).length;
+  if (!left){ evState(2); evEnd(); return; }
+  evState(1); $('#evMsg').innerHTML = `<p class="hint">🔄 <b>현재 상태</b>: ${evTrips}번 옮겼고, 1층에 상자 ${left}개가 남았어요.</p>`;
+  c.style.transform = ''; await new Promise(r => setTimeout(r, 1000)); evBusy = false;
+};
+function evEnd(){
+  const ok = evTrips === EVMIN;
+  $('#evMsg').innerHTML = `<p class="feedback show ${ok ? 'ok' : 'bad'}">🏁 <b>목표 상태</b> 도달! 이삿짐을 모두 옮겼어요. 이동 <b>${evTrips}회</b> ${ok ? '— 최소 횟수예요! 🎉' : `— 최소 ${EVMIN}회로도 할 수 있어요. 무거운 상자부터 짝을 맞춰 200kg에 가깝게 채워 봐요.`}</p>
+    <div style="margin-top:8px;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff"><b>🔍 이 문제를 풀 때 꼭 필요했던 정보는? (추상화)</b><div class="picks" id="evAbs">${['상자 무게', '엘리베이터 최대 무게', '상자 안의 물건 이름', '상자 색깔'].map(t => `<button>${t}</button>`).join('')}</div><p class="hint" id="evAbsM">필요한 것을 모두 눌러요.</p></div>
+    <button class="btn ghost" id="evAgain" style="margin-top:8px">다시 옮기기 ↺</button>`;
+  const need = ['상자 무게', '엘리베이터 최대 무게'], sel = new Set();
+  $$('#evAbs button').forEach(b => b.onclick = () => { const t = b.textContent; sel.has(t) ? sel.delete(t) : sel.add(t); b.classList.toggle('on');
+    const good = sel.size === 2 && need.every(x => sel.has(x));
+    $('#evAbsM').innerHTML = good ? '⭕ 맞아요! 물건 이름이나 색깔은 지워도 돼요. 무게와 최대 무게만 남기는 것이 <b>추상화</b>예요.' : sel.size >= 2 ? '🤔 없어도 문제를 풀 수 있는 정보가 섞여 있어요.' : '필요한 것을 모두 눌러요.';
+    if (good) reportQuiz('elevator', [ok, evOver === 0]); });
+  $('#evAgain').onclick = () => { $('#evCar').style.transform = ''; evStart(); };
+}
+evStart();
 
 renderQuiz($('#quiz'), [
   {q:'복잡한 문제에서 핵심 요소만 남겨 간단하게 만드는 과정은?', o:['추상화','디버깅','정렬'], a:0, e:'추상화는 문제 해결을 위한 핵심 요소를 추출하는 과정이에요.'},
