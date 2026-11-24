@@ -10,6 +10,42 @@
 .methods div{border-radius:14px;padding:10px 12px;background:var(--bg)}
 .methods b{display:block;font-size:1.05rem}
 .methods span{font-size:.85rem;color:var(--muted)}
+
+/* ── 수집 탐정 사무소 ── */
+.cork{position:relative;border-radius:18px;padding:16px;min-height:420px;background:#b98a5a radial-gradient(rgba(0,0,0,.08) 1px,transparent 1.5px) 0 0/7px 7px;box-shadow:inset 0 0 0 10px #7a5434,inset 0 0 30px rgba(0,0,0,.35)}
+.cork-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.cork-center{grid-column:1/-1;display:flex;justify-content:center}
+.polar{background:#fff;padding:7px 7px 10px;border-radius:3px;box-shadow:0 6px 14px rgba(0,0,0,.35);transform:rotate(-2deg);text-align:center;font-weight:800;font-size:.85rem;position:relative;width:min(100%,230px)}
+.polar img{display:block;width:100%;height:120px;object-fit:cover;margin-bottom:5px}
+.pin{position:absolute;left:50%;top:-8px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a8a,#c0262d);box-shadow:0 2px 3px rgba(0,0,0,.4);transform:translateX(-50%);z-index:2}
+.slot{background:#fffdf3;border-radius:4px;padding:10px 10px 12px;box-shadow:0 5px 12px rgba(0,0,0,.3);position:relative;font-size:.85rem;min-height:120px}
+.slot:nth-child(odd){transform:rotate(-1.2deg)}.slot:nth-child(even){transform:rotate(1.4deg)}
+.slot .qq{font-weight:800;margin-bottom:6px;line-height:1.4}
+.slot .mbtn{display:flex;flex-wrap:wrap;gap:4px}
+.slot .mbtn button{border:1.5px solid #d8cfb5;background:#fff;border-radius:999px;padding:3px 8px;font-size:.74rem;font-weight:700;color:#3a2a00}
+.slot .mbtn button.x{opacity:.35;text-decoration:line-through}
+.slot.cur{box-shadow:0 0 0 3px #ffc233,0 5px 12px rgba(0,0,0,.3)}
+.slot.locked{opacity:.55}
+.ev{animation:evIn .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes evIn{from{transform:scale(.4) rotate(-12deg);opacity:0}}
+.ev .tag{display:inline-block;border-radius:6px;background:#1f2a3d;color:#fff;font-size:.7rem;font-weight:800;padding:1px 7px;margin-bottom:5px}
+.ev .bars2 div{display:flex;align-items:center;gap:6px;font-size:.74rem;margin:2px 0}
+.ev .bars2 i{display:block;height:10px;border-radius:5px;background:#3b6cf6;animation:grow 1s ease}
+@keyframes grow{from{width:0}}
+.ev .quote{font-style:italic;background:#fff6db;border-left:4px solid #ffc233;padding:5px 8px;border-radius:4px;line-height:1.45}
+.ev .tally{font-family:monospace;font-size:.8rem;line-height:1.5}
+.ev svg{width:100%;height:auto;display:block}
+.useless{background:#eee;border-radius:6px;padding:6px 8px;font-size:.78rem;color:#555;margin-top:6px;animation:evIn .4s}
+.strings{position:absolute;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+.strings line{stroke:#d22;stroke-width:2.5;stroke-dasharray:600;stroke-dashoffset:600;animation:str 1s forwards}
+@keyframes str{to{stroke-dashoffset:0}}
+.deduce{margin-top:12px}
+.deduce .opts{display:grid;gap:6px}
+.deduce .opts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 11px;text-align:left;font-weight:700;color:var(--ink);line-height:1.4}
+.deduce .opts button.o{border-color:var(--mint);background:var(--mint-soft)}.deduce .opts button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
+.solved{position:absolute;right:16px;top:14px;z-index:3;border:4px solid #c0262d;color:#c0262d;background:rgba(255,255,255,.85);border-radius:10px;padding:2px 12px;font-weight:900;font-size:1.2rem;transform:rotate(-8deg);animation:stIn .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stIn{from{transform:rotate(-8deg) scale(2.4);opacity:0}}
+@media (max-width:560px){.cork-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="데이터 수집 탐정" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 50~51쪽">
@@ -49,6 +85,13 @@
       <p>데이터를 모으는 경로를 <b>직접 수집</b>, <b>매체 활용</b>(TV·책·라디오), <b>인터넷 활용</b>으로 나눌 수 있어요. 인터넷을 활용하면 많은 양의 데이터를 빠르고 편리하게 모을 수 있어요.</p>
       <div id="routes"></div>
     </div>
+
+    <div class="card" data-bot="단서마다 알맞은 수집 방법을 골라 증거를 모아 봐! 🕵️">
+      <h3>🗂️ 수집 탐정 사무소: 사라진 점심의 비밀 <span class="tag-more">특색</span></h3>
+      <p>이번 달 급식 <b>잔반이 2배</b>로 늘었어요! 단서 쪽지마다 <b>알맞은 수집 방법</b>을 골라 증거를 모으고, 증거를 이어 원인을 추리해 보세요. 방법이 맞지 않으면 쓸모없는 증거만 나와요.</p>
+      <div class="cork" id="cork"></div>
+      <div class="deduce" id="deduce"></div>
+    </div>
   </section>
 
   <section class="step">
@@ -63,6 +106,7 @@
     </div>
   </section>
   <p class="src">미래엔 중학교 정보 50~51쪽 내용을 바탕으로 재구성</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:A_South_Korean_school_lunch.jpg" target="_blank" rel="noopener">A South Korean school lunch.jpg</a> · 570cjk · CC BY-SA 3.0</li></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
@@ -85,6 +129,60 @@ renderChoice($('#routes'), [
   {icon:'💻', t:'온라인 설문 링크를 보내 응답 모으기', a:2, e:'온라인 설문 조사는 인터넷을 활용한 수집이에요.'},
   {icon:'▶️', t:'동영상 공유 사이트에서 요리 방법 영상 찾기', a:2, e:'인터넷의 동영상 공유 서비스를 활용했어요.'},
 ], ['직접 수집', '매체 활용', '인터넷 활용']);
+
+
+/* ===== 수집 탐정 사무소 ===== */
+const DM = ['📝 설문 조사', '🎤 인터뷰', '👀 관찰', '🧪 실험', '📚 문헌 조사', '🎥 동영상 촬영'];
+const CLUE = [
+  {q: '전교생은 잔반이 왜 생긴다고 생각할까?', a: 0,
+   ev: `<span class="tag">📝 설문 조사 · 312명 응답</span><div class="bars2">${[['먹을 시간이 부족해서', 46], ['맛이 없어서', 31], ['양이 많아서', 23]].map(([t, v]) => `<div><span style="flex:0 0 118px">${t}</span><i style="width:${v * 1.6}px"></i>${v}%</div>`).join('')}</div>`,
+   bad: {1: '한두 명에게만 물어서는 전교생 생각을 알 수 없어요.', 2: '생각(의견)은 눈으로 볼 수 없어요.', 3: '의견을 실험으로 알 수는 없어요.', 4: '우리 학교 학생들의 지금 생각은 책에 없어요.', 5: '영상에는 생각이 찍히지 않아요.'}},
+  {q: '점심시간 급식실에서 실제로 무슨 일이 벌어질까?', a: 2,
+   ev: `<span class="tag">👀 관찰 · 5일 동안 기록</span><div class="tally">12:40 배식 시작 ┃ 줄 길이 <b>▮▮▮ 15m</b><br>12:58 마지막 반 배식 ┃ 남은 시간 <b>⏰ 12분</b><br>급하게 먹고 나가는 학생 <b>▮▮▮▮▮▮ 32명</b></div>`,
+   alt: 5, bad: {0: '사람들이 "생각하는 것"과 "실제로 일어나는 일"은 달라요.', 1: '한 사람의 기억보다 직접 보는 것이 정확해요.', 3: '급식실 상황은 조건을 바꾸는 실험이 아니에요.', 4: '지금 일어나는 일은 기록 자료에 없어요.'}},
+  {q: '이번 달에 급식이나 점심시간에 달라진 것이 있을까?', a: 1,
+   ev: `<span class="tag">🎤 인터뷰 · 영양사 선생님</span><div class="quote">"메뉴는 그대로예요. 그런데 이번 달부터 <b>점심시간이 50분에서 40분으로</b> 줄었어요. 배식이 늦은 반은 먹을 시간이 부족할 거예요."</div>`,
+   bad: {0: '전교생에게 물어도 바뀐 사정을 정확히 아는 사람은 담당자예요.', 2: '눈으로 보는 것만으로는 바뀐 이유를 알 수 없어요.', 3: '실험할 일이 아니에요.', 4: '최근 바뀐 일은 아직 책에 없어요.', 5: '영상만으로는 이유를 들을 수 없어요.'}},
+  {q: '잔반은 정확히 언제부터 얼마나 늘었을까?', a: 4,
+   ev: `<span class="tag">📚 문헌(기록) 조사 · 잔반 계량 기록표</span><svg viewBox="0 0 200 70"><polyline points="10,55 50,52 90,54 130,50 170,20 190,18" fill="none" stroke="#c0262d" stroke-width="3"/><text x="2" y="66" font-size="8">3월</text><text x="80" y="66" font-size="8">5월</text><text x="150" y="66" font-size="8">이번 달</text><text x="140" y="14" font-size="9" font-weight="700" fill="#c0262d">2배↑ 32kg</text></svg>`,
+   bad: {0: '느낌으로 답한 설문보다 실제 기록이 정확해요.', 1: '기억에 의존한 대답은 정확한 양을 알려 주지 못해요.', 2: '지금부터 관찰하면 지난 기록은 알 수 없어요.', 3: '이미 지난 일은 실험으로 확인할 수 없어요.', 5: '지난 일은 다시 찍을 수 없어요.'}},
+];
+let dci = 0, dfirst = [];
+function corkDraw(){
+  $('#cork').innerHTML = `<div class="cork-grid">
+    <div class="cork-center"><div class="polar" id="cpol"><span class="pin"></span><img src="../assets/photos/m_lunch.jpg" alt="급식 사진">🍱 사건: 잔반 2배 증가!</div></div>
+    ${CLUE.map((c, i) => `<div class="slot ${i === dci ? 'cur' : i > dci ? 'locked' : ''}" id="sl${i}"><span class="pin"></span><div class="qq">🔎 단서 ${i + 1}. ${c.q}</div><div class="body">${i < dci ? `<div class="ev">${c.ev}</div>` : i === dci ? `<div class="mbtn">${DM.map((m, k) => `<button data-k="${k}">${m}</button>`).join('')}</div><div class="fb"></div>` : '<small>🔒 앞 단서를 먼저 해결해요</small>'}</div></div>`).join('')}</div>`;
+  if (dci < CLUE.length) $$(`#sl${dci} .mbtn button`).forEach(b => b.onclick = () => corkPick(+b.dataset.k, b));
+}
+function corkPick(k, b){
+  const c = CLUE[dci];
+  if (k !== c.a && k !== c.alt){ if (dfirst[dci] === undefined) dfirst[dci] = false; b.classList.add('x'); b.disabled = true;
+    $(`#sl${dci} .fb`).innerHTML = `<div class="useless">🗑️ 쓸모없는 증거: ${c.bad[k]}</div>`; return; }
+  if (dfirst[dci] === undefined) dfirst[dci] = true;
+  dci++; corkDraw();
+  if (dci === CLUE.length) setTimeout(deduce, 600);
+}
+function deduce(){
+  $('#deduce').innerHTML = `<h4 style="margin:0 0 6px">🧠 증거 4개가 모였어요! 사건의 원인은?</h4><div class="opts">${[
+    ['급식이 갑자기 맛없어졌기 때문이다.', 0], ['점심시간이 10분 줄어 배식이 늦은 반은 먹을 시간이 부족해졌기 때문이다.', 1], ['학생 수가 2배로 늘었기 때문이다.', 0]].map(([t, a], i) => `<button data-a="${a}">${t}</button>`).join('')}</div><div id="dx"></div>`;
+  let tried = false;
+  $$('#deduce .opts button').forEach(b => b.onclick = () => {
+    if (b.dataset.a !== '1'){ tried = true; b.classList.add('x'); b.disabled = true; $('#dx').innerHTML = `<p class="feedback show bad">❌ ${b.textContent.includes('맛') ? '인터뷰에서 메뉴는 그대로라고 했어요. 설문에서도 1위 이유는 "시간 부족"이었어요.' : '그런 증거는 모으지 않았어요. 증거에 있는 내용으로만 결론을 내려요.'}</p>`; return; }
+    b.classList.add('o'); $$('#deduce .opts button').forEach(x => x.disabled = true);
+    strings();
+    $('#cork').insertAdjacentHTML('beforeend', '<span class="solved">사건 해결!</span>');
+    const n = dfirst.filter(Boolean).length + (tried ? 0 : 1);
+    $('#dx').innerHTML = `<div class="feedback show ok">⭕ 설문(시간 부족 1위) + 관찰(남은 시간 12분) + 인터뷰(점심시간 단축) + 기록(이번 달부터 2배)이 모두 같은 결론을 가리켜요! 한 가지 방법이 아니라 <b>여러 수집 방법</b>으로 모은 증거가 서로 맞아야 믿을 수 있는 결론이 돼요.</div>
+      <p class="hint">🕵️ 한 번에 맞힌 단서 ${n} / 5 · 설문은 이름 없이(익명) 받아 개인 정보를 지켰어요.</p>`;
+    reportQuiz('detective', dfirst.map(Boolean).concat([!tried]));
+  });
+}
+function strings(){
+  const cork = $('#cork'), r0 = cork.getBoundingClientRect(), p = $('#cpol').getBoundingClientRect();
+  const cx = p.left + p.width / 2 - r0.left, cy = p.top + p.height / 2 - r0.top;
+  cork.insertAdjacentHTML('beforeend', `<svg class="strings">${CLUE.map((_, i) => { const s = $('#sl' + i).getBoundingClientRect(); return `<line x1="${cx}" y1="${cy}" x2="${s.left + s.width / 2 - r0.left}" y2="${s.top + 8 - r0.top}" style="animation-delay:${i * .25}s"/>`; }).join('')}</svg>`);
+}
+corkDraw();
 
 renderQuiz($('#quiz'), [
   {q:'특정 변수의 영향을 알아보려고 통제된 환경에서 데이터를 모으는 방법은?', o:['설문 조사','실험','문헌 조사','인터뷰'], a:1, e:'실험은 조건을 통제해 어떤 요인의 영향을 알아보는 방법이에요.'},
