@@ -15,6 +15,33 @@
 .tt{border-collapse:collapse}
 .tt th,.tt td{border:1px solid var(--line);padding:4px 10px;text-align:center}
 .tt th{background:var(--bg)}
+
+/* ── 구조화 타임어택 ── */
+.ta-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.ta-watch{font-family:ui-monospace,Consolas,monospace;font-size:2rem;font-weight:900;background:#1f2a3d;color:#86f2cf;border-radius:14px;padding:4px 16px;min-width:150px;text-align:center;box-shadow:inset 0 0 0 3px #3b4a7a}
+.ta-watch.pen{animation:pen .4s}
+@keyframes pen{30%{color:#ff7a7a;transform:scale(1.08)}}
+.ta-round{font-weight:900;font-size:1.05rem}
+.ta-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:700px){.ta-grid{grid-template-columns:1fr}}
+.ta-text{background:#fffef6;border:1.5px solid #efe3b5;border-radius:12px;padding:12px 14px;line-height:1.9;font-size:.93rem;max-height:340px;overflow-y:auto}
+.ta-tbl{width:100%;border-collapse:collapse;font-size:.88rem;background:#fff;border-radius:12px;overflow:hidden}
+.ta-tbl th{background:#eef2fa;cursor:pointer;padding:7px 6px;user-select:none;white-space:nowrap}
+.ta-tbl th:hover{background:#dfe7fb}
+.ta-tbl th.s::after{content:" ▼";color:var(--brand)}
+.ta-tbl td{border-top:1px solid #eef1f7;padding:6px;text-align:center}
+.ta-tbl tr:hover td{background:#fffbe8}
+.ta-q{border:1.5px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+.ta-q .q{font-weight:800;margin:0 0 8px;line-height:1.5}
+.ta-q .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ta-q .opts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 6px;font-weight:800;color:var(--ink)}
+.ta-q .opts button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.6}
+.ta-dots{display:flex;gap:5px;margin-bottom:8px}.ta-dots i{flex:1;height:6px;border-radius:3px;background:var(--line)}.ta-dots i.on{background:var(--mint)}
+.ta-res{margin-top:6px}
+.ta-res .row3{display:grid;grid-template-columns:110px 1fr 70px;gap:8px;align-items:center;margin:6px 0;font-weight:800;font-size:.9rem}
+.ta-res .row3 i{display:block;height:22px;border-radius:11px;animation:tgrow 1.2s ease}
+@keyframes tgrow{from{width:0!important}}
+.ta-big{font-family:var(--cute);font-size:1.5rem;text-align:center;margin:10px 0}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="가계도 퍼즐" data-sub="중1 Ⅱ단원 · 데이터의 구조화 · 미래엔 58~59쪽">
@@ -72,6 +99,12 @@
         <tr><th>5교시</th><td>체육</td><td>사회</td><td>국어</td><td>영어</td></tr></table></div>
       <p style="margin-top:12px">데이터의 특성을 파악하여 체계적으로 정리하는 것을 <b>데이터의 구조화</b>라고 해요. 구조화하면 좋은 점은?</p>
       <div id="why"></div>
+    </div>
+
+    <div class="card" data-bot="같은 문제를 줄글과 표로 풀어 보고 시간을 비교해 봐 ⏱️">
+      <h3>⏱️ 구조화 타임어택 <span class="tag-more">특색</span></h3>
+      <p>학급 친구 10명의 동아리·생일·동네 정보로 문제 4개를 풀어요. <b>1라운드</b>는 줄글로, <b>2라운드</b>는 표로 정리된 데이터예요. 틀리면 <b>+5초</b>! 어느 쪽이 더 빠를까요?</p>
+      <div id="taBox"><p><button class="btn" id="taStart">⏱️ 1라운드 시작 (줄글)</button></p></div>
     </div>
   </section>
 
@@ -136,6 +169,61 @@ renderChoice($('#why'), [
   {t:'친구에게 우리 가족 관계를 설명할 때 가계도를 보여 주면 금방 이해해요.', a:1, e:'다른 사람에게 내용을 효과적으로 전달할 수 있어요.'},
   {t:'시간표를 보니 정보 시간 다음에는 늘 체육이 있다는 걸 발견했어요.', a:2, e:'전체를 한눈에 보며 데이터 사이의 연관성, 새로운 사실을 찾을 수 있어요.'},
 ], ['🔍 쉽고 빠르게 이해', '📣 효과적으로 전달', '💡 연관성·새로운 발견']);
+
+
+/* ===== 구조화 타임어택 ===== */
+const TA_DATA = [
+  [['민준', '로봇', 3, '신정동'], ['서연', '밴드', 7, '목동'], ['지호', '축구', 11, '신월동'], ['하은', '독서', 1, '신정동'], ['도윤', '로봇', 9, '목동'], ['예린', '밴드', 5, '신정동'], ['시우', '축구', 2, '목동'], ['유나', '로봇', 12, '신월동'], ['준서', '독서', 6, '신월동'], ['다인', '밴드', 10, '신정동']],
+  [['태윤', '밴드', 4, '목동'], ['소율', '로봇', 8, '신정동'], ['건우', '독서', 12, '신월동'], ['채원', '축구', 2, '신정동'], ['현우', '밴드', 6, '신월동'], ['지아', '로봇', 1, '목동'], ['은호', '축구', 9, '신정동'], ['수아', '밴드', 11, '목동'], ['로운', '독서', 3, '신정동'], ['나은', '로봇', 7, '신월동']],
+];
+const TA_SAY = [(n, c, m, d) => `${n}(이)는 ${c} 동아리이고 생일은 ${m}월, ${d}에 살아요.`, (n, c, m, d) => `${d}에 사는 ${n}(이)는 ${m}월에 태어났고 ${c} 동아리예요.`, (n, c, m, d) => `${c} 동아리 ${n}(이)의 생일은 ${m}월이고, 집은 ${d}이에요.`, (n, c, m, d) => `${m}월생인 ${n}(이)는 ${d} 주민이고 ${c} 동아리에서 활동해요.`];
+function taQs(D){
+  const cnt = c => D.filter(x => x[1] === c).length, names = D.map(x => x[0]);
+  const pick = (ans) => { const o = [ans]; for (const n of names) if (o.length < 4 && n !== ans) o.push(n); return o.sort(() => Math.random() - .5); };
+  const c1 = D[0][1], early = [...D].sort((a, b) => a[2] - b[2])[0], s7 = D[6], combo = D.find(x => x[3] === '신월동' && x[1] === D.find(y => y[3] === '신월동')[1]);
+  return [
+    {q: `${c1} 동아리 학생은 모두 몇 명일까요?`, o: [cnt(c1), cnt(c1) + 1, cnt(c1) - 1, cnt(c1) + 2].map(String).sort(), a: String(cnt(c1))},
+    {q: `생일이 ${s7[2]}월인 학생은 누구일까요?`, o: pick(s7[0]), a: s7[0]},
+    {q: `신월동에 살면서 ${combo[1]} 동아리인 학생은?`, o: pick(combo[0]), a: combo[0]},
+    {q: '생일이 가장 빠른(1월에 가장 가까운) 학생은?', o: pick(early[0]), a: early[0]},
+  ];
+}
+let taR = 0, taT0 = 0, taPen = 0, taTimer = null; const taTimes = [], taMiss = [0, 0];
+const taFmt = ms => (ms / 1000).toFixed(1) + '초';
+function taRun(r){
+  taR = r; taPen = 0; const D = TA_DATA[r], Q = taQs(D); let qi = 0, sortK = -1;
+  const dataHTML = () => r === 0
+    ? `<div class="ta-text">${D.map((x, i) => TA_SAY[i % 4](...x)).join(' ')}</div>`
+    : `<table class="ta-tbl"><tr>${['이름', '동아리', '생일(월)', '동네'].map((h, k) => `<th data-k="${k}" class="${sortK === k ? 's' : ''}">${h}</th>`).join('')}</tr>${(sortK < 0 ? D : [...D].sort((a, b) => a[sortK] > b[sortK] ? 1 : a[sortK] < b[sortK] ? -1 : 0)).map(x => `<tr>${x.map((v, k) => `<td>${v}${k === 2 ? '월' : ''}</td>`).join('')}</tr>`).join('')}</table><p class="hint" style="margin:4px 0 0">💡 제목 칸을 누르면 그 기준으로 정렬돼요.</p>`;
+  const draw = () => {
+    $('#taBox').innerHTML = `<div class="ta-top"><span class="ta-round">${r === 0 ? '📜 1라운드 · 줄글 데이터' : '📊 2라운드 · 표(테이블) 데이터'}</span><span class="ta-watch" id="taW">0.0초</span></div>
+      <div class="ta-grid"><div id="taData">${dataHTML()}</div><div class="ta-q"><div class="ta-dots">${Q.map((_, i) => `<i class="${i < qi ? 'on' : ''}"></i>`).join('')}</div><p class="q">Q${qi + 1}. ${Q[qi].q}</p><div class="opts">${Q[qi].o.map(o => `<button>${o}</button>`).join('')}</div></div></div>`;
+    $$('#taBox .opts button').forEach(b => b.onclick = () => {
+      if (b.textContent !== Q[qi].a){ taPen += 5000; taMiss[r]++; b.classList.add('x'); b.disabled = true; const w = $('#taW'); w.classList.remove('pen'); void w.offsetWidth; w.classList.add('pen'); return; }
+      qi++; if (qi >= Q.length) return taEnd(); draw();
+    });
+    bindSort();
+  };
+  const bindSort = () => $$('#taData th').forEach(th => th.onclick = () => { sortK = +th.dataset.k; $('#taData').innerHTML = dataHTML(); bindSort(); });
+  draw();
+  taT0 = performance.now(); clearInterval(taTimer);
+  taTimer = setInterval(() => { const w = $('#taW'); if (w) w.textContent = taFmt(performance.now() - taT0 + taPen); }, 100);
+}
+function taEnd(){
+  clearInterval(taTimer); taTimes[taR] = performance.now() - taT0 + taPen;
+  if (taR === 0){
+    $('#taBox').innerHTML = `<p class="ta-big">📜 1라운드 기록: ${taFmt(taTimes[0])}</p><p style="text-align:center">이번엔 같은 종류의 문제를 <b>표</b>로 정리된 데이터로 풀어요. (친구 이름과 내용은 달라요)</p><p style="text-align:center"><button class="btn" id="taNext">⏱️ 2라운드 시작 (표)</button></p>`;
+    $('#taNext').onclick = () => taRun(1); return;
+  }
+  const [a, b] = taTimes, max = Math.max(a, b), x = a / b;
+  $('#taBox').innerHTML = `<p class="ta-big">${x >= 1.2 ? `🚀 표로 풀었더니 <b>${x.toFixed(1)}배</b> 빨라졌어요!` : '🤔 비슷하게 걸렸네요. 문제가 더 많아지면 차이는 훨씬 커져요!'}</p>
+    <div class="ta-res"><div class="row3"><span>📜 줄글</span><i style="width:${a / max * 100}%;background:#ffb35c"></i><span>${taFmt(a)}</span></div><div class="row3"><span>📊 표</span><i style="width:${b / max * 100}%;background:#16b8a6"></i><span>${taFmt(b)}</span></div></div>
+    <p>같은 데이터라도 <b>행(학생)과 열(항목)로 구조화</b>하면 찾고, 세고, 비교하고, 정렬하기가 훨씬 쉬워져요. 데이터가 100명, 1000명이 되면 차이는 더 커지겠죠? 틀린 횟수: 줄글 ${taMiss[0]}번 · 표 ${taMiss[1]}번</p>
+    <p><button class="btn ghost" id="taAgain">다시 도전 ↺</button></p>`;
+  $('#taAgain').onclick = () => { taTimes.length = 0; taMiss[0] = taMiss[1] = 0; taRun(0); };
+  reportQuiz('timeattack', [taMiss[0] === 0, taMiss[1] === 0, b < a]);
+}
+$('#taStart').onclick = () => taRun(0);
 
 renderQuiz($('#quiz'), [
   {q:'데이터의 특성을 파악하여 체계적으로 정리하는 것을 무엇이라고 할까요?', o:['데이터의 구조화','데이터의 압축','데이터의 삭제'], a:0, e:'데이터의 구조화라고 해요.'},
