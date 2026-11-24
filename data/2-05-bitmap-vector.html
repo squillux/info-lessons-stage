@@ -15,6 +15,36 @@
 .case{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0;border-bottom:1px dashed var(--line)}
 .case:last-child{border-bottom:0}
 .case p{margin:0;flex:1 1 260px}
+
+/* ── 현수막 제작소 ── */
+.bn-order{display:flex;gap:10px;align-items:center;background:#fffdf5;border-radius:12px;padding:8px 12px;margin-bottom:10px;box-shadow:0 3px 8px rgba(30,40,80,.1);font-size:.9rem}
+.bn-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.bn-slot{border:1.5px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+.bn-slot b.h{display:block;margin-bottom:6px}
+.bn-files{display:grid;gap:6px}
+.bn-files button{display:flex;gap:8px;align-items:center;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 8px;text-align:left;color:var(--ink)}
+.bn-files button.sel{border-color:var(--brand);background:var(--brand-soft)}
+.bn-files .th{flex:0 0 44px;height:44px;border-radius:8px;background:#f3f6fc center/cover;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bn-files .th canvas,.bn-files .th svg,.bn-files .th img{width:40px;height:40px;object-fit:cover}
+.bn-files small{display:block;color:var(--muted);font-size:.72rem;font-family:monospace}
+.bn-files b{font-size:.82rem}
+.bn-print{margin:12px 0 6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.shop{position:relative;border-radius:16px;background:linear-gradient(#cfd8ea,#aebbd6);padding:16px 12px 12px;overflow:hidden}
+.printer{height:20px;border-radius:8px 8px 2px 2px;background:#27304a;margin:0 auto;width:96%;box-shadow:0 4px 0 #1a2033}
+.roll{overflow:hidden;width:92%;margin:0 auto;transition:max-height 1.6s ease;max-height:0;background:#fff;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.roll.out{max-height:420px}
+.bn-zoom{position:relative;overflow:hidden;cursor:zoom-in;aspect-ratio:3/1;background:linear-gradient(120deg,#fff3c4,#ffd6e5)}
+.bn-zoom.on{cursor:zoom-out}
+.bn-inner{position:absolute;inset:0;transition:transform .5s ease;display:grid;grid-template-columns:22% 1fr 32%;align-items:center;gap:2%;padding:2% 3%}
+.bn-inner .slotv{display:flex;align-items:center;justify-content:center;height:100%}
+.bn-inner canvas,.bn-inner svg,.bn-inner img{width:100%;height:auto;max-height:100%;display:block}
+.bn-inner canvas{image-rendering:pixelated}
+.bn-inner img{aspect-ratio:4/3;object-fit:cover;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.bn-tip{position:absolute;right:8px;bottom:6px;font-size:.72rem;font-weight:800;background:rgba(39,48,74,.8);color:#fff;border-radius:999px;padding:2px 9px;pointer-events:none}
+.boss{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
+.boss .face{font-size:2rem}
+.boss .say{flex:1;background:#fff;border-radius:14px;padding:9px 12px;font-size:.9rem;line-height:1.55;box-shadow:0 2px 6px rgba(30,40,80,.1)}
+.stars{font-size:1.2rem;letter-spacing:2px}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="비트맵과 벡터 확대" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 47쪽">
@@ -59,6 +89,17 @@
     <div class="card" data-bot="사진처럼 색이 복잡하면? 로고처럼 크기가 자주 바뀌면? 🤔">
       <h3>🤔 어떤 방식이 알맞을까?</h3>
       <div id="cases"></div>
+    </div>
+
+    <div class="card" data-bot="파일을 골라 현수막을 인쇄하고 돋보기로 확대해 봐 🔍">
+      <h3>🖨️ 현수막 제작소 <span class="tag-more">특색</span></h3>
+      <div class="bn-order">📋 <span><b>주문서</b> · 학생회: "가로 <b>6m</b>짜리 축제 현수막을 만들어 주세요! 멀리서도, 가까이서도 깨끗하게요."</span></div>
+      <p>현수막에 들어갈 세 가지 재료마다 <b>어떤 파일을 쓸지</b> 골라 인쇄하세요. 인쇄된 현수막을 누르면 <b>가까이 확대</b>해 볼 수 있어요.</p>
+      <div class="bn-slots" id="bnSlots"></div>
+      <div class="bn-print"><button class="btn" id="bnGo">🖨️ 6m 현수막 인쇄</button><span class="hint" id="bnNeed"></span></div>
+      <div class="shop"><div class="printer"></div><div class="roll" id="bnRoll"><div class="bn-zoom" id="bnZoom"><div class="bn-inner" id="bnInner"></div><span class="bn-tip">🔍 눌러서 확대</span></div></div></div>
+      <div id="bnBoss"></div>
+      <p class="src" style="text-align:left">현수막 속 사진은 수업용으로 AI가 만든 가상 이미지예요.</p>
     </div>
   </section>
 
@@ -122,6 +163,52 @@ $$('[data-c]').forEach(b => b.onclick = () => {
   const [, ans, why] = CASES[+b.dataset.c];
   feedback($('#caseFb' + b.dataset.c), b.dataset.v === ans, (b.dataset.v === ans ? '⭕ ' : '❌ ') + why);
 });
+
+
+/* ===== 현수막 제작소 ===== */
+const LOGO = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#3b6cf6"/><circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-width="3"/><path d="M50 18 L58 40 L82 40 L62 54 L70 78 L50 63 L30 78 L38 54 L18 40 L42 40Z" fill="#ffc233"/><path d="M34 70 Q50 60 66 70 L66 76 Q50 66 34 76Z" fill="#fff"/></svg>`;
+const TITLE = `<svg viewBox="0 0 300 70"><text x="150" y="30" text-anchor="middle" font-size="26" font-weight="900" fill="#e04848" font-family="Jua, sans-serif">제12회 꿈빛 축제</text><text x="150" y="58" text-anchor="middle" font-size="16" font-weight="700" fill="#27304a" font-family="sans-serif">10월 24일(금) 운동장</text></svg>`;
+const PHOTO = '../assets/photos/ai/m_start.jpg';
+/* 작은 비트맵으로 만들기: svg/이미지를 w×h 캔버스에 그린 뒤 그대로 크게 보여 줌 */
+function lowres(src, w, h, isSvg){ const c = document.createElement('canvas'); c.width = w; c.height = h; const img = new Image();
+  img.onload = () => c.getContext('2d').drawImage(img, 0, 0, w, h);
+  img.src = isSvg ? 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(src.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ')) : src; return c; }
+const BN = [
+  {k: 'logo', t: '🎖️ 학교 로고', files: [['logo.png', '비트맵 · 48×48 픽셀', 'bmp'], ['logo.svg', '벡터 · 점·선·면 정보', 'vec']], good: 1,
+   make: f => f === 0 ? lowres(LOGO, 48, 48, true) : LOGO, bad: '로고가 계단처럼 깨졌어요. 로고·아이콘은 확대해도 깨지지 않는 <b>벡터</b>로!'},
+  {k: 'title', t: '🔤 축제 제목 글자', files: [['title.png', '비트맵 · 150×35 픽셀', 'bmp'], ['title.svg', '벡터 · 글자 윤곽 정보', 'vec']], good: 1,
+   make: f => f === 0 ? lowres(TITLE, 150, 35, true) : TITLE, bad: '글자 테두리가 울퉁불퉁해요. 글자·도형은 <b>벡터</b>가 알맞아요.'},
+  {k: 'photo', t: '📸 작년 축제 사진', files: [['메신저캡처.jpg', '비트맵 · 120×90 픽셀', 'bmp'], ['원본사진.jpg', '비트맵 · 4000×3000 픽셀', 'bmp']], good: 1,
+   make: f => f === 0 ? lowres(PHOTO, 120, 90) : `<img src="${PHOTO}" alt="축제 사진">`, bad: '사진이 모자이크처럼 보여요. 사진은 벡터로 만들 수 없으니, <b>픽셀이 많은(해상도가 높은) 원본</b>을 써야 해요.'},
+];
+const bnSel = {}; let bnTry = 0, bnFirst = null;
+function bnThumb(s, i){ const v = s.make(i); return typeof v === 'string' ? v : (() => { const d = document.createElement('div'); d.appendChild(v); return d.innerHTML; })(); }
+function bnSlots(){
+  $('#bnSlots').innerHTML = BN.map(s => `<div class="bn-slot"><b class="h">${s.t}</b><div class="bn-files">${s.files.map(([n, d, ty], i) => `<button data-k="${s.k}" data-i="${i}" class="${bnSel[s.k] === i ? 'sel' : ''}"><span class="th" id="th-${s.k}-${i}"></span><span><b>${n}</b><small>${d}</small></span></button>`).join('')}</div></div>`).join('');
+  BN.forEach(s => s.files.forEach((_, i) => { const v = s.make(i), el = $(`#th-${s.k}-${i}`); if (typeof v === 'string') el.innerHTML = v; else el.appendChild(v); }));
+  $$('#bnSlots button').forEach(b => b.onclick = () => { bnSel[b.dataset.k] = +b.dataset.i; bnSlots(); });
+}
+function bnPrint(){
+  if (BN.some(s => bnSel[s.k] === undefined)) return $('#bnNeed').textContent = '세 가지 재료의 파일을 모두 골라 주세요.';
+  $('#bnNeed').textContent = ''; bnTry++;
+  const inner = $('#bnInner'); inner.innerHTML = BN.map(s => `<div class="slotv" id="bv-${s.k}"></div>`).join('');
+  BN.forEach(s => { const v = s.make(bnSel[s.k]), el = $('#bv-' + s.k); if (typeof v === 'string') el.innerHTML = v; else el.appendChild(v); });
+  inner.style.transform = ''; $('#bnZoom').classList.remove('on');
+  const roll = $('#bnRoll'); roll.classList.remove('out'); void roll.offsetWidth; roll.classList.add('out'); roll.closest('.shop').scrollIntoView({behavior: 'smooth', block: 'center'});
+  const bad = BN.filter(s => bnSel[s.k] !== s.good), ok = bad.length === 0;
+  if (bnFirst === null) bnFirst = ok;
+  setTimeout(() => {
+    $('#bnBoss').innerHTML = `<div class="boss"><span class="face">${ok ? '😄' : '😥'}</span><div class="say"><b>학생회장</b> <span class="stars">${'★'.repeat(3 - bad.length)}${'☆'.repeat(bad.length)}</span><br>${ok ? '멀리서도 가까이서도 깨끗해요! 로고와 글자는 <b>벡터</b>라 아무리 키워도 매끄럽고, 사진은 <b>해상도가 높은 비트맵</b>이라 선명해요. 현수막을 눌러 확대해 보세요!' : bad.map(s => '• ' + s.bad).join('<br>') + '<br>현수막을 눌러 확대해서 확인하고, 파일을 다시 골라 인쇄해 주세요.'}</div></div>`;
+    if (ok) reportQuiz('banner', [bnFirst, true]);
+  }, 1600);
+}
+$('#bnZoom').onclick = e => {
+  const z = $('#bnZoom'), inner = $('#bnInner');
+  if (z.classList.toggle('on')){ const r = z.getBoundingClientRect(); inner.style.transformOrigin = `${(e.clientX - r.left) / r.width * 100}% ${(e.clientY - r.top) / r.height * 100}%`; inner.style.transform = 'scale(4)'; }
+  else inner.style.transform = '';
+};
+$('#bnGo').onclick = bnPrint;
+bnSlots();
 
 renderQuiz($('#quiz'), [
   {q:'확대했을 때 계단 현상이 생기는 이미지 방식은?', o:['비트맵 방식','벡터 방식'], a:0, e:'비트맵은 픽셀로 이루어져 확대하면 네모난 픽셀이 커 보여요.'},
