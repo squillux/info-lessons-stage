@@ -2,8 +2,8 @@
 
 중학교 정보 교과서(미래엔)의 개념을 하나씩 직접 체험하는 인터랙티브 활동 모음입니다. 2022 개정 교육과정 중학교 정보를 바탕으로 만들었습니다.
 
-- 주소: https://squillux.github.io/info-lessons/
-- 단원별 바로가기: `?unit=1` ~ `?unit=5` (예: https://squillux.github.io/info-lessons/?unit=2)
+- 주소: https://squillux.github.io/info-lessons-stage/ (2026-11-24부터 기본 주소. 예전 info-lessons 주소는 닫음, 저장소 파일은 보존)
+- 단원별 바로가기: `?unit=1` ~ `?unit=5` (예: https://squillux.github.io/info-lessons-stage/?unit=2)
 
 ## 구성
 
