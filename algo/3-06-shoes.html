@@ -15,7 +15,7 @@
 .shelf .flip .ff{background:#f4f6fb;border:2px solid var(--line);font-size:1.3rem}
 .shelf .flip .fb{background:#fff;border:2px solid var(--line);color:var(--ink)}
 .shelf .flip.hit .fb{border-color:var(--mint);background:var(--mint-soft)}
-.cnt{font-family:var(--cute);font-size:1.6rem;color:var(--brand)}
+.ccnt{font-family:var(--cute);font-size:1.6rem;color:var(--brand)}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .two>div{border:2px solid var(--line);border-radius:16px;padding:10px 12px;background:#fff}
 @media (max-width:520px){.shelf{grid-template-columns:repeat(5,1fr)}}
@@ -40,7 +40,7 @@
       <h3>📦 정리되지 않은 진열대 (알고리즘 1)</h3>
       <p>상자를 하나씩 눌러 열어 보세요. 열어 본 상자 수가 비교 횟수예요.</p>
       <div class="shelf" id="sh1"></div>
-      <p>비교 횟수 <span class="cnt" id="n1">0</span> <span id="f1"></span></p>
+      <p>비교 횟수 <span class="ccnt" id="n1">0</span> <span id="f1"></span></p>
     </div>
 
     <div class="card" data-bot="정리된 진열대에서는 몇 번 만에 찾을까? 📏">
@@ -48,7 +48,7 @@
       <p>앞(작은 쪽)에서부터 하나씩 비교해요. 230mm를 찾은 뒤에는 <b>그 다음 칸부터</b> 250mm를 찾으면 돼요. 정렬되어 있으니 원하는 크기보다 큰 신발이 나오면 더 볼 필요도 없어요.</p>
       <div class="shelf" id="sh2"></div>
       <div class="ctrl"><button class="btn" id="step2">▶ 한 칸 비교</button><button class="btn line" id="auto2">⏩ 끝까지</button></div>
-      <p>비교 횟수 <span class="cnt" id="n2">0</span> <span id="f2"></span></p>
+      <p>비교 횟수 <span class="ccnt" id="n2">0</span> <span id="f2"></span></p>
     </div>
 
     <div class="card" data-bot="정렬과 탐색의 차이를 정리해 봐 🧠">

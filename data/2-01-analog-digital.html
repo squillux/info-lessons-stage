@@ -8,10 +8,34 @@
 <style>
 #graph{width:100%;height:220px;background:var(--bg);border-radius:14px;display:block}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:2px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-weight:600}
-.chip.on{border-color:var(--mint);background:var(--mint-soft);color:#0d7d71}
+.tchip{border:2px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-weight:600}
+.tchip.on{border-color:var(--mint);background:var(--mint-soft);color:#0d7d71}
 .benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
 .benefits div{background:var(--brand-soft);border-radius:14px;padding:10px 14px;font-weight:600}
+
+/* ── 디지털 변환소 ── */
+.dv-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:640px){.dv-wrap{grid-template-columns:1fr}}
+.dv-box{border-radius:16px;padding:10px;background:#1f2a3d;color:#e8ecff}
+.dv-box h5{margin:0 0 6px;font-size:.88rem;color:#ffd45c}
+.dv-box canvas,.dv-box img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;image-rendering:pixelated;background:#000}
+.dv-ctl{display:grid;gap:10px;margin-top:10px}
+.dv-ctl label{display:grid;gap:4px;font-weight:800;font-size:.9rem}
+.dv-ctl label span{display:flex;justify-content:space-between}
+.dv-ctl input[type=range]{width:100%;accent-color:var(--brand)}
+.dv-size{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.9rem}
+.dv-size .bar3{flex:1;height:12px;border-radius:999px;background:var(--bg);overflow:hidden}
+.dv-size .bar3 i{display:block;height:100%;background:linear-gradient(90deg,#16b8a6,#ffc233,#e04848);transition:width .3s}
+.dv-targets{display:flex;gap:8px;margin:10px 0 0;flex-wrap:wrap}
+.dv-t{flex:1 1 120px;border:2px solid var(--line);border-radius:14px;padding:6px;text-align:center;font-size:.8rem;font-weight:800;background:#fff}
+.dv-t canvas{display:block;width:100%;aspect-ratio:4/3;border-radius:8px;image-rendering:pixelated;margin-bottom:4px}
+.dv-t.cur{border-color:#ffc233;box-shadow:0 0 0 3px rgba(255,194,51,.3)}.dv-t.ok{border-color:var(--mint);background:var(--mint-soft)}
+.dv-t.lock canvas{filter:blur(6px) grayscale(1);opacity:.5}
+.cp-row2{display:grid;grid-template-columns:70px repeat(3,minmax(0,1fr));gap:6px;align-items:center;margin-top:8px}
+.cp-row2 b{font-size:.85rem}
+.cp-row2 div{text-align:center;font-size:.72rem;font-weight:700;color:var(--muted)}
+.cp-row2 canvas{display:block;width:100%;aspect-ratio:4/3;border-radius:8px;margin-bottom:2px;background:#eee}
+.cp-badge{display:inline-block;border-radius:999px;padding:1px 8px;font-size:.7rem;font-weight:800}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="아날로그와 디지털" data-sub="중1 Ⅱ단원 · 데이터의 디지털 표현 · 미래엔 44~45, 57쪽">
@@ -61,6 +85,30 @@
       <div id="match"></div>
       <p class="hint">💬 아날로그만의 좋은 점도 있을까요? (예: 손 편지의 따뜻함, LP 음반의 소리)</p>
     </div>
+    <div class="card" data-bot="슬라이더를 움직여 목표 그림과 똑같이 만들어 봐 🎛️">
+      <h3>🏭 디지털 변환소 <span class="tag-more">특색</span></h3>
+      <p>카메라는 바깥 세상(아날로그)을 <b>표본화</b>(몇 칸으로 나눌까?)와 <b>양자화</b>(색을 몇 단계로 나타낼까?)로 디지털 데이터로 바꿔요. 슬라이더를 움직여 <b>목표 그림</b>과 똑같이 만들어 보세요.</p>
+      <div class="dv-wrap">
+        <div class="dv-box"><h5>🌅 아날로그 세상 (원래 모습)</h5><img id="dvSrc" src="../assets/photos/f_sunset.jpg" alt="노을 사진"></div>
+        <div class="dv-box"><h5>💾 디지털로 바꾼 결과</h5><canvas id="dvOut" width="320" height="240"></canvas></div>
+      </div>
+      <div class="dv-ctl">
+        <label><span>📍 표본화: 가로 칸(픽셀) 수 <b id="dvC"></b></span><input type="range" id="dvCols" min="0" max="4" value="4"></label>
+        <label><span>📏 양자화: 색 단계(한 색당) <b id="dvL"></b></span><input type="range" id="dvLev" min="0" max="3" value="3"></label>
+        <div class="dv-size">💾 파일 크기 <span class="bar3"><i id="dvBar"></i></span><span id="dvKB"></span></div>
+      </div>
+      <div class="dv-targets" id="dvTargets"></div>
+      <div class="feedback" id="dvFb"></div>
+    </div>
+    <div class="card" data-bot="같은 사진을 10번 복사하면 어떻게 될까? 🖨️">
+      <h3>🖨️ 10번 복사 실험</h3>
+      <p>사진을 복사한 것을 또 복사하고, 또 복사하면? <b>아날로그 복사</b>(복사기로 종이 사진 복사)와 <b>디지털 복사</b>(파일 복사)를 비교해 보세요.</p>
+      <button class="btn" id="cpGo">🖨️ 10번 복사 시작</button>
+      <div class="cp-row2"><b>📄 아날로그</b><div><canvas id="ca1" width="160" height="120"></canvas>1번째</div><div><canvas id="ca5" width="160" height="120"></canvas>5번째</div><div><canvas id="ca10" width="160" height="120"></canvas>10번째</div></div>
+      <div class="cp-row2"><b>💾 디지털</b><div><canvas id="cd1" width="160" height="120"></canvas>1번째</div><div><canvas id="cd5" width="160" height="120"></canvas>5번째</div><div><canvas id="cd10" width="160" height="120"></canvas>10번째</div></div>
+      <div class="feedback" id="cpFb"></div>
+    </div>
+
   </section>
 
   <section class="step">
@@ -75,14 +123,15 @@
     </div>
   </section>
   <p class="src">미래엔 중학교 정보 44~45, 57쪽 내용을 바탕으로 재구성</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:Kitesurfer_at_sunset,_Workum,_may_2017.jpg" target="_blank" rel="noopener">Kitesurfer at sunset, Workum, may 2017.jpg</a> · Villy Fink Isaksen · CC BY-SA 4.0</li></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
 const TODAY = ['📱 메신저 대화','🌤️ 날씨 앱','🗺️ 지도 길 찾기','🎵 음악 스트리밍','📷 사진 촬영','🏃 걸음 수 기록','📺 동영상 시청','🎮 게임','📚 전자책'];
 const on = new Set();
-$('#today').innerHTML = TODAY.map((t, i) => `<button class="chip" data-i="${i}">${t}</button>`).join('');
-$$('#today .chip').forEach(b => b.onclick = () => {
+$('#today').innerHTML = TODAY.map((t, i) => `<button class="tchip" data-i="${i}">${t}</button>`).join('');
+$$('#today .tchip').forEach(b => b.onclick = () => {
   const i = +b.dataset.i; on.has(i) ? on.delete(i) : on.add(i); b.classList.toggle('on');
   $('#todayN').textContent = on.size ? `${on.size}가지! 모두 0과 1로 이루어진 디지털 데이터예요.` : '';
 });
@@ -130,6 +179,61 @@ renderChoice($('#match'), [
   {t:'일기장을 잃어버리면 내용을 되찾을 수 없어요.', a:4, e:'백업한 데이터는 복구할 수 있고, 비밀번호로 보호할 수도 있어요.'},
   {t:'책장이 모자라 더 이상 책을 보관할 수 없어요.', a:0, e:'전자책 수천 권도 작은 기기 하나에 저장할 수 있어요.'},
 ], ['💾 대량 저장', '🔍 검색', '📤 편집·공유', '🎮 형태 변환', '🔒 복구·보호']);
+
+
+/* ===== 디지털 변환소 ===== */
+const DV_C = [8, 16, 32, 64, 160], DV_L = [2, 4, 8, 256];
+const DV_T = [{c: 1, l: 3, n: '🧱 모자이크'}, {c: 4, l: 0, n: '🎨 포스터'}, {c: 2, l: 1, n: '👾 게임 그림'}];
+let dvi = 0; const dvFirst = []; let dvMoves = 0;
+/* 4:3으로 가운데 잘라 내기 */
+const dvCrop = img => { const W = img.naturalWidth, H = img.naturalHeight; return W / H > 4 / 3 ? [(W - H * 4 / 3) / 2, 0, H * 4 / 3, H] : [0, (H - W * 3 / 4) / 2, W, W * 3 / 4]; };
+function dvRender(cv, ci, li){
+  const img = $('#dvSrc'); if (!img.complete || !img.naturalWidth) return;
+  const cols = DV_C[ci], rows = Math.round(cols * 3 / 4), L = DV_L[li];
+  const o = document.createElement('canvas'); o.width = cols; o.height = rows; const x = o.getContext('2d');
+  x.drawImage(img, ...dvCrop(img), 0, 0, cols, rows);
+  if (L < 256){ const d = x.getImageData(0, 0, cols, rows), a = d.data, st = 255 / (L - 1); for (let i = 0; i < a.length; i += 4) for (let k = 0; k < 3; k++) a[i + k] = Math.round(a[i + k] / st) * st; x.putImageData(d, 0, 0); }
+  const c = cv.getContext('2d'); c.imageSmoothingEnabled = false; c.clearRect(0, 0, cv.width, cv.height); c.drawImage(o, 0, 0, cv.width, cv.height);
+}
+function dvUpdate(){
+  const ci = +$('#dvCols').value, li = +$('#dvLev').value, cols = DV_C[ci], rows = Math.round(cols * 3 / 4), L = DV_L[li];
+  $('#dvC').textContent = `${cols} × ${rows}`; $('#dvL').textContent = `${L}단계 (${Math.log2(L)}비트)`;
+  const bits = cols * rows * 3 * Math.log2(L), max = 160 * 120 * 24, kb = bits / 8 / 1024;
+  $('#dvKB').textContent = kb < 1 ? Math.round(bits / 8) + 'B' : kb.toFixed(1) + 'KB'; $('#dvBar').style.width = Math.max(2, bits / max * 100) + '%';
+  dvRender($('#dvOut'), ci, li);
+  const t = DV_T[dvi];
+  if (t && ci === t.c && li === t.l){
+    dvFirst[dvi] = dvMoves <= 6; dvi++; dvMoves = 0; dvTargets();
+    feedback($('#dvFb'), true, dvi < DV_T.length ? `⭕ ${t.n} 완성! (가로 ${cols}칸, 색 ${L}단계) 다음 목표에 도전!` : '🎉 목표 3개 완성! 칸 수(표본화)가 적으면 모자이크처럼, 색 단계(양자화)가 적으면 포스터처럼 보여요. 둘 다 늘리면 원래 모습에 가까워지지만 파일 크기가 커져요.');
+    if (dvi === DV_T.length) reportQuiz('digitize', dvFirst.map(Boolean));
+  }
+}
+function dvTargets(){
+  $('#dvTargets').innerHTML = DV_T.map((t, i) => `<div class="dv-t ${i < dvi ? 'ok' : i === dvi ? 'cur' : 'lock'}"><canvas id="dvt${i}" width="160" height="120"></canvas>${i < dvi ? '✅ ' : i === dvi ? '🎯 목표: ' : '🔒 '}${t.n}</div>`).join('');
+  DV_T.forEach((t, i) => dvRender($('#dvt' + i), t.c, t.l));
+}
+['#dvCols', '#dvLev'].forEach(id => $(id).oninput = () => { dvMoves++; dvUpdate(); });
+$('#dvSrc').complete ? (dvTargets(), dvUpdate()) : $('#dvSrc').addEventListener('load', () => { dvTargets(); dvUpdate(); });
+
+/* 10번 복사 실험 */
+$('#cpGo').onclick = () => {
+  const img = $('#dvSrc'); $('#cpGo').disabled = true;
+  let prev = document.createElement('canvas'); prev.width = 160; prev.height = 120;
+  prev.getContext('2d').drawImage(img, ...dvCrop(img), 0, 0, 160, 120);
+  const orig = prev;
+  let g = 0;
+  const step = () => {
+    g++;
+    const n = document.createElement('canvas'); n.width = 160; n.height = 120; const x = n.getContext('2d');
+    x.filter = 'blur(0.7px) contrast(1.08) saturate(0.85) sepia(0.08)'; x.drawImage(prev, 0, 0); x.filter = 'none';
+    const d = x.getImageData(0, 0, 160, 120), a = d.data; for (let i = 0; i < a.length; i += 4){ const r = (Math.random() - .5) * 26; a[i] += r; a[i + 1] += r; a[i + 2] += r; } x.putImageData(d, 0, 0);
+    prev = n;
+    if ([1, 5, 10].includes(g)){ $('#ca' + g).getContext('2d').drawImage(n, 0, 0); $('#cd' + g).getContext('2d').drawImage(orig, 0, 0); }
+    if (g < 10) setTimeout(step, 180);
+    else { $('#cpGo').disabled = false; feedback($('#cpFb'), true, '📄 아날로그 복사는 할 때마다 흐려지고 잡티가 생겨 10번째에는 알아보기 어려워요. 💾 디지털 복사는 0과 1을 그대로 옮기기 때문에 10번, 100번을 복사해도 원본과 똑같아요! 이것이 디지털의 큰 장점이에요.'); }
+  };
+  step();
+};
 
 renderQuiz($('#quiz'), [
   {q:'바람의 세기, 소리의 크기처럼 연속적으로 변하는 값은?', o:['아날로그 데이터','디지털 데이터'], a:0, e:'연속적으로 변하는 물리량은 아날로그 데이터예요.'},

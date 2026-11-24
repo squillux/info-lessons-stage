@@ -51,7 +51,7 @@ const contentsList = [
   {unit: 1, sub: '1-2-2', icon: '🔐', badge: '중1 Ⅰ단원 · 단원 정리', title: 'Ⅰ단원 방 탈출', desc: '컴퓨터실에 갇혔어요! 방마다 문제를 풀어 자물쇠 번호를 모으고 세 개의 문을 열며 컴퓨팅 시스템과 피지컬 컴퓨팅을 정리해요. (교과서 23, 37, 40쪽)', href: 'system/1-10-review.html', tags: ['정리','게임'], std: '01-01~03', core: false},
   {unit: 1, sub: '1-2-2', icon: '🏫', lesson: true, badge: '45분 종합 수업', title: '스마트 교실 설계 종합', desc: '교실과 도서관의 불편함을 센서, 조건, 액추에이터로 해결하는 과정을 정리하며 Ⅰ단원을 마무리해요. (교과서 23~40쪽)', href: 'lesson/1-2-2.html',},
 
-  {unit: 2, sub: '2-1-1', icon: '🌡️', badge: '중1 Ⅱ단원 · 디지털 표현', title: '아날로그와 디지털', desc: '하루 기온 곡선을 끊어서 나타내 보고, 생활 속 사례를 분류하며 디지털 데이터의 장점을 찾아요. (교과서 44~45, 57쪽)', href: 'data/2-01-analog-digital.html', tags: ['체험'], std: '02-01', core: true},
+  {unit: 2, sub: '2-1-1', icon: '🌡️', badge: '중1 Ⅱ단원 · 디지털 표현', title: '아날로그와 디지털', desc: '하루 기온 곡선을 끊어서 나타내 보고, 생활 속 사례를 분류하며 디지털 데이터의 장점을 찾아요. 실제 사진을 표본화·양자화로 디지털화하는 디지털 변환소와 10번 복사 실험도 있어요. (교과서 44~45, 57쪽)', href: 'data/2-01-analog-digital.html', tags: ['체험','게임'], std: '02-01', core: true},
   {unit: 2, sub: '2-1-1', icon: '💡', badge: '중1 Ⅱ단원 · 디지털 표현', title: '비트와 이진수 카드', desc: '전구와 전기 신호로 비트를 이해하고, 이진수 카드로 0과 1만으로 수를 나타내요. (교과서 46, 48쪽)', href: 'data/2-02-bits.html', tags: ['체험'], std: '02-01', core: true, key: true},
   {unit: 2, sub: '2-1-1', icon: '🔤', badge: '중1 Ⅱ단원 · 디지털 표현', title: '문자 코드 암호 해독', desc: '7비트 아스키 코드 암호를 풀고, 내 이니셜과 한글을 문자 코드로 바꾸고, 모둠 릴레이 암호 게임도 해요. (교과서 46쪽 · 참고: 비상교육 85쪽)', href: 'data/2-03-ascii.html', tags: ['게임'], std: '02-01', core: true},
   {unit: 2, sub: '2-1-1', icon: '🎨', badge: '중1 Ⅱ단원 · 디지털 표현', title: '픽셀 그림과 색', desc: '픽셀 그림을 그리고, 색 비트 수와 해상도에 따라 화질과 용량이 어떻게 달라지는지 알아봐요. (교과서 47쪽 · 참고: 씨마스 56~57쪽)', href: 'data/2-04-pixels.html', tags: ['체험'], std: '02-01', core: true},
