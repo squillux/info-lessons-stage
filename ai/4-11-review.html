@@ -42,8 +42,8 @@
 .mini div{aspect-ratio:1;border-radius:10px;background:#333 center/cover;position:relative}
 .mini div::after{content:"?";position:absolute;inset:auto 6px 6px auto;width:22px;height:22px;border-radius:50%;background:#ffd45c;color:#3a2a00;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.8rem}
 /* 데이터 카드 */
-.cnt{display:flex;gap:8px;margin-bottom:8px;font-size:.85rem;font-weight:800}
-.cnt span{border-radius:999px;padding:3px 10px;background:rgba(255,255,255,.1)}
+.dcnt{display:flex;gap:8px;margin-bottom:8px;font-size:.85rem;font-weight:800}
+.dcnt span{border-radius:999px;padding:3px 10px;background:rgba(255,255,255,.1)}
 .dgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
 @media (max-width:520px){.dgrid{grid-template-columns:repeat(3,1fr)}}
 .dc{position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;box-shadow:0 0 0 2px rgba(255,255,255,.12);transition:transform .15s,opacity .2s,box-shadow .2s}
@@ -229,7 +229,7 @@ function p1(){
   const draw = (errSet) => {
     const inc = DATA.filter(d => d.inc), nc = inc.filter(d => d.lab === 'cat').length, nd = inc.filter(d => d.lab === 'dog').length;
     $('#stage').innerHTML = `<h5>🗂️ 학습 데이터 고르기</h5><p>사진을 누르면 넣고(✓) 빼요(✕). 아래 라벨을 누르면 🐱/🐶가 바뀌어요.</p>
-      <div class="cnt"><span>🐱 고양이 ${nc}장</span><span>🐶 강아지 ${nd}장</span><span>합계 ${inc.length}장</span></div>
+      <div class="dcnt"><span>🐱 고양이 ${nc}장</span><span>🐶 강아지 ${nd}장</span><span>합계 ${inc.length}장</span></div>
       <div class="dgrid">${DATA.map((d, i) => `<div class="dc${d.blur ? ' blur' : ''}${d.inc ? '' : ' out'}${errSet && errSet.has(i) ? ' err' : ''}" data-i="${i}"><img src="${P}${d.img}.jpg" alt=""><span class="chk">${d.inc ? '✓' : '✕'}</span><button class="lb ${d.lab}" data-i="${i}">${LBL[d.lab]}</button></div>`).join('')}</div>
       <ul class="errs" id="errs"></ul>`;
     $$('#stage .dc').forEach(c => c.onclick = e => { if (e.target.classList.contains('lb')) return; const d = DATA[+c.dataset.i]; d.inc = !d.inc; draw(); });

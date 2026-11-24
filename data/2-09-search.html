@@ -26,6 +26,46 @@
 .tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
 .tips div{background:var(--brand-soft);border-radius:12px;padding:8px 12px;font-size:.92rem}
 .tips code{background:#fff;border-radius:6px;padding:0 6px;font-weight:700}
+
+/* ── 팩트체크 데스크 ── */
+.fc-wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.fc-phone{flex:0 0 auto;width:min(100%,310px);margin:0 auto;border:9px solid #27304a;border-radius:36px;overflow:hidden;background:#b9cde0;box-shadow:0 14px 30px rgba(30,40,80,.16)}
+.fc-phone .bar{display:flex;justify-content:space-between;padding:7px 16px 2px;font-size:.7rem;font-weight:800;color:#27304a;background:#a9bfd6}
+.fc-phone .room{background:#a9bfd6;padding:2px 12px 8px;font-weight:800;font-size:.9rem;display:flex;justify-content:space-between}
+.chat{height:440px;overflow-y:auto;padding:10px 8px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none}
+.chat::-webkit-scrollbar{display:none}
+.msg2{display:flex;gap:6px;align-items:flex-start;animation:msgIn .35s ease}
+@keyframes msgIn{from{transform:translateY(14px);opacity:0}}
+.msg2 .av{flex:0 0 30px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff}
+.msg2 .nm{font-size:.68rem;color:#3a4a60;margin-bottom:2px}
+.msg2 .bb{background:#fff;border-radius:4px 14px 14px 14px;padding:7px 10px;font-size:.8rem;line-height:1.45;max-width:210px;position:relative}
+.msg2 .bb img{display:block;width:100%;border-radius:8px;margin:2px 0 4px}
+.msg2 .bb .lnk{display:block;margin-top:5px;border-radius:8px;background:#f1f4fa;padding:5px 7px;font-size:.7rem;color:#3462d8;word-break:break-all}
+.msg2.cur .bb{box-shadow:0 0 0 3px #ffc233}
+.msg2 .bb .vst{position:absolute;right:-6px;top:-10px;border-radius:8px;padding:1px 7px;font-size:.68rem;font-weight:900;color:#fff;transform:rotate(6deg);animation:stampIn .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stampIn{from{transform:rotate(6deg) scale(2);opacity:0}}
+.msg2.me{flex-direction:row-reverse}
+.msg2.me .bb{background:#ffe14d;border-radius:14px 4px 14px 14px}
+.fc-desk{flex:1 1 280px;min-width:0}
+.fc-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fc-tools button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 8px;font-weight:800;color:var(--ink);text-align:left;line-height:1.35}
+.fc-tools button small{display:block;font-weight:600;color:var(--muted);font-size:.75rem}
+.fc-tools button.used{border-color:var(--brand);background:var(--brand-soft)}
+.clues{display:grid;gap:8px;margin:10px 0}
+.clue{border-radius:14px;padding:10px 12px;background:#fff;border:1.5px solid var(--line);font-size:.88rem;line-height:1.5;animation:msgIn .35s}
+.clue b.h{display:block;margin-bottom:3px}
+.clue.red{border-color:#f6c4c4;background:#fff7f7}.clue.green{border-color:#bfe8e1;background:#f2fbf9}.clue.gray{background:var(--bg)}
+.clue .thumbs{display:flex;gap:6px;margin-top:6px}
+.clue .thumbs span{flex:1;height:54px;border-radius:8px;background:#ddd center/cover;position:relative}
+.clue .thumbs span i{position:absolute;left:3px;bottom:3px;font-style:normal;font-size:.62rem;background:rgba(0,0,0,.65);color:#fff;border-radius:4px;padding:0 4px}
+.verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.verdict button{border:0;border-radius:12px;padding:10px 4px;font-weight:800;font-size:.88rem}
+.verdict .t{background:var(--ok-soft);color:var(--ok)}.verdict .f{background:var(--bad-soft);color:var(--bad)}.verdict .u{background:var(--yellow-soft);color:#a0620a}
+.verdict button:disabled{opacity:.35}
+.fc-exp{margin-top:8px;border-radius:12px;padding:9px 12px;font-size:.9rem;line-height:1.55}
+.fc-exp.ok{background:var(--ok-soft)}.fc-exp.bad{background:var(--bad-soft)}
+.fc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}
+.fc-steps div{border-radius:14px;padding:10px 12px;background:var(--brand-soft);font-size:.88rem;line-height:1.45}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="똑똑한 검색과 믿을 만한 출처" data-sub="중1 Ⅱ단원 · 데이터의 수집과 관리 · 미래엔 51쪽">
@@ -73,6 +113,19 @@
       <p>인터넷으로 데이터를 모을 때는 <b>출처가 명확하고 믿을 만한지</b>, 편견이나 선입견은 없는지, <b>허위 정보</b>는 아닌지 확인하고 비판적으로 받아들여야 해요.</p>
       <div id="trust"></div>
     </div>
+
+    <div class="card" data-bot="단톡방에 퍼지는 소식, 공유하기 전에 팩트체크부터! 🔍">
+      <h3>🔍 팩트체크 데스크 <span class="tag-more">특색</span></h3>
+      <p>우리 반 단톡방에 소식이 계속 올라와요. <b>팩트체크 도구</b>로 출처·날짜·근거를 조사한 뒤 <b>사실 / 가짜 / 아직 모름</b>을 판정하세요. 도구를 <b>2개 이상</b> 써야 판정할 수 있어요.</p>
+      <div class="fc-wrap">
+        <div class="fc-phone"><div class="bar"><span>21:03</span><span>📶 🔋</span></div><div class="room"><span>‹ 1학년 3반 단톡방 (28)</span><span>☰</span></div><div class="chat" id="fcChat"></div></div>
+        <div class="fc-desk" id="fcDesk"></div>
+      </div>
+    </div>
+    <div class="card" data-bot="가짜 정보를 가려내는 순서를 정리해 보자 📋">
+      <h3>📋 팩트체크 4단계</h3>
+      <div id="fcSum"><p class="hint">앞 화면에서 소식 4개를 모두 판정하면 정리가 나타나요.</p></div>
+    </div>
   </section>
 
   <section class="step">
@@ -87,6 +140,7 @@
     </div>
   </section>
   <p class="src">미래엔 중학교 정보 51쪽 내용을 바탕으로 재구성 · 검색 결과는 모두 연습용 가상 데이터</p>
+  <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5"><li><a href="https://commons.wikimedia.org/wiki/File:Storm_in_Perth_-_Cars_flooded.jpg" target="_blank" rel="noopener">Storm in Perth - Cars flooded.jpg</a> · Michael Spencer · CC BY 2.0</li><li><a href="https://commons.wikimedia.org/wiki/File:Bunch_of_bananas_on_sale.jpg" target="_blank" rel="noopener">Bunch of bananas on sale.jpg</a> · Wilfredor · CC0</li><li><a href="https://commons.wikimedia.org/wiki/File:3A_665.jpg" target="_blank" rel="noopener">3A 665.jpg</a> · Escuela16de17 · CC BY-SA 4.0</li></ul></details>
 </main>
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
@@ -185,6 +239,80 @@ renderChoice($('#trust'), [
   {icon:'☔', t:'기상청 누리집의 내일 강수 확률', a:0, e:'날씨를 공식적으로 관측·예보하는 기관의 데이터예요.'},
   {icon:'📰', t:'5년 전 기사에 나온 "최신 스마트폰 가격"', a:1, e:'오래된 정보라 지금은 맞지 않을 수 있어요. 날짜를 확인해요.'},
 ], ['👍 믿을 만해요', '🔎 한 번 더 확인해요']);
+
+
+/* ===== 팩트체크 데스크 ===== */
+const PH = '../assets/photos/';
+const FC = [
+  {who: '도윤', col: '#3b6cf6', body: `<img src="${PH}k_flood.jpg" alt="물에 잠긴 거리 사진">지금 우리 동네 ○○역 앞 완전 잠겼대!!! 😱 빨리 다들 공유해`, ans: 'f',
+   reply: '이거 2017년 다른 나라 사진이래! 공유하지 말자 🙅',
+   tools: {src: ['gray', '🔗 출처', '사진만 있고 누가 어디서 찍었는지 출처가 없어요.'],
+     date: ['red', '📅 날짜', '사진 파일의 촬영 날짜: <b>2017년 12월</b>. 오늘 찍은 사진이 아니에요.'],
+     img: ['red', '🖼️ 이미지 검색', `같은 사진이 이미 인터넷에 있어요. 가장 오래된 것: <b>2017년 · 오스트레일리아 퍼스의 폭우</b> 사진.<div class="thumbs"><span style="background-image:url(${PH}k_flood.jpg)"><i>2017 퍼스</i></span><span style="background-image:url(${PH}k_flood.jpg);filter:saturate(.6)"><i>2019 재공유</i></span><span style="background-image:url(${PH}k_flood.jpg);filter:hue-rotate(20deg)"><i>오늘 단톡</i></span></div>`],
+     cross: ['gray', '📰 교차 확인', '오늘 ○○역 침수를 보도한 언론이나 시청 안내는 <b>0건</b>이에요.']},
+   why: '오래된 다른 나라 사진을 오늘 우리 동네 일인 것처럼 퍼뜨렸어요. <b>사진은 진짜여도 맥락이 가짜</b>일 수 있어요.'},
+  {who: '서연', col: '#ff7aa2', body: `<img src="${PH}k_banana.jpg" alt="바나나 사진">바나나 하루 2개 먹으면 시험 점수 30% 오른대!! 해외 연구 결과임 🍌🍌<span class="lnk">🔗 health-news-best.xyz/banana-genius</span>`, ans: 'f',
+   reply: '그 사이트 글쓴이도 연구 이름도 없더라… 다른 데선 아무도 말 안 해 🤔',
+   tools: {src: ['red', '🔗 출처', '<b>health-news-best.xyz</b>: 처음 보는 사이트, 글쓴이 없음, 광고가 가득. "해외 연구"라면서 <b>어느 기관의 어떤 연구인지</b> 밝히지 않았어요.'],
+     date: ['gray', '📅 날짜', '작성 날짜가 적혀 있지 않아요.'],
+     img: ['gray', '🖼️ 이미지 검색', '바나나 사진은 무료 사진 사이트의 흔한 사진이에요. 연구와는 관계없어요.'],
+     cross: ['red', '📰 교차 확인', '공신력 있는 언론·연구 기관에서 같은 내용을 찾을 수 없어요(<b>0건</b>). "30%"라는 숫자의 근거도 없어요.']},
+   why: '출처가 불분명하고, 근거(어떤 연구인지)가 없고, 다른 곳에서 확인되지 않아요. <b>그럴듯한 숫자</b>는 가짜 정보의 단골 재료예요.'},
+  {who: '반장 하준', col: '#16b8a6', body: `<img src="${PH}k_class.jpg" alt="빈 교실 사진">얘들아 교육청 공지 떴어. 내일(목) 태풍 때문에 우리 시 모든 학교 휴업이래!<span class="lnk">🔗 www.○○edu.go.kr/notice/2026-0917</span>`, ans: 't',
+   reply: '교육청 누리집이랑 학교 알림 둘 다 확인했어! 내일 휴업 맞아 ✅',
+   tools: {src: ['green', '🔗 출처', '<b>.go.kr</b>로 끝나는 교육청 공식 누리집 공지예요. 담당 부서와 연락처가 적혀 있어요.'],
+     date: ['green', '📅 날짜', '오늘 17:00에 올라온 공지예요. 최신 정보예요.'],
+     img: ['gray', '🖼️ 이미지 검색', '교실 사진은 분위기를 보여 주는 사진이에요. 공지의 사실 여부는 출처와 교차 확인으로 판단해요.'],
+     cross: ['green', '📰 교차 확인', '학교 알림 앱 공지, 방송 뉴스 2곳에서 <b>같은 내용</b>을 확인했어요.']},
+   why: '공식 출처, 최신 날짜, 여러 곳의 교차 확인이 모두 맞아요. 의심만 하는 게 아니라 <b>확인된 정보는 믿고 활용</b>하는 것도 중요해요.'},
+  {who: '지민', col: '#ffb000', body: '대박!!! 유명 아이돌 □□□이 다음 주에 우리 학교 축제 온대!!! 학생회장이 그랬다던데? 🎤✨', ans: 'u',
+   reply: '아직 공지가 없으니까 확인될 때까지 퍼뜨리지 말자! 😉',
+   tools: {src: ['gray', '🔗 출처', '"학생회장이 그랬다던데"… 누가 직접 말했는지 알 수 없는 <b>전해 들은 이야기</b>예요.'],
+     date: ['gray', '📅 날짜', '언제 나온 이야기인지 알 수 없어요.'],
+     img: ['gray', '🖼️ 이미지 검색', '확인할 사진이 없어요.'],
+     cross: ['gray', '📰 교차 확인', '학교 공지·학생회 계정에 아직 <b>아무 발표가 없어요</b>. 그렇다고 거짓이라는 증거도 없어요.']},
+   why: '사실이라는 근거도, 가짜라는 증거도 아직 없어요. 이럴 땐 <b>판단을 보류</b>하고 공식 발표를 기다리며 퍼뜨리지 않는 것이 맞아요.'},
+];
+const TOOLS = [['src', '🔗 출처 확인', '누가 만들었나?'], ['date', '📅 날짜 확인', '언제 정보인가?'], ['img', '🖼️ 이미지 검색', '사진의 원래 출처는?'], ['cross', '📰 교차 확인', '다른 곳에서도 그렇다고 하나?']];
+const VN = {t: '✅ 사실', f: '❌ 가짜', u: '⏸️ 아직 모름'}, VC = {t: '#1f9d55', f: '#e04848', u: '#d08a00'};
+let fci = 0; const fcFirst = [];
+function fcMsg(c, i){ return `<div class="msg2" id="fm${i}"><span class="av" style="background:${c.col}">${c.who.slice(-2)}</span><div><div class="nm">${c.who}</div><div class="bb">${c.body}</div></div></div>`; }
+function fcNext(){
+  if (fci >= FC.length) return fcEnd();
+  const c = FC[fci], used = new Set();
+  $('#fcChat').insertAdjacentHTML('beforeend', fcMsg(c, fci));
+  $$('#fcChat .msg2').forEach(m => m.classList.toggle('cur', m.id === 'fm' + fci));
+  $('#fcChat').scrollTo({top: 99999, behavior: 'smooth'});
+  $('#fcDesk').innerHTML = `<h4 style="margin:0 0 6px">📨 소식 ${fci + 1} / ${FC.length} · ${c.who}의 메시지</h4><div class="fc-tools">${TOOLS.map(([k, t, s]) => `<button data-k="${k}">${t}<small>${s}</small></button>`).join('')}</div>
+    <div class="clues" id="fcClues"></div><b>판정</b> <small class="hint" id="fcNeed">(도구를 2개 이상 써야 해요)</small><div class="verdict">${Object.entries(VN).map(([k, v]) => `<button class="${k}" data-v="${k}" disabled>${v}</button>`).join('')}</div><div id="fcExp"></div>`;
+  $$('#fcDesk .fc-tools button').forEach(b => b.onclick = () => {
+    const k = b.dataset.k; if (used.has(k)) return; used.add(k); b.classList.add('used');
+    const [col, h, t] = c.tools[k]; $('#fcClues').insertAdjacentHTML('beforeend', `<div class="clue ${col}"><b class="h">${h}</b>${t}</div>`);
+    if (used.size >= 2){ $$('#fcDesk .verdict button').forEach(x => x.disabled = false); $('#fcNeed').textContent = ''; }
+  });
+  let tried = false;
+  $$('#fcDesk .verdict button').forEach(b => b.onclick = () => {
+    const v = b.dataset.v;
+    if (v !== c.ans){ if (!tried) fcFirst[fci] = false; tried = true; b.disabled = true;
+      $('#fcExp').innerHTML = `<div class="fc-exp bad">❌ ${v === 't' ? '아직 믿을 만한 근거가 부족해요.' : v === 'f' ? '가짜라고 단정할 증거가 있나요? 단서를 다시 봐요.' : '단서가 충분히 모였어요. 판단할 수 있어요!'} 다른 도구도 써 보세요.</div>`; return; }
+    if (!tried) fcFirst[fci] = true;
+    $$('#fcDesk .verdict button').forEach(x => x.disabled = true);
+    $(`#fm${fci} .bb`).insertAdjacentHTML('beforeend', `<span class="vst" style="background:${VC[v]}">${VN[v]}</span>`);
+    setTimeout(() => { $('#fcChat').insertAdjacentHTML('beforeend', `<div class="msg2 me"><div><div class="bb">${c.reply}</div></div></div>`); $('#fcChat').scrollTo({top: 99999, behavior: 'smooth'}); }, 500);
+    $('#fcExp').innerHTML = `<div class="fc-exp ok">⭕ ${VN[v]}! ${c.why}</div><p><button class="btn" id="fcGo">${fci < FC.length - 1 ? '다음 소식 ▶' : '팩트체크 마치기 ▶'}</button></p>`;
+    $('#fcGo').onclick = () => { fci++; fcNext(); };
+  });
+}
+function fcEnd(){
+  const n = fcFirst.filter(Boolean).length;
+  $$('#fcChat .msg2').forEach(m => m.classList.remove('cur'));
+  $('#fcDesk').innerHTML = `<div style="text-align:center;padding:20px 0"><div style="font-size:3rem">🕵️</div><h4 style="margin:4px 0">팩트체크 완료!</h4><p>한 번에 맞힌 판정 <b>${n} / ${FC.length}</b></p><span class="tag-more">${n === 4 ? '🏅 팩트체크 마스터' : '🔍 꼼꼼한 확인러'}</span><p><button class="btn ghost" id="fcAgain">처음부터 다시 ↺</button></p></div>`;
+  $('#fcAgain').onclick = () => { fci = 0; fcFirst.length = 0; $('#fcChat').innerHTML = ''; fcNext(); };
+  $('#fcSum').innerHTML = `<div class="fc-steps"><div>🔗 <b>1. 출처</b><br>누가 만들었나? 공식 기관·전문가인가?</div><div>📅 <b>2. 날짜</b><br>최신 정보인가? 오래된 내용의 재공유는 아닌가?</div><div>🧪 <b>3. 근거</b><br>숫자·연구의 출처를 밝혔나?</div><div>📰 <b>4. 교차 확인</b><br>믿을 만한 다른 곳에서도 같은 내용인가?</div></div>
+    <p style="margin-top:10px">확인되지 않은 정보는 <b>판단을 보류하고 퍼뜨리지 않기</b>! ${FC.map((c, i) => `${fcFirst[i] ? '⭕' : '🔁'} ${c.who}`).join(' · ')}</p>`;
+  reportQuiz('factcheck', FC.map((_, i) => !!fcFirst[i]));
+}
+fcNext();
 
 renderQuiz($('#quiz'), [
   {q:'검색 결과에서 특정 단어가 들어간 결과를 빼고 싶을 때 쓰는 기호는?', o:['큰따옴표 " "','빼기 기호 -','물음표 ?'], a:1, e:'제외하고 싶은 단어 앞에 - 기호를 붙여요.'},
