@@ -13,6 +13,67 @@ textarea{font:inherit;width:100%;min-height:90px;padding:10px;border:2px solid v
 #bubble{width:100%;max-width:520px;display:block;background:var(--bg);border-radius:14px}
 .kinds{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:12px}
 .kinds div{background:var(--brand-soft);border-radius:12px;padding:8px 12px;font-size:.9rem}
+
+/* ── 거짓말하는 그래프 수사대 ── */
+.lg-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.lg-tabs span{border-radius:999px;padding:4px 11px;font-size:.8rem;font-weight:800;background:var(--bg);color:var(--muted)}
+.lg-tabs span.cur{background:var(--brand);color:#fff}.lg-tabs span.ok{background:var(--ok-soft);color:var(--ok)}
+.lg-wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:700px){.lg-wrap{grid-template-columns:1fr}}
+.media{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(30,40,80,.18);user-select:none}
+.media .z{cursor:zoom-in;border-radius:6px;transition:box-shadow .2s,background .2s}
+.media .z:hover{box-shadow:0 0 0 2px rgba(255,194,51,.9)}
+.media .z.glow{animation:glow 1s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 4px #ffc233,0 0 16px #ffc233}}
+.media .z.found{box-shadow:0 0 0 3px #e04848;background:rgba(224,72,72,.12)}
+.media .lstamp{position:absolute;right:12px;top:12px;z-index:3;border:3px solid #e04848;color:#e04848;background:rgba(255,255,255,.92);border-radius:10px;padding:2px 10px;font-weight:900;transform:rotate(8deg);animation:stampIn .35s cubic-bezier(.2,1.6,.4,1)}
+.media .lstamp.t{border-color:#16b8a6;color:#0d7d71}
+@keyframes stampIn{from{transform:rotate(8deg) scale(2.2);opacity:0}}
+.miss{position:absolute;z-index:4;pointer-events:none;background:#1f2a3d;color:#fff;border-radius:8px;padding:3px 8px;font-size:.75rem;font-weight:700;transform:translate(-50%,-130%);animation:missF 1s forwards}
+@keyframes missF{70%{opacity:1}to{opacity:0;transform:translate(-50%,-190%)}}
+/* 매체 디자인 */
+.tv{background:#0e1424;color:#fff;padding:12px 12px 0}
+.tv .top{display:flex;justify-content:space-between;font-size:.75rem;font-weight:800;color:#9fb0d8}
+.tv .live{background:#e04848;color:#fff;border-radius:4px;padding:1px 6px}
+.tv .ttl{font-size:1.15rem;font-weight:900;margin:8px 0;padding:2px 4px}
+.tv .ticker{margin:10px -12px 0;background:#e04848;color:#fff;font-size:.78rem;font-weight:800;padding:5px 10px;white-space:nowrap;overflow:hidden}
+.tv .ticker span{display:inline-block;animation:tick 12s linear infinite}
+@keyframes tick{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+.ad{background:repeating-linear-gradient(-45deg,#ffe14d 0 18px,#ffd21f 18px 36px);color:#3a2a00;padding:14px;text-align:center}
+.ad .ttl{font-size:1.3rem;font-weight:900;display:inline-block;background:#e04848;color:#fff;padding:2px 12px;border-radius:8px;transform:rotate(-2deg)}
+.ad .box{background:#fff;border-radius:14px;padding:10px;margin-top:10px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.sns{background:#fff;border:1.5px solid var(--line)}
+.sns .h{display:flex;gap:8px;align-items:center;padding:8px 10px;font-size:.82rem;font-weight:800}
+.sns .h i{width:28px;height:28px;border-radius:50%;background:linear-gradient(45deg,#7c5cff,#ff7aa2);display:inline-block}
+.sns .cap{padding:6px 10px 10px;font-size:.85rem}
+.paper{background:#f6f1e4;color:#2a241a;padding:12px 14px;font-family:"Batang","Noto Serif KR",serif}
+.paper .mast{border-bottom:3px double #2a241a;font-size:1.2rem;font-weight:900;text-align:center;letter-spacing:4px}
+.paper .ttl{font-size:1.1rem;font-weight:900;margin:8px 0 4px}
+.poster{background:linear-gradient(160deg,#e9efff,#ffeef3);padding:14px;text-align:center}
+.poster .ttl{font-family:var(--cute);font-size:1.35rem;margin:2px 0 8px}
+/* 차트 부품 */
+.bc{display:flex;gap:6px;align-items:stretch;height:170px;padding:6px 4px 0}
+.bc .ax{display:flex;flex-direction:column-reverse;justify-content:space-between;font-size:.72rem;font-weight:700;padding:0 4px;text-align:right;min-width:30px}
+.bc .bars{flex:1;display:flex;gap:12px;align-items:flex-end;border-left:2px solid currentColor;border-bottom:2px solid currentColor;padding:0 10px}
+.bc .bars div{flex:1;border-radius:6px 6px 0 0;transition:height 1.2s cubic-bezier(.3,0,.2,1);position:relative}
+.bc .bars div b{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:.75rem}
+.bc .lab{display:flex;gap:12px;padding:3px 10px 0 44px;font-size:.75rem;font-weight:700}
+.bc .lab span,.bc+.lab span{flex:1;text-align:center}
+.pie{width:130px;height:130px;border-radius:50%;transition:opacity .5s}
+.leg{text-align:left;font-size:.88rem;font-weight:800;line-height:1.8;padding:4px 8px}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lc svg{display:block;width:100%;height:auto}
+.lc path.ln{transition:d 1.2s}
+.picto{display:flex;align-items:flex-end;justify-content:center;gap:22px;padding:10px;min-height:150px}
+.picto div{text-align:center;font-size:.8rem;font-weight:700}
+.picto .ic{display:block;line-height:1;transition:font-size 1s}
+.donut{width:120px;height:120px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;transition:background .8s}
+.donut b{width:76px;height:76px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.note{display:inline-block;font-size:.62rem;color:#8a95ab;margin-top:8px;padding:1px 4px}
+.lg-side .opts{display:grid;gap:6px}
+.lg-why{border-radius:14px;padding:10px 12px;background:var(--yellow-soft);border:1.5px solid #f5dc92;line-height:1.55;font-size:.92rem;margin-top:8px}
+.lg-check{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:8px}
+.lg-check div{border-radius:14px;padding:10px 12px;background:var(--mint-soft);border:1.5px solid #bfe8e1;font-size:.88rem;line-height:1.45}
 </style>
 </head>
 <body data-stage data-unit="2" data-title="어떤 차트가 좋을까?" data-sub="중1 Ⅱ단원 · 데이터의 해석 · 미래엔 66쪽">
@@ -71,6 +132,20 @@ textarea{font:inherit;width:100%;min-height:90px;padding:10px;border:2px solid v
       </div>
       <div id="pick"></div>
       <p class="src" style="text-align:left;margin-top:8px">꺾은선그래프·산점도 활용 참고: 씨마스 중학교 정보 75쪽</p>
+    </div>
+
+    <div class="card" data-bot="화면에서 수상한 부분을 직접 눌러 찾아봐! 🕵️">
+      <h3>🕵️ 거짓말하는 그래프 수사대 <span class="tag-more">특색</span></h3>
+      <p>뉴스, 광고, SNS에 나온 그래프 중에는 데이터는 맞는데 <b>보여 주는 방법으로 속이는</b> 그래프가 있어요. 화면에서 <b>수상한 부분을 눌러</b> 조작을 찾고, 🔎 진실의 돋보기로 정직한 그래프와 비교해 보세요.</p>
+      <div class="lg-tabs" id="lgTabs"></div>
+      <div class="lg-wrap">
+        <div class="media" id="lgMedia"></div>
+        <div class="lg-side" id="lgSide"></div>
+      </div>
+    </div>
+    <div class="card" data-bot="그래프를 볼 때 꼭 확인할 5가지를 정리해 보자 ✅">
+      <h3>✅ 수사 결과: 그래프를 볼 때 확인할 5가지</h3>
+      <div id="lgSum"><p class="hint">앞 화면에서 사건 5개를 모두 해결하면 정리 카드가 나타나요.</p></div>
     </div>
   </section>
 
@@ -159,6 +234,94 @@ renderChoice($('#pick'), [
   {icon:'💬', t:'학급 회의록에서 가장 많이 나온 단어를 보여 주고 싶어요.', a:4, e:'단어 빈도는 워드 클라우드가 좋아요.'},
   {icon:'🏫', t:'학교 소개를 숫자, 그림, 그래프로 한 장에 요약하고 싶어요.', a:5, e:'여러 시각화 방법을 엮은 인포그래픽이 좋아요.'},
 ], ['막대', '꺾은선', '원', '버블', '워드 클라우드', '인포그래픽']);
+
+
+/* ===== 거짓말하는 그래프 수사대 ===== */
+const LG = [
+  {name: '📺 8시 뉴스', hot: 'axis', trick: '세로축 자르기', check: '세로축이 0에서 시작하나요?',
+   why: '세로축이 <b>95</b>부터 시작해서 겨우 2~3 차이가 몇 배처럼 보여요. 0부터 그리면 세 우유의 판매량은 거의 같아요.',
+   html: t => { const v = [98, 96.5, 95.6], lo = t ? 0 : 95, hi = t ? 100 : 98.5, ax = t ? [0, 25, 50, 75, 100] : [95, 96, 97, 98];
+     return `<div class="tv"><div class="top"><span><span class="live">LIVE</span> 8시 뉴스</span><span>20:14</span></div>
+       <div class="ttl z" data-z="title">"A 우유, 판매량 압도적 1위!"</div>
+       <div class="bc"><div class="ax z" data-z="axis">${ax.map(a => `<span>${a}</span>`).join('')}</div><div class="bars z" data-z="bars">${v.map((x, i) => `<div style="height:${(x - lo) / (hi - lo) * 100}%;background:${['#3b6cf6', '#8fa7e8', '#8fa7e8'][i]}"><b>${x}</b></div>`).join('')}</div></div>
+       <div class="bc lab" style="height:auto;padding-left:48px"><span>A 우유</span><span>B 우유</span><span>C 우유</span></div>
+       <div class="ticker z" data-z="src"><span>■ 자료: ○○마트 1주일 판매 집계(단위: 만 개) ■ 내일 날씨 맑음 ■</span></div></div>`; }},
+  {name: '🛒 마트 광고', hot: 'legend', trick: '합계가 100%가 아님', check: '비율의 합이 100%인가요?',
+   why: '원그래프는 전체(100%)를 나눈 거예요. 그런데 70% + 40% + 20% = <b>130%</b>! 숫자를 부풀렸어요. 바르게 계산하면 "매우 만족"은 45%예요.',
+   html: t => { const d = t ? [['매우 만족', 45], ['만족', 35], ['보통', 20]] : [['매우 만족', 70], ['만족', 40], ['보통', 20]], c = ['#e04848', '#ffb35c', '#9fb0d8'];
+     const sum = d.reduce((s, x) => s + x[1], 0); let a = 0; const g = d.map(([, v], i) => { const s = a; a += v / sum * 360; return `${c[i]} ${s}deg ${a}deg`; }).join(',');
+     return `<div class="ad"><div class="ttl z" data-z="title">고객 만족도 최고!!</div>
+       <div class="box"><div class="pie z" data-z="pie" style="background:conic-gradient(${g})"></div>
+       <div class="leg z" data-z="legend">${d.map(([n, v], i) => `<div><i style="background:${c[i]}"></i>${n} ${v}%</div>`).join('')}${t ? '<div style="color:#0d7d71">합계 100%</div>' : ''}</div></div>
+       <div class="z" data-z="sale" style="margin-top:10px;font-weight:900;font-size:1.05rem">🎉 이번 주 전 품목 30% 할인!</div></div>`; }},
+  {name: '📱 학원 SNS', hot: 'xaxis', trick: '기간 잘라내기', check: '전체 기간을 보여 주나요?',
+   why: '9~11월 <b>3달만 잘라서</b> 보여 줬어요. 1년 전체를 보면 성적은 원래 오르락내리락했고, 9월에 크게 떨어졌다가 원래대로 돌아온 것뿐이에요.',
+   html: t => { const all = [80, 84, 78, 83, 79, 85, 80, 76, 70, 78, 85, 79], idx = t ? all.map((_, i) => i) : [8, 9, 10], v = idx.map(i => all[i]);
+     const lo = 65, hi = 90, X = k => 20 + k * (260 / Math.max(1, idx.length - 1)), Y = s => 120 - (s - lo) / (hi - lo) * 110;
+     const d = v.map((s, k) => (k ? 'L' : 'M') + X(k).toFixed(1) + ' ' + Y(s).toFixed(1)).join(' ');
+     return `<div class="sns"><div class="h"><i></i>gongbu_king_academy <span style="color:#3b6cf6">✔</span></div>
+       <div class="z" data-z="title" style="padding:0 10px;font-weight:900">"우리 학원 다니면 성적 급상승 📈"</div>
+       <div class="lc z" data-z="line" style="padding:6px 6px 0"><svg viewBox="0 0 300 130"><rect width="300" height="130" fill="#f8faff"/>${t ? '<rect x="' + (X(8) - 6) + '" y="0" width="' + (X(10) - X(8) + 12) + '" height="130" fill="#ffc233" opacity=".18"/>' : ''}<path class="ln" d="${d}" fill="none" stroke="#7c5cff" stroke-width="3"/>${v.map((s, k) => `<circle cx="${X(k)}" cy="${Y(s)}" r="${t ? 3 : 5}" fill="#7c5cff"/>${t ? '' : `<text x="${X(k) - 8}" y="${Y(s) - 9}" font-size="11" font-weight="700">${s}점</text>`}`).join('')}</svg></div>
+       <div class="z" data-z="xaxis" style="display:flex;justify-content:space-between;padding:2px 14px 0;font-size:.72rem;font-weight:700;color:#5a6578">${idx.map(i => `<span>${i + 1}월</span>`).join('')}</div>
+       <div class="cap z" data-z="cap">♡ 1,204 · 상담 문의는 DM으로! #성적향상 #공부왕</div></div>`; }},
+  {name: '📰 동네 신문', hot: 'icon', trick: '그림 크기 부풀리기', check: '그림의 크기(넓이)가 값과 맞나요?',
+   why: '값은 2배인데 그림을 <b>가로도 2배, 세로도 2배</b>로 키워서 넓이는 <b>4배</b>처럼 보여요. 그림그래프는 같은 크기의 그림 개수로 나타내야 해요.',
+   html: t => `<div class="paper"><div class="mast">우리동네신문</div><div class="ttl z" data-z="title">급식 만족 학생, 1년 만에 2배로!</div>
+       <div class="picto">${t ? `<div><span class="ic" style="font-size:48px">🍱</span>작년 100명</div><div><span class="ic" style="font-size:48px">🍱🍱</span>올해 200명</div>`
+         : `<div><span class="ic" style="font-size:48px">🍱</span>작년 100명</div><div class="z" data-z="icon"><span class="ic" style="font-size:96px">🍱</span>올해 200명</div>`}</div>
+       <div class="z" data-z="body" style="font-size:.85rem;line-height:1.6">새 영양사 선생님이 오신 뒤 급식을 좋아하는 학생이 크게 늘었다고 학교 측은 밝혔다.</div></div>`},
+  {name: '🗳️ 설문 포스터', hot: 'note', trick: '치우친 표본', check: '누구에게, 몇 명에게 물었나요?',
+   why: '설문 대상이 <b>축구부 10명</b>뿐이에요! 체육 시간을 좋아할 사람들에게만 물었으니 전체 학생의 생각이라고 할 수 없어요. 전교생 300명에게 물었더니 찬성은 52%였어요.',
+   html: t => { const p = t ? 52 : 90;
+     return `<div class="poster"><div class="ttl z" data-z="title">학생 ${p}%가 체육 시간 늘리기에 찬성!</div>
+       <div class="donut z" data-z="donut" style="background:conic-gradient(#3b6cf6 0 ${p * 3.6}deg,#e3e8f2 0)"><b>${p}%</b></div>
+       <div class="z" data-z="vote" style="margin-top:8px;font-weight:800">✊ 학생회에 의견을 전해 주세요</div>
+       <span class="note z" data-z="note">${t ? '설문 대상: 전교생 300명 (무작위)' : '*설문 대상: 축구부 학생 10명'}</span></div>`; }},
+];
+let lgi = 0, lgMiss = 0, lgFound = false;
+const lgFirst = [];
+function lgTabs(){ $('#lgTabs').innerHTML = LG.map((c, i) => `<span class="${i < lgi ? 'ok' : i === lgi ? 'cur' : ''}">${i < lgi ? '✔ ' : ''}사건 ${i + 1}</span>`).join(''); }
+function lgShow(){
+  lgTabs();
+  if (lgi >= LG.length) return lgEnd();
+  const c = LG[lgi]; lgMiss = 0; lgFound = false;
+  $('#lgMedia').innerHTML = c.html(false);
+  $('#lgSide').innerHTML = `<h4 style="margin:0 0 6px">사건 ${lgi + 1}. ${c.name}</h4><p style="margin:0 0 8px">이 그래프는 무엇을 부풀리고 있을까요? 왼쪽 화면에서 <b>속임수가 숨은 곳</b>을 눌러 보세요.</p><p class="hint" id="lgHint">🔍 마우스를 올리면 노란 테두리가 생겨요.</p>`;
+  lgBind();
+}
+function lgBind(){
+  $$('#lgMedia .z').forEach(z => z.onclick = e => {
+    if (lgFound) return;
+    const c = LG[lgi], r = $('#lgMedia').getBoundingClientRect();
+    if (z.dataset.z !== c.hot){
+      lgMiss++; const m = document.createElement('div'); m.className = 'miss'; m.textContent = '여긴 수상하지 않아요'; m.style.left = (e.clientX - r.left) + 'px'; m.style.top = (e.clientY - r.top) + 'px'; $('#lgMedia').appendChild(m); setTimeout(() => m.remove(), 1000);
+      if (lgMiss >= 2){ $('#lgHint').innerHTML = `💡 힌트: <b>${c.check}</b>`; }
+      if (lgMiss >= 3) $(`#lgMedia .z[data-z="${c.hot}"]`).classList.add('glow');
+      return;
+    }
+    lgFound = true; lgFirst[lgi] = lgMiss === 0; z.classList.remove('glow'); z.classList.add('found');
+    $('#lgMedia').insertAdjacentHTML('beforeend', `<span class="lstamp">🚨 ${c.trick}</span>`);
+    $('#lgSide').innerHTML = `<h4 style="margin:0 0 6px">🚨 찾았다! ${c.trick}</h4><div class="lg-why">${c.why}</div><p><button class="btn" id="lgTruth">🔎 진실의 돋보기</button></p>`;
+    $('#lgTruth').onclick = () => {
+      $('#lgMedia').innerHTML = LG[lgi].html(true) + `<span class="lstamp t">✅ 정직한 그래프</span>`;
+      if (LG[lgi].hot === 'axis'){ // 막대가 바뀌는 모습이 보이도록 거짓 높이에서 출발
+        const bars = $$('#lgMedia .bars div'), h = bars.map(b => b.style.height), lie = [98, 96.5, 95.6].map(x => (x - 95) / 3.5 * 100 + '%');
+        bars.forEach((b, i) => b.style.height = lie[i]); requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach((b, i) => b.style.height = h[i])));
+      }
+      $('#lgSide').innerHTML = `<h4 style="margin:0 0 6px">✅ 정직하게 그리면?</h4><div class="lg-why">${LG[lgi].why}</div><p class="hint">✔ 확인할 것: <b>${LG[lgi].check}</b></p><p><button class="btn" id="lgNext">${lgi < LG.length - 1 ? '다음 사건 ▶' : '수사 마치기 ▶'}</button></p>`;
+      $('#lgNext').onclick = () => { lgi++; lgShow(); };
+    };
+  });
+}
+function lgEnd(){
+  const n = lgFirst.filter(Boolean).length;
+  $('#lgMedia').innerHTML = `<div class="poster" style="padding:30px 14px"><div style="font-size:3rem">🕵️‍♀️</div><div class="ttl">사건 5개 모두 해결!</div><p>한 번에 찾아낸 속임수 <b>${n} / ${LG.length}</b></p><span class="tag-more">${n === 5 ? '🏅 명탐정' : n >= 3 ? '🥈 날카로운 수사관' : '🌱 견습 수사관'}</span></div>`;
+  $('#lgSide').innerHTML = `<p>다음 화면에서 그래프를 볼 때 확인할 5가지를 정리해 봐요.</p><button class="btn ghost" id="lgAgain">처음부터 다시 ↺</button>`;
+  $('#lgAgain').onclick = () => { lgi = 0; lgFirst.length = 0; lgShow(); };
+  $('#lgSum').innerHTML = `<div class="lg-check">${LG.map((c, i) => `<div>${lgFirst[i] ? '⭕' : '🔁'} <b>${c.check}</b><br><small>${c.name} · ${c.trick}</small></div>`).join('')}</div><p style="margin-top:10px">그래프는 데이터를 한눈에 보여 주지만, <b>축·기간·비율·그림 크기·표본</b>을 바꾸면 같은 데이터로도 전혀 다른 인상을 줄 수 있어요. 그래프를 만들 때는 정직하게, 볼 때는 꼼꼼하게!</p>`;
+  reportQuiz('liegraph', LG.map((_, i) => !!lgFirst[i]));
+}
+lgShow();
 
 renderQuiz($('#quiz'), [
   {q:'X축, Y축, 원의 크기로 세 가지 데이터를 동시에 나타내는 시각화 방법은?', o:['막대그래프','버블 차트','워드 클라우드'], a:1, e:'버블의 위치는 두 변수, 크기는 세 번째 변수를 나타내요.'},
