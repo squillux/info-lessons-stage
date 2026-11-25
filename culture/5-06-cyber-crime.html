@@ -6,12 +6,73 @@
 <title>사이버 범죄 예방 훈련</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
-.phone{max-width:420px;border:3px solid var(--ink);border-radius:26px;padding:14px;background:#fff}
-.sms{background:var(--bg);border-radius:14px;padding:10px 12px;margin:8px 0;font-size:.95rem}
-.sms small{display:block;color:var(--muted)}
-.sms .link{color:var(--brand);text-decoration:underline;word-break:break-all}
-.sms button.flag{all:unset;cursor:pointer;padding:0 2px;border-radius:4px;border-bottom:2px dotted var(--pink)}
-.sms button.flag.on{background:var(--pink-soft)}
+
+/* ── 피싱 함정 탈출: 내 폰을 지켜라 ── */
+.pg-hud{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-weight:800;margin:6px 0 10px}
+.pg-hud .pg-hp{letter-spacing:2px;font-size:1.1rem}
+.pg-hud .pg-cb{color:#e65100;min-width:70px}
+.pg-hud .pg-pr{margin-left:auto;color:var(--muted);font-size:.85rem}
+.pg-wrap{display:grid;gap:12px;justify-items:center}
+@media (min-width:760px){.pg-wrap{grid-template-columns:330px minmax(0,1fr);justify-items:stretch;align-items:start}}
+.pg-phone{position:relative;width:100%;max-width:330px;border-radius:44px;background:#111;padding:11px;box-shadow:0 14px 30px #0004,inset 0 0 0 2px #444}
+.pg-phone.buzz{animation:pgbuzz .09s linear 6}
+@keyframes pgbuzz{25%{transform:translate(-3px,1px) rotate(-.6deg)}75%{transform:translate(3px,-1px) rotate(.6deg)}}
+.pg-notch{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:88px;height:22px;border-radius:14px;background:#000;z-index:6}
+.pg-scr{position:relative;height:clamp(400px,54vh,540px);border-radius:34px;overflow:hidden;background:#fff;display:flex;flex-direction:column;font-size:.88rem;color:#111}
+.pg-sb{display:flex;justify-content:space-between;align-items:center;padding:12px 24px 4px;font-size:.78rem;font-weight:800;background:var(--pgc,#f2f2f7);color:var(--pgt,#111)}
+.pg-sb svg{height:11px;width:auto;fill:currentColor}
+.pg-ah{display:flex;align-items:center;gap:8px;padding:6px 12px 9px;background:var(--pgc,#f2f2f7);color:var(--pgt,#111);border-bottom:1px solid #0001}
+.pg-ah .bk{font-size:1.2rem;opacity:.7}
+.pg-ah .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#0001;font-size:1.1rem;flex:none}
+.pg-ah b{display:block;font-size:.92rem;line-height:1.2}.pg-ah small{display:block;font-size:.7rem;opacity:.75}
+.pg-body{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:7px;background:var(--pgb,#fff)}
+.pg-day{align-self:center;font-size:.68rem;color:#666;background:#0000000d;border-radius:999px;padding:2px 10px}
+.pg-bb{align-self:flex-start;max-width:86%;background:var(--pgbb,#e9e9eb);border-radius:16px 16px 16px 4px;padding:8px 11px;line-height:1.5;animation:pgin .3s ease-out;word-break:keep-all;overflow-wrap:anywhere}
+.pg-bb.card{max-width:100%;border-radius:14px;background:#fff;box-shadow:0 1px 4px #0002}
+.pg-tm{align-self:flex-start;font-size:.64rem;color:#888;margin:-4px 0 0 4px}
+@keyframes pgin{from{opacity:0;transform:translateY(8px)}}
+.pg-ty{align-self:flex-start;background:var(--pgbb,#e9e9eb);border-radius:16px;padding:8px 12px;letter-spacing:2px;color:#777}
+.pg-link{align-self:flex-start;width:84%;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 1px 5px #0003;cursor:pointer;animation:pgin .3s ease-out}
+.pg-link .im{height:62px;display:grid;place-items:center;font-size:1.8rem;background:linear-gradient(135deg,#e3f2fd,#fce4ec)}
+.pg-link b{display:block;padding:6px 10px 0;font-size:.84rem}
+.pg-link small{display:block;padding:0 10px 8px;color:#1a73e8;font-size:.72rem;overflow-wrap:anywhere}
+.pg-call{flex:1;display:flex;flex-direction:column;align-items:center;padding:26px 14px 12px;background:linear-gradient(#2b3a55,#11141c);color:#fff;gap:6px;overflow-y:auto}
+.pg-call .av{width:74px;height:74px;border-radius:50%;background:#ffffff22;display:grid;place-items:center;font-size:2.2rem}
+.pg-call b{font-size:1.1rem}.pg-call small{opacity:.75}
+.pg-call .pg-bb{background:#ffffff1f;color:#fff;align-self:stretch;max-width:100%;border-radius:14px}
+.pg-call .wave{display:flex;gap:3px;height:18px;align-items:center}.pg-call .wave i{width:3px;background:#69f0ae;border-radius:2px;animation:pgwv .7s ease-in-out infinite}
+.pg-call .wave i:nth-child(2){animation-delay:.1s}.pg-call .wave i:nth-child(3){animation-delay:.2s}.pg-call .wave i:nth-child(4){animation-delay:.3s}.pg-call .wave i:nth-child(5){animation-delay:.4s}
+@keyframes pgwv{0%,100%{height:4px}50%{height:18px}}
+.pg-noti{position:absolute;left:8px;right:8px;top:8px;z-index:7;background:#f7f7f7ee;backdrop-filter:blur(6px);border-radius:18px;padding:9px 11px;display:flex;gap:9px;align-items:center;box-shadow:0 6px 18px #0003;transform:translateY(-130%);transition:transform .45s cubic-bezier(.2,1.2,.4,1)}
+.pg-noti.show{transform:none}
+.pg-noti .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:1.1rem;flex:none;color:#fff}
+.pg-noti b{display:block;font-size:.8rem}.pg-noti span{display:block;font-size:.76rem;color:#444;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.pg-lock{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;background:linear-gradient(160deg,#3b6cf6,#a24bd6);text-align:center;padding:20px}
+.pg-lock .t{font-size:3.4rem;font-weight:300;line-height:1}
+.pg-hack{position:absolute;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:22px;text-align:center;color:#fff;background:repeating-linear-gradient(0deg,#b71c1cee 0 3px,#8e0000ee 3px 6px);animation:pgglitch .5s steps(2) 3}
+.pg-hack.show{display:flex}
+.pg-hack .big{font-size:3rem;animation:pgshake .4s ease-in-out 3}
+.pg-hack b{font-size:1.2rem}
+@keyframes pgglitch{0%{clip-path:inset(0 0 60% 0);transform:translateX(-6px)}50%{clip-path:inset(40% 0 0 0);transform:translateX(6px)}100%{clip-path:inset(0);transform:none}}
+@keyframes pgshake{50%{transform:rotate(12deg) scale(1.2)}}
+.pg-c{border-radius:4px;transition:background .3s}
+.pg-scr.clue .pg-c{cursor:pointer}
+.pg-c.on{background:#ffeb3b;box-shadow:0 0 0 2px #ffeb3b;color:#111}
+.pg-link.pg-c.on{box-shadow:0 0 0 3px #ff9800}
+.pg-side{display:grid;gap:8px;align-content:start;width:100%;max-width:520px}
+.pg-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pg-btns button{border:0;border-radius:16px;padding:13px 8px;font-weight:900;font-size:.98rem;color:#fff;cursor:pointer;box-shadow:0 4px 0 #0003}
+.pg-btns button:active{transform:translateY(2px);box-shadow:0 2px 0 #0003}
+.pg-btns button:disabled{opacity:.35;cursor:default}
+.pg-btns .tr{background:#43a047}.pg-btns .rp{background:#e53935}
+.pg-msg{border-radius:14px;padding:10px 12px;background:var(--bg);line-height:1.55;font-weight:600}
+.pg-msg.ok{background:var(--ok-soft)}.pg-msg.bad{background:var(--bad-soft)}
+.pg-msg ul{margin:6px 0 0;padding-left:18px;font-weight:500}
+.pg-pop{position:absolute;left:50%;top:40%;z-index:9;transform:translateX(-50%);font-weight:900;font-size:1.5rem;color:#2e7d32;text-shadow:0 2px 0 #fff,0 0 8px #fff;pointer-events:none;animation:pgpop 1s ease-out forwards}
+@keyframes pgpop{from{opacity:1;transform:translate(-50%,0) scale(.6)}30%{transform:translate(-50%,-10px) scale(1.15)}to{opacity:0;transform:translate(-50%,-60px)}}
+.pg-sig{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:8px}
+.pg-sig div{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:6px 9px;font-size:.82rem;font-weight:700}
+.pg-grade{font-size:1.3rem;font-weight:900}
 </style>
 </head>
 <body data-stage data-unit="5" data-title="사이버 범죄 예방 훈련" data-sub="중1 Ⅴ단원 · 디지털 윤리의 실천 · 미래엔 205쪽">
@@ -23,7 +84,7 @@
   <section class="step think">
     <h2 class="step-h"><span class="no">1</span>생각 열기</h2>
     <div class="card" data-think="바로 눌러요|누르지 않고 확인해요|친구에게 보내요|잘 모르겠어">
-      <p>"택배 주소가 잘못되었어요. 아래 링크에서 확인하세요." 이런 문자를 받으면 바로 눌러도 될까요?</p>
+      <p>"택배 주소가 잘못되었어요. 아래 링크에서 확인하세요." 이런 문자를 받으면 바로 눌러도 될까요? 나라면 속지 않을 자신이 있나요?</p>
     </div>
   </section>
 
@@ -34,11 +95,14 @@
       <div id="type"></div>
     </div>
 
-    <div class="card" data-bot="수상한 부분을 모두 찾아 눌러 봐 🎣">
-      <h3>🎣 피싱 문자 찾아내기</h3>
-      <p>가상의 문자 메시지예요. 수상한 부분을 모두 눌러 보세요.</p>
-      <div class="phone" id="phone"></div>
-      <div class="feedback" id="fb"></div>
+    <div class="card" data-bot="진짜 같은 피싱 메시지가 계속 와! 속지 말고 내 폰을 지켜 🛡️">
+      <h3>📱 피싱 함정 탈출: 내 폰을 지켜라! <span class="tag-more">특색</span></h3>
+      <p>휴대폰으로 문자·메신저·DM·전화가 차례로 와요. <b>진짜 메시지</b>인지 <b>피싱</b>인지 판단하세요. 피싱을 신고하면 <b>수상한 부분(단서)</b>을 눌러 보너스 점수를 받아요. ⚠️ 메시지 속 링크를 누르면 실제로 누른 것으로 쳐요! 모든 메시지와 주소는 가상이에요.</p>
+      <div class="pg-hud"><span class="pg-hp" id="pgHp">❤️❤️❤️</span><span>🛡️ <span id="pgSc">0</span>점</span><span class="pg-cb" id="pgCb"></span><span class="pg-pr" id="pgPr"></span></div>
+      <div class="pg-wrap">
+        <div class="pg-phone" id="pgPhone"><div class="pg-notch"></div><div class="pg-scr" id="pgScr"></div></div>
+        <div class="pg-side"><div class="pg-btns" id="pgBtns"></div><div id="pgOut"></div></div>
+      </div>
     </div>
 
     <div class="card" data-bot="안전한 습관인지 위험한 습관인지 골라 봐 🛡️">
@@ -70,24 +134,6 @@ renderChoice($('#type'), [
   {icon:'🎰', t:'불법 도박 사이트를 만들어 운영했어요.', a:2, e:'불법 콘텐츠 범죄: 사이버 도박, 불법 성(性) 관련 콘텐츠 유포 등이 있어요.'},
 ], ['정보 통신망 침해', '정보 통신망 이용', '불법 콘텐츠']);
 
-const PARTS = [
-  ['[국외발신]', true, '해외에서 보낸 문자는 사기일 가능성이 높아요.'],
-  [' 고객님 택배가 ', false],
-  ['주소 불일치로 반송 예정', true, '불안하게 만들어 서두르게 하는 것이 피싱의 수법이에요.'],
-  ['입니다. 오늘 안에 확인하세요: ', false],
-  ['http://tak-bae-check.example/xz8', true, '공식 주소가 아닌 이상한 링크는 절대 누르지 않아요.'],
-];
-const need = PARTS.filter(p => p[1]).length; let hit = 0;
-$('#phone').innerHTML = `<div class="sms"><small>📩 010-****-**** · 오전 9:12</small>${PARTS.map((p, i) => p[1] ? `<button class="flag${i === 4 ? ' link' : ''}" data-i="${i}">${p[0]}</button>` : p[0]).join('')}</div>
-  <div class="sms"><small>📩 엄마(?) · 오전 9:30</small><button class="flag" data-i="9">엄마 폰이 고장 나서 이 번호로 연락해. 급하게 문화상품권 사야 하니 결제 좀 해 줘</button></div>`;
-PARTS[9] = ['', true, '가족이나 지인을 사칭해 돈을 요구하면 반드시 원래 번호로 전화해 확인해요.'];
-const all = need + 1;
-$$('#phone .flag').forEach(b => b.onclick = () => {
-  if (b.classList.contains('on')) return;
-  b.classList.add('on'); hit++;
-  feedback($('#fb'), true, `⭕ ${PARTS[+b.dataset.i][2]} (${hit} / ${all})` + (hit === all ? ' 🎉 모두 찾았어요! 이런 수법을 피싱이라고 해요.' : ''));
-});
-
 renderChoice($('#rule'), [
   {icon:'🧪', t:'백신 프로그램을 최신 버전으로 업데이트하고 실시간 감시를 켜 둔다.', a:0},
   {icon:'🔐', t:'비밀번호를 3년째 그대로 쓰고 있다.', a:1, hint:'비밀번호는 주기적으로 바꿔요.', e:''},
@@ -95,6 +141,155 @@ renderChoice($('#rule'), [
   {icon:'🏦', t:'개인 정보로 거래할 때는 안전 결제 사이트를 이용한다.', a:0},
   {icon:'📎', t:'모르는 사람이 보낸 메일의 첨부 파일을 열어 본다.', a:1, e:''},
 ].map(x => ({...x, e: x.a ? '위험해요! 이 행동은 사이버 범죄의 표적이 될 수 있어요.' : '안전한 습관이에요.'})), ['✅ 안전', '⚠️ 위험']);
+
+
+/* ===== 피싱 함정 탈출 ===== */
+const PG_APP = {
+  sms: {n: '메시지', ic: '💬', c: '#34c759', hd: '#f2f2f7', bb: '#e9e9eb'},
+  talk: {n: '톡톡', ic: '🗨️', c: '#f9c400', hd: '#b2c7d9', bg: '#b2c7d9', bb: '#fff'},
+  dm: {n: '포토그램 DM', ic: '📷', c: '#d6249f', hd: '#fff', bb: '#efefef'},
+  game: {n: '블록 월드 채팅', ic: '🎮', c: '#5e35b1', hd: '#2a1f4a', t: '#fff', bg: '#1d1636', bb: '#3b2f66', bt: '#fff'},
+  school: {n: '학교 알림이', ic: '🏫', c: '#1e88e5', hd: '#e3f2fd', bg: '#f5f9ff'},
+  bank: {n: '정보은행', ic: '🏦', c: '#00897b', hd: '#e0f2f1', bg: '#f4fbfa'},
+  market: {n: '동네마켓', ic: '🥕', c: '#ff7e36', hd: '#fff', bb: '#f2f3f6'},
+  call: {n: '전화', ic: '📞', c: '#2e7d32'},
+};
+const PG = [
+  {app: 'sms', from: '+82 70-4**8-1432', sub: '국외 번호', ph: 1, type: '스미싱(문자 + 피싱)',
+   m: ['{{[국외발신]|해외에서 보낸 문자예요. 국내 택배사는 국외 번호로 안내 문자를 보내지 않아요.}} [정보택배] 고객님의 상품이 {{주소 불일치로 보관 중|불안하게 만들어 링크를 누르게 하는 수법이에요.}}입니다. {{24시간 내 미확인 시 반송|시간을 재촉해 생각할 틈을 주지 않아요.}} 처리됩니다.'],
+   link: ['📦', '정보택배 주소 수정하기', 'jungbo-taekbae.kr-delivery.top/a8x', '택배사 공식 주소가 아닌 이상한 주소예요.'],
+   fall: '링크를 누르자 "주소 수정 앱" 설치 화면이 떴고, 설치하자마자 휴대폰 속 연락처·사진·문자가 범인에게 전송됐어요.', do: '링크를 누르지 말고 택배사 공식 앱이나 고객센터에서 직접 확인해요.'},
+  {app: 'talk', from: '엄마', sub: '⚠️ 친구로 추가되지 않은 사용자', av: '👩', ph: 1, type: '메신저 피싱(가족 사칭)',
+   m: ['엄마야~ 뭐 해?', '{{폰 액정이 깨져서 수리 맡기고 임시폰으로 연락하는 거야|번호가 바뀌었다며 다가오는 것은 가족 사칭의 전형적인 수법이에요.}}', '{{지금 통화가 안 되니까 톡으로만 하자|전화로 확인하지 못하게 막으려는 거예요.}}', '급하게 {{문화상품권 10만 원어치 사서 핀 번호 사진 보내 줘|상품권 핀 번호는 현금처럼 바로 쓰여서 범인이 자주 요구해요.}} 집 가서 줄게!'],
+   fall: '상품권 핀 번호를 보내자 몇 분 만에 모두 사용됐어요. 진짜 엄마는 폰이 멀쩡했어요.', do: '원래 알던 엄마 번호로 직접 전화해서 확인해요.'},
+  {app: 'school', from: '정보중학교', sub: '공식 알림', av: '🏫', ph: 0,
+   m: ['[가정통신문] 내일(목) 3교시 체육 수업이 비 예보로 과학실 수업으로 바뀝니다. 실내화를 챙겨 오세요.'],
+   why: '학교 공식 앱의 안내예요. 링크를 누르거나 개인 정보·돈을 보내라는 요구가 없어요.'},
+  {app: 'game', from: 'GM_운영자_공식', sub: '귓속말', av: '🛡️', ph: 1, type: '피싱 사이트(계정 탈취)',
+   m: ['🎉 축하합니다! {{전설 스킨 + 다이아 10,000개 무료 지급|너무 좋은 조건으로 유혹하는 것은 피싱의 대표 신호예요.}} 대상자로 선정되셨습니다.', '아래 페이지에서 {{게임 아이디와 비밀번호를 입력|진짜 운영자는 절대 비밀번호를 묻지 않아요.}}하면 {{10분 안에|시간을 재촉해요.}} 지급됩니다.'],
+   link: ['💎', '블록 월드 보상 수령 페이지', 'blockworld-reward-event.xyz/login', '공식 게임 사이트 주소가 아니에요.'],
+   fall: '가짜 로그인 페이지에 비밀번호를 넣자 계정을 빼앗겼어요. 모아 둔 아이템은 사라지고, 내 계정으로 친구들에게 같은 사기 메시지가 보내졌어요.', do: '운영자를 사칭한 메시지는 신고하고, 게임 공식 홈페이지의 공지를 확인해요.'},
+  {app: 'dm', from: 'star_giveaway_event', sub: '팔로우하지 않는 계정', av: '⭐', ph: 1, type: '인터넷 사기',
+   m: ['안녕하세요! 지난주 {{팔로우 이벤트에 당첨|응모한 적도 없는 이벤트 당첨은 의심해요.}}되셨어요 🎉 최신 무선 이어폰을 보내 드려요!', '{{배송비 3,000원만|적은 돈이라도 결제를 하게 만들어 카드 정보를 빼내요.}} 결제해 주시면 바로 보내 드려요. {{오늘 자정까지|시간을 재촉해요.}} 결제 안 하면 다음 사람에게 넘어가요 😢'],
+   link: ['🎧', '당첨 상품 배송비 결제', 'free-gift-ship.shop/pay', '처음 보는 결제 사이트예요.'],
+   fall: '배송비 결제 창에 부모님 카드 번호를 넣었더니, 며칠 뒤 모르는 곳에서 수십만 원이 결제됐어요. 이어폰은 오지 않았어요.', do: '응모하지 않은 당첨 메시지는 무시하고 차단·신고해요.'},
+  {app: 'bank', from: '정보은행 알림', sub: '입출금 알림', av: '🏦', ph: 0,
+   m: ['[입금] 용돈 20,000원이 입금되었습니다. 잔액 35,000원'],
+   why: '내가 쓰는 은행 앱의 입출금 알림이에요. 링크도, 개인 정보 요구도 없어요.'},
+  {app: 'talk', from: '지우', sub: '친구', av: '🧑', ph: 1, type: '피싱(친구 계정 해킹)',
+   m: ['야야', '{{이거 너 아니야?? ㅋㅋㅋ 사진 돌고 있던데|호기심과 불안을 자극해 링크를 누르게 해요. 친구 계정이 해킹당했을 수도 있어요.}}', '{{로그인해야 보여|사진을 보려면 로그인하라는 것은 계정을 빼앗는 수법이에요.}}'],
+   link: ['🖼️', 'IMG_2931.jpg 보기', 'photo-view-login.click/IMG_2931', '사진 사이트가 아니라 로그인 정보를 빼내는 주소예요.'],
+   fall: '로그인하자 내 계정도 해킹당했어요. 이제 내 계정으로 다른 친구들에게 똑같은 메시지가 퍼지고 있어요.', do: '친구 이름이어도 링크를 보내면 친구에게 직접 전화해 확인해요.'},
+  {app: 'call', from: '02-5**-1234', sub: '"서울중앙지검 수사관"이라고 함', av: '👤', ph: 1, type: '보이스피싱(기관 사칭)',
+   m: ['여보세요, 서울중앙지방검찰청 김민수 수사관입니다. {{학생 명의로 된 통장이 범죄에 쓰여서 조사가 필요합니다.|검찰·경찰 같은 공공 기관을 사칭해 겁을 주는 보이스피싱 수법이에요.}}', '{{이건 수사 비밀이라 부모님께도 말하면 안 됩니다.|주변에 알리지 못하게 막는 것은 보이스피싱의 대표 신호예요.}}', '지금 문자로 보내 드리는 {{\'검찰 보안 앱\'을 설치하세요.|검찰·경찰은 앱 설치나 돈을 절대 요구하지 않아요.}}'],
+   fall: '설치한 앱은 악성 앱이었어요. 범인이 휴대폰을 원격으로 조종하며 부모님 계좌 정보까지 빼냈어요.', do: '바로 전화를 끊고 부모님께 알린 뒤, 112에 신고해요.'},
+  {app: 'market', from: '쿨거래해요', sub: '매너온도 36.5°C · 가입 3일', av: '🙂', ph: 1, type: '인터넷 사기(중고 거래)',
+   m: ['태블릿 사신다고요? {{시세보다 20만 원 싸게|너무 싼 가격은 사기의 신호예요.}} 드려요~', '제가 지금 지방이라 {{직거래는 어렵고|만나지 않으려는 판매자는 의심해요.}}', '{{앱 말고 이 안전결제 링크로 입금해 주세요|거래 앱 밖으로 끌어내 가짜 안전결제 사이트로 돈을 받아요.}}'],
+   link: ['🔒', '안전결제로 구매하기', 'safe-pay-dongnae.site/order', '중고 거래 앱의 공식 결제 화면이 아니에요.'],
+   fall: '입금했지만 물건은 오지 않았고, 판매자 계정은 사라졌어요.', do: '거래는 앱 안에서, 가능하면 직접 만나서 해요.'},
+  {app: 'sms', from: '1588-****', sub: '정보택배 고객센터', ph: 0,
+   m: ['[정보택배] 고객님의 상품이 배송 완료되었습니다. 배송 장소: 문 앞. 이용해 주셔서 감사합니다.'],
+   why: '배송 완료를 알리기만 하고, 링크를 누르거나 정보를 입력하라고 하지 않아요.'},
+  {app: 'sms', from: '#1***', sub: '[Web발신]', ph: 1, type: '스미싱(기관 사칭)',
+   m: ['[Web발신] {{교육청 청소년 교통비 지원금 50,000원|공공 기관 이름을 빌려 믿게 만들어요.}} 지급 대상입니다.', '아래 링크에서 {{이름, 생년월일, 휴대폰 인증번호를 입력|인증번호를 알려 주면 내 이름으로 결제·가입이 될 수 있어요.}}하면 지급됩니다. {{오늘 마감|시간을 재촉해요.}}'],
+   link: ['🚌', '청소년 교통비 지원금 신청', 'youth-bus-support.kr-gov.info', '정부 기관 주소처럼 꾸몄지만 진짜가 아니에요.'],
+   fall: '입력한 인증번호로 내 이름의 소액 결제가 이루어져서 휴대폰 요금이 폭탄처럼 나왔어요.', do: '지원금 안내는 학교나 기관 공식 누리집에서 직접 확인해요.'},
+];
+const PG_SIG = ['⏰ 급하게 재촉해요', '🔗 이상한 링크·앱 설치', '💰 돈·상품권·결제 요구', '🔑 비밀번호·인증번호 요구', '🎭 가족·친구·기관 사칭', '🎁 너무 좋은 조건'];
+const PG_T = ['오전 7:42', '오전 8:15', '오전 8:31', '오후 12:20', '오후 1:05', '오후 3:10', '오후 4:02', '오후 5:27', '오후 6:40', '오후 7:15', '오후 9:03'];
+const pgSB = t => `<div class="pg-sb"><b>${t}</b><span><svg viewBox="0 0 64 16"><rect x="0" y="10" width="3" height="5" rx="1"/><rect x="5" y="7" width="3" height="8" rx="1"/><rect x="10" y="4" width="3" height="11" rx="1"/><rect x="15" y="1" width="3" height="14" rx="1"/><path d="M30 13l3-3a4 4 0 0 0-6 0zM25 8a8 8 0 0 1 11 0l-1.6 1.6a6 6 0 0 0-7.8 0zM22 5a12 12 0 0 1 17 0l-1.6 1.6a10 10 0 0 0-13.8 0z"/><rect x="44" y="2" width="17" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="46" y="4" width="11" height="7" rx="1.5"/><rect x="62" y="6" width="2" height="4" rx="1"/></svg></span></div>`;
+let pgI, pgScore, pgHp, pgCombo, pgPhase, pgFound, pgClues, pgRes, pgFell;
+const pgPlain = s => s.replace(/\{\{(.+?)\|.+?\}\}/g, '$1');
+const pgFmt = s => s.replace(/\{\{(.+?)\|(.+?)\}\}/g, (m, a, b) => { pgClues.push(b); return `<span class="pg-c" data-k="${pgClues.length - 1}">${a}</span>`; });
+const pgW = ms => new Promise(r => setTimeout(r, ms));
+function pgHud(){
+  $('#pgHp').textContent = '❤️'.repeat(pgHp) + '🖤'.repeat(3 - pgHp); $('#pgSc').textContent = pgScore;
+  $('#pgCb').textContent = pgCombo >= 2 ? `🔥 ${pgCombo}연속!` : '';
+  $('#pgPr').textContent = pgI >= 0 && pgI < PG.length ? `메시지 ${pgI + 1} / ${PG.length}` : '';
+}
+function pgPop(t, c){ const p = document.createElement('div'); p.className = 'pg-pop'; p.textContent = t; if (c) p.style.color = c; $('#pgScr').appendChild(p); setTimeout(() => p.remove(), 1000); }
+function pgLock(){
+  pgI = -1; pgScore = 0; pgHp = 3; pgCombo = 0; pgRes = []; pgFell = 0; pgHud();
+  $('#pgScr').innerHTML = pgSB('9:41').replace('pg-sb"', 'pg-sb" style="background:#3b6cf6;color:#fff"') + `<div class="pg-lock"><div class="t">9:41</div><div>11월 25일 수요일</div><div style="font-size:3rem">🛡️</div><b>오늘 하루 동안 도착하는<br>메시지 ${PG.length}개를 막아 내세요!</b></div>`;
+  $('#pgBtns').innerHTML = '<button class="tr" id="pgStart" style="grid-column:1/-1;background:#3b6cf6">▶ 훈련 시작</button>';
+  $('#pgOut').innerHTML = `<div class="pg-msg">💡 <b>규칙</b><ul><li>정상 메시지는 <b>👍 믿고 따르기</b>, 피싱은 <b>🚨 피싱! 신고</b>를 눌러요.</li><li>피싱을 믿거나 링크를 누르면 ❤️가 줄어요. ❤️가 모두 사라지면 내 폰이 털려요!</li><li>신고한 뒤 <b>수상한 부분</b>을 눌러 단서를 찾으면 보너스 점수!</li></ul></div>`;
+  $('#pgStart').onclick = () => pgShow(0);
+}
+async function pgShow(i){
+  pgI = i; pgPhase = 'wait'; pgFound = new Set(); pgClues = []; pgHud();
+  const d = PG[i], A = PG_APP[d.app], S = $('#pgScr');
+  S.className = 'pg-scr'; S.style.cssText = `--pgc:${A.hd || '#f2f2f7'};--pgt:${A.t || '#111'};--pgb:${A.bg || '#fff'};--pgbb:${A.bb || '#e9e9eb'}`;
+  const plain = pgPlain(d.m[0]);
+  if (d.app === 'call'){
+    S.innerHTML = pgSB(PG_T[i]).replace('pg-sb"', 'pg-sb" style="background:#2b3a55;color:#fff"') + `<div class="pg-call" id="pgBody"><div class="av">${d.av}</div><b>${d.from}</b><small>${d.sub}</small><small id="pgCt">📞 수신 전화…</small></div><div class="pg-hack" id="pgHack"></div>`;
+  } else {
+    S.innerHTML = pgSB(PG_T[i]) + `<div class="pg-ah"><span class="bk">‹</span><span class="av">${d.av || '👤'}</span><span><b>${d.from}</b><small>${d.sub}</small></span></div><div class="pg-body" id="pgBody"><div class="pg-day">${A.n} · 오늘</div></div><div class="pg-noti" id="pgNoti"><span class="ic" style="background:${A.c}">${A.ic}</span><span><b>${A.n} · ${d.from}</b><span>${plain}</span></span></div><div class="pg-hack" id="pgHack"></div>`;
+  }
+  $('#pgBtns').innerHTML = d.app === 'call' ? '<button class="tr" data-v="0" disabled>📞 시키는 대로 하기</button><button class="rp" data-v="1" disabled>📵 끊고 신고하기</button>' : '<button class="tr" data-v="0" disabled>👍 믿고 따르기</button><button class="rp" data-v="1" disabled>🚨 피싱! 신고</button>';
+  $('#pgOut').innerHTML = '<div class="pg-msg">📳 새 메시지가 왔어요. 끝까지 읽고 판단하세요.</div>';
+  $('#pgPhone').classList.remove('buzz'); void $('#pgPhone').offsetWidth; $('#pgPhone').classList.add('buzz');
+  const B = $('#pgBody');
+  if (d.app !== 'call'){ await pgW(60); $('#pgNoti').classList.add('show'); await pgW(1050); if (pgI !== i) return; $('#pgNoti').classList.remove('show'); }
+  else { await pgW(900); if (pgI !== i) return; $('#pgCt').textContent = '통화 중 00:0' + (3 + i % 5); B.insertAdjacentHTML('beforeend', '<div class="wave"><i></i><i></i><i></i><i></i><i></i></div>'); }
+  for (const t of d.m){
+    const chat = ['talk', 'dm', 'game', 'market'].includes(d.app);
+    if (chat){ B.insertAdjacentHTML('beforeend', '<div class="pg-ty" id="pgTy">•••</div>'); B.scrollTop = B.scrollHeight; await pgW(550); if (pgI !== i) return; $('#pgTy')?.remove(); }
+    B.insertAdjacentHTML('beforeend', `<div class="pg-bb${['school', 'bank'].includes(d.app) ? ' card' : ''}">${pgFmt(t)}</div>`); B.scrollTop = B.scrollHeight; await pgW(chat ? 250 : 350); if (pgI !== i) return;
+  }
+  if (d.link){ pgClues.push(d.link[3]); B.insertAdjacentHTML('beforeend', `<div class="pg-link pg-c" data-k="${pgClues.length - 1}" id="pgLink"><div class="im">${d.link[0]}</div><b>${d.link[1]}</b><small>${d.link[2]}</small></div>`); }
+  if (d.app !== 'call') B.insertAdjacentHTML('beforeend', `<div class="pg-tm">${PG_T[i]}</div>`);
+  B.scrollTop = B.scrollHeight;
+  pgPhase = 'decide'; $$('#pgBtns button').forEach(b => { b.disabled = false; b.onclick = () => pgJudge(+b.dataset.v); });
+  $$('#pgScr .pg-c').forEach(c => c.onclick = () => pgClue(c));
+}
+const pgLab = c => { const t = c.id === 'pgLink' ? '링크 ' + c.querySelector('small').textContent : c.textContent; return t.length > 30 ? t.slice(0, 30) + '…' : t; };
+function pgClue(c){
+  if (pgPhase === 'decide' && c.id === 'pgLink'){ pgJudge(0, true); return; }
+  if (pgPhase !== 'clue' || c.classList.contains('on')) return;
+  const k = +c.dataset.k; c.classList.add('on'); pgFound.add(k); pgScore += 30; pgPop('+30 단서!', '#f57f17'); pgHud();
+  $('#pgClueList').insertAdjacentHTML('beforeend', `<li>🔎 <b>${pgLab(c)}</b> → ${pgClues[k]}</li>`);
+  $('#pgClueN').textContent = `${pgFound.size} / ${pgClues.length}`;
+  if (pgFound.size === pgClues.length){ pgScore += 50; pgPop('+50 단서 완벽!', '#f57f17'); pgHud(); }
+}
+function pgJudge(v, viaLink){
+  if (pgPhase !== 'decide') return;
+  const d = PG[pgI], right = v === d.ph; pgRes.push(right);
+  $$('#pgBtns button').forEach(b => b.disabled = true);
+  const next = pgI + 1 < PG.length ? '다음 메시지 ▶' : '🏁 결과 보기';
+  if (!d.ph){
+    pgPhase = 'done';
+    if (right){ pgCombo++; const g = 100 + (pgCombo >= 2 ? 20 * pgCombo : 0); pgScore += g; pgPop('+' + g); $('#pgOut').innerHTML = `<div class="pg-msg ok">⭕ <b>정상 메시지예요!</b> ${d.why}</div>`; }
+    else { pgCombo = 0; $('#pgOut').innerHTML = `<div class="pg-msg bad">😅 <b>정상 메시지였어요.</b> ${d.why}<br>모든 연락을 의심하면 중요한 소식을 놓칠 수 있어요. <b>링크·돈·개인 정보 요구</b>가 있는지 살펴봐요.</div>`; }
+  } else if (right){
+    pgPhase = 'clue'; pgCombo++; const g = 100 + (pgCombo >= 2 ? 20 * pgCombo : 0); pgScore += g; pgPop('🚨 차단! +' + g);
+    $('#pgScr').classList.add('clue');
+    $('#pgOut').innerHTML = `<div class="pg-msg ok">🛡️ <b>잘 막았어요! 이건 ${d.type} 수법이에요.</b><br>이제 메시지에서 <b>수상한 부분</b>을 눌러 단서를 찾아보세요. (<span id="pgClueN">0 / ${pgClues.length}</span>)<ul id="pgClueList"></ul><div style="margin-top:6px">📢 ${d.do}</div></div><button class="btn line" id="pgHint" style="margin-top:6px">💡 단서 모두 보기</button>`;
+    $('#pgHint').onclick = () => { pgPhase = 'done'; pgReveal(); $('#pgHint').remove(); };
+  } else {
+    pgPhase = 'done'; pgCombo = 0; pgHp--; pgFell++;
+    const H = $('#pgHack'); H.innerHTML = `<div class="big">☠️</div><b>${viaLink ? '링크를 눌렀어요!' : '속았어요!'}</b><div>${d.fall}</div><div style="font-size:1.4rem">❤️ -1</div>`; H.classList.add('show');
+    $('#pgOut').innerHTML = `<div class="pg-msg bad">🎣 <b>이건 ${d.type} 수법이었어요.</b> 피싱은 <b>개인 정보(private data)와 낚시(fishing)</b>를 합친 말처럼, 사람을 속여 정보나 돈을 낚아 가요.<ul id="pgClueList"></ul><div style="margin-top:6px">📢 이렇게 해요: ${d.do}</div></div>`;
+    setTimeout(() => { if (pgI === PG.indexOf(d)){ H.classList.remove('show'); pgReveal(); } }, 2600);
+  }
+  pgHud();
+  $('#pgBtns').insertAdjacentHTML('beforeend', `<button class="tr" id="pgNext" style="grid-column:1/-1;background:#3b6cf6">${pgHp <= 0 ? '📵 결과 보기' : next}</button>`);
+  $('#pgNext').onclick = () => (pgHp <= 0 || pgI + 1 >= PG.length) ? pgEnd() : pgShow(pgI + 1);
+}
+function pgReveal(){
+  const L = $('#pgClueList'); if (!L) return;
+  $$('#pgScr .pg-c').forEach(c => { const k = +c.dataset.k; c.classList.add('on'); if (!pgFound.has(k)){ pgFound.add(k); L.insertAdjacentHTML('beforeend', `<li>🔎 <b>${pgLab(c)}</b> → ${pgClues[k]}</li>`); } });
+  const n = $('#pgClueN'); if (n) n.textContent = `${pgClues.length} / ${pgClues.length}`;
+}
+function pgEnd(){
+  pgI = PG.length; pgPhase = 'end'; pgHud();
+  const over = pgHp <= 0, max = PG.length * 100, g = over ? ['📵', '내 폰이 털렸어요…'] : pgScore >= 3000 ? ['🥇', '피싱 잡는 보안 마스터'] : pgScore >= 2000 ? ['🥈', '든든한 피싱 탐정'] : ['🥉', '피싱 탐정 새내기'];
+  $('#pgScr').className = 'pg-scr'; $('#pgScr').innerHTML = pgSB('오후 10:00').replace('pg-sb"', 'pg-sb" style="background:' + (over ? '#111' : '#3b6cf6') + ';color:#fff"') + `<div class="pg-lock" style="${over ? 'background:linear-gradient(160deg,#333,#000)' : ''}"><div style="font-size:3.6rem">${g[0]}</div><div class="pg-grade">${g[1]}</div><div>🛡️ ${pgScore}점 · 남은 ❤️ ${pgHp}</div><div>판단 정답 ${pgRes.filter(Boolean).length} / ${pgRes.length}</div></div>`;
+  $('#pgBtns').innerHTML = '<button class="tr" id="pgAgain" style="grid-column:1/-1;background:#3b6cf6">🔄 다시 도전</button>';
+  $('#pgOut').innerHTML = `<div class="pg-msg ${over ? 'bad' : 'ok'}">${over ? '❤️가 모두 사라졌어요. 범인들은 이렇게 다양한 방법으로 다가와요. 다시 도전해 볼까요?' : `🎉 하루를 무사히 지켰어요! 속은 메시지 ${pgFell}개.`}<br><b>📌 피싱을 알아채는 6가지 신호</b><div class="pg-sig">${PG_SIG.map(s => `<div>${s}</div>`).join('')}</div><div style="margin-top:8px">의심되면 <b>누르지 말고, 보내지 말고, 직접 확인</b>해요. 피해를 입었다면 경찰청 <b>사이버 범죄 신고 시스템(ECRM)</b>이나 112에 신고해요.</div></div>`;
+  $('#pgAgain').onclick = pgLock;
+  if (!over) reportQuiz('phishing', pgRes);
+}
+pgLock();
 
 renderQuiz($('#quiz'), [
   {q:'가족이나 기관을 사칭해 개인 정보나 돈을 빼내는 수법은?', o:['피싱','백신','블록체인'], a:0, e:'피싱은 개인 정보(private data)와 낚시(fishing)를 합친 말이에요.'},
