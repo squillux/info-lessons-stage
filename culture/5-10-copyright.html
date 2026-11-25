@@ -16,6 +16,43 @@
 .order button{text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;font:inherit;color:var(--ink)}
 .order button.done{border-color:var(--mint);background:var(--mint-soft)}
 .order button .n{display:inline-block;min-width:1.6em;font-weight:800;color:var(--mint)}
+
+/* ── 저작권 타임머신 ── */
+.tt-shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:8px 0 12px}
+@media (max-width:640px){.tt-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tt-w{border:2px solid var(--line);border-radius:14px;background:var(--panel);padding:6px 6px 8px;text-align:center;font:inherit;color:var(--ink);cursor:pointer;position:relative;transition:transform .2s,border-color .2s}
+.tt-w:hover{transform:translateY(-3px)}
+.tt-w.cur{border-color:#7c4dff;box-shadow:0 0 0 3px #7c4dff33}
+.tt-w svg{display:block;width:100%;height:auto;max-height:70px}
+.tt-w b{display:block;font-size:.78rem;line-height:1.3;margin-top:4px}
+.tt-w small{display:block;font-size:.7rem;color:var(--muted)}
+.tt-w .st{position:absolute;top:-8px;right:-6px;font-size:1rem}
+.tt-mc{border-radius:20px;padding:14px;color:#fff;background:var(--tt-bg,linear-gradient(135deg,#37474f,#263238));transition:background 1s;position:relative;overflow:hidden}
+.tt-mc.past{--tt-bg:linear-gradient(135deg,#8d6e63,#4e342e)}
+.tt-mc.now{--tt-bg:linear-gradient(135deg,#1e88e5,#283593)}
+.tt-mc.future{--tt-bg:linear-gradient(135deg,#6a1b9a,#1a0033)}
+.tt-mc.warp::before{content:'';position:absolute;inset:-50%;background:repeating-conic-gradient(#ffffff22 0 6deg,transparent 6deg 18deg);animation:ttwarp 1s linear infinite}
+@keyframes ttwarp{to{transform:rotate(360deg)}}
+.tt-grid{position:relative;display:grid;gap:12px;align-items:center}
+@media (min-width:700px){.tt-grid{grid-template-columns:200px minmax(0,1fr)}}
+.tt-case{position:relative;border-radius:16px;background:#ffffff1c;border:2px solid #ffffff55;padding:10px;text-align:center}
+.tt-case svg.art{width:100%;max-width:150px;height:auto;display:block;margin:0 auto}
+.tt-lock{position:absolute;right:8px;bottom:8px;width:44px;transition:transform .5s}
+.tt-case.free .tt-lock{transform:translateY(-6px) rotate(-12deg)}
+.tt-lock .sh{transition:transform .5s;transform-box:fill-box;transform-origin:right bottom}
+.tt-case.free .tt-lock .sh{transform:translateY(-6px)}
+.tt-case.free{box-shadow:0 0 0 3px #69f0ae,0 0 22px #69f0ae88}
+.tt-info{font-size:.9rem;line-height:1.5}
+.tt-yr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.tt-yr .d{font-family:ui-monospace,Consolas,monospace;font-size:2.3rem;font-weight:900;letter-spacing:4px;background:#000a;border-radius:12px;padding:2px 14px;color:#ffeb3b;min-width:150px;text-align:center;text-shadow:0 0 10px #ffeb3b88}
+.tt-yr button{border:2px solid #ffffff66;background:#ffffff1a;color:#fff;border-radius:10px;padding:6px 9px;font-weight:800}
+.tt-mc input[type=range]{width:100%;accent-color:#ffeb3b}
+.tt-go{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tt-go button{border:0;border-radius:14px;padding:10px 16px;font-weight:900;font-size:.95rem;cursor:pointer}
+.tt-go .go{background:#ffeb3b;color:#311b92;box-shadow:0 4px 0 #c6a700}
+.tt-go .alive{background:#ffffff22;color:#fff;border:2px solid #ffffff66}
+.tt-res{margin-top:10px;border-radius:12px;padding:9px 12px;background:#ffffffee;color:#111;font-weight:700;line-height:1.5;animation:ttin .4s ease-out}
+@keyframes ttin{from{opacity:0;transform:translateY(6px)}}
 </style>
 </head>
 <body data-stage data-unit="5" data-title="저작권 판정소" data-sub="중1 Ⅴ단원 · 저작권 보호 · 미래엔 214, 216~218쪽">
@@ -42,13 +79,14 @@
       <div id="right" style="margin-top:12px"></div>
     </div>
 
-    <div class="card" data-bot="작가가 세상을 떠난 해를 넣어 봐 ⏳">
-      <h3>⏳ 저작 재산권은 언제까지?</h3>
-      <p>가상의 작가가 세상을 떠난 해를 넣어 보세요.</p>
-      <div class="calc"><input class="inp" id="yr" type="number" value="1955" style="width:140px"> 년에 사망 → <b id="until"></b></div>
-      <p class="hint"><span class="tag-more">심화</span> 정확히는 사망한 다음 해 1월 1일부터 계산해 70년이 되는 해의 말일까지 보호돼요.</p>
-    </div>
 
+    <div class="card" data-bot="타임머신을 맞춰 작품을 자유롭게 쓸 수 있는 해로 가 봐 ⏳">
+      <h3>⏳ 저작권 타임머신 <span class="tag-more">특색</span></h3>
+      <p>저작 재산권은 보통 <b>저작자가 사망한 후 70년</b>까지 보호돼요. 작품을 하나 고르고, 그 작품을 <b>허락 없이 자유롭게 이용할 수 있는 가장 빠른 해</b>로 타임머신을 맞춰 출발하세요! (작가는 모두 가상 인물이에요.)</p>
+      <div class="tt-shelf" id="ttShelf"></div>
+      <div class="tt-mc now" id="ttMc"></div>
+      <p class="hint"><span class="tag-more">심화</span> 정확히는 사망한 다음 해 1월 1일부터 계산해 70년이 되는 해의 12월 31일까지 보호돼요. 그래서 <b>사망한 해 + 71년</b>의 1월 1일부터 자유롭게 이용할 수 있어요.</p>
+    </div>
     <div class="card" data-bot="저작물 이용 5단계를 순서대로 눌러 봐 🪜">
       <h3>🪜 저작물 이용 5단계</h3>
       <p>올바른 순서대로 눌러 보세요.</p>
@@ -91,9 +129,6 @@ renderChoice($('#right'), [
   {icon:'👪', t:'작가가 세상을 떠난 뒤 가족이 책 판매 수익을 받아요.', a:1, e:'저작 재산권은 물려줄 수 있어요.'},
 ], ['🧑‍🎨 저작 인격권', '💰 저작 재산권']);
 
-const updY = () => { const y = +$('#yr').value; $('#until').textContent = y ? `${y + 70}년 12월 31일까지 보호 (${y + 71}년부터 자유 이용)` : ''; };
-$('#yr').oninput = updY; updY();
-
 const STEPS = ['어떤 저작물을 이용할지 정한다.', '그 저작물이 보호받는지 확인한다.', '저작물 이용 방식이 저작권법상 허용되는지 확인한다.', '저작권자에게 이용 방법 등을 알리고 허락받는다.', '허락받은 범위 안에서만 이용한다.'];
 const shuffled = STEPS.map((s, i) => [s, i]).sort(() => Math.random() - .5);
 let next = 0;
@@ -118,6 +153,76 @@ renderChoice($('#who'), [
   {icon:'🏢', t:'플랫폼이 불법 복제 웹툰을 자동으로 찾아내는 기술을 도입한다.', a:1},
   {icon:'🏫', t:'학교에서 정기적으로 저작권 교육을 한다.', a:1},
 ].map(x => ({...x, e: x.a ? '사회(기업·학교·기관) 차원의 노력이에요.' : '내가 실천하는 개인 차원의 노력이에요.'})), ['🙋 개인', '🏛️ 사회']);
+
+
+/* ===== 저작권 타임머신 ===== */
+const TT_ART = {
+  music: '<svg class="art" viewBox="0 0 120 80"><rect x="4" y="4" width="112" height="72" rx="4" fill="#fffdf5" stroke="#c9b98f"/><g stroke="#555" stroke-width="1">' + [18, 26, 34, 42, 50].map(y => `<line x1="12" y1="${y}" x2="108" y2="${y}"/>`).join('') + '</g><g fill="#222"><ellipse cx="30" cy="42" rx="4" ry="3"/><ellipse cx="48" cy="34" rx="4" ry="3"/><ellipse cx="66" cy="38" rx="4" ry="3"/><ellipse cx="84" cy="26" rx="4" ry="3"/></g><g stroke="#222" stroke-width="1.4"><line x1="34" y1="42" x2="34" y2="22"/><line x1="52" y1="34" x2="52" y2="14"/><line x1="70" y1="38" x2="70" y2="18"/><line x1="88" y1="26" x2="88" y2="8"/></g><text x="60" y="68" font-size="8" text-anchor="middle" fill="#6d5c33" font-weight="700">교향곡 제1번</text></svg>',
+  poem: '<svg class="art" viewBox="0 0 120 80"><rect x="18" y="6" width="84" height="68" rx="3" fill="#f5ecd7" stroke="#b9a37a"/><rect x="12" y="4" width="96" height="7" rx="3.5" fill="#8d6e63"/><rect x="12" y="69" width="96" height="7" rx="3.5" fill="#8d6e63"/><g fill="#5d4037">' + [22, 32, 42, 52].map((y, k) => `<rect x="30" y="${y}" width="${60 - k * 8}" height="3" rx="1.5"/>`).join('') + '</g><text x="60" y="64" font-size="8" text-anchor="middle" fill="#5d4037" font-weight="700">별 헤는 언덕</text></svg>',
+  paint: '<svg class="art" viewBox="0 0 120 80"><rect x="6" y="4" width="108" height="72" rx="3" fill="#a1887f"/><rect x="14" y="12" width="92" height="56" fill="#90caf9"/><circle cx="88" cy="26" r="8" fill="#ffeb3b"/><path d="M14 56l22-20 18 14 16-12 36 22v8H14z" fill="#66bb6a"/><path d="M14 68l30-16 26 10 36-8v14z" fill="#2e7d32"/></svg>',
+  photo: '<svg class="art" viewBox="0 0 120 80"><rect x="14" y="6" width="92" height="70" rx="2" fill="#fff" stroke="#ccc"/><rect x="20" y="12" width="80" height="50" fill="#263238"/><circle cx="60" cy="30" r="9" fill="#ffcc80"/><path d="M42 62q18-26 36 0z" fill="#ffcc80"/><g fill="#fff8"><circle cx="30" cy="20" r="1.2"/><circle cx="88" cy="18" r="1.2"/><circle cx="92" cy="40" r="1"/></g><text x="60" y="72" font-size="6.5" text-anchor="middle" fill="#555">2009. 서울의 밤</text></svg>',
+  kid: '<svg class="art" viewBox="0 0 120 80"><rect x="6" y="4" width="108" height="72" rx="3" fill="#fff" stroke="#ddd"/><circle cx="96" cy="18" r="8" fill="none" stroke="#ff9800" stroke-width="3"/><path d="M96 4v4M110 18h-4M86 8l3 3" stroke="#ff9800" stroke-width="2.5"/><path d="M30 60V38l18-14 18 14v22z" fill="none" stroke="#e53935" stroke-width="3" stroke-linejoin="round"/><rect x="42" y="46" width="10" height="14" fill="none" stroke="#1e88e5" stroke-width="3"/><path d="M10 64q50-6 100 0" stroke="#43a047" stroke-width="3" fill="none"/><text x="80" y="56" font-size="8" fill="#7b1fa2" font-weight="800">하늘</text></svg>',
+};
+const TT = [
+  {art: 'music', n: '교향곡 제1번', by: '작곡가 라벨린', d: 1890, kind: '음악'},
+  {art: 'poem', n: '별 헤는 언덕', by: '시인 한별', d: 1975, kind: '시'},
+  {art: 'paint', n: '여름 들판', by: '화가 오로라', d: 1999, kind: '그림'},
+  {art: 'photo', n: '서울의 밤', by: '사진작가 민트', d: 2010, kind: '사진'},
+  {art: 'kid', n: '우리 집', by: '친구 하늘이 (살아 있음)', d: 0, kind: '그림'},
+];
+const NOW = 2026; let ttCur = 0, ttYear = NOW, ttBusy = false; const ttDone = TT.map(() => 0), ttTry = TT.map(() => 0);
+const ttLock = '<svg class="tt-lock" viewBox="0 0 40 46"><path class="sh" d="M10 22V14a10 10 0 0 1 20 0v8" fill="none" stroke="#cfd8dc" stroke-width="5"/><rect x="4" y="20" width="32" height="24" rx="5" fill="#ffca28" stroke="#f9a825" stroke-width="2"/><circle cx="20" cy="30" r="3.5" fill="#6d4c41"/><rect x="18.5" y="31" width="3" height="7" rx="1.5" fill="#6d4c41"/></svg>';
+function ttShelf(){ $('#ttShelf').innerHTML = TT.map((w, i) => `<button class="tt-w${i === ttCur ? ' cur' : ''}" data-i="${i}">${ttDone[i] ? '<span class="st">🔓</span>' : ''}${TT_ART[w.art].replace('class="art"', '')}<b>${w.n}</b><small>${w.by}</small></button>`).join(''); $$('#ttShelf .tt-w').forEach(b => b.onclick = () => { if (ttBusy) return; ttCur = +b.dataset.i; ttYear = NOW; ttShelf(); ttPanel(); }); }
+const ttEra = y => y < 1950 ? 'past' : y > NOW ? 'future' : 'now';
+function ttPanel(msg){
+  const w = TT[ttCur];
+  $('#ttMc').className = 'tt-mc ' + ttEra(ttYear);
+  $('#ttMc').innerHTML = `<div class="tt-grid"><div class="tt-case${ttDone[ttCur] === 1 ? ' free' : ''}" id="ttCase">${TT_ART[w.art]}${ttLock}<div style="font-size:.8rem;margin-top:4px"><b>${w.n}</b> · ${w.kind}</div></div>
+    <div class="tt-info">📇 <b>${w.by}</b> ${w.d ? `· <b>${w.d}년</b>에 세상을 떠났어요.` : '· 지금도 그림을 그리고 있어요.'}<br>🕰️ 지금은 <b>${NOW}년</b>이에요. 이 작품을 자유롭게 쓸 수 있는 <b>가장 빠른 해</b>는?
+      <div class="tt-yr"><button data-v="-10">-10</button><button data-v="-1">-1</button><span class="d" id="ttD">${ttYear}</span><button data-v="1">+1</button><button data-v="10">+10</button></div>
+      <input type="range" id="ttR" min="1850" max="2150" value="${ttYear}" aria-label="도착할 해">
+      <div class="tt-go"><button class="go" id="ttGo">🚀 이 해로 출발!</button><button class="alive" id="ttAlive">🙅 아직 정할 수 없어요</button></div></div></div><div id="ttRes">${msg || ''}</div>`;
+  const setY = y => { ttYear = Math.max(1850, Math.min(2150, y)); $('#ttD').textContent = ttYear; $('#ttR').value = ttYear; };
+  $$('#ttMc .tt-yr button').forEach(b => b.onclick = () => setY(ttYear + +b.dataset.v));
+  $('#ttR').oninput = () => setY(+$('#ttR').value);
+  $('#ttGo').onclick = () => ttGo(false); $('#ttAlive').onclick = () => ttGo(true);
+}
+async function ttGo(alive){
+  if (ttBusy) return; const w = TT[ttCur], i = ttCur;
+  if (ttDone[i]){ $('#ttRes').innerHTML = '<div class="tt-res">✅ 이미 해결한 작품이에요. 다른 작품을 골라요.</div>'; return; }
+  ttTry[i]++;
+  if (alive || !w.d){
+    if (!w.d && alive){ ttDone[i] = 1; ttShelf(); ttPanel('<div class="tt-res">⭕ 맞아요! 하늘이는 살아 있으니 저작권은 <b>살아 있는 동안 + 사망 후 70년</b>까지 이어져요. 언제 자유로워질지 정할 수 없으니, 쓰고 싶다면 <b>하늘이에게 허락</b>을 받아야 해요. 학생의 창작물도 창작하는 순간 저작권이 생겨요!</div>'); ttCheck(); return; }
+    $('#ttRes').innerHTML = alive ? `<div class="tt-res">🤔 이 작가는 ${w.d}년에 세상을 떠났으니 계산할 수 있어요. 사망한 해에 70년을 더해 보세요.</div>` : '<div class="tt-res">🤔 하늘이는 지금도 살아 있어요. 저작권은 저작자가 살아 있는 동안 계속 보호돼요. 이 해에 자유로워진다고 정할 수 있을까요?</div>';
+    return;
+  }
+  ttBusy = true; const to = ttYear, M = $('#ttMc');
+  M.classList.add('warp'); const steps = 18;
+  for (let k = 1; k <= steps; k++){ const y = Math.round(NOW + (to - NOW) * k / steps); $('#ttD').textContent = y; M.className = 'tt-mc warp ' + ttEra(y); await new Promise(r => setTimeout(r, 55)); }
+  M.className = 'tt-mc ' + ttEra(to); ttBusy = false;
+  const free = w.d + 71, end = w.d + 70;
+  if (to === free){
+    ttDone[i] = 1; ttShelf();
+    ttPanel(`<div class="tt-res">🔓 <b>${to}년 1월 1일 도착!</b> ${w.d}년 사망 → ${end}년 12월 31일까지 보호 → <b>${free}년</b>부터 누구나 허락 없이 이용할 수 있어요. ${free <= NOW ? `지금(${NOW}년)은 이미 자유롭게 쓸 수 있는 작품이에요! 🎉` : `지금(${NOW}년)은 아직 보호 중이라 저작권자에게 허락을 받아야 해요.`}</div>`);
+    $('#ttCase').classList.add('free'); ttCheck();
+  } else if (to < free){
+    ttPanel(`<div class="tt-res">🔒 <b>${to}년</b>에는 아직 보호 중이에요! ${to <= w.d ? '작가가 아직 살아 있던 때예요.' : `${w.d}년에 사망했으니 ${end}년 말까지 보호돼요.`} 조금 더 미래로 가 보세요.</div>`);
+  } else {
+    ttPanel(`<div class="tt-res">🔓 ${to}년에는 자유롭게 쓸 수 있어요. 그런데 <b>가장 빠른 해</b>는 더 앞이에요. 사망한 해 + 71년을 계산해 보세요.</div>`);
+    $('#ttCase').classList.add('free'); setTimeout(() => $('#ttCase') && !ttDone[i] && $('#ttCase').classList.remove('free'), 1200);
+  }
+}
+function ttCheck(){
+  if (ttDone.every(Boolean)){
+    const ok = ttTry.filter(t => t === 1).length;
+    $('#ttRes').insertAdjacentHTML('beforeend', `<div class="tt-res" style="background:#fff59d">🏆 타임머신 여행 완료! 한 번에 맞힌 작품 <b>${ok} / ${TT.length}</b>. 저작 재산권은 <b>사망 후 70년</b>까지 보호되고, 그 뒤에는 모두가 자유롭게 이용할 수 있는 공공의 재산이 돼요.</div>`);
+    reportQuiz('timemachine', ttTry.map(t => t === 1));
+  } else {
+    const n = ttDone.findIndex(d => !d); $('#ttRes').insertAdjacentHTML('beforeend', `<button class="btn" id="ttNx" style="margin-top:8px">다음 작품으로 ▶ (남은 ${ttDone.filter(d => !d).length}개)</button>`);
+    $('#ttNx').onclick = () => { ttCur = n; ttYear = NOW; ttShelf(); ttPanel(); };
+  }
+}
+ttShelf(); ttPanel();
 
 renderQuiz($('#quiz'), [
   {q:'저작 인격권은 다른 사람에게 넘기거나 물려줄 수 있다.', o:['⭕','❌'], a:1, e:'저작 인격권은 넘기거나 물려줄 수 없어요.'},
