@@ -20,6 +20,30 @@
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 .gal>div{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;font-size:.92rem}
 .checks label{display:block;padding:5px 0}
+
+/* ── 공감 인터뷰 시뮬레이터 ── */
+.em-who{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.em-who button{border:2px solid var(--line);border-radius:14px;background:#fff;padding:6px 12px;font-weight:800;color:var(--ink)}
+.em-who button.on{border-color:var(--brand);background:var(--brand-soft)}
+.em-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:10px;align-items:start}
+@media (max-width:640px){.em-wrap{grid-template-columns:1fr}}
+.em-chat{border-radius:18px;background:#b2c7d9;padding:10px;min-height:220px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.em-b{max-width:84%;border-radius:14px;padding:7px 11px;font-size:.88rem;line-height:1.45;animation:embub .3s ease-out}
+.em-b.me{align-self:flex-end;background:#ffe94d;border-top-right-radius:4px}
+.em-b.you{align-self:flex-start;background:#fff;border-top-left-radius:4px}
+.em-b.you b{display:block;font-size:.72rem;color:var(--muted)}
+.em-b.typing{color:var(--muted)}
+@keyframes embub{from{transform:translateY(8px);opacity:0}}
+.em-qs{display:grid;gap:5px;margin-top:8px}
+.em-qs button{text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;padding:6px 10px;font-weight:700;font-size:.85rem;color:var(--ink)}
+.em-qs button.used{opacity:.45}
+.em-board{border-radius:14px;padding:10px;background:#c9a06a;min-height:160px;box-shadow:inset 0 0 10px #0003}
+.em-board h4{margin:0 0 6px;color:#fff;font-size:.9rem}
+.em-note{background:#fff59d;border-radius:4px;padding:6px 8px;font-size:.8rem;font-weight:700;margin:6px 2px;box-shadow:2px 3px 6px #0003;animation:emnote .45s cubic-bezier(.2,1.4,.4,1)}
+.em-note:nth-child(odd){transform:rotate(-2deg)}.em-note:nth-child(even){transform:rotate(1.5deg);background:#ffd1dc}
+@keyframes emnote{from{transform:scale(.3) rotate(20deg);opacity:0}}
+.em-def{margin-top:10px;border:2px dashed var(--brand);border-radius:14px;padding:10px 12px;background:#fff;line-height:2.2;font-weight:700}
+.em-def select{font:inherit;font-weight:800;border:2px solid var(--line);border-radius:10px;padding:2px 6px;max-width:100%}
 </style>
 </head>
 <body data-stage data-unit="4" data-title="사람을 위한 착한 인공지능" data-sub="중1 Ⅳ단원 · 창의·융합 프로젝트 · 미래엔 184~185쪽">
@@ -39,6 +63,14 @@
 
   <section class="step">
     <h2 class="step-h"><span class="no">2</span>정의하고, 아이디어 내고, 만들기</h2>
+
+    <div class="card" data-bot="사용자에게 좋은 질문을 해서 진짜 불편함을 찾아봐 💬">
+      <h3>💬 공감 인터뷰 시뮬레이터 <span class="tag-more">특색</span></h3>
+      <p>디자인 싱킹의 첫 단계는 <b>공감</b>이에요. 인터뷰할 사람을 고르고, 질문을 골라 대화하며 <b>진짜 불편함</b>을 메모판에 모으세요. 메모가 3장 모이면 <b>문제 정의</b> 문장을 만들 수 있어요.</p>
+      <div class="em-who" id="emWho"></div>
+      <div class="em-wrap"><div><div class="em-chat" id="emChat"></div><div class="em-qs" id="emQs"></div></div><div class="em-board"><h4>📌 공감 메모판 (<span id="emN">0</span>/3)</h4><div id="emNotes"></div></div></div>
+      <div id="emDef"></div>
+    </div>
     <div class="card" data-bot="모둠 기획서를 차근차근 채워 봐 📝">
       <h3>📝 기획서 작성</h3>
       <p>모둠별로 적으면 아래에 기획 카드가 만들어져요. (저장되지 않아요. 완성되면 캡처하거나 인쇄하세요.)</p>
@@ -113,6 +145,65 @@ const CH = ['훈련 데이터의 양은 충분한가?', '편향된 데이터를 
 $('#checks').innerHTML = CH.map(c => `<label><input type="checkbox"> ${c}</label>`).join('');
 $$('#checks input').forEach(i => i.onchange = () => { const n = $$('#checks input:checked').length; $('#chkMsg').textContent = n === CH.length ? '🎉 모든 기준을 점검했어요!' : `${n} / ${CH.length}`; });
 rubric($('#rubric'), {"std":"04-04, 04-05","rows":[["공감과 문제 정의","사용자의 어려움을 구체적으로 파악하고 인공지능으로 해결할 문제를 명확히 정의함","문제를 정의했으나 구체성이 부족함","문제를 정의하지 못함"],["인공지능 적용","문제에 알맞은 모델 종류·클래스·데이터를 선택하고 이유를 설명함","모델과 데이터를 선택했으나 이유가 부족함","부적절한 모델·데이터를 선택함"],["데이터와 윤리","데이터의 양·품질·대표성과 개인 정보·편향 문제를 점검하고 해결 방안을 제시함","윤리적 문제를 일부만 고려함","윤리적 문제를 고려하지 않음"],["평가와 개선","테스트 데이터로 평가하고 결과에 따라 개선함","평가했으나 개선이 부족함","평가하지 않음"]]});
+
+/* ===== 공감 인터뷰 시뮬레이터 ===== */
+const EMP = [
+  {ic: '🧑‍🦯', n: '민준', who: '시각 장애가 있는 중학생 민준', hi: '안녕! 나는 민준이야. 앞이 잘 보이지 않아. 무엇이든 물어봐.',
+   qs: [
+     ['학교에서 하루를 보낼 때 가장 불편한 순간은 언제야?', '이동 수업 때 교실을 찾는 게 제일 힘들어. 표지판 글씨를 읽을 수가 없거든.', '교실 표지판을 읽을 수 없어 이동 수업 때 길을 찾기 어렵다'],
+     ['시각 장애 때문에 많이 힘들지?', '응… (예/아니요로만 대답하게 돼요)', null, '"힘들지?"처럼 답을 정해 둔 질문은 이야기를 끌어내기 어려워요. "언제, 어떤 점이"처럼 열린 질문을 해요.'],
+     ['그럴 때는 지금 어떻게 해결하고 있어?', '친구에게 같이 가 달라고 부탁해. 그런데 매번 부탁하는 게 미안해.', '혼자 이동하고 싶지만 매번 친구 도움을 받아야 해서 미안하다'],
+     ['길 찾기 앱이 있으면 좋겠지?', '음… 그렇겠지? (내 생각을 말하기 어려워요)', null, '해결책을 먼저 제안하면 사용자의 진짜 생각을 놓쳐요. 해결책은 공감 다음 단계에서 생각해요.'],
+     ['급식실에서는 어떤 점이 어려워?', '오늘 메뉴가 뭔지 몰라서 알레르기 음식이 있을까 봐 걱정돼.', '급식 메뉴를 확인하기 어려워 알레르기 음식이 걱정된다'],
+     ['좋아하는 가수는 누구야?', '갑자기? 하하… (문제와 관계없는 질문이에요)', null, '해결하려는 문제와 관계있는 질문을 해요.'],
+   ],
+   need: ['학교 안에서 혼자 장소와 정보를 확인할 방법', '더 빠른 인터넷', '더 큰 사물함'], ok: 0},
+  {ic: '👵', n: '순자 할머니', who: '동네 편의점을 자주 이용하는 순자 할머니', hi: '아이고, 반가워요. 나한테 궁금한 게 있다고?',
+   qs: [
+     ['가게에서 주문하실 때 어떤 점이 어려우세요?', '키오스크 글씨가 너무 작고, 화면이 금방 넘어가 버려.', '키오스크 글씨가 작고 화면이 빨리 넘어간다'],
+     ['키오스크 쓰기 어려우시죠?', '그렇지 뭐… (예/아니요로만 대답하게 돼요)', null, '답을 정해 둔 질문 대신 "어떤 점이", "언제" 같은 열린 질문을 해요.'],
+     ['그럴 때는 어떻게 하세요?', '뒤에 사람들이 줄 서 있으면 눈치가 보여서 그냥 주문을 포기하고 나올 때도 있어.', '뒷사람 눈치가 보여 주문을 포기하기도 한다'],
+     ['큰 글씨 키오스크를 만들면 좋으시겠죠?', '응, 그러면 좋겠네… (내 생각을 말하기 어려워요)', null, '해결책을 먼저 정해 두고 묻지 말고, 불편함을 먼저 충분히 들어요.'],
+     ['가장 편하게 주문하셨던 때는 언제였어요?', '직원한테 말로 주문할 때가 제일 편했지. 천천히 물어봐 주니까.', '말로 천천히 주문하는 것이 가장 편하다'],
+     ['오늘 날씨 어떠세요?', '좋지~ (문제와 관계없는 질문이에요)', null, '해결하려는 문제와 관계있는 질문을 해요.'],
+   ],
+   need: ['서두르지 않고 쉽게 주문할 수 있는 방법', '더 화려한 광고 화면', '더 많은 할인 쿠폰'], ok: 0},
+];
+let emP, emNotes, emBad; const emFirst = [];
+const emW = ms => new Promise(r => setTimeout(r, ms));
+function emWho(){ $('#emWho').innerHTML = EMP.map((p, i) => `<button class="${i === emP ? 'on' : ''}" data-i="${i}">${p.ic} ${p.n}</button>`).join(''); $$('#emWho button').forEach(b => b.onclick = () => { emP = +b.dataset.i; emStart(); }); }
+function emStart(){
+  const P = EMP[emP]; emNotes = []; emBad = 0; emWho();
+  $('#emChat').innerHTML = `<div class="em-b you"><b>${P.ic} ${P.n}</b>${P.hi}</div>`; $('#emNotes').innerHTML = ''; $('#emN').textContent = 0; $('#emDef').innerHTML = '';
+  $('#emQs').innerHTML = P.qs.map(([q], k) => `<button data-k="${k}">❓ ${q}</button>`).join('');
+  $$('#emQs button').forEach(b => b.onclick = () => emAsk(+b.dataset.k, b));
+}
+let emBusy = false;
+async function emAsk(k, b){
+  if (emBusy || b.classList.contains('used')) return; emBusy = true; b.classList.add('used');
+  const P = EMP[emP], [q, a, note, tip] = P.qs[k], ch = $('#emChat');
+  ch.insertAdjacentHTML('beforeend', `<div class="em-b me">${q}</div>`); ch.scrollTop = ch.scrollHeight; await emW(350);
+  ch.insertAdjacentHTML('beforeend', '<div class="em-b you typing" id="emTy">입력 중…</div>'); ch.scrollTop = ch.scrollHeight; await emW(700); $('#emTy').remove();
+  ch.insertAdjacentHTML('beforeend', `<div class="em-b you"><b>${P.ic} ${P.n}</b>${a}${tip ? `<br><span style="color:#c2185b;font-size:.78rem">💡 ${tip}</span>` : ''}</div>`); ch.scrollTop = ch.scrollHeight;
+  if (note){ emNotes.push(note); $('#emNotes').insertAdjacentHTML('beforeend', `<div class="em-note">📝 ${note}</div>`); $('#emN').textContent = emNotes.length; } else emBad++;
+  emBusy = false;
+  if (emNotes.length === 3 && !$('#emDef').innerHTML) emDefine();
+}
+function emDefine(){
+  const P = EMP[emP], needs = P.need.map((t, k) => [t, k]).sort(() => Math.random() - .5);
+  $('#emDef').innerHTML = `<div class="em-def">🎯 <b>문제 정의</b>: ${P.who}에게는<br><select id="emNeed"><option value="">필요한 것을 골라요</option>${needs.map(([t, k]) => `<option value="${k}">${t}</option>`).join('')}</select> 이(가) 필요해요.<br>왜냐하면 "<select id="emWhy">${emNotes.map(n => `<option>${n}</option>`).join('')}</select>"라는 불편함이 있기 때문이에요.<div id="emX"></div></div>`;
+  $('#emDef').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  let tried = false;
+  $('#emNeed').onchange = () => {
+    const v = $('#emNeed').value; if (v === '') return;
+    if (+v !== P.ok){ tried = true; $('#emX').innerHTML = '<p class="feedback show bad">🤔 메모판의 불편함과 연결되나요? 인터뷰에서 들은 내용을 근거로 골라요.</p>'; return; }
+    emFirst.push(!tried && emBad <= 1);
+    $('#emX').innerHTML = `<p class="feedback show ok">⭕ 사용자의 이야기에서 찾은 <b>근거</b>로 문제를 정의했어요! ${emBad ? `(관계없거나 답을 정해 둔 질문 ${emBad}개는 정보를 거의 얻지 못했어요.)` : '좋은 질문만 골랐어요! 👏'}</p><button class="btn" id="emSend">📝 아래 기획서 ②에 옮기기</button>`;
+    $('#emSend').onclick = () => { const t = $('#prob'); if (t){ t.value = `${P.who}에게는 '${P.need[P.ok]}'이(가) 필요해요. 왜냐하면 "${$('#emWhy').value}"라는 불편함이 있기 때문이에요.`; t.dispatchEvent(new Event('input')); } $('#emSend').textContent = '✅ 옮겼어요! 다음 화면 기획서에서 이어서 써요'; $('#emSend').disabled = true; reportQuiz('empathy', emFirst.slice(0, 2)); };
+  };
+}
+emP = 0; emStart();
+
 </script>
 </body>
 </html>
