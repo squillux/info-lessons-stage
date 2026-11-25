@@ -11,6 +11,30 @@
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .gal div{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;font-size:.92rem}
 .gal b{color:var(--brand)}
+
+/* ── AI 편의점 점장 ── */
+.cv-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-weight:800}
+.cv-meter{flex:1;min-width:150px;height:16px;border-radius:999px;background:var(--bg);overflow:hidden}
+.cv-meter i{display:block;height:100%;width:30%;border-radius:999px;background:linear-gradient(90deg,#ffb000,#16b8a6);transition:width .5s}
+.cv-store{position:relative;border-radius:18px;padding:34px 10px 10px;background:linear-gradient(#fff 0 0) padding-box,repeating-linear-gradient(90deg,#16b8a6 0 18px,#fff 18px 36px) border-box;border:6px solid transparent;box-shadow:0 6px 18px rgba(30,40,80,.12)}
+.cv-store::before{content:"🏪 정보 편의점 · 24시";position:absolute;top:6px;left:50%;transform:translateX(-50%);background:#16b8a6;color:#fff;font-weight:900;font-size:.8rem;padding:2px 12px;border-radius:8px;white-space:nowrap}
+.cv-zones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.cv-zones{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cv-z{position:relative;border:2px solid var(--line);border-radius:14px;background:#f7f9fc;padding:8px 4px;text-align:center;font-weight:800;font-size:.72rem;color:var(--ink);min-height:86px}
+.cv-z .em{display:block;font-size:2rem;line-height:1.15;transition:transform .4s}
+.cv-z .bang{position:absolute;top:-8px;right:-6px;width:24px;height:24px;border-radius:50%;background:#ff5b5b;color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;animation:cvpulse 1s infinite}
+@keyframes cvpulse{50%{transform:scale(1.25);box-shadow:0 0 0 6px #ff5b5b33}}
+.cv-z.cur{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.cv-z.done{border-color:var(--mint);background:var(--mint-soft)}
+.cv-z.done .em{animation:cvyay .6s}
+.cv-z .sol{display:block;margin-top:2px;font-size:.64rem;color:var(--ok)}
+@keyframes cvyay{40%{transform:scale(1.4) rotate(-8deg)}}
+.cv-pop{margin-top:10px;border:2px solid #ffd27a;background:#fff7e6;border-radius:14px;padding:10px 12px}
+.cv-pop .say{font-weight:800}
+.cv-techs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px}
+.cv-techs button{border:2px solid var(--line);border-radius:12px;background:#fff;padding:7px 6px;font-weight:800;font-size:.82rem;color:var(--ink)}
+.cv-techs button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.55}
+.cv-techs button.no{border-style:dashed}
 </style>
 </head>
 <body data-stage data-unit="4" data-title="인공지능으로 해결할 문제 찾기" data-sub="중1 Ⅳ단원 · 인공지능 시스템의 적용 · 미래엔 176~177쪽">
@@ -33,10 +57,12 @@
       <div id="tech"></div>
     </div>
 
-    <div class="card" data-bot="규칙대로 하면 되는 일에도 인공지능이 필요할까? 🤔">
-      <h3>🤔 인공지능이 꼭 필요할까?</h3>
-      <p>모든 문제에 인공지능이 필요한 것은 아니에요. 정해진 규칙대로 하면 되는 일은 일반 소프트웨어로도 충분해요.</p>
-      <div id="need"></div>
+    <div class="card" data-bot="빨간 느낌표가 있는 곳을 눌러 문제를 해결해 봐. AI가 필요 없는 곳도 있어! 🏪">
+      <h3>🏪 AI 편의점 점장 <span class="tag-more">특색</span></h3>
+      <p>오늘부터 편의점 점장이에요! 가게 곳곳의 <b>문제(❗)</b>를 눌러 알맞은 <b>인공지능 기술</b>을 배치하세요. 정해진 규칙대로 하면 되는 일은 <b>AI 없이</b> 해결해도 돼요.</p>
+      <div class="cv-top">😊 손님 만족도 <span class="cv-meter"><i id="cvM"></i></span><span id="cvP">30%</span></div>
+      <div class="cv-store"><div class="cv-zones" id="cvZones"></div></div>
+      <div id="cvPop"></div>
     </div>
 
     <div class="card" data-bot="편의점에 쓸 인공지능 아이디어를 보내 봐 🏪">
@@ -77,13 +103,6 @@ renderChoice($('#tech'), [
   {icon:'🗣️', t:'손이 불편한 사람이 말로 TV 채널을 바꾸게 하고 싶어요.', a:4, e:'음성 인식을 써요.'},
 ], ['얼굴 인식', '나이 인식', '감정 인식', '텍스트 인식', '음성 인식']);
 
-renderChoice($('#need'), [
-  {icon:'🧮', t:'물건 가격을 모두 더해 거스름돈을 계산한다.', a:0, e:'정해진 규칙(계산)이라 일반 소프트웨어로 충분해요.'},
-  {icon:'📈', t:'날씨와 요일에 따라 내일 우유가 몇 개 팔릴지 예측한다.', a:1, e:'과거 데이터로 학습해 예측하는 인공지능이 도움이 돼요.'},
-  {icon:'⏰', t:'매일 밤 10시에 간판 불을 끈다.', a:0, e:'정해진 시간에 동작하는 일은 일반 프로그램으로 충분해요.'},
-  {icon:'🛒', t:'진열대 사진을 보고 비어 있는 칸을 찾아낸다.', a:1, e:'이미지를 인식하는 인공지능이 필요해요.'},
-], ['일반 소프트웨어로 충분', '인공지능이 도움이 돼요']);
-
 liveBoard($('#live'), {act: '4-07', title: '편의점 인공지능 아이디어', limit: 2,
   text: v => { try { return JSON.parse(v).s; } catch(e){ return '?'; } },
   input(el, send){
@@ -100,6 +119,42 @@ liveBoard($('#live'), {act: '4-07', title: '편의점 인공지능 아이디어'
     el.innerHTML = d.length ? '<div class="gal">' + d.map(x => `<div><b>${L(x.s)}</b> <span class="pill">${L(x.k)}</span><br>📊 ${L(x.d)}${x.c ? '<br>⚠️ ' + L(x.c) : ''}</div>`).join('') + '</div>' : '<p class="hint">아직 보낸 아이디어가 없어요.</p>';
   },
 });
+
+
+/* ===== AI 편의점 점장 ===== */
+const CVT = ['📷 얼굴 인식', '🎂 나이 인식', '😊 감정 인식', '🔤 텍스트 인식', '🗣️ 음성 인식', '🖼️ 이미지 분류', '📈 수요 예측', '🙅 AI 없이 해결'];
+const CVZ = [
+  {em: '🥛', done: '✨', n: '음료 진열대', say: '"우유 칸이 비어 있는데 아무도 몰랐어요!"', a: 5, e: '진열대 카메라 사진을 <b>이미지 분류</b>로 살펴 빈 칸을 찾아 알려 줘요.'},
+  {em: '🍱', done: '📊', n: '도시락 주문', say: '"내일 도시락을 몇 개 주문해야 할까요? 매번 남거나 모자라요."', a: 6, e: '날씨·요일·판매 기록을 학습한 <b>수요 예측</b>으로 주문량을 정해요.'},
+  {em: '🍺', done: '🪪', n: '계산대', say: '"연령 제한 상품을 사는 손님의 나이를 확인하기 어려워요."', a: 1, e: '<b>나이 인식</b>이 확인을 도와요. 최종 확인은 사람이 신분증으로 해요.'},
+  {em: '👵', done: '🙂', n: '무인 키오스크', say: '"화면 글씨가 작고 버튼이 많아 어르신이 주문을 못 하세요."', a: 4, e: '말로 주문하는 <b>음성 인식</b> 키오스크로 누구나 쉽게 이용해요.'},
+  {em: '📦', done: '✅', n: '택배 접수', say: '"손글씨 송장의 주소를 하나하나 입력하느라 오래 걸려요."', a: 3, e: '송장 사진의 글자를 <b>텍스트 인식</b>으로 읽어 자동 입력해요.'},
+  {em: '🧮', done: '💯', n: '거스름돈', say: '"물건값을 더하고 거스름돈을 계산해야 해요."', a: 7, e: '덧셈·뺄셈처럼 <b>정해진 규칙</b>대로 하는 일은 일반 소프트웨어로 충분해요.'},
+  {em: '💡', done: '🌙', n: '간판 불', say: '"밤 12시가 되면 간판 불을 꺼야 해요."', a: 7, e: '정해진 시간에 동작하는 일은 <b>AI 없이</b> 타이머 프로그램이면 돼요.'},
+  {em: '☎️', done: '🤝', n: '고객 상담', say: '"전화 상담 중에 화가 난 손님을 빨리 알아채고 싶어요."', a: 2, e: '목소리와 말에서 <b>감정 인식</b>으로 알아채 상담원을 도와요.'},
+];
+let cvDone, cvScore, cvCur; const cvFirst = [];
+function cvDraw(){
+  $('#cvZones').innerHTML = CVZ.map((z, i) => `<button class="cv-z${cvDone[i] ? ' done' : ''}${cvCur === i ? ' cur' : ''}" data-i="${i}"><span class="em">${cvDone[i] ? z.done : z.em}</span>${z.n}${cvDone[i] ? `<span class="sol">${CVT[z.a]}</span>` : '<span class="bang">!</span>'}</button>`).join('');
+  $$('#cvZones .cv-z').forEach(b => b.onclick = () => cvOpen(+b.dataset.i));
+  $('#cvM').style.width = cvScore + '%'; $('#cvP').textContent = cvScore + '%';
+}
+function cvOpen(i){
+  if (cvDone[i]) return; cvCur = i; cvDraw(); const z = CVZ[i]; let tried = false;
+  $('#cvPop').innerHTML = `<div class="cv-pop"><div class="say">${z.em} ${z.n}: ${z.say}</div><div class="cv-techs">${CVT.map((t, k) => `<button data-k="${k}" class="${k === 7 ? 'no' : ''}">${t}</button>`).join('')}</div><div id="cvX"></div></div>`;
+  $('#cvPop').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  $$('#cvPop .cv-techs button').forEach(b => b.onclick = () => {
+    const k = +b.dataset.k;
+    if (k !== z.a){ tried = true; b.classList.add('x'); b.disabled = true; cvScore = Math.max(0, cvScore - 3); cvDraw();
+      $('#cvX').innerHTML = `<p class="feedback show bad">🤔 ${z.a === 7 ? '이 일은 정해진 규칙대로만 하면 돼요. 꼭 인공지능이 필요할까요?' : k === 7 ? '규칙만으로는 해결하기 어려워요. 데이터를 보고 판단하는 인공지능이 도움이 돼요.' : '이 문제에서 컴퓨터가 알아채야 하는 것은 무엇일까요? (사진? 글자? 목소리? 미래의 양?)'}</p>`; return; }
+    cvFirst.push(!tried); cvDone[i] = true; cvCur = -1; cvScore = Math.min(100, cvScore + 9); cvDraw();
+    const left = cvDone.filter(x => !x).length;
+    $('#cvPop').innerHTML = `<div class="cv-pop"><p class="feedback show ok">⭕ ${z.e}</p>${left ? `<p class="hint">남은 문제 ${left}곳! 빨간 느낌표를 눌러요.</p>` : `<p>🎉 모든 문제 해결! 손님 만족도 <b>${cvScore}%</b>. 인공지능은 <b>사진·글자·소리·과거 데이터</b>를 보고 판단해야 하는 일에 쓰고, 정해진 규칙으로 되는 일은 일반 소프트웨어로 해결해요. 아래에서 나만의 편의점 AI 아이디어도 보내 봐요!</p><button class="btn ghost" id="cvAgain">처음부터 다시 ↺</button>`}</div>`;
+    if (!left){ $('#cvAgain').onclick = () => { cvFirst.length = 0; cvStart(); }; reportQuiz('cvstore', cvFirst.slice(0, 8)); }
+  });
+}
+function cvStart(){ cvDone = CVZ.map(() => false); cvScore = 30; cvCur = -1; $('#cvPop').innerHTML = '<p class="hint" style="margin-top:8px">💡 빨간 느낌표(❗)가 있는 곳을 눌러요.</p>'; cvDraw(); }
+cvStart();
 
 renderQuiz($('#quiz'), [
   {q:'종이에 쓴 글자를 읽어 디지털 문서로 바꾸는 데 알맞은 인공지능 기술은?', o:['텍스트 인식','나이 인식','감정 인식'], a:0, e:'문자를 인식해 디지털 텍스트로 바꿔요.'},
