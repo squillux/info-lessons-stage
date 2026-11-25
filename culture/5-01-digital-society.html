@@ -10,6 +10,73 @@
 .idea{display:grid;gap:8px}
 .idea select,.idea textarea{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:12px;width:100%;background:var(--panel);color:var(--ink)}
 .idea-out{background:var(--bg);border-radius:12px;padding:12px 14px;min-height:48px}
+
+/* ── 스마트 시티 시장 되기 ── */
+.sc-top{display:flex;align-items:center;gap:8px;font-weight:800;margin:6px 0 8px}
+.sc-meter{flex:1;height:14px;border-radius:999px;background:var(--line);overflow:hidden}
+.sc-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffb74d,#66bb6a);transition:width .6s}
+.sc-map{border-radius:18px;overflow:hidden;border:2px solid var(--line);background:#9ccc65}
+.sc-map svg{display:block;width:100%;height:auto}
+.sc-map #scSky{transition:fill 1s}
+.sc-map #scHaze{transition:opacity 1s}
+.sc-spot{cursor:pointer}
+.sc-spot .hit{fill:transparent;stroke:transparent;stroke-width:2.5;stroke-dasharray:6 4}
+.sc-spot:hover .hit{fill:#ffffff22}
+.sc-spot.cur .hit{stroke:#ffd54f;fill:#fff59d33}
+.sc-spot:focus{outline:none}.sc-spot:focus-visible .hit{stroke:#3b6cf6}
+.sc-bd circle{fill:#e53935;stroke:#fff;stroke-width:1.5}
+.sc-bd text{fill:#fff;font-weight:900;font-size:11px;text-anchor:middle;dominant-baseline:central}
+.sc-bd .y{display:none}
+.sc-spot:not(.ok) .sc-bd{animation:scbd 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes scbd{50%{transform:scale(1.25)}}
+.sc-spot.ok .sc-bd circle{fill:#43a047}.sc-spot.ok .sc-bd .n{display:none}.sc-spot.ok .sc-bd .y{display:inline}
+.sc-spot .good{opacity:0;transition:opacity .5s}.sc-spot.ok .good{opacity:1}
+.sc-spot.ok .bad{opacity:0;transition:opacity .5s}
+.sc-red{fill:#e53935}.sc-grn{fill:#2e3b33}
+.sc-spot.ok .sc-red{fill:#3b2b2b}.sc-spot.ok .sc-grn{fill:#69f0ae}
+.sc-spot.ok .sc-cars{animation:sccar 3.2s linear infinite}
+@keyframes sccar{from{transform:translateX(-70px)}to{transform:translateX(280px)}}
+.sc-spot.ok .sc-drone{animation:scfly 4s ease-in-out infinite}
+@keyframes scfly{0%,100%{transform:translate(0,0)}45%,55%{transform:translate(-52px,44px)}}
+.sc-rot{animation:scrot .25s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes scrot{50%{transform:scaleX(.2)}}
+.sc-spot.ok .sc-ecg{stroke-dasharray:90;animation:scecg 1.6s linear infinite}
+@keyframes scecg{from{stroke-dashoffset:90}to{stroke-dashoffset:-90}}
+.sc-spot.ok .sc-heart{animation:scbeat .8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes scbeat{30%{transform:scale(1.35)}}
+.sc-wave{opacity:0}.sc-spot.ok .sc-wave{animation:scwave 1.4s ease-out infinite}
+.sc-spot.ok .sc-wave:nth-of-type(2){animation-delay:.35s}
+@keyframes scwave{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.sc-spot.ok .sc-bus{animation:scbus 1.4s cubic-bezier(.2,.8,.3,1) both}
+.sc-bus{transform:translateX(90px)}
+@keyframes scbus{from{transform:translateX(90px)}to{transform:translateX(0)}}
+.sc-spot.ok .sc-pay{animation:scpop .6s cubic-bezier(.2,1.5,.4,1) both;transform-box:fill-box;transform-origin:center bottom}
+@keyframes scpop{from{transform:scale(.2)}}
+.sc-map .sc-win{fill:#cfe3f5;transition:fill 1s}
+.sc-map.night .sc-win{fill:#ffe082}
+.sc-map.night #scSky{fill:#1a2350!important}
+.sc-map.night #scSun{fill:#fff8e1}
+.sc-fw{opacity:0}
+.sc-map.night .sc-fw{animation:scfw 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.sc-map.night .sc-fw:nth-of-type(2){animation-delay:.6s}.sc-map.night .sc-fw:nth-of-type(3){animation-delay:1.2s}
+@keyframes scfw{0%{opacity:0;transform:scale(.1)}20%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.sc-panel{margin-top:10px}
+@media (min-width:820px){.sc-play{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:12px;align-items:start}.sc-play .sc-panel{margin-top:0}.sc-play .sc-tray{grid-template-columns:1fr 1fr}}
+.sc-q{border-radius:14px;padding:10px 12px;background:var(--bg);line-height:1.55}
+.sc-q.ok{background:var(--ok-soft)}
+.sc-ask{font-weight:800;margin:10px 0 6px}
+.sc-tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px}
+.sc-tray button,.sc-acts button{border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);padding:7px 8px;font-weight:800;font-size:.86rem;text-align:left}
+.sc-tray button:hover:not(:disabled),.sc-acts button:hover:not(:disabled){border-color:var(--brand)}
+.sc-tray button.no,.sc-acts button.no{opacity:.45;text-decoration:line-through}
+.sc-acts button.yes{border-color:#43a047;background:var(--ok-soft)}
+.sc-msg{margin:0;font-weight:700}
+.sc-gap{margin-top:12px;border:2px dashed #a24bd6;border-radius:16px;padding:12px;background:var(--panel);animation:scin .5s ease-out}
+@keyframes scin{from{opacity:0;transform:translateY(10px)}}
+.sc-gma{display:flex;align-items:center;gap:10px;margin:8px 0}
+.sc-gma .f{font-size:2.6rem;line-height:1}
+.sc-gma .b{flex:1;background:var(--bg);border-radius:14px;padding:8px 12px;font-weight:700;position:relative}
+.sc-acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
 </style>
 </head>
 <body data-stage data-unit="5" data-title="디지털 사회와 스마트 시티" data-sub="중1 Ⅴ단원 · 디지털 사회의 의미와 특성 · 미래엔 191~194쪽">
@@ -38,6 +105,15 @@
       <p>디지털 기술로 도시의 문제를 해결하는 도시를 <b>스마트 시티</b>라고 해요. 카드를 눌러 기술을 살펴보세요.</p>
       <div class="tools-grid" id="tech"></div>
       <p class="hint" id="techN"></p>
+    </div>
+
+    <div class="card" data-bot="정보시의 시장이 되어 도시 문제를 디지털 기술로 해결해 봐 🏙️">
+      <h3>🏙️ 스마트 시티 시장 되기 <span class="tag-more">특색</span></h3>
+      <p>오늘부터 여러분이 <b>정보시의 시장</b>이에요! 지도에서 <b style="color:#e53935">!</b> 표시가 있는 장소를 누르고, 알맞은 <b>디지털 기술</b>을 골라 도시 문제를 해결하세요.</p>
+      <div class="sc-top"><span>😊 시민 만족도</span><div class="sc-meter"><i id="scBar"></i></div><b id="scPct">0%</b></div>
+      <div class="sc-play"><div class="sc-map" id="scMap"></div>
+      <div class="sc-panel" id="scPanel"></div></div>
+      <div id="scGap"></div>
     </div>
 
     <div class="card" data-bot="어떤 기술인지 맞혀 봐 🧩">
@@ -117,6 +193,159 @@ renderChoice($('#gap'), [
 $('#ideaTech').innerHTML = TECH.map(t => `<option>${t[0]} ${t[1]}</option>`).join('');
 const upd = () => { const v = $('#ideaTxt').value.trim(); $('#ideaOut').innerHTML = v ? `<b>${$('#ideaTech').value}</b>을(를) 활용하면 → ${v.replace(/[<>&]/g, '')}` : '<span class="hint">여기에 내 아이디어가 정리돼요.</span>'; };
 $('#ideaTech').onchange = $('#ideaTxt').oninput = upd; upd();
+
+
+/* ===== 스마트 시티 시장 되기 ===== */
+const SC = [
+  {id: 'c', n: '행복 아파트', p: '혼자 사시는 어르신이 갑자기 몸이 아프셔도 아무도 알지 못해요.', ok: 5, tip: '몸에 착용해 건강 정보를 실시간으로 모으는 기술이에요.', done: '손목에 찬 웨어러블 기기가 심장 박동을 재다가, 이상하면 바로 병원에 알려요!'},
+  {id: 'a', n: '큰길 교차로', p: '출퇴근 시간마다 신호가 너무 길어서 차가 꽉 막혀요.', ok: 2, tip: '교통량을 스스로 분석하고 판단해 신호를 바꿀 수 있는 기술이에요.', done: '인공지능이 교통량을 분석해 신호 시간을 바꾸자 차들이 술술 빠져나가요!'},
+  {id: 'f', n: '전통 시장', p: '현금이 없는 손님은 물건을 살 수 없어서 시장을 찾는 손님이 줄었어요.', ok: 8, tip: '금융과 기술을 합친 서비스예요.', done: '스마트폰 간편 결제(핀테크)로 현금 없이도 장을 볼 수 있어요!'},
+  {id: 'b', n: '강 건너 섬마을', p: '다리가 없어서 급한 약을 배달하는 데 반나절이나 걸려요.', ok: 0, tip: '사람이 타지 않고 하늘을 나는 기계예요.', done: '드론이 강을 건너 약을 몇 분 만에 배달해요!'},
+  {id: 'e', n: '심야 버스 정류장', p: '밤늦게 버스를 운전할 기사님이 부족해서 막차가 일찍 끊겨요.', ok: 1, tip: '운전자가 조작하지 않아도 스스로 달리는 기술이에요.', done: '주변을 스스로 인식해 달리는 자율 주행 버스가 밤에도 다녀요!'},
+  {id: 'd', n: '푸른 공원', p: '쓰레기통이 넘쳐도 언제 비우러 가야 할지 알 수가 없어요.', ok: 3, tip: '여러 사물이 인터넷으로 연결되어 정보를 주고받는 기술이에요.', done: '쓰레기통에 달린 센서가 인터넷으로 "가득 찼어요!" 하고 알려 줘서 제때 비워요.'},
+];
+const SC_GAP = [
+  ['🏫', '동네에 누구나 무료로 배우는 디지털 배움터 열기', 1, '국가와 사회가 디지털 교육 기회를 제공해요.'],
+  ['💵', '현금 결제 창구를 모두 없애기', 0, '디지털 기기를 쓰기 어려운 사람은 더 불편해져요.'],
+  ['🔠', '키오스크에 큰 글씨·음성 안내 기능 넣기', 1, '기업이 처음부터 누구나 쓰기 쉽게 만들어요.'],
+  ['⚡', '키오스크 화면이 더 빨리 넘어가게 바꾸기', 0, '천천히 읽어야 하는 사람에게는 더 어려워져요.'],
+  ['🙋', '청소년 디지털 도우미가 사용법 알려 드리기', 1, '주변 사람을 돕는 것은 개인이 할 수 있는 노력이에요.'],
+  ['📵', '"사용법을 모르면 직원 없는 매장은 이용 금지" 안내문 붙이기', 0, '정보 격차를 더 크게 만들어요.'],
+];
+const scOk = SC.map(() => false), scTry = SC.map(() => 0); let scCur = -1, scGood = 0, scGapMiss = 0;
+$('#scMap').innerHTML = `<svg viewBox="0 0 400 260" role="img" aria-label="정보시 지도">
+<rect id="scSky" width="400" height="160" fill="#b4b9bf"/>
+<circle id="scSun" cx="362" cy="34" r="15" fill="#ffd54f"/>
+<g fill="#fff" opacity=".9"><circle class="sc-fw" cx="250" cy="40" r="16" fill="none" stroke="#ff80ab" stroke-width="3" stroke-dasharray="3 5"/><circle class="sc-fw" cx="310" cy="55" r="14" fill="none" stroke="#ffd740" stroke-width="3" stroke-dasharray="3 5"/><circle class="sc-fw" cx="190" cy="30" r="13" fill="none" stroke="#80d8ff" stroke-width="3" stroke-dasharray="3 5"/></g>
+<g fill="#c3cad3"><rect x="196" y="78" width="30" height="80"/><rect x="232" y="96" width="24" height="62"/><rect x="262" y="70" width="34" height="88"/><rect x="302" y="100" width="26" height="58"/><rect x="334" y="84" width="30" height="74"/><rect x="368" y="104" width="32" height="54"/></g>
+<g class="sc-win"><rect x="201" y="86" width="6" height="7"/><rect x="214" y="86" width="6" height="7"/><rect x="201" y="102" width="6" height="7"/><rect x="214" y="102" width="6" height="7"/><rect x="268" y="80" width="7" height="7"/><rect x="283" y="80" width="7" height="7"/><rect x="268" y="96" width="7" height="7"/><rect x="283" y="96" width="7" height="7"/><rect x="340" y="94" width="7" height="7"/><rect x="352" y="94" width="7" height="7"/><rect x="340" y="110" width="7" height="7"/><rect x="352" y="110" width="7" height="7"/></g>
+<g><rect x="142" y="96" width="40" height="62" fill="#f5f5f5" stroke="#cfd8dc"/><rect x="156" y="102" width="12" height="4" fill="#e53935"/><rect x="160" y="98" width="4" height="12" fill="#e53935"/><text x="162" y="122" font-size="7" text-anchor="middle" fill="#607d8b" font-weight="700">병원</text><rect class="sc-win" x="148" y="130" width="8" height="8"/><rect class="sc-win" x="168" y="130" width="8" height="8"/></g>
+<rect y="150" width="400" height="110" fill="#9ccc65"/>
+<path d="M0 150H70Q58 200 80 260H0Z" fill="#4fc3f7"/><path d="M8 170q8-3 16 0M30 248q8-3 16 0" stroke="#e1f5fe" stroke-width="1.5" fill="none"/>
+<rect x="80" y="196" width="320" height="26" fill="#616161"/><rect x="196" y="150" width="24" height="110" fill="#616161"/>
+<line x1="80" y1="209" x2="196" y2="209" stroke="#fff" stroke-width="1.4" stroke-dasharray="8 7"/><line x1="220" y1="209" x2="400" y2="209" stroke="#fff" stroke-width="1.4" stroke-dasharray="8 7"/>
+<g fill="#eee"><rect x="186" y="197" width="8" height="2.4"/><rect x="186" y="202" width="8" height="2.4"/><rect x="186" y="207" width="8" height="2.4"/><rect x="186" y="212" width="8" height="2.4"/><rect x="186" y="217" width="8" height="2.4"/></g>
+
+<g class="sc-spot" id="sc_c" data-i="0" tabindex="0" role="button" aria-label="행복 아파트">
+ <rect class="hit" x="82" y="52" width="54" height="142" rx="6"/>
+ <rect x="88" y="62" width="42" height="134" fill="#ffcc80" stroke="#e0a65a"/><rect x="86" y="58" width="46" height="6" fill="#e0a65a"/>
+ <g class="sc-win"><rect x="93" y="70" width="9" height="9"/><rect x="116" y="70" width="9" height="9"/><rect x="93" y="88" width="9" height="9"/><rect x="116" y="88" width="9" height="9"/><rect x="93" y="124" width="9" height="9"/><rect x="116" y="124" width="9" height="9"/><rect x="93" y="142" width="9" height="9"/><rect x="116" y="142" width="9" height="9"/><rect x="93" y="160" width="9" height="9"/></g>
+ <rect x="113" y="104" width="15" height="13" fill="#fff8e1" stroke="#e0a65a"/><text x="120.5" y="114.5" font-size="10" text-anchor="middle">👵</text>
+ <rect x="104" y="178" width="10" height="18" fill="#8d6e63"/>
+ <text class="bad" x="108" y="106" font-size="7" text-anchor="end" fill="#c62828" font-weight="800">아야…</text>
+ <g class="good"><path class="sc-heart" d="M108 98c-2-3-6-1-4 2l4 4 4-4c2-3-2-5-4-2z" fill="#e91e63"/><path class="sc-ecg" d="M128 106 H136 l3-6 3 10 3-8 2 4 H150 V118" fill="none" stroke="#e91e63" stroke-width="1.6"/></g>
+ <g class="sc-bd" transform="translate(130 56)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+
+<g class="sc-spot" id="sc_a" data-i="1" tabindex="0" role="button" aria-label="큰길 교차로">
+ <rect class="hit" x="138" y="160" width="96" height="62" rx="6"/>
+ <rect x="230" y="160" width="3" height="36" fill="#424242"/><rect x="225.5" y="146" width="12" height="25" rx="2.5" fill="#263238"/>
+ <circle class="sc-red" cx="231.5" cy="152.5" r="3.6"/><circle class="sc-grn" cx="231.5" cy="164" r="3.6"/>
+ <g class="sc-cars">
+  <g transform="translate(142 199)"><rect width="18" height="8" rx="2.5" fill="#42a5f5"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#e3f2fd"/></g>
+  <g transform="translate(163 199)"><rect width="18" height="8" rx="2.5" fill="#ef5350"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#ffebee"/></g>
+  <g transform="translate(121 199)"><rect width="18" height="8" rx="2.5" fill="#ffca28"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#fff8e1"/></g>
+  <g transform="translate(100 199)"><rect width="18" height="8" rx="2.5" fill="#ab47bc"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#f3e5f5"/></g>
+ </g>
+ <text class="bad" x="152" y="194" font-size="7" fill="#c62828" font-weight="800">빵빵! 꽉 막혔어</text>
+ <g class="sc-bd" transform="translate(238 144)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+
+<g class="sc-spot" id="sc_f" data-i="2" tabindex="0" role="button" aria-label="전통 시장">
+ <rect class="hit" x="240" y="132" width="66" height="64" rx="6"/>
+ <rect x="246" y="160" width="56" height="36" fill="#fff3e0" stroke="#d7a86e"/>
+ <path d="M243 148h62l-3 12h-56z" fill="#ef5350"/><path d="M255 148l-2 12M267 148v12M279 148v12M291 148l2 12" stroke="#fff" stroke-width="5"/>
+ <g><circle cx="256" cy="178" r="4" fill="#ff7043"/><circle cx="264" cy="179" r="4" fill="#ffa726"/><circle cx="284" cy="178" r="4" fill="#9ccc65"/><circle cx="292" cy="179" r="4" fill="#66bb6a"/></g>
+ <rect x="246" y="184" width="56" height="4" fill="#d7a86e"/>
+ <text class="bad" x="274" y="170" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">현금만 돼요</text>
+ <g class="good sc-pay"><rect x="266" y="162" width="14" height="22" rx="3" fill="#263238"/><rect x="268" y="165" width="10" height="14" rx="1" fill="#69f0ae"/><text x="273" y="175" font-size="8" text-anchor="middle" fill="#1b5e20" font-weight="900">✓</text></g>
+ <g class="sc-bd" transform="translate(304 140)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+
+<g class="sc-spot" id="sc_b" data-i="3" tabindex="0" role="button" aria-label="강 건너 섬마을">
+ <rect class="hit" x="2" y="150" width="86" height="106" rx="6"/>
+ <ellipse cx="30" cy="228" rx="24" ry="11" fill="#c5e1a5"/>
+ <rect x="22" y="212" width="17" height="13" fill="#ffccbc"/><path d="M20 213l10.5-9 10.5 9z" fill="#e57373"/><rect x="28" y="218" width="5" height="7" fill="#8d6e63"/>
+ <rect x="76" y="166" width="12" height="4" fill="#90a4ae"/>
+ <g class="sc-drone"><rect x="76" y="158" width="12" height="5" rx="2" fill="#37474f"/><line x1="72" y1="157" x2="92" y2="157" stroke="#37474f" stroke-width="1.4"/><ellipse class="sc-rot" cx="72" cy="155.5" rx="4" ry="1" fill="#90a4ae"/><ellipse class="sc-rot" cx="92" cy="155.5" rx="4" ry="1" fill="#90a4ae"/><rect x="79" y="163" width="6" height="5" fill="#fff" stroke="#e53935" stroke-width=".8"/></g>
+ <text class="bad" x="30" y="200" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">약이 필요해요!</text>
+ <g class="sc-bd" transform="translate(52 208)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+
+<g class="sc-spot" id="sc_e" data-i="4" tabindex="0" role="button" aria-label="심야 버스 정류장">
+ <rect class="hit" x="318" y="140" width="80" height="82" rx="6"/>
+ <rect x="340" y="164" width="52" height="4" rx="2" fill="#546e7a"/><rect x="342" y="168" width="2.5" height="28" fill="#546e7a"/><rect x="388" y="168" width="2.5" height="28" fill="#546e7a"/>
+ <rect x="326" y="160" width="10" height="9" rx="1.5" fill="#1e88e5"/><rect x="330" y="169" width="2" height="27" fill="#546e7a"/><text x="331" y="167" font-size="6" text-anchor="middle" fill="#fff" font-weight="900">B</text>
+ <text x="356" y="194" font-size="11">🧑</text><text x="368" y="194" font-size="11">👩</text>
+ <text class="bad" x="364" y="160" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">막차 끊김</text>
+ <g class="sc-bus good"><rect x="340" y="207" width="52" height="15" rx="3.5" fill="#26a69a"/><rect x="344" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="356" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="368" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="380" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><circle cx="350" cy="222" r="3" fill="#263238"/><circle cx="382" cy="222" r="3" fill="#263238"/><text x="366" y="220.5" font-size="4.5" text-anchor="middle" fill="#fff" font-weight="800">자율 주행</text></g>
+ <g class="sc-bd" transform="translate(392 150)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+
+<g class="sc-spot" id="sc_d" data-i="5" tabindex="0" role="button" aria-label="푸른 공원">
+ <rect class="hit" x="226" y="223" width="110" height="36" rx="6"/>
+ <rect x="240" y="238" width="3" height="10" fill="#795548"/><circle cx="241.5" cy="235" r="8" fill="#43a047"/><rect x="262" y="240" width="3" height="10" fill="#795548"/><circle cx="263.5" cy="236" r="7" fill="#66bb6a"/>
+ <rect x="296" y="236" width="14" height="16" rx="1.5" fill="#78909c"/>
+ <g class="bad"><path d="M294 236l4-6 4 3 3-5 4 4 3-2-1 6z" fill="#8d6e63"/><circle cx="291" cy="250" r="2" fill="#a1887f"/><rect x="312" y="248" width="5" height="3" fill="#bcaaa4"/><text x="282" y="232" font-size="7" text-anchor="end" fill="#c62828" font-weight="800">넘쳐요!</text></g>
+ <g class="good"><rect x="295" y="233" width="16" height="3.5" rx="1" fill="#43a047"/><circle cx="303" cy="243" r="2.4" fill="#69f0ae"/><path class="sc-wave" d="M309 229a8 8 0 0 1 8 0" fill="none" stroke="#1565c0" stroke-width="1.6"/><path class="sc-wave" d="M306 225a13 13 0 0 1 14 0" fill="none" stroke="#1565c0" stroke-width="1.6"/></g>
+ <g class="sc-bd" transform="translate(326 232)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
+</g>
+<rect id="scHaze" width="400" height="160" fill="#8d8d8d" opacity=".45" pointer-events="none"/>
+</svg>`;
+const scSolved = () => scOk.filter(Boolean).length;
+function scMeter(){
+  const t = scSolved() / SC.length, p = Math.round((scSolved() + scGood) / (SC.length + 3) * 100);
+  $('#scBar').style.width = p + '%'; $('#scPct').textContent = p + '%';
+  const mix = (a, b) => Math.round(a + (b - a) * t);
+  $('#scSky').setAttribute('fill', `rgb(${mix(180, 129)},${mix(185, 212)},${mix(191, 250)})`);
+  $('#scHaze').style.opacity = (.45 * (1 - t)).toFixed(2);
+}
+function scPick(i){ scCur = i; $$('#scMap .sc-spot').forEach(g => g.classList.toggle('cur', +g.dataset.i === i)); scPanel(); }
+function scNext(){ const n = SC.findIndex((s, k) => !scOk[k]); return n; }
+function scPanel(){
+  const P = $('#scPanel');
+  if (scCur < 0){ P.innerHTML = `<p class="sc-msg">👆 지도에서 <b style="color:#e53935">!</b> 표시가 있는 장소를 눌러 보세요. (남은 문제 <b>${SC.length - scSolved()}</b>곳)</p>`; return; }
+  const s = SC[scCur];
+  if (scOk[scCur]){
+    const n = scNext();
+    P.innerHTML = `<div class="sc-q ok"><b>✅ ${s.n}</b> ${s.done}</div>` + (n >= 0 ? `<button class="btn" id="scGo" style="margin-top:8px">다음 문제 장소로 ▶ (남은 ${SC.length - scSolved()}곳)</button>` : '');
+    if (n >= 0) $('#scGo').onclick = () => scPick(n);
+    return;
+  }
+  P.innerHTML = `<div class="sc-q"><b>📍 ${s.n}</b> ${s.p}</div><p class="sc-ask">어떤 디지털 기술로 해결할까요?</p><div class="sc-tray">${TECH.map(([ic, n], k) => `<button data-k="${k}">${ic} ${n}</button>`).join('')}</div><p class="feedback" id="scFb"></p>`;
+  $$('#scPanel .sc-tray button').forEach(b => b.onclick = () => scUse(+b.dataset.k, b));
+}
+function scUse(k, b){
+  const s = SC[scCur];
+  if (k !== s.ok){
+    scTry[scCur]++; b.classList.add('no'); b.disabled = true;
+    feedback($('#scFb'), false, `🤔 ${TECH[k][1]}: ${TECH[k][2]} 이 문제에 꼭 맞을까요?` + (scTry[scCur] >= 2 ? ` 💡 힌트: ${s.tip}` : ''));
+    return;
+  }
+  scOk[scCur] = true; $('#sc_' + s.id).classList.add('ok'); scMeter(); scPanel();
+  if (scSolved() === SC.length) setTimeout(scGapStart, 700);
+}
+function scGapStart(){
+  $('#scGap').innerHTML = `<div class="sc-gap"><b>🚨 마지막 시장 임무: 정보 격차 줄이기</b>
+    <div class="sc-gma"><span class="f" id="scGf">😢</span><div class="b" id="scGb">도시가 똑똑해졌다는데… 나는 키오스크도, 간편 결제도 쓸 줄 몰라서 시장에 가기가 더 어려워졌어요.</div></div>
+    <p style="margin:4px 0 8px">디지털 기기나 서비스를 쓸 수 있는 사람과 그렇지 못한 사람 사이의 차이가 <b>정보 격차</b>예요. 할머니를 도울 정책 <b>3가지</b>를 골라 시행하세요.</p>
+    <div class="sc-acts">${SC_GAP.map(([ic, t], k) => `<button data-k="${k}">${ic} ${t}</button>`).join('')}</div><p class="feedback" id="scGfb"></p></div>`;
+  $('#scGap').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  $$('#scGap .sc-acts button').forEach(b => b.onclick = () => {
+    const [, , good, why] = SC_GAP[+b.dataset.k]; b.disabled = true;
+    if (!good){ scGapMiss++; b.classList.add('no'); feedback($('#scGfb'), false, '❌ ' + why); return; }
+    b.classList.add('yes'); scGood++; scMeter();
+    $('#scGf').textContent = ['😢', '🙂', '😊', '😄'][scGood];
+    $('#scGb').textContent = ['', '오, 배울 수 있는 곳이 생기면 좋겠네요.', '조금씩 해 볼 수 있을 것 같아요!', '이제 나도 스마트 시티의 혜택을 누릴 수 있어요. 고마워요, 시장님!'][scGood];
+    if (scGood < 3){ feedback($('#scGfb'), true, '⭕ ' + why); return; }
+    feedback($('#scGfb'), true, `🎆 ⭕ ${why} 모두가 함께 누리는 스마트 시티 완성! 디지털 기술을 처음 고를 때 실수 ${scTry.reduce((a, c) => a + c, 0)}번, 정책 실수 ${scGapMiss}번이었어요.`);
+    $$('#scGap .sc-acts button').forEach(x => x.disabled = true);
+    $('#scMap').classList.add('night');
+    reportQuiz('smartcity', scTry.map(c => c === 0).concat([scGapMiss === 0]));
+  });
+}
+$$('#scMap .sc-spot').forEach(g => { g.onclick = () => scPick(+g.dataset.i); g.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); scPick(+g.dataset.i); } }; });
+scMeter(); scPanel();
 
 renderQuiz($('#quiz'), [
   {q:'디지털 기술이 사회·경제·문화 등 다양한 분야에 큰 영향을 미치는 사회는?', o:['산업 사회','디지털 사회','농경 사회'], a:1, e:'디지털 사회에서는 생활의 많은 부분이 디지털 정보를 중심으로 이루어져요.'},
