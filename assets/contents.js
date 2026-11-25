@@ -103,7 +103,7 @@ const contentsList = [
   {unit: 3, sub: '3-2-3', icon: '🗳️', lesson: true, badge: '45분 종합 수업', title: '프로그램으로 문제 해결하기', desc: '투표 프로그램 프로젝트를 돌아보며 문제 이해 → 추상화 → 알고리즘 → 프로그래밍 → 디버깅 과정을 정리하고 Ⅲ단원을 마무리해요. (교과서 126~138쪽)', href: 'lesson/3-2-3.html',},
 
   {unit: 4, sub: '4-1-1', icon: '🤖', badge: '중1 Ⅳ단원 · 인공지능의 이해', title: '인공지능의 개념과 특성', desc: '내가 경험한 인공지능에 투표하고, 추론·학습·인식·생성 특성과 일반/인공지능 소프트웨어를 구분해요. (교과서 147~151쪽)', href: 'ai/4-01-ai-concept.html', tags: ['개념'], live: true, std: '04-01', core: true},
-  {unit: 4, sub: '4-1-1', icon: '🧩', badge: '중1 Ⅳ단원 · 인공지능 시스템', title: '인공지능 모델이 만들어지는 과정', desc: '새와 물고기 분류 모델을 단계별로 만들며 훈련·테스트 데이터와 문제 해결 과정을 익혀요. (교과서 152~155쪽)', href: 'ai/4-02-ai-system.html', tags: ['개념'], std: '04-01', core: true, key: true},
+  {unit: 4, sub: '4-1-1', icon: '🧩', badge: '중1 Ⅳ단원 · 인공지능 시스템', title: '인공지능 모델이 만들어지는 과정', desc: '새와 물고기 분류 모델을 단계별로 만들며 훈련·테스트 데이터와 문제 해결 과정을 익혀요. AI 모델 공장 작업자가 되어 이름표 붙이기부터 공정한 테스트 데이터 고르기까지 직접 해요. (교과서 152~155쪽)', href: 'ai/4-02-ai-system.html', tags: ['개념','게임'], std: '04-01', core: true, key: true},
   {unit: 4, sub: '4-1-1', icon: '🤖', lesson: true, badge: '45분 종합 수업', title: '인공지능은 어떻게 배울까?', desc: '인공지능의 특성과, 데이터로 학습해 모델을 만드는 과정을 한 번에 정리해요. (교과서 147~155쪽)', href: 'lesson/4-1-1.html',},
   {unit: 4, sub: '4-1-2', icon: '🧪', badge: '중1 Ⅳ단원 · 인공지능과 데이터', title: '좋은 데이터 실험실', desc: '같은 인공지능에 양·품질·특징·대표성이 다른 데이터를 주고 정확도를 비교해요. (교과서 156~159쪽)', href: 'ai/4-03-data-quality.html', tags: ['체험'], std: '04-02', core: true, key: true},
   {unit: 4, sub: '4-1-2', icon: '🍎', lesson: true, badge: '45분 종합 수업', title: '인공지능은 데이터를 먹고 자란다', desc: '같은 인공지능이라도 데이터에 따라 성능이 달라져요. 좋은 데이터의 조건을 정리해요. (교과서 156~159쪽)', href: 'lesson/4-1-2.html',},
