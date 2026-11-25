@@ -8,8 +8,8 @@
 <style>
 .room{position:relative;height:170px;border-radius:18px;background:#2b3245;overflow:hidden;transition:background .4s;margin:10px 0}
 .room.lit{background:#fff8d6}
-.room .lamp{position:absolute;top:8px;font-size:2.2rem;filter:grayscale(1);transition:filter .3s}
-.room.lit .lamp{filter:none}
+.room .lamp{position:absolute;top:0;width:56px}
+.room .dk{position:absolute;bottom:6px;width:74px}.room .dk span{position:absolute;left:50%;top:-30px;transform:translateX(-50%);font-size:1.6rem}
 .room .desk{position:absolute;bottom:14px;font-size:2rem}
 .meter{height:14px;background:var(--bg);border-radius:999px;overflow:hidden;position:relative;margin:6px 0}
 .meter i{display:block;height:100%;background:var(--brand);width:0}
@@ -56,7 +56,7 @@
       <label>🔊 교실 소리 크기 (소리 센서 값) <input type="range" id="snd" min="0" max="100" value="5" style="width:100%"></label>
       <label>📏 기준값: <b id="thv">20</b> <input type="range" id="th" min="5" max="80" value="20" style="width:100%"></label>
       <div class="meter"><i id="sm"></i><b id="tm"></b></div>
-      <div class="room" id="room"><span class="lamp" style="left:20%">💡</span><span class="lamp" style="left:70%">💡</span><span class="desk" id="kids" style="left:30%"></span></div>
+      <div class="room" id="room"><span class="lamp" style="left:20%">💡</span><span class="lamp" style="left:70%">💡</span><span class="dk" style="left:12%"></span><span class="dk" style="left:38%"></span><span class="dk" style="left:64%"></span><span id="kids" hidden></span></div>
       <p class="hint" id="rmsg"></p>
       <p class="hint">🤔 기준값을 너무 낮게 잡으면 어떤 문제가 생길까요? 너무 높게 잡으면요?</p>
     </div>
@@ -110,13 +110,14 @@
   <p class="src">미래엔 중학교 정보 32~36쪽 내용을 바탕으로 재구성</p>
 </main>
 <script src="../assets/contents.js"></script>
+<script src="../assets/art.js"></script>
 <script src="../assets/common.js"></script>
 <script>
 function room(){
   const s = +$('#snd').value, t = +$('#th').value, on = s >= t;
   $('#thv').textContent = t; $('#sm').style.width = s + '%'; $('#tm').style.left = t + '%';
   $('#room').classList.toggle('lit', on);
-  $('#kids').textContent = s > 50 ? '🧑‍🎓🧑‍🎓🧑‍🎓🧑‍🎓' : s > 20 ? '🧑‍🎓🧑‍🎓' : s > 10 ? '🧑‍🎓' : '';
+  const nk = s > 50 ? 3 : s > 20 ? 2 : s > 10 ? 1 : 0; $$('#room .dk').forEach((d, i) => { if (!d.dataset.a){ d.dataset.a = 1; d.innerHTML = artSvg('desk') + '<span></span>'; } d.querySelector('span').textContent = i < nk ? '🧑‍🎓' : ''; }); $$('#room .lamp').forEach(l => { if (!l.innerHTML.includes('svg')) l.innerHTML = artSvg('lamp'); });
   $('#rmsg').textContent = `소리 센서 값 ${s} ${on ? '≥' : '<'} 기준값 ${t} → 전등 ${on ? '켜짐 💡' : '꺼짐'}`;
 }
 ['#snd', '#th'].forEach(s => $(s).oninput = room); room();

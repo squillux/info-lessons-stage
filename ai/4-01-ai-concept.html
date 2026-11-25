@@ -22,7 +22,7 @@
 .sh-rooms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
 @media (max-width:560px){.sh-rooms{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .sh-d{position:relative;border:2px solid #e8d5bd;border-radius:12px;background:#fff;padding:8px 4px 6px;text-align:center;font-weight:800;font-size:.75rem;color:var(--ink);min-height:92px}
-.sh-d .em{display:block;font-size:2.1rem;line-height:1.15}
+.sh-d .em{display:block;width:64%;max-width:86px;margin:0 auto 4px;height:62px;display:flex;align-items:center;justify-content:center}.sh-d .em .art-svg{height:58px;width:auto;max-width:100%}
 .sh-d.cur{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
 .sh-d.run .em{animation:shrun .8s ease-in-out 2}
 @keyframes shrun{25%{transform:rotate(-10deg) scale(1.15)}75%{transform:rotate(10deg) scale(1.15)}}
@@ -115,6 +115,7 @@
   <p class="src">미래엔 중학교 정보 147~151쪽 내용을 바탕으로 재구성</p>
 </main>
 <script src="../assets/contents.js"></script>
+<script src="../assets/art.js"></script>
 <script src="../assets/common.js"></script>
 <script src="../assets/live.js"></script>
 <script>
@@ -138,18 +139,18 @@ const upd = () => { const v = $('#itxt').value.trim().replace(/[<>&]/g, ''); $('
 /* ===== 스마트 홈 수사대 ===== */
 const SHF = ['추론', '학습', '인식', '생성'];
 const SHD = [
-  {em: '🔔', n: '현관 초인종', act: '"딩동! 택배 기사님이 오셨어요." 카메라 화면 속 얼굴과 옷차림을 알아보고 누구인지 알려 줘요.', ai: 1, f: 2, e: '카메라로 사람을 알아보는 <b>인식</b>이에요.'},
-  {em: '🧮', n: '계산기', act: '"12 × 7 = 84" 누른 숫자를 정해진 계산 규칙대로 계산해요.', ai: 0, e: '사람이 만든 규칙대로 계산하는 일반 소프트웨어예요.'},
-  {em: '📺', n: '거실 TV', act: '"이번 주에 과학 영상을 많이 봤네요! 이 다큐멘터리는 어때요?" 시청 기록을 바탕으로 좋아할 만한 것을 추천해요.', ai: 1, f: 1, e: '시청 기록(데이터)으로 취향을 배우는 <b>학습</b>이에요.'},
-  {em: '⏰', n: '알람 시계', act: '"따르릉!" 맞춰 둔 7시가 되면 울려요.', ai: 0, e: '정해진 시간에 울리는 일반 소프트웨어예요.'},
-  {em: '🧹', n: '로봇 청소기', act: '바닥의 양말과 전선을 알아보고 피해 가며 청소해요.', ai: 1, f: 2, e: '센서와 카메라로 물건을 알아보는 <b>인식</b>이에요.'},
-  {em: '🖼️', n: '디지털 액자', act: '"가족사진을 동화 그림처럼 새로 그려 드릴게요!" 사진을 바탕으로 새로운 그림을 만들어요.', ai: 1, f: 3, e: '새로운 그림을 만들어 내는 <b>생성</b>이에요.'},
-  {em: '❄️', n: '에어컨', act: '"내일 오후 폭염 예보, 집에 사람이 있어요 → 지금 미리 냉방을 시작할게요." 여러 정보를 바탕으로 결론을 내려요.', ai: 1, f: 0, e: '정보를 바탕으로 결론을 이끌어 내는 <b>추론</b>이에요.'},
-  {em: '💡', n: '현관 전등', act: '스위치를 누르면 켜지고, 다시 누르면 꺼져요.', ai: 0, e: '입력(스위치)에 따라 정해진 대로 동작해요.'},
+  {em: '🔔', art: 'doorbell', n: '현관 초인종', act: '"딩동! 택배 기사님이 오셨어요." 카메라 화면 속 얼굴과 옷차림을 알아보고 누구인지 알려 줘요.', ai: 1, f: 2, e: '카메라로 사람을 알아보는 <b>인식</b>이에요.'},
+  {em: '🧮', art: 'calc', n: '계산기', act: '"12 × 7 = 84" 누른 숫자를 정해진 계산 규칙대로 계산해요.', ai: 0, e: '사람이 만든 규칙대로 계산하는 일반 소프트웨어예요.'},
+  {em: '📺', art: 'tv', n: '거실 TV', act: '"이번 주에 과학 영상을 많이 봤네요! 이 다큐멘터리는 어때요?" 시청 기록을 바탕으로 좋아할 만한 것을 추천해요.', ai: 1, f: 1, e: '시청 기록(데이터)으로 취향을 배우는 <b>학습</b>이에요.'},
+  {em: '⏰', art: 'clock', n: '알람 시계', act: '"따르릉!" 맞춰 둔 7시가 되면 울려요.', ai: 0, e: '정해진 시간에 울리는 일반 소프트웨어예요.'},
+  {em: '🧹', art: 'vacuum', n: '로봇 청소기', act: '바닥의 양말과 전선을 알아보고 피해 가며 청소해요.', ai: 1, f: 2, e: '센서와 카메라로 물건을 알아보는 <b>인식</b>이에요.'},
+  {em: '🖼️', art: 'frame', n: '디지털 액자', act: '"가족사진을 동화 그림처럼 새로 그려 드릴게요!" 사진을 바탕으로 새로운 그림을 만들어요.', ai: 1, f: 3, e: '새로운 그림을 만들어 내는 <b>생성</b>이에요.'},
+  {em: '❄️', art: 'aircon', n: '에어컨', act: '"내일 오후 폭염 예보, 집에 사람이 있어요 → 지금 미리 냉방을 시작할게요." 여러 정보를 바탕으로 결론을 내려요.', ai: 1, f: 0, e: '정보를 바탕으로 결론을 이끌어 내는 <b>추론</b>이에요.'},
+  {em: '💡', art: 'pendant', n: '현관 전등', act: '스위치를 누르면 켜지고, 다시 누르면 꺼져요.', ai: 0, e: '입력(스위치)에 따라 정해진 대로 동작해요.'},
 ];
 let shRes, shCur; const shFirst = [];
 function shDraw(){
-  $('#shRooms').innerHTML = SHD.map((d, i) => `<button class="sh-d${shCur === i ? ' cur' : ''}" data-i="${i}"><span class="em">${d.em}</span>${d.n}${shRes[i] ? `<span class="stp ${d.ai ? 'ai' : 'sw'}">${d.ai ? 'AI·' + SHF[d.f] : '일반 SW'}</span>` : ''}</button>`).join('');
+  $('#shRooms').innerHTML = SHD.map((d, i) => `<button class="sh-d${shCur === i ? ' cur' : ''}${shRes[i] || shCur === i ? ' lit' : ''}" data-i="${i}"><span class="em">${artSvg(d.art)}</span>${d.n}${shRes[i] ? `<span class="stp ${d.ai ? 'ai' : 'sw'}">${d.ai ? 'AI·' + SHF[d.f] : '일반 SW'}</span>` : ''}</button>`).join('');
   $$('#shRooms .sh-d').forEach(b => b.onclick = () => shOpen(+b.dataset.i));
   const ai = shRes.filter((r, i) => r && SHD[i].ai).length, sw = shRes.filter((r, i) => r && !SHD[i].ai).length;
   $('#shSum').innerHTML = `<span>🔍 수사 완료 ${shRes.filter(Boolean).length} / ${SHD.length}</span><span style="color:#7c3aed">🤖 인공지능 ${ai}</span><span style="color:#64748b">⚙️ 일반 소프트웨어 ${sw}</span>`;

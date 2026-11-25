@@ -20,7 +20,7 @@
 .ag-scene{position:relative;height:190px;border-radius:18px;overflow:hidden;background:linear-gradient(#bfe3ff 0 58%,#9bd28a 58% 62%,#d9d2c3 62%)}
 .ag-gate{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:120px;height:118px;border:8px solid #7a5b3a;border-bottom:0;border-radius:60px 60px 0 0}
 .ag-gate::before{content:"🏫 정보중";position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:#7a5b3a;color:#fff;font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
-.ag-cam{position:absolute;left:calc(50% + 70px);top:20px;font-size:1.6rem}
+.ag-cam{position:absolute;left:calc(50% + 62px);top:14px;width:58px}
 .ag-cam::after{content:"";position:absolute;left:-60px;top:24px;width:70px;height:80px;background:linear-gradient(200deg,#fff6 0,#fff0 70%);clip-path:polygon(100% 0,0 60%,30% 100%)}
 .ag-p{position:absolute;bottom:34px;left:-60px;font-size:2.8rem;line-height:1;transition:left .65s ease-out;z-index:2}
 .ag-box{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:84px;height:84px;border-radius:10px;z-index:3;pointer-events:none;opacity:0;transition:opacity .2s}
@@ -78,7 +78,7 @@
     <div class="card" data-bot="기준 확률을 정하고 교문을 열어 봐. 너무 낮아도, 너무 높아도 문제야! 🏫">
       <h3>🏫 교문 출석 카메라 운영자 <span class="tag-more">특색</span></h3>
       <p>아침 등교 시간! 카메라 모델은 사람마다 <b>누구인지</b>와 <b>확신 정도(%)</b>를 알려 줘요. 확신 정도가 <b>기준값 이상</b>일 때만 출석 처리하도록 기준값을 정하고 교문을 열어 보세요. 학습하지 않은 사람도 섞여 와요!</p>
-      <div class="ag-scene" id="agScene"><div class="ag-gate"></div><span class="ag-cam">📹</span><div class="ag-box" id="agBox"></div><div class="ag-tag" id="agTag"></div></div>
+      <div class="ag-scene" id="agScene"><div class="ag-gate"></div><span class="ag-cam lit" id="agCam"></span><div class="ag-box" id="agBox"></div><div class="ag-tag" id="agTag"></div></div>
       <div class="ag-ctrl">출석 기준값 <input type="range" id="agTh" min="50" max="99" value="55"><span class="ag-th" id="agThV">55%</span><button class="btn" id="agGo">🚪 교문 열기</button></div>
       <div class="ag-board" id="agBoard"></div>
       <div class="ag-log" id="agLog"></div>
@@ -100,6 +100,7 @@
   <p class="src">미래엔 중학교 정보 172~175쪽 프로젝트를 바탕으로 재구성 · 학생은 모두 가상(번호로만 표시)</p>
 </main>
 <script src="../assets/contents.js"></script>
+<script src="../assets/art.js"></script>
 <script src="../assets/common.js"></script>
 <script>
 renderChoice($('#state'), [
@@ -168,7 +169,7 @@ function agPrivacy(){
     reportQuiz('attendcam', [agTries === 1, !tried]);
   });
 }
-agBoard();
+$('#agCam').innerHTML = artSvg('cctv'); agBoard();
 
 renderQuiz($('#quiz'), [
   {q:'자동 출석부를 위해 친구들의 얼굴 사진을 모을 때 가장 먼저 해야 할 일은?', o:['몰래 사진을 찍는다','목적을 알리고 동의를 받는다','인터넷에서 아무 사진이나 내려받는다'], a:1, e:'얼굴은 개인 정보이므로 동의를 받고 수집해요.'},

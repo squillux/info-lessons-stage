@@ -18,10 +18,10 @@
 .stage{display:grid;gap:6px}
 .stage div{border-radius:12px;padding:8px 12px;background:var(--bg);transition:background .3s}
 .stage div.on{background:var(--brand-soft);font-weight:700}
-.door{font-size:3rem}
+.door{width:72px;margin:4px auto}
 .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
 .cmp>div{border:2px solid var(--line);border-radius:16px;padding:12px;background:#fff}
-.bulb{font-size:2rem;margin-left:10px;vertical-align:middle}
+.bulb{display:inline-block;width:30px;margin-left:10px;vertical-align:middle}
 /* 발명 카드 조합기 */
 .deck-h{margin:12px 0 6px;font-weight:800}
 .deck-h small{font-weight:400;color:var(--muted)}
@@ -80,7 +80,7 @@
       <div class="lock">
         <div class="pad" id="pad"></div>
         <div class="lockv">
-          <div class="door" id="door">🔒</div>
+          <div class="door" id="door"></div>
           <div class="stage" id="stage">
             <div>① 센서에서 데이터 수집: 번호 입력</div>
             <div>② 데이터 처리: 마이크로컨트롤러(MCU)가 입력값을 디지털 값으로 처리</div>
@@ -147,6 +147,7 @@
   <p class="src">미래엔 중학교 정보 25~27쪽 내용을 바탕으로 재구성</p>
 </main>
 <script src="../assets/contents.js"></script>
+<script src="../assets/art.js"></script>
 <script src="../assets/common.js"></script>
 <script src="../assets/live.js"></script>
 <script>
@@ -206,16 +207,16 @@ function drawDex(){
 drawDex();
 liveVote($('#value'), {act: '1-06', items: [{t: '우리 생활에 가장 꼭 필요한 피지컬 컴퓨팅 시스템은?', opts: ['⌚ 스마트 워치', '📺 스마트 TV', '🛂 자동 출입국 심사대', '🌃 스마트 가로등']}]});
 
-let code = '';
+let code = ''; $('#door').innerHTML = artSvg('door'); $$('.bulb').forEach(b => { b.dataset.e = b.textContent; b.innerHTML = artSvg('bulb'); });
 const lit = k => $$('#stage div').forEach((d, i) => d.classList.toggle('on', i === k));
 $('#pad').innerHTML = ['1','2','3','4','5','6','7','8','9','*','0','#'].map(k => `<button>${k}</button>`).join('');
 $$('#pad button').forEach(b => b.onclick = () => {
   const k = b.textContent;
-  if (k === '*'){ code = ''; lit(-1); $('#lmsg').textContent = '입력: '; $('#door').textContent = '🔒'; return; }
+  if (k === '*'){ code = ''; lit(-1); $('#lmsg').textContent = '입력: '; $('#door').classList.remove('lit'); return; }
   if (k !== '#'){ if (code.length < 8) code += k; lit(0); $('#lmsg').textContent = '입력: ' + '●'.repeat(code.length); return; }
   lit(1); setTimeout(() => { lit(2); setTimeout(() => {
-    if (code === '1234'){ lit(3); $('#door').textContent = '🔓🚪'; $('#lmsg').textContent = '✅ 번호가 맞아요! 액추에이터(모터)가 문을 열었어요.'; }
-    else { lit(-1); $('#door').textContent = '🔒'; $('#lmsg').textContent = '❌ 번호가 달라요. 액추에이터는 동작하지 않고 경고음(버저)만 울려요. (*: 지우기)'; }
+    if (code === '1234'){ lit(3); $('#door').classList.add('lit'); $('#lmsg').textContent = '✅ 번호가 맞아요! 액추에이터(모터)가 문을 열었어요.'; }
+    else { lit(-1); $('#door').classList.remove('lit'); $('#lmsg').textContent = '❌ 번호가 달라요. 액추에이터는 동작하지 않고 경고음(버저)만 울려요. (*: 지우기)'; }
     code = '';
   }, 600); }, 600);
 });
@@ -230,7 +231,7 @@ $$('#order button').forEach(b => b.onclick = () => {
 });
 
 (() => {
-  const set = (k, on) => $('#b' + k).textContent = on ? '💡' : '⚫';
+  const set = (k, on) => $('#b' + k).classList.toggle('lit', on);
   const b0 = $('[data-c="0"]'), b1 = $('[data-c="1"]');
   b0.addEventListener('pointerdown', () => set(0, true)); ['pointerup', 'pointerleave'].forEach(e => b0.addEventListener(e, () => set(0, false)));
   let on = false, blinking = false;

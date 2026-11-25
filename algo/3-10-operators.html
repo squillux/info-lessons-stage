@@ -31,7 +31,7 @@
 .gt-build .cb{display:inline-block;background:#ffb000;color:#fff;border-radius:10px;padding:0 8px}
 .gt-build .c2[hidden]{display:none}
 .gt-road{position:relative;height:120px;margin-top:10px;border-radius:14px;background:linear-gradient(#cfe8ff 0 55%,#9ad08a 55%);overflow:hidden}
-.gt-gate{position:absolute;left:50%;top:18px;transform:translateX(-50%);font-size:2.6rem;z-index:1}
+.gt-gate{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:130px;z-index:1}
 .gt-light{position:absolute;left:calc(50% + 30px);top:10px;width:18px;height:18px;border-radius:50%;background:#bbb;box-shadow:0 0 0 3px #fff}
 .gt-light.g{background:#16b8a6;box-shadow:0 0 0 3px #fff,0 0 14px #16b8a6}.gt-light.r{background:#ff5b5b;box-shadow:0 0 0 3px #fff,0 0 14px #ff5b5b}
 .gt-p{position:absolute;top:44px;left:6%;text-align:center;font-size:.7rem;font-weight:800;transition:left .7s ease,opacity .4s;z-index:2}
@@ -93,7 +93,7 @@
       <div class="gt-sign" id="gtSign"></div>
       <div class="gt-build" id="gtBuild"></div>
       <p><button class="btn" id="gtRun">▶ 게이트 실행하기</button></p>
-      <div class="gt-road" id="gtRoad"><span class="gt-gate">⛩️</span><span class="gt-light" id="gtLight"></span></div>
+      <div class="gt-road" id="gtRoad"><span class="gt-gate" id="gtGateArt"></span><span class="gt-light" id="gtLight"></span></div>
       <div class="gt-list" id="gtList"></div>
       <div id="gtOut"></div>
     </div>
@@ -119,6 +119,7 @@
   <p class="src">미래엔 중학교 정보 108~110쪽 내용을 바탕으로 재구성</p>
 </main>
 <script src="../assets/contents.js"></script>
+<script src="../assets/art.js"></script>
 <script src="../assets/common.js"></script>
 <script>
 function calc(){
@@ -185,7 +186,7 @@ $('#gtRun').onclick = async () => {
     const p = {h, a}, mine = gtMine(p), truth = L.f(p), ok = mine === truth; bad += !ok;
     const el = document.createElement('div'); el.className = 'gt-p'; el.innerHTML = `<i>${ic}</i><b>${h}cm · ${a}살</b>`; $('#gtRoad').appendChild(el);
     await new Promise(r => setTimeout(r, 60)); el.style.left = '36%'; await new Promise(r => setTimeout(r, 750));
-    $('#gtLight').className = 'gt-light ' + (mine ? 'g' : 'r');
+    $('#gtLight').className = 'gt-light ' + (mine ? 'g' : 'r'); $('#gtGateArt').classList.toggle('lit', mine);
     el.style.left = mine ? '82%' : '36%'; if (!mine) el.style.opacity = '.35';
     $('#gtList').insertAdjacentHTML('beforeend', `<div class="${ok ? 'ok' : 'no'}">${ic} ${h}cm·${a}살 → ${mine ? L.yes : L.no}${ok ? ' ✔' : ` ❌ (규칙대로면 ${truth ? L.yes : L.no})`}</div>`);
     await new Promise(r => setTimeout(r, 700)); el.remove();
@@ -198,7 +199,7 @@ $('#gtRun').onclick = async () => {
   if ($('#gtNext')) $('#gtNext').onclick = () => { gtL++; gtLevel(); };
   else { $('#gtAgain').onclick = () => { gtL = 0; gtFirst.length = 0; gtLevel(); }; reportQuiz('gate', gtFirst.slice(0, 3)); }
 };
-gtLevel();
+$('#gtGateArt').innerHTML = artSvg('gate'); gtLevel();
 
 renderQuiz($('#quiz'), [
   {q:'두 값의 크기를 비교해 참 또는 거짓을 결과로 내는 연산은?', o:['산술 연산','비교 연산','논리 연산'], a:1, e:'=, ≠, >, <, ≥, ≤가 비교 연산자예요.'},
