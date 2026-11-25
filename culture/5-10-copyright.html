@@ -193,7 +193,7 @@ async function ttGo(alive){
   ttTry[i]++;
   if (alive || !w.d){
     if (!w.d && alive){ ttDone[i] = 1; ttShelf(); ttPanel('<div class="tt-res">⭕ 맞아요! 하늘이는 살아 있으니 저작권은 <b>살아 있는 동안 + 사망 후 70년</b>까지 이어져요. 언제 자유로워질지 정할 수 없으니, 쓰고 싶다면 <b>하늘이에게 허락</b>을 받아야 해요. 학생의 창작물도 창작하는 순간 저작권이 생겨요!</div>'); ttCheck(); return; }
-    $('#ttRes').innerHTML = alive ? `<div class="tt-res">🤔 이 작가는 ${w.d}년에 세상을 떠났으니 계산할 수 있어요. 사망한 해에 70년을 더해 보세요.</div>` : '<div class="tt-res">🤔 하늘이는 지금도 살아 있어요. 저작권은 저작자가 살아 있는 동안 계속 보호돼요. 이 해에 자유로워진다고 정할 수 있을까요?</div>';
+    $('#ttRes').innerHTML = alive ? `<div class="tt-res">🤔 이 작가는 ${w.d}년에 세상을 떠났으니 계산할 수 있어요. 사망한 다음 해부터 70년 동안 보호되니, 보호가 끝난 다음 해를 계산해 보세요.</div>` : '<div class="tt-res">🤔 하늘이는 지금도 살아 있어요. 저작권은 저작자가 살아 있는 동안 계속 보호돼요. 이 해에 자유로워진다고 정할 수 있을까요?</div>';
     return;
   }
   ttBusy = true; const to = ttYear, M = $('#ttMc');
@@ -206,7 +206,7 @@ async function ttGo(alive){
     ttPanel(`<div class="tt-res">🔓 <b>${to}년 1월 1일 도착!</b> ${w.d}년 사망 → ${end}년 12월 31일까지 보호 → <b>${free}년</b>부터 누구나 허락 없이 이용할 수 있어요. ${free <= NOW ? `지금(${NOW}년)은 이미 자유롭게 쓸 수 있는 작품이에요! 🎉` : `지금(${NOW}년)은 아직 보호 중이라 저작권자에게 허락을 받아야 해요.`}</div>`);
     $('#ttCase').classList.add('free'); ttCheck();
   } else if (to < free){
-    ttPanel(`<div class="tt-res">🔒 <b>${to}년</b>에는 아직 보호 중이에요! ${to <= w.d ? '작가가 아직 살아 있던 때예요.' : `${w.d}년에 사망했으니 ${end}년 말까지 보호돼요.`} 조금 더 미래로 가 보세요.</div>`);
+    ttPanel(`<div class="tt-res">🔒 <b>${to}년</b>에는 아직 보호 중이에요! ${to < w.d ? '작가가 아직 살아 있던 때예요.' : to === w.d ? '작가가 세상을 떠난 해예요. 저작권은 그다음 해부터 70년 동안 더 보호돼요.' : `${w.d}년에 사망했으니 ${end}년 말까지 보호돼요.`} 조금 더 미래로 가 보세요.</div>`);
   } else {
     ttPanel(`<div class="tt-res">🔓 ${to}년에는 자유롭게 쓸 수 있어요. 그런데 <b>가장 빠른 해</b>는 더 앞이에요. 사망한 해 + 71년을 계산해 보세요.</div>`);
     $('#ttCase').classList.add('free'); setTimeout(() => $('#ttCase') && !ttDone[i] && $('#ttCase').classList.remove('free'), 1200);
