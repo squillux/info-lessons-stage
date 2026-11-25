@@ -13,6 +13,28 @@
 .trans div{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff}
 .trans .out{font-weight:800;color:#c2185b}
 .plan textarea{font:inherit;width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);margin:4px 0}
+
+/* ── AI 윤리 재판정 ── */
+.ct-court{border-radius:18px;padding:12px;background:linear-gradient(#5b3a29,#3e2619);color:#fff;position:relative}
+.ct-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-weight:800}
+.ct-tabs{display:flex;gap:4px}
+.ct-tabs i{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:.8rem;background:#ffffff22}
+.ct-tabs i.cur{background:#ffc233;color:#3e2619}.ct-tabs i.ok{background:#16b8a6}
+.ct-case{margin-top:10px;background:#fffaf0;color:var(--ink);border-radius:14px;padding:10px 12px;position:relative}
+.ct-case .t{font-weight:900;font-size:1rem}
+.ct-ev{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:8px}
+.ct-ev button{border:2px dashed #c9a46a;border-radius:12px;background:#fff6e0;padding:8px;font-weight:800;font-size:.82rem;color:#7a4b12;min-height:62px}
+.ct-ev button.open{border-style:solid;background:#fff;color:var(--ink);text-align:left;font-weight:700;animation:ctflip .4s}
+@keyframes ctflip{from{transform:rotateX(90deg)}}
+.ct-ask{margin-top:10px}
+.ct-ask .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.ct-ask button{border:2px solid var(--line);border-radius:12px;background:#fff;padding:6px 10px;font-weight:800;color:var(--ink)}
+.ct-ask button.x{border-color:var(--bad);background:var(--bad-soft);opacity:.55}
+.ct-gavel{position:absolute;right:10px;top:-6px;font-size:2.4rem;transform-origin:80% 80%;opacity:0}
+.ct-gavel.hit{animation:cthit .9s ease-in-out}
+@keyframes cthit{0%{opacity:1;transform:rotate(-40deg)}20%{transform:rotate(10deg)}35%{transform:rotate(-30deg)}50%{transform:rotate(10deg)}65%{transform:rotate(-30deg)}80%{transform:rotate(10deg)}100%{opacity:1;transform:rotate(0)}}
+.ct-stamp{display:inline-block;margin-top:6px;border:3px solid #c62828;color:#c62828;border-radius:8px;padding:2px 10px;font-weight:900;transform:rotate(-6deg);animation:ctst .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes ctst{from{transform:rotate(-6deg) scale(2.2);opacity:0}}
 </style>
 </head>
 <body data-stage data-unit="4" data-title="인공지능의 가치와 윤리" data-sub="중1 Ⅳ단원 · 인공지능의 가치와 윤리 · 미래엔 178~182쪽">
@@ -44,16 +66,24 @@
         <div><b>📝 책임감</b>문제가 생겼을 때 책임질 주체와 제도가 필요해요.</div>
         <div><b>🔐 데이터 관리</b>개인 정보와 사생활이 침해되지 않게 목적에 맞게 관리해요.</div>
       </div>
-      <div id="five" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card" data-bot="증거를 살펴보고 판사가 되어 판결해 봐 ⚖️">
+      <h3>⚖️ AI 윤리 재판정 <span class="tag-more">특색</span></h3>
+      <p>인공지능 때문에 생긴 사건 5건이 법정에 들어왔어요. <b>증거 카드</b>를 열어 보고, 위의 다섯 가지 고려 사항 중 무엇이 지켜지지 않았는지 판결한 뒤 <b>해결 방안</b>을 명령하세요.</p>
+      <div class="ct-court"><div class="ct-head"><span>🏛️ 인공지능 윤리 법정</span><span class="ct-tabs" id="ctTabs"></span></div><div class="ct-case" id="ctCase"></div></div>
+      <div id="ctOut"></div>
     </div>
 
     <div class="card" data-bot="학습 데이터가 치우치면 번역이 어떻게 될까? 🔎">
       <h3>🔎 데이터 편향 실험: 번역기</h3>
-      <p>성별 구분이 없는 언어의 문장을 영어로 번역하는 가상의 번역기예요. 학습 데이터에 "간호사=여자, 의사=남자" 문장이 훨씬 많았다면 결과는 어떻게 될까요?</p>
+      <p>성별 구분이 없는 언어의 문장을 영어로 번역하는 가상의 번역기예요. 학습 데이터에 "간호사=여자, 의사=남자" 문장이 훨씬 많았다면 결과는 어떻게 될까요? 데이터 비율을 직접 바꿔 보세요.</p>
+      <div style="font-weight:800;margin:6px 0">🎚️ 학습 데이터 균형 조절: <span id="trV"></span><br><input type="range" id="trR" min="0" max="100" value="90" style="width:min(320px,100%)"></div>
       <div class="trans">
-        <div>입력: "그 사람은 간호사이다."<br>번역: <span class="out">She is a nurse.</span></div>
-        <div>입력: "그 사람은 의사이다."<br>번역: <span class="out">He is a doctor.</span></div>
+        <div>📚 '간호사' 문장: <span id="trB1"></span><br>입력: "그 사람은 간호사이다."<br>번역: <span class="out" id="trO1"></span></div>
+        <div>📚 '의사' 문장: <span id="trB2"></span><br>입력: "그 사람은 의사이다."<br>번역: <span class="out" id="trO2"></span></div>
       </div>
+      <p class="hint" id="trM"></p>
       <div id="bias" style="margin-top:10px"></div>
     </div>
 
@@ -100,14 +130,17 @@ renderChoice($('#role'), [
   {icon:'🔬', t:'대규모 데이터를 분석해 새로운 약의 후보 물질을 찾아요.', a:2, e:'새로운 지식을 발견하는 지식과 정보의 확장 역할이에요.'},
 ], ['사회 문제 해결', '개인화된 경험', '지식·정보 확장']);
 
-renderChoice($('#five'), [
-  {icon:'🏦', t:'대출 심사 인공지능이 왜 거절했는지 아무도 설명하지 못해요.', a:1, e:'판단 근거를 알 수 없는 투명성 문제예요.'},
-  {icon:'📷', t:'얼굴 인식 시스템이 특정 피부색의 사람을 잘 인식하지 못해요.', a:0, e:'학습 데이터가 치우친 데이터 편향 문제예요.'},
-  {icon:'💬', t:'챗봇이 사용자의 대화 속 주소와 전화번호를 그대로 학습했어요.', a:4, e:'개인 정보를 보호하지 못한 데이터 관리 문제예요.'},
-  {icon:'⚕️', t:'인공지능이 진단했으니 의사는 확인하지 않고 그대로 처방해요.', a:2, e:'최종 판단은 사람이 해야 하는 인간 중심성 문제예요.'},
-  {icon:'🚗', t:'자율 주행 사고가 났는데 누가 책임질지 정해진 규칙이 없어요.', a:3, e:'책임 주체가 필요한 책임감 문제예요.'},
-], ['데이터 편향', '투명성', '인간 중심성', '책임감', '데이터 관리']);
-
+const trU = () => {
+  const v = +$('#trR').value, bal = v > 35 && v < 65;
+  const bar = w => `<span style="display:inline-block;vertical-align:middle;width:110px;height:10px;border-radius:6px;background:linear-gradient(90deg,#ff7aa2 ${w}%,#3b6cf6 ${w}%)"></span> 여 ${w}% · 남 ${100 - w}%`;
+  const o = (w, job) => w >= 65 ? `She is a ${job}.` : w <= 35 ? `He is a ${job}.` : `They are a ${job}.`;
+  $('#trV').textContent = bal ? '균형 잡힌 데이터' : '한쪽으로 치우친 데이터';
+  $('#trB1').innerHTML = bar(v); $('#trB2').innerHTML = bar(100 - v);
+  $('#trO1').textContent = o(v, 'nurse'); $('#trO2').textContent = o(100 - v, 'doctor');
+  $('#trO1').style.color = $('#trO2').style.color = bal ? '#0d7d71' : '#c2185b';
+  $('#trM').innerHTML = bal ? '⭕ 데이터의 균형을 맞추자 성별을 단정하지 않는 번역이 나와요.' : '슬라이더를 움직여 학습 데이터 속 성별 비율의 균형을 맞춰 보세요. 번역이 어떻게 바뀔까요?';
+};
+$('#trR').oninput = trU; trU();
 renderChoice($('#bias'), [
   {icon:'🤔', t:'이 번역 결과가 생긴 가장 큰 원인은?', a:1, e:'학습 데이터가 한쪽 성별에 치우쳐 고정 관념이 그대로 학습되었어요.'},
   {icon:'🛠️', t:'이 문제를 줄이는 방법으로 알맞은 것은?', a:2, e:'다양하고 균형 잡힌 데이터로 학습하고, 성별이 불분명하면 두 가지 번역을 함께 보여 줄 수 있어요.'},
@@ -131,6 +164,49 @@ renderChoice($('#who'), [
   {icon:'🏛️', t:'인공지능 관련 법과 제도를 만들어 문제가 생기면 대응한다.', a:2},
   {icon:'🧑‍🎓', t:'인공지능 윤리 교육을 받고, 사용할 때 책임감을 갖는다.', a:0},
 ].map(x => ({...x, e: ['개인이 실천할 수 있는 노력이에요.', '기업(개발자)의 노력이에요.', '정부의 노력이에요.'][x.a]})), ['개인', '기업', '정부']);
+
+
+/* ===== AI 윤리 재판정 ===== */
+const CTP = ['📊 데이터 편향', '🔍 투명성', '🧑 인간 중심성', '📝 책임감', '🔐 데이터 관리'];
+const CTC = [
+  {t: '📸 사진 분류 AI가 피부색이 어두운 사람을 자주 못 알아봐요', ev: ['📈 학습 사진의 90%가 피부색이 밝은 사람이었어요.', '😢 피해자: "출입문이 저만 계속 못 알아봐요."', '🧪 피부색이 밝은 사람은 정확도 98%, 어두운 사람은 71%'], p: 0, r: ['다양한 사람의 사진을 고르게 모아 다시 학습시킨다', '피부색이 어두운 사람은 출입을 막는다', '정확도는 원래 다 다르니 그냥 둔다'], e: '데이터가 한쪽으로 치우치면 공정하지 못한 결과가 나와요. 데이터를 고르게 모아요.'},
+  {t: '🏦 대출 심사 AI가 거절했는데 이유를 알려 주지 않아요', ev: ['📄 결과지: "거절" 한 단어뿐이에요.', '🙋 신청자: "무엇을 고치면 되는지 알 수 없어요."', '🏢 회사: "AI 판단 방식은 비밀입니다."'], p: 1, r: ['어떤 근거로 판단했는지 설명하도록 만든다', '거절된 사람에게 다시는 신청하지 못하게 한다', 'AI가 한 일이니 따를 수밖에 없다'], e: '어떤 규칙과 근거로 판단했는지 알 수 있어야 믿고 쓸 수 있어요.'},
+  {t: '🏥 AI 진단 결과만 보고 의사 확인 없이 바로 치료를 결정했어요', ev: ['🖥️ AI 진단: "이 질병일 확률 81%"', '🩺 담당 의사는 결과를 확인하지 않았어요.', '⚠️ 나중에 보니 다른 질병이었어요.'], p: 2, r: ['AI는 돕는 역할을 하고, 최종 결정은 의사가 확인해서 내린다', '확률이 81%면 충분하니 그대로 따른다', 'AI를 더 빠른 것으로 바꾼다'], e: '최종 결정권은 사람이 가지고, 인공지능은 사람을 돕는 데 써야 해요.'},
+  {t: '🔐 스마트 스피커가 가족 대화를 저장해 광고에 썼어요', ev: ['🎙️ 대화 녹음 파일 1,200개가 서버에 있어요.', '📢 가족이 이야기한 여행지 광고가 계속 나와요.', '📃 가족은 광고에 쓰는 것에 동의한 적이 없어요.'], p: 4, r: ['동의받은 목적에만 쓰고, 필요 없는 녹음은 삭제한다', '광고를 더 재미있게 만든다', '녹음 파일을 다른 회사와 나눠 쓴다'], e: '개인 정보는 동의받은 목적에 맞게만 쓰고 안전하게 관리해야 해요.'},
+  {t: '🤖 AI 챗봇의 틀린 안내로 피해가 났는데 아무도 책임지지 않아요', ev: ['💬 챗봇: "이 약은 하루 6번 먹어도 돼요." (틀린 정보)', '🏢 회사: "AI가 한 말이라 우리 책임이 아닙니다."', '📚 이런 일을 처리할 규칙이 아직 없어요.'], p: 3, r: ['문제가 생겼을 때 책임질 주체와 제도를 미리 정한다', '챗봇의 말투를 더 친절하게 바꾼다', '피해자가 조심했어야 하니 그냥 넘어간다'], e: '문제가 생겼을 때 누가 어떻게 책임질지 정해 두어야 해요.'},
+];
+let ctI; const ctFirst = [];
+function ctCase(){
+  const C = CTC[ctI]; let opened = 0, tried = false;
+  $('#ctTabs').innerHTML = CTC.map((_, i) => `<i class="${i < ctI ? 'ok' : i === ctI ? 'cur' : ''}">${i < ctI ? '✓' : i + 1}</i>`).join('');
+  $('#ctCase').innerHTML = `<span class="ct-gavel" id="ctG">🔨</span><div class="t">사건 ${ctI + 1}. ${C.t}</div><p class="hint" style="margin:4px 0 0">🔍 증거 카드를 눌러 열어 보세요. (2장 이상)</p><div class="ct-ev">${C.ev.map((v, k) => `<button data-k="${k}">📁 증거 ${k + 1}</button>`).join('')}</div><div class="ct-ask" id="ctAsk"></div>`;
+  $('#ctOut').innerHTML = '';
+  $$('#ctCase .ct-ev button').forEach(b => b.onclick = () => {
+    if (b.classList.contains('open')) return; b.classList.add('open'); b.textContent = C.ev[+b.dataset.k]; opened++;
+    if (opened === 2) ctVerdict();
+  });
+  function ctVerdict(){
+    $('#ctAsk').innerHTML = `<b>⚖️ 판결 ①: 어떤 고려 사항이 지켜지지 않았나요?</b><div class="row">${CTP.map((p, k) => `<button data-k="${k}">${p}</button>`).join('')}</div><div id="ctR"></div>`;
+    $$('#ctAsk .row button').forEach(b => b.onclick = () => {
+      if (+b.dataset.k !== C.p){ tried = true; b.classList.add('x'); b.disabled = true; $('#ctOut').innerHTML = '<p class="feedback show bad">🤔 증거를 다시 살펴봐요. 데이터가 치우쳤나요? 이유를 알 수 없나요? 사람이 결정하지 않았나요? 책임질 사람이 없나요? 개인 정보를 마음대로 썼나요?</p>'; return; }
+      $$('#ctAsk .row button').forEach(x => x.disabled = true); b.style.borderColor = 'var(--mint)'; b.style.background = 'var(--mint-soft)'; $('#ctOut').innerHTML = '';
+      const R = C.r.map((t, k) => [t, k]).sort(() => Math.random() - .5);
+      $('#ctR').innerHTML = `<b style="display:block;margin-top:10px">📜 판결 ②: 어떤 해결 방안을 명령할까요?</b><div class="row">${R.map(([t, k]) => `<button data-k="${k}" style="text-align:left">${t}</button>`).join('')}</div>`;
+      $$('#ctR .row button').forEach(c => c.onclick = () => {
+        if (+c.dataset.k !== 0){ tried = true; c.classList.add('x'); c.disabled = true; $('#ctOut').innerHTML = '<p class="feedback show bad">🤔 그 방법으로 피해가 다시 생기지 않을까요? 사람을 위한 방법을 골라요.</p>'; return; }
+        ctFirst.push(!tried); $$('#ctR .row button').forEach(x => x.disabled = true); c.style.borderColor = 'var(--mint)'; c.style.background = 'var(--mint-soft)';
+        $('#ctG').classList.add('hit');
+        setTimeout(() => {
+          $('#ctOut').innerHTML = `<p class="feedback show ok">🔨 땅! 땅! 땅! <span class="ct-stamp">판결 완료</span><br>${C.e}</p>` + (ctI < CTC.length - 1 ? '<button class="btn" id="ctNext">다음 사건 ▶</button>' : '<p>🎉 사건 5건 모두 판결! 인공지능을 만들고 쓸 때는 <b>데이터 편향·투명성·인간 중심성·책임감·데이터 관리</b>를 함께 고려해야 해요.</p><button class="btn ghost" id="ctAgain">처음부터 다시 ↺</button>');
+          if ($('#ctNext')) $('#ctNext').onclick = () => { ctI++; ctCase(); $('#ctCase').scrollIntoView({behavior: 'smooth', block: 'nearest'}); };
+          else { $('#ctTabs').innerHTML = CTC.map(() => '<i class="ok">✓</i>').join(''); $('#ctAgain').onclick = () => { ctI = 0; ctFirst.length = 0; ctCase(); }; reportQuiz('aicourt', ctFirst.slice(0, 5)); }
+          $('#ctOut').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }, 900);
+      });
+    });
+  }
+}
+ctI = 0; ctCase();
 
 renderQuiz($('#quiz'), [
   {q:'인공지능 학습 데이터가 특정 집단에 치우쳐 공정하지 못한 결과가 나오는 문제는?', o:['데이터 편향','투명성','저작권'], a:0, e:'다양하고 대표성 있는 데이터로 줄일 수 있어요.'},
