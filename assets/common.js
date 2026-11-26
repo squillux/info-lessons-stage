@@ -186,8 +186,16 @@ function reportQuiz(id, results){
 
 /* 상황 카드 분류: 상황마다 보기 버튼 중 하나를 고르면 바로 채점.
    items = [{t:상황, a:정답 보기 번호, e:해설}], options = ['보기1', ...] */
-function renderChoice(box, items, options, onDone){
-  const done = {}, cid = boxId(box, 'choice'), miss = {};
+/* cfg.look === 'card' 이면 카드형 고르기(진행 막대·도장·흔들림). cfg.optIcons: 보기마다 붙일 아이콘, cfg.tag: 카드 머리말, cfg.title: 맨 위 제목 */
+const CX_PAL = ['#3b6cf6', '#16b8a6', '#ff7aa2', '#f59e0b', '#8b5cf6', '#ef6c3a', '#0ea5e9', '#65a30d'];
+function renderChoice(box, items, options, onDone, cfg = {}){
+  const done = {}, cid = boxId(box, 'choice'), miss = {}, card = cfg.look === 'card', oi = cfg.optIcons || [];
+  if (card){
+    box.classList.add('cx');
+    box.innerHTML = `<div class="cx-top"><b>${cfg.title || '🎯 알맞은 것을 골라요'}</b><span class="cx-n">0 / ${items.length}</span><div class="cx-bar">${items.map(() => '<i></i>').join('')}</div></div>` + items.map((x, i) => `<div class="choice" data-i="${i}" style="--cx:${CX_PAL[i % CX_PAL.length]}"><div class="cx-hd"><span class="cx-ic">${x.icon || '❓'}</span><div class="cx-q"><small>${cfg.tag || '문제'} ${i + 1}</small><p>${x.t}</p></div><span class="cx-stamp" aria-hidden="true"></span></div>
+    <div class="opts">${options.map((o, k) => `<button class="opt" data-k="${k}">${oi[k] ? `<span class="oi">${oi[k]}</span>` : ''}${o}</button>`).join('')}</div>
+    <div class="explain"></div></div>`).join('') + '<div class="score"></div>';
+  } else
   box.innerHTML = items.map((x, i) => `<div class="choice" data-i="${i}"><p>${x.icon ? x.icon + ' ' : ''}${x.t}</p>
     <div class="opts">${options.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div>
     <div class="explain"></div></div>`).join('') + '<div class="score"></div>';
@@ -195,8 +203,16 @@ function renderChoice(box, items, options, onDone){
     const i = +ce.dataset.i, it = items[i];
     ce.querySelectorAll('.opt').forEach(btn => btn.onclick = () => {
       const k = +btn.dataset.k, ok = k === it.a;
+      if (card){
+        if (i in done) return;
+        btn.classList.add(ok ? 'right' : 'wrong'); btn.disabled = true;
+        if (ok){ ce.classList.add('solved'); ce.querySelector('.cx-stamp').textContent = options[k]; ce.querySelectorAll('.opt:not(.right)').forEach(b => b.disabled = true);
+          box.querySelectorAll('.cx-bar i')[i].className = (i in miss) ? 'ok late' : 'ok'; box.querySelector('.cx-n').textContent = (Object.keys(done).length + 1) + ' / ' + items.length; }
+        else { ce.classList.remove('shake'); void ce.offsetWidth; ce.classList.add('shake'); box.querySelectorAll('.cx-bar i')[i].className = 'no'; }
+      } else {
       ce.querySelectorAll('.opt').forEach(b => b.classList.remove('right', 'wrong'));
       btn.classList.add(ok ? 'right' : 'wrong');
+      }
       const ex = ce.querySelector('.explain');
       ex.textContent = ok ? '⭕ ' + (it.e || '정답!') : '❌ 다시 생각해 보세요.' + (it.hint ? ' 💡 ' + it.hint : '');
       ex.classList.add('show');
