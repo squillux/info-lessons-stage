@@ -10,7 +10,16 @@
 .dots i{width:12px;height:12px;border-radius:50%;background:var(--brand);transition:opacity .4s,background .4s}
 .dots i.off{opacity:.12}
 .dots i.me{background:var(--pink);transform:scale(1.4)}
-.clues{display:flex;flex-wrap:wrap;gap:6px}
+.cl-rows{display:grid;gap:8px}
+.cl-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 10px;border-radius:14px;background:var(--bg)}
+.cl-row>b{flex:0 0 68px;font-size:.9rem}
+.cl-row button{border:2px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);padding:5px 12px;font-weight:700;font-size:.88rem;cursor:pointer}
+.cl-row button:hover{border-color:var(--brand)}
+.cl-row button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.cl-row.bonus{border:2px dashed var(--pink);animation:clin .4s}
+@keyframes clin{from{opacity:0;transform:translateY(6px)}}
+.cl-log{font-size:.88rem;color:var(--muted);min-height:1.2em}
+@media (max-width:560px){.cl-row>b{flex-basis:100%}}
 .big-n{font-family:var(--cute);font-size:1.6rem;color:var(--brand)}
 /* SNS 게시 미리 보기 (sn-) */
 .sn-wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
@@ -111,11 +120,13 @@
     <h2 class="step-h"><span class="no">2</span>조작 활동</h2>
     <div class="card" data-bot="단서를 하나씩 더해 봐. 남은 사람이 줄어들어 🧩">
       <h3>🧩 정보가 합쳐지면 누군지 알 수 있어요</h3>
-      <p>가상의 학생 300명이 있어요. 단서를 하나씩 더해 보세요.</p>
-      <div class="clues" id="clues"></div>
+      <p>가상의 중학생 300명이 있어요. 줄마다 단서를 <b>하나씩</b> 골라 보세요. 순서는 마음대로, 고른 단서는 바꿀 수도 있어요.</p>
+      <div class="cl-rows" id="clues"></div>
       <p>남은 사람: <span class="big-n" id="left">300</span>명</p>
       <div class="dots" id="dots"></div>
       <p class="hint" id="cMsg"></p>
+      <p class="cl-log" id="cLog"></p>
+      <button class="btn line" id="cReset">🔄 단서 다시 고르기</button>
     </div>
 
     <div class="card" data-bot="개인 정보의 유형을 나눠 봐 🗃️">
@@ -165,20 +176,45 @@
 <script src="../assets/contents.js"></script>
 <script src="../assets/common.js"></script>
 <script>
-const CL = [['🏫 중학교에 다녀요', 300], ['1️⃣ 1학년이에요', 100], ['4️⃣ 4반이에요', 25], ['📏 키가 165cm 이상이에요', 4], ['💇 단발머리예요', 1]];
-let step = 0;
-$('#dots').innerHTML = '<i></i>'.repeat(300);
-const dots = $$('#dots i');
-const order = dots.map((_, i) => i).sort(() => Math.random() - .5);
-$('#clues').innerHTML = CL.map(([t], i) => `<button class="btn line" data-i="${i}" ${i ? 'disabled' : ''}>${t}</button>`).join('');
-$$('#clues button').forEach(b => b.onclick = () => {
-  const i = +b.dataset.i; if (i !== step) return;
-  step++; b.disabled = true; const nb = $$('#clues button')[step]; if (nb) nb.disabled = false;
-  const keep = new Set(order.slice(0, CL[i][1]));
-  dots.forEach((d, k) => { d.classList.toggle('off', !keep.has(k)); d.classList.toggle('me', CL[i][1] === 1 && keep.has(k)); });
-  $('#left').textContent = CL[i][1];
-  $('#cMsg').textContent = CL[i][1] === 1 ? '😮 단서 하나하나는 평범했지만, 합치니 딱 한 사람만 남았어요! 그래서 이 정보들도 개인 정보예요.' : '';
-});
+/* 단서 줄: 같은 줄의 단서는 같은 종류. 300명은 모든 조합(3×4×3×5=180)을 한 명씩 + 흔한 특징 쪽으로 120명 더 → 끝까지 고르면 1~2명 */
+const CL = [
+  ['🎒 학년', ['1학년', '2학년', '3학년'], [1, 1, 1]],
+  ['🚪 반', ['1반', '2반', '3반', '4반'], [1, 1, 1, 1]],
+  ['📏 키', ['150cm 미만', '150~165cm', '165cm 이상'], [1, 4, 1]],
+  ['💇 머리', ['단발머리', '파마머리', '긴 생머리', '짧은 커트', '묶은 머리'], [4, 1, 2, 3, 3]],
+];
+const GL = ['👓 안경', ['안경을 써요', '안경을 안 써요']];
+const PPL = [], combos = [];
+CL[0][1].forEach((_, g) => CL[1][1].forEach((_, c) => CL[2][1].forEach((_, h) => CL[3][1].forEach((_, r) => combos.push([g, c, h, r])))));
+combos.forEach(k => PPL.push({k: k.slice(), gl: Math.random() < .5 ? 0 : 1}));
+const wt = k => k.reduce((p, v, L) => p * CL[L][2][v], 1);
+const pool = combos.map(k => ({k, w: wt(k) * Math.random()})).sort((x, y) => y.w - x.w).slice(0, 120);
+pool.forEach(({k}) => { const tw = PPL.find(p => p.k.join() === k.join()); PPL.push({k: k.slice(), gl: 1 - tw.gl}); });
+PPL.sort(() => Math.random() - .5);
+$('#dots').innerHTML = '<i></i>'.repeat(PPL.length);
+const dots = $$('#dots i'), pick = [null, null, null, null, null], hist = [];
+const rowHtml = ([t, os], L, cls = '') => `<div class="cl-row ${cls}" data-l="${L}"><b>${t}</b>${os.map((o, v) => `<button data-v="${v}">${o}</button>`).join('')}</div>`;
+function clDraw(){
+  $('#clues').innerHTML = CL.map((r, L) => rowHtml(r, L)).join('') + (pick.slice(0, 4).every(v => v !== null) && clCount(4) > 1 || pick[4] !== null ? rowHtml(GL, 4, 'bonus') : '');
+  $$('#clues .cl-row').forEach(row => { const L = +row.dataset.l; row.querySelectorAll('button').forEach(b => { b.classList.toggle('on', pick[L] === +b.dataset.v); b.onclick = () => clPick(L, +b.dataset.v); }); });
+}
+const clMatch = (p, upto = 5) => pick.every((v, L) => L >= upto || v === null || (L === 4 ? p.gl === v : p.k[L] === v));
+const clCount = upto => PPL.filter(p => clMatch(p, upto)).length;
+function clPick(L, v){
+  const before = clCount();
+  pick[L] = pick[L] === v ? null : v; if (L < 4) pick[4] = null;
+  const n = clCount(), all4 = pick.slice(0, 4).every(x => x !== null);
+  dots.forEach((d, i) => { const m = clMatch(PPL[i]); d.classList.toggle('off', !m); d.classList.toggle('me', m && n === 1); });
+  $('#left').textContent = n;
+  if (pick[L] !== null) hist.push(`${(L === 4 ? GL : CL[L])[1][v]}: ${before}명 → ${n}명`);
+  $('#cLog').textContent = hist.slice(-4).join('  ·  ');
+  $('#cMsg').textContent = n === 1 ? '😮 단서 하나하나는 평범했지만, 합치니 딱 한 사람만 남았어요! 그래서 이 정보들도 개인 정보예요. 🔄 다른 단서를 골라 보면 줄어드는 정도가 달라요.'
+    : all4 && pick[4] === null ? `🔍 ${n}명까지 좁혀졌어요! 단서가 하나만 더 있으면… 아래 👓 줄을 골라 보세요.`
+    : '흔한 특징(예: 단발머리)보다 드문 특징(예: 파마머리)을 고르면 사람이 훨씬 빨리 줄어들어요.';
+  clDraw();
+}
+$('#cReset').onclick = () => { pick.fill(null); hist.length = 0; dots.forEach(d => d.classList.remove('off', 'me')); $('#left').textContent = PPL.length; $('#cMsg').textContent = ''; $('#cLog').textContent = ''; clDraw(); };
+clDraw();
 
 renderChoice($('#type'), [
   {icon:'📄', t:'얼굴, 키, 몸무게, 지문, 건강 상태', a:0, e:'신체 정보: 몸과 관련된 정보예요.', hint:'몸에 대한 정보예요.'},
