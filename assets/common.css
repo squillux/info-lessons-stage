@@ -412,3 +412,12 @@ b,strong{font-weight:800}
 .q.q2 .opt.right{border-color:var(--ok);background:var(--ok);color:#fff}
 .q.q2 .opt.wrong{border-color:var(--bad);background:var(--bad);color:#fff}
 @media (max-width:560px){.ox-q{padding:16px 12px;min-height:80px}.ox-q p{font-size:1.05rem}.ox .ox-btns .opt{min-height:96px;font-size:.94rem}.ox .ox-btns .opt .em{font-size:1.8rem}}
+
+/* OX 정답 뒤 사진 */
+.ox-fig{display:none}
+.ox-fig.show{display:block;margin-top:12px;animation:cxpop .45s}
+.ox-fig figure{margin:0 auto;max-width:520px;border-radius:18px;overflow:hidden;background:var(--panel);box-shadow:0 6px 18px rgba(40,60,120,.12);border:1.5px solid var(--line)}
+.ox-fig img,.ox-fig svg{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.ox-fig figcaption{padding:9px 14px;font-size:.9rem;line-height:1.5;text-align:center}
+.ox .ox-btns .opt .em.hid{display:none}
+.ox .ox-btns .opt .em:not(.hid){animation:cxpop .4s}

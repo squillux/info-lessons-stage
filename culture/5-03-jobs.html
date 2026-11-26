@@ -43,6 +43,13 @@
     <div class="card" data-bot="사라지는 직업과 새로 생기는 직업을 나눠 봐 🔄">
       <h3>🔄 사라지는 직업, 새로 생기는 직업</h3>
       <div id="sort"></div>
+      <details class="src" style="text-align:left"><summary>📷 사진 출처 (위키미디어 공용, 자유 이용 허락 사진 · 크기 조정함)</summary><ul style="font-size:.78rem;line-height:1.5">
+        <li>매표소: N509FZ, <a href="https://commons.wikimedia.org/wiki/File:Ticket_office_of_Wenyanglu_Station_(20161231121334).jpg">Ticket office of Wenyanglu Station</a>, CC BY-SA 4.0</li>
+        <li>요금소: LandAndTree, <a href="https://commons.wikimedia.org/wiki/File:Seohaean_Expressway_West_Seoul_Toll_Gate_20231113_(01).jpg">Seohaean Expressway West Seoul Toll Gate</a>, CC BY 4.0</li>
+        <li>관측 풍선: David McClenaghan, CSIRO, <a href="https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_3814_Taking_Organic_Vapour_Samples.jpg">Taking Organic Vapour Samples</a>, CC BY 3.0</li>
+        <li>드론: Oregon Department of Transportation, <a href="https://commons.wikimedia.org/wiki/File:Drone_flying_and_surveying_(50272629796).jpg">Drone flying and surveying</a>, CC BY 2.0</li>
+        <li>평판 관리 화면: 직접 그린 예시 그림</li>
+      </ul></details>
     </div>
 
     <div class="card" data-bot="과거와 현재, 무엇이 달라졌을까? ⏳">
@@ -94,12 +101,13 @@
 <script src="../assets/common.js"></script>
 <script src="../assets/live.js"></script>
 <script>
+const REP_SVG = `<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif"><rect width="640" height="400" fill="#e8eefc"/><rect x="40" y="26" width="560" height="320" rx="16" fill="#1f2937"/><rect x="54" y="40" width="532" height="292" rx="8" fill="#fff"/><rect x="54" y="40" width="532" height="38" rx="8" fill="#3b6cf6"/><text x="72" y="65" fill="#fff" font-size="17" font-weight="700">🛡️ 온라인 평판 관리 화면</text><text x="568" y="65" fill="#dbe6ff" font-size="13" text-anchor="end">○○빵집</text><rect x="70" y="92" width="290" height="226" rx="10" fill="#f5f7fb"/><text x="84" y="116" font-size="14" font-weight="700" fill="#334">새로 달린 후기</text><rect x="82" y="126" width="266" height="50" rx="8" fill="#fff" stroke="#d5dcea"/><text x="94" y="146" font-size="13" fill="#f5a400">★★★★★</text><text x="94" y="166" font-size="13" fill="#333">빵이 정말 맛있어요!</text><rect x="82" y="184" width="266" height="58" rx="8" fill="#fff0f0" stroke="#ef4444" stroke-width="2"/><text x="94" y="204" font-size="13" fill="#f5a400">★☆☆☆☆</text><text x="94" y="224" font-size="13" fill="#b91c1c">사실이 아닌 소문 글</text><rect x="268" y="214" width="70" height="22" rx="11" fill="#ef4444"/><text x="303" y="230" font-size="12" fill="#fff" text-anchor="middle">확인·신고</text><rect x="82" y="250" width="266" height="58" rx="8" fill="#fff" stroke="#d5dcea"/><text x="94" y="270" font-size="13" fill="#f5a400">★★★☆☆</text><text x="94" y="290" font-size="13" fill="#333">줄이 길어요 → 답글 달기</text><rect x="374" y="92" width="196" height="226" rx="10" fill="#f5f7fb"/><text x="388" y="116" font-size="14" font-weight="700" fill="#334">좋은 반응 비율</text><g fill="#16b8a6"><rect x="396" y="236" width="26" height="60" rx="4"/><rect x="432" y="216" width="26" height="80" rx="4"/><rect x="468" y="196" width="26" height="100" rx="4"/><rect x="504" y="160" width="26" height="136" rx="4"/></g><line x1="388" y1="298" x2="556" y2="298" stroke="#9aa6bd"/><text x="472" y="146" font-size="22" font-weight="800" fill="#16b8a6" text-anchor="middle">▲ 82%</text><rect x="270" y="346" width="100" height="14" fill="#1f2937"/><rect x="230" y="360" width="180" height="12" rx="6" fill="#374151"/></svg>`;
 renderChoice($('#sort'), [
-  {icon:'🎫', t:'지하철 승차권 판매원', a:0, e:'교통 카드와 자동 발매기가 이 일을 대신하게 되었어요.'},
-  {icon:'🛣️', t:'고속도로 요금소 직원', a:0, e:'달리면서 자동으로 요금을 내는 시스템이 생겼어요.'},
-  {icon:'🛡️', t:'사이버 평판 관리자', a:1, e:'온라인에서 개인이나 기업의 평판을 관리하는 새로운 직업이에요.'},
-  {icon:'🌍', t:'기후 변화 대응 전문가', a:1, e:'데이터로 기후 변화의 영향을 분석하고 대응 방법을 제시하는 직업이에요.'},
-  {icon:'🛸', t:'드론 조종사', a:1, e:'드론이 촬영·배송·방제에 쓰이며 새로 생겼어요.'},
+  {icon:'🎫', t:'지하철 승차권 판매원', a:0, e:'교통 카드와 자동 발매기가 이 일을 대신하게 되었어요.', img:'../assets/photos/jobs/ticket.jpg', cap:'🎫 역 매표소: 예전에는 사람이 창구에서 표를 팔았지만, 지금은 교통 카드와 자동 발매기가 대신해요.'},
+  {icon:'🛣️', t:'고속도로 요금소 직원', a:0, e:'달리면서 자동으로 요금을 내는 시스템이 생겼어요.', img:'../assets/photos/jobs/toll.jpg', cap:'🛣️ 고속도로 요금소: 요금을 받던 창구가 줄고, 달리면서 요금이 자동으로 내지는 차로가 늘고 있어요.'},
+  {icon:'🛡️', t:'사이버 평판 관리자', a:1, e:'온라인에서 개인이나 기업의 평판을 관리하는 새로운 직업이에요.', svg:REP_SVG, cap:'🛡️ 온라인 후기와 댓글을 살펴보고, 사실이 아닌 글은 확인·신고하고 좋은 평판을 지켜요. (예시 그림)'},
+  {icon:'🌍', t:'기후 변화 대응 전문가', a:1, e:'데이터로 기후 변화의 영향을 분석하고 대응 방법을 제시하는 직업이에요.', img:'../assets/photos/jobs/climate.jpg', cap:'🌍 관측 풍선을 띄워 공기 데이터를 모으는 모습: 이런 데이터를 분석해 기후 변화에 대응할 방법을 찾아요.'},
+  {icon:'🛸', t:'드론 조종사', a:1, e:'드론이 촬영·배송·방제에 쓰이며 새로 생겼어요.', img:'../assets/photos/jobs/drone.jpg', cap:'🛸 조종기로 드론을 띄워 땅을 측량하는 모습: 촬영·배송·방제 등 쓰임이 점점 늘고 있어요.'},
 ], ['사라지는 직업', '새로 생기는 직업']);
 
 const BA = [
