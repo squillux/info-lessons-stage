@@ -12,32 +12,38 @@
 .idea-out{background:var(--bg);border-radius:12px;padding:12px 14px;min-height:48px}
 
 /* ── 스마트 시티 시장 되기 ── */
-.sc-top{display:flex;align-items:center;gap:8px;font-weight:800;margin:6px 0 8px}
-.sc-meter{flex:1;height:14px;border-radius:999px;background:var(--line);overflow:hidden}
-.sc-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffb74d,#66bb6a);transition:width .6s}
-.sc-map{border-radius:18px;overflow:hidden;border:2px solid var(--line);background:#9ccc65}
+.sc-hud{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:6px 0 8px;padding:8px 12px;border-radius:14px;background:linear-gradient(180deg,#334155,#1e293b);color:#e2e8f0;font-weight:800;font-size:.88rem;box-shadow:inset 0 -3px 0 #0f172a}
+.sc-hud .city{font-family:var(--cute);font-weight:400;font-size:1.05rem;color:#fde68a}
+.sc-hud b{color:#fff}
+.sc-hud .sat{display:flex;align-items:center;gap:6px;flex:1 1 220px}
+.sc-meter{flex:1;height:12px;border-radius:999px;background:#0f172a;overflow:hidden;box-shadow:inset 0 0 0 1px #475569}
+.sc-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f59e0b,#22c55e);transition:width .6s}
+.sc-map{border-radius:18px;overflow:hidden;border:3px solid #1e293b;background:#b4b9bf;box-shadow:0 8px 20px rgba(15,23,42,.18)}
 .sc-map svg{display:block;width:100%;height:auto}
 .sc-map #scSky{transition:fill 1s}
 .sc-map #scHaze{transition:opacity 1s}
 .sc-spot{cursor:pointer}
 .sc-spot .hit{fill:transparent;stroke:transparent;stroke-width:2.5;stroke-dasharray:6 4}
-.sc-spot:hover .hit{fill:#ffffff22}
-.sc-spot.cur .hit{stroke:#ffd54f;fill:#fff59d33}
+.sc-spot:hover .hit{fill:#ffffff40}
+.sc-spot.cur .hit{stroke:#ffd54f;fill:#fff59d55}
 .sc-spot:focus{outline:none}.sc-spot:focus-visible .hit{stroke:#3b6cf6}
-.sc-bd circle{fill:#e53935;stroke:#fff;stroke-width:1.5}
-.sc-bd text{fill:#fff;font-weight:900;font-size:11px;text-anchor:middle;dominant-baseline:central}
+.sc-ov{pointer-events:none}.sc-ov .sc-bd,.sc-ov .sc-lab{pointer-events:auto}
+.sc-bd .pin{fill:#fff;stroke:#e53935;stroke-width:2.5}
+.sc-bd text{fill:#e53935;font-weight:900;font-size:14px;text-anchor:middle;dominant-baseline:central}
 .sc-bd .y{display:none}
-.sc-spot:not(.ok) .sc-bd{animation:scbd 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes scbd{50%{transform:scale(1.25)}}
-.sc-spot.ok .sc-bd circle{fill:#43a047}.sc-spot.ok .sc-bd .n{display:none}.sc-spot.ok .sc-bd .y{display:inline}
+.sc-spot.cur .sc-bd .pin{fill:#fff59d}
+.sc-spot.ok .sc-bd .pin{fill:#43a047;stroke:#fff}.sc-spot.ok .sc-bd .n{display:none}.sc-spot.ok .sc-bd .y{display:inline;fill:#fff}
+.sc-lab rect{fill:#1e293bdd}.sc-lab text{fill:#fff;font-size:10px;font-weight:800;text-anchor:middle}
+.sc-spot.ok .sc-lab rect{fill:#2e7d32dd}
 .sc-spot .good{opacity:0;transition:opacity .5s}.sc-spot.ok .good{opacity:1}
 .sc-spot.ok .bad{opacity:0;transition:opacity .5s}
 .sc-red{fill:#e53935}.sc-grn{fill:#2e3b33}
 .sc-spot.ok .sc-red{fill:#3b2b2b}.sc-spot.ok .sc-grn{fill:#69f0ae}
-.sc-spot.ok .sc-cars{animation:sccar 3.2s linear infinite}
-@keyframes sccar{from{transform:translateX(-70px)}to{transform:translateX(280px)}}
-.sc-spot.ok .sc-drone{animation:scfly 4s ease-in-out infinite}
-@keyframes scfly{0%,100%{transform:translate(0,0)}45%,55%{transform:translate(-52px,44px)}}
+.sc-spot.ok .sc-cars{animation:sccar 3.4s linear infinite}
+@keyframes sccar{0%{transform:translate(0,0);opacity:1}70%{opacity:1}100%{transform:translate(110px,55px);opacity:0}}
+.sc-drone{opacity:0}
+.sc-spot.ok .sc-drone{opacity:1;animation:scfly 5s ease-in-out infinite}
+@keyframes scfly{0%,100%{transform:translate(0,0)}45%,55%{transform:translate(var(--dx),var(--dy))}}
 .sc-rot{animation:scrot .25s linear infinite;transform-box:fill-box;transform-origin:center}
 @keyframes scrot{50%{transform:scaleX(.2)}}
 .sc-spot.ok .sc-ecg{stroke-dasharray:90;animation:scecg 1.6s linear infinite}
@@ -47,26 +53,34 @@
 .sc-wave{opacity:0}.sc-spot.ok .sc-wave{animation:scwave 1.4s ease-out infinite}
 .sc-spot.ok .sc-wave:nth-of-type(2){animation-delay:.35s}
 @keyframes scwave{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
-.sc-spot.ok .sc-bus{animation:scbus 1.4s cubic-bezier(.2,.8,.3,1) both}
-.sc-bus{transform:translateX(90px)}
-@keyframes scbus{from{transform:translateX(90px)}to{transform:translateX(0)}}
+.sc-bus{transform:translate(-110px,-55px)}
+.sc-spot.ok .sc-bus{animation:scbus 1.6s cubic-bezier(.2,.8,.3,1) both}
+@keyframes scbus{from{transform:translate(-110px,-55px)}to{transform:translate(0,0)}}
 .sc-spot.ok .sc-pay{animation:scpop .6s cubic-bezier(.2,1.5,.4,1) both;transform-box:fill-box;transform-origin:center bottom}
 @keyframes scpop{from{transform:scale(.2)}}
+.sc-cloud{animation:sccloud 40s linear infinite alternate}
+@keyframes sccloud{to{transform:translateX(40px)}}
+.sc-float{font-weight:900;font-size:15px;fill:#16a34a;stroke:#fff;stroke-width:3;paint-order:stroke;text-anchor:middle;animation:scfloat 1.6s ease-out forwards;pointer-events:none}
+@keyframes scfloat{from{transform:translateY(0);opacity:1}to{transform:translateY(-40px);opacity:0}}
 .sc-map .sc-win{fill:#cfe3f5;transition:fill 1s}
 .sc-map.night .sc-win{fill:#ffe082}
 .sc-map.night #scSky{fill:#1a2350!important}
 .sc-map.night #scSun{fill:#fff8e1}
+.sc-map.night .sc-cloud{opacity:.15}
 .sc-fw{opacity:0}
 .sc-map.night .sc-fw{animation:scfw 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
 .sc-map.night .sc-fw:nth-of-type(2){animation-delay:.6s}.sc-map.night .sc-fw:nth-of-type(3){animation-delay:1.2s}
 @keyframes scfw{0%{opacity:0;transform:scale(.1)}20%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
 .sc-panel{margin-top:10px}
-@media (min-width:820px){.sc-play{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:12px;align-items:start}.sc-play .sc-panel{margin-top:0}.sc-play .sc-tray{grid-template-columns:1fr 1fr}}
+@media (min-width:820px){.sc-play{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:12px;align-items:start}.sc-play .sc-panel{margin-top:0}.sc-play .sc-tray{grid-template-columns:1fr 1fr}}
 .sc-q{border-radius:14px;padding:10px 12px;background:var(--bg);line-height:1.55}
 .sc-q.ok{background:var(--ok-soft)}
 .sc-ask{font-weight:800;margin:10px 0 6px}
 .sc-tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px}
 .sc-tray button,.sc-acts button{border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);padding:7px 8px;font-weight:800;font-size:.86rem;text-align:left}
+.sc-tray button{display:flex;align-items:center;gap:6px;background:linear-gradient(180deg,#fff,#f1f5f9);box-shadow:0 3px 0 var(--line)}
+.sc-tray button .ti{flex:0 0 28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#1e293b;font-size:1rem}
+.sc-tray button:active:not(:disabled){transform:translateY(2px);box-shadow:none}
 .sc-tray button:hover:not(:disabled),.sc-acts button:hover:not(:disabled){border-color:var(--brand)}
 .sc-tray button.no,.sc-acts button.no{opacity:.45;text-decoration:line-through}
 .sc-acts button.yes{border-color:#43a047;background:var(--ok-soft)}
@@ -109,8 +123,8 @@
 
     <div class="card" data-bot="정보시의 시장이 되어 도시 문제를 디지털 기술로 해결해 봐 🏙️">
       <h3>🏙️ 스마트 시티 시장 되기 <span class="tag-more">특색</span></h3>
-      <p>오늘부터 여러분이 <b>정보시의 시장</b>이에요! 지도에서 <b style="color:#e53935">!</b> 표시가 있는 장소를 누르고, 알맞은 <b>디지털 기술</b>을 골라 도시 문제를 해결하세요.</p>
-      <div class="sc-top"><span>😊 시민 만족도</span><div class="sc-meter"><i id="scBar"></i></div><b id="scPct">0%</b></div>
+      <p>오늘부터 여러분이 <b>정보시의 시장</b>이에요! 지도에서 <b style="color:#e53935">!</b> 핀이 꽂힌 장소를 누르고, 알맞은 <b>디지털 기술</b>을 골라 도시 문제를 해결하세요.</p>
+      <div class="sc-hud"><span class="city">🏙️ 정보시</span><span>📅 임기 <b id="scDay">1</b>일째</span><span>🛠️ 해결 <b id="scDone">0</b>/6</span><span class="sat">😊 시민 만족도 <span class="sc-meter"><i id="scBar"></i></span><b id="scPct">0%</b></span></div>
       <div class="sc-play"><div class="sc-map" id="scMap"></div>
       <div class="sc-panel" id="scPanel"></div></div>
       <div id="scGap"></div>
@@ -213,89 +227,149 @@ const SC_GAP = [
   ['📵', '"사용법을 모르면 직원 없는 매장은 이용 금지" 안내문 붙이기', 0, '정보 격차를 더 크게 만들어요.'],
 ];
 const scOk = SC.map(() => false), scTry = SC.map(() => 0); let scCur = -1, scGood = 0, scGapMiss = 0;
-$('#scMap').innerHTML = `<svg viewBox="0 0 400 260" role="img" aria-label="정보시 지도">
-<rect id="scSky" width="400" height="160" fill="#b4b9bf"/>
-<circle id="scSun" cx="362" cy="34" r="15" fill="#ffd54f"/>
-<g fill="#fff" opacity=".9"><circle class="sc-fw" cx="250" cy="40" r="16" fill="none" stroke="#ff80ab" stroke-width="3" stroke-dasharray="3 5"/><circle class="sc-fw" cx="310" cy="55" r="14" fill="none" stroke="#ffd740" stroke-width="3" stroke-dasharray="3 5"/><circle class="sc-fw" cx="190" cy="30" r="13" fill="none" stroke="#80d8ff" stroke-width="3" stroke-dasharray="3 5"/></g>
-<g fill="#c3cad3"><rect x="196" y="78" width="30" height="80"/><rect x="232" y="96" width="24" height="62"/><rect x="262" y="70" width="34" height="88"/><rect x="302" y="100" width="26" height="58"/><rect x="334" y="84" width="30" height="74"/><rect x="368" y="104" width="32" height="54"/></g>
-<g class="sc-win"><rect x="201" y="86" width="6" height="7"/><rect x="214" y="86" width="6" height="7"/><rect x="201" y="102" width="6" height="7"/><rect x="214" y="102" width="6" height="7"/><rect x="268" y="80" width="7" height="7"/><rect x="283" y="80" width="7" height="7"/><rect x="268" y="96" width="7" height="7"/><rect x="283" y="96" width="7" height="7"/><rect x="340" y="94" width="7" height="7"/><rect x="352" y="94" width="7" height="7"/><rect x="340" y="110" width="7" height="7"/><rect x="352" y="110" width="7" height="7"/></g>
-<g><rect x="142" y="96" width="40" height="62" fill="#f5f5f5" stroke="#cfd8dc"/><rect x="156" y="102" width="12" height="4" fill="#e53935"/><rect x="160" y="98" width="4" height="12" fill="#e53935"/><text x="162" y="122" font-size="7" text-anchor="middle" fill="#607d8b" font-weight="700">병원</text><rect class="sc-win" x="148" y="130" width="8" height="8"/><rect class="sc-win" x="168" y="130" width="8" height="8"/></g>
-<rect y="150" width="400" height="110" fill="#9ccc65"/>
-<path d="M0 150H70Q58 200 80 260H0Z" fill="#4fc3f7"/><path d="M8 170q8-3 16 0M30 248q8-3 16 0" stroke="#e1f5fe" stroke-width="1.5" fill="none"/>
-<rect x="80" y="196" width="320" height="26" fill="#616161"/><rect x="196" y="150" width="24" height="110" fill="#616161"/>
-<line x1="80" y1="209" x2="196" y2="209" stroke="#fff" stroke-width="1.4" stroke-dasharray="8 7"/><line x1="220" y1="209" x2="400" y2="209" stroke="#fff" stroke-width="1.4" stroke-dasharray="8 7"/>
-<g fill="#eee"><rect x="186" y="197" width="8" height="2.4"/><rect x="186" y="202" width="8" height="2.4"/><rect x="186" y="207" width="8" height="2.4"/><rect x="186" y="212" width="8" height="2.4"/><rect x="186" y="217" width="8" height="2.4"/></g>
+/* 정보시 지도: 비스듬히 내려다본 입체(아이소메트릭) 도시. 칸 좌표 (x, y), 높이 z */
+const SC_N = 12, SC_H = 22, SC_V = 11, SC_OX = 284, SC_OY = 100;
+const scP = (x, y, z = 0) => [SC_OX + (x - y) * SC_H, SC_OY + (x + y) * SC_V - z];
+const scPts = a => a.map(p => p.map(v => +v.toFixed(1)).join(',')).join(' ');
+const scShade = (hex, f) => '#' + [1, 3, 5].map(i => Math.min(255, Math.round(parseInt(hex.slice(i, i + 2), 16) * f)).toString(16).padStart(2, '0')).join('');
+const scTile = (x, y, w, d, fill, extra = '') => `<polygon points="${scPts([scP(x, y), scP(x + w, y), scP(x + w, y + d), scP(x, y + d)])}" fill="${fill}" ${extra}/>`;
+function scBox(x, y, w, d, h, c, o = {}){
+  const z = o.z || 0, top = o.top || scShade(c, 1.08), cls = o.cls ? ` class="${o.cls}"` : '';
+  let s = `<g${cls}><polygon points="${scPts([scP(x, y + d, z), scP(x + w, y + d, z), scP(x + w, y + d, z + h), scP(x, y + d, z + h)])}" fill="${scShade(c, .86)}"/>`
+    + `<polygon points="${scPts([scP(x + w, y, z), scP(x + w, y + d, z), scP(x + w, y + d, z + h), scP(x + w, y, z + h)])}" fill="${scShade(c, .7)}"/>`
+    + `<polygon points="${scPts([scP(x, y, z + h), scP(x + w, y, z + h), scP(x + w, y + d, z + h), scP(x, y + d, z + h)])}" fill="${top}"/>`;
+  if (o.win){ const [cols, rows] = o.win, gap = (h - 12) / rows;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++){
+      const zz = z + 7 + j * gap, u = (i + .5) / cols, ww = Math.min(.22, .6 / cols);
+      s += `<polygon class="sc-win" points="${scPts([scP(x + u * w - ww / 2, y + d, zz), scP(x + u * w + ww / 2, y + d, zz), scP(x + u * w + ww / 2, y + d, zz + 6), scP(x + u * w - ww / 2, y + d, zz + 6)])}"/>`;
+      s += `<polygon class="sc-win" points="${scPts([scP(x + w, y + u * d - ww / 2, zz), scP(x + w, y + u * d + ww / 2, zz), scP(x + w, y + u * d + ww / 2, zz + 6), scP(x + w, y + u * d - ww / 2, zz + 6)])}"/>`;
+    } }
+  return s + '</g>';
+}
+function scRoof(x, y, w, d, h, c, rc){   // 집: 몸통 + 박공지붕
+  const r = h + 9, a = scP(x, y + d / 2, r), b = scP(x + w, y + d / 2, r);
+  return scBox(x, y, w, d, h, c) + `<polygon points="${scPts([scP(x, y + d, h), scP(x + w, y + d, h), b, a])}" fill="${rc}"/><polygon points="${scPts([scP(x + w, y, h), scP(x + w, y + d, h), b])}" fill="${scShade(rc, .75)}"/><polygon points="${scPts([scP(x, y, h), scP(x + w, y, h), b, a])}" fill="${scShade(rc, 1.1)}"/>`;
+}
+function scTree(x, y, s = 1, c = '#43a047'){
+  const [X, Y] = scP(x, y);
+  return `<g><rect x="${X - 1.5}" y="${Y - 9 * s}" width="3" height="${9 * s}" fill="#6d4c41"/><circle cx="${X}" cy="${Y - 13 * s}" r="${8 * s}" fill="${c}"/><circle cx="${X - 2.5 * s}" cy="${Y - 15 * s}" r="${3.5 * s}" fill="#ffffff33"/></g>`;
+}
+function scPerson(x, y, c = '#5c6bc0', z = 0){
+  const [X, Y] = scP(x, y, z);
+  return `<g><rect x="${X - 2.6}" y="${Y - 11}" width="5.2" height="8" rx="2.4" fill="${c}"/><rect x="${X - 2}" y="${Y - 3.5}" width="1.6" height="3.5" fill="#37474f"/><rect x="${X + .4}" y="${Y - 3.5}" width="1.6" height="3.5" fill="#37474f"/><circle cx="${X}" cy="${Y - 14}" r="3" fill="#ffcc80"/></g>`;
+}
+function scBubble(X, Y, t, cls, c = '#c62828'){
+  const w = t.length * 8.4 + 14;
+  return `<g class="${cls}"><path d="M${X - w / 2} ${Y - 26}h${w}a5 5 0 0 1 5 5v9a5 5 0 0 1-5 5H${X + 4}l-4 6-4-6H${X - w / 2}a5 5 0 0 1-5-5v-9a5 5 0 0 1 5-5z" fill="#fff" stroke="${c}" stroke-width="1.6"/><text x="${X}" y="${Y - 14}" font-size="10.5" font-weight="800" text-anchor="middle" fill="${c}">${t}</text></g>`;
+}
+function scPin(X, Y){
+  return `<g class="sc-bd" transform="translate(${X} ${Y})"><ellipse cx="0" cy="3" rx="6" ry="2" fill="#0003"/><path d="M0 0c-3-6-12-10-12-19a12 12 0 0 1 24 0c0 9-9 13-12 19z" class="pin"/><text class="n" x="0" y="-15">!</text><text class="y" x="0" y="-15">✓</text></g>`;
+}
+function scLabel(X, Y, t){
+  const w = t.length * 9 + 12;
+  return `<g class="sc-lab"><rect x="${X - w / 2}" y="${Y}" width="${w}" height="15" rx="7.5"/><text x="${X}" y="${Y + 11}">${t}</text></g>`;
+}
 
-<g class="sc-spot" id="sc_c" data-i="0" tabindex="0" role="button" aria-label="행복 아파트">
- <rect class="hit" x="82" y="52" width="54" height="142" rx="6"/>
- <rect x="88" y="62" width="42" height="134" fill="#ffcc80" stroke="#e0a65a"/><rect x="86" y="58" width="46" height="6" fill="#e0a65a"/>
- <g class="sc-win"><rect x="93" y="70" width="9" height="9"/><rect x="116" y="70" width="9" height="9"/><rect x="93" y="88" width="9" height="9"/><rect x="116" y="88" width="9" height="9"/><rect x="93" y="124" width="9" height="9"/><rect x="116" y="124" width="9" height="9"/><rect x="93" y="142" width="9" height="9"/><rect x="116" y="142" width="9" height="9"/><rect x="93" y="160" width="9" height="9"/></g>
- <rect x="113" y="104" width="15" height="13" fill="#fff8e1" stroke="#e0a65a"/><text x="120.5" y="114.5" font-size="10" text-anchor="middle">👵</text>
- <rect x="104" y="178" width="10" height="18" fill="#8d6e63"/>
- <text class="bad" x="108" y="106" font-size="7" text-anchor="end" fill="#c62828" font-weight="800">아야…</text>
- <g class="good"><path class="sc-heart" d="M108 98c-2-3-6-1-4 2l4 4 4-4c2-3-2-5-4-2z" fill="#e91e63"/><path class="sc-ecg" d="M128 106 H136 l3-6 3 10 3-8 2 4 H150 V118" fill="none" stroke="#e91e63" stroke-width="1.6"/></g>
- <g class="sc-bd" transform="translate(130 56)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
+function scBuildMap(){
+  const ground = [], objs = [], over = [];
+  const isRoad = (x, y) => (y === 5 && x >= 3) || x === 7, isRiver = x => x === 2;
+  for (let y = 0; y < SC_N; y++) for (let x = 0; x < SC_N; x++){
+    let f = (x + y) % 2 ? '#8bc34a' : '#85bd45';
+    if (isRiver(x)) f = (y % 2) ? '#4fc3f7' : '#4bbcf0';
+    else if (x < 2) f = (x + y) % 2 ? '#9ccc65' : '#95c75e';
+    else if (isRoad(x, y)) f = '#5f6368';
+    else if (x >= 3 && x <= 6 && y >= 7 && y <= 10) f = (x + y) % 2 ? '#7cb342' : '#77ad3e';
+    ground.push(scTile(x, y, 1, 1, f, isRoad(x, y) ? '' : 'stroke="#00000010" stroke-width=".6"'));
+  }
+  // 땅 두께(떠 있는 섬처럼)
+  ground.unshift(`<polygon points="${scPts([scP(0, SC_N), scP(SC_N, SC_N), scP(SC_N, SC_N, -18), scP(0, SC_N, -18)])}" fill="#8d6e63"/><polygon points="${scPts([scP(SC_N, 0), scP(SC_N, SC_N), scP(SC_N, SC_N, -18), scP(SC_N, 0, -18)])}" fill="#6d4c41"/><polygon points="${scPts([scP(2, SC_N), scP(3, SC_N), scP(3, SC_N, -18), scP(2, SC_N, -18)])}" fill="#0288d1"/>`);
+  // 도로 차선·횡단보도·강 물결
+  const ln = (a, b, ex = '') => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" ${ex}/>`;
+  ground.push(`<g stroke="#fff" stroke-width="1.3" stroke-dasharray="7 6" opacity=".85">${ln(scP(3, 5.5), scP(7, 5.5))}${ln(scP(8, 5.5), scP(12, 5.5))}${ln(scP(7.5, 0), scP(7.5, 5))}${ln(scP(7.5, 6), scP(7.5, 12))}</g>`);
+  let zb = ''; for (let k = 0; k < 5; k++){ zb += ln(scP(6.75, 5.1 + k * .2), scP(6.95, 5.1 + k * .2)); zb += ln(scP(8.05, 5.1 + k * .2), scP(8.25, 5.1 + k * .2)); }
+  ground.push(`<g stroke="#eceff1" stroke-width="2.2">${zb}</g>`);
+  for (let y = 0; y < SC_N; y += 2) ground.push(`<path d="M${scP(2.3, y + .4)[0]} ${scP(2.3, y + .4)[1]}q4-3 8 0" stroke="#e1f5fe" stroke-width="1.4" fill="none"/>`);
 
-<g class="sc-spot" id="sc_a" data-i="1" tabindex="0" role="button" aria-label="큰길 교차로">
- <rect class="hit" x="138" y="160" width="96" height="62" rx="6"/>
- <rect x="230" y="160" width="3" height="36" fill="#424242"/><rect x="225.5" y="146" width="12" height="25" rx="2.5" fill="#263238"/>
- <circle class="sc-red" cx="231.5" cy="152.5" r="3.6"/><circle class="sc-grn" cx="231.5" cy="164" r="3.6"/>
- <g class="sc-cars">
-  <g transform="translate(142 199)"><rect width="18" height="8" rx="2.5" fill="#42a5f5"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#e3f2fd"/></g>
-  <g transform="translate(163 199)"><rect width="18" height="8" rx="2.5" fill="#ef5350"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#ffebee"/></g>
-  <g transform="translate(121 199)"><rect width="18" height="8" rx="2.5" fill="#ffca28"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#fff8e1"/></g>
-  <g transform="translate(100 199)"><rect width="18" height="8" rx="2.5" fill="#ab47bc"/><rect x="4" y="1.5" width="9" height="3" rx="1" fill="#f3e5f5"/></g>
- </g>
- <text class="bad" x="152" y="194" font-size="7" fill="#c62828" font-weight="800">빵빵! 꽉 막혔어</text>
- <g class="sc-bd" transform="translate(238 144)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
+  const add = (d, s) => objs.push([d, s]);
+  // 강 서쪽 숲
+  [[.4, .6], [1.3, .9], [.6, 2], [1.5, 2.6], [.5, 3.6], [1.2, 4.6], [.6, 5.6], [1.6, 11.3]].forEach(([x, y]) => add(x + y, scTree(x, y, 1, '#2e7d32')));
+  // 도심 빌딩
+  [[8.2, .2, .8, .8, 92, '#90a4ae', [2, 9]], [9.3, .3, .9, .9, 128, '#7986cb', [2, 12]], [10.6, .2, .9, .9, 74, '#b0bec5', [2, 7]], [8.2, 1.6, .8, .9, 50, '#bcaaa4', [2, 4]],
+   [9.5, 1.7, .8, .8, 66, '#80cbc4', [2, 6]], [10.8, 1.6, .9, .9, 104, '#9fa8da', [2, 10]], [8.3, 3.2, .8, .8, 34, '#ffcc80', [2, 3]], [9.6, 3.2, .9, .8, 46, '#cfd8dc', [2, 4]], [11, 3.1, .8, .9, 58, '#a5d6a7', [2, 5]]]
+    .forEach(([x, y, w, d, h, c, win]) => add(x + w + y + d, scBox(x, y, w, d, h, c, {win})));
+  // 남동쪽 주택가
+  [[8.3, 10.2, '#ffe0b2', '#e57373'], [9.6, 10.4, '#e1f5fe', '#5c6bc0'], [10.9, 10.1, '#fff9c4', '#8d6e63'], [11.1, 8.5, '#f8bbd0', '#7e57c2'], [8.4, 11.3, '#dcedc8', '#ef6c00']]
+    .forEach(([x, y, c, r]) => add(x + .8 + y + .7, scRoof(x, y, .8, .7, 13, c, r)));
+  [[9.3, 11.6], [11.7, 9.9], [10.6, 11.7], [3.4, 11.6], [5.4, 11.5], [6.4, 11.7]].forEach(([x, y]) => add(x + y, scTree(x, y, .85)));
+  // 병원(드론 출발지)
+  add(3.2 + 1.7 + .2 + 1.6, scBox(3.2, .2, 1.7, 1.6, 54, '#f5f5f5', {win: [3, 3]}) + (() => { const [X, Y] = scP(4.9, 1, 40); return `<g transform="translate(${X + 1} ${Y - 4}) skewY(-26.6)"><rect x="-1" y="-8" width="14" height="14" rx="2" fill="#e53935"/><rect x="4" y="-6" width="4" height="10" fill="#fff"/><rect x="1" y="-3" width="10" height="4" fill="#fff"/></g>`; })()
+    + (() => { const [X, Y] = scP(4.05, 1, 54); return `<text x="${X}" y="${Y + 2}" font-size="9" font-weight="900" text-anchor="middle" fill="#e53935">H</text>`; })());
 
-<g class="sc-spot" id="sc_f" data-i="2" tabindex="0" role="button" aria-label="전통 시장">
- <rect class="hit" x="240" y="132" width="66" height="64" rx="6"/>
- <rect x="246" y="160" width="56" height="36" fill="#fff3e0" stroke="#d7a86e"/>
- <path d="M243 148h62l-3 12h-56z" fill="#ef5350"/><path d="M255 148l-2 12M267 148v12M279 148v12M291 148l2 12" stroke="#fff" stroke-width="5"/>
- <g><circle cx="256" cy="178" r="4" fill="#ff7043"/><circle cx="264" cy="179" r="4" fill="#ffa726"/><circle cx="284" cy="178" r="4" fill="#9ccc65"/><circle cx="292" cy="179" r="4" fill="#66bb6a"/></g>
- <rect x="246" y="184" width="56" height="4" fill="#d7a86e"/>
- <text class="bad" x="274" y="170" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">현금만 돼요</text>
- <g class="good sc-pay"><rect x="266" y="162" width="14" height="22" rx="3" fill="#263238"/><rect x="268" y="165" width="10" height="14" rx="1" fill="#69f0ae"/><text x="273" y="175" font-size="8" text-anchor="middle" fill="#1b5e20" font-weight="900">✓</text></g>
- <g class="sc-bd" transform="translate(304 140)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
+  const spot = (i, id, n, d, body, ov, foot) => {
+    add(d, `<g class="sc-spot" data-s="${id}" data-i="${i}" id="sc_${id}" tabindex="0" role="button" aria-label="${n}">${scTile(...foot, '', 'class="hit"')}${body}</g>`);
+    over.push(`<g class="sc-spot sc-ov" data-s="${id}" data-i="${i}">${ov}</g>`);
+  };
+  // 0 행복 아파트
+  { const [wx, wy] = scP(4.85, 3.9, 50); const [tx, ty] = scP(5, 3, 122);
+    const gm = `<g><polygon points="${scPts([scP(4.62, 3.9, 44), scP(5.08, 3.9, 44), scP(5.08, 3.9, 58), scP(4.62, 3.9, 58)])}" fill="#fff8e1" stroke="#e0a65a"/><circle cx="${wx}" cy="${wy - 4}" r="2.6" fill="#e0e0e0"/><circle cx="${wx}" cy="${wy - 1}" r="2.4" fill="#ffcc80"/></g>`;
+    spot(0, 'c', '행복 아파트', 4.2 + 1.6 + 2.3 + 1.6,
+      scBox(4.2, 2.3, 1.6, 1.6, 118, '#ffcc80', {win: [3, 11]}) + gm,
+      scBubble(wx - 34, wy - 10, '아야…', 'bad') + `<g class="good"><path class="sc-heart" d="M${wx - 30} ${wy - 26}c-3-4-9-1-6 3l6 6 6-6c3-4-3-7-6-3z" fill="#e91e63"/><path class="sc-ecg" d="M${wx - 20} ${wy - 20}h8l3-7 3 12 3-9 2 4h10" fill="none" stroke="#e91e63" stroke-width="2"/><text x="${wx - 26}" y="${wy - 36}" font-size="10" font-weight="900" fill="#e91e63" stroke="#fff" stroke-width="3" paint-order="stroke" text-anchor="middle">병원에 알림!</text></g>`
+      + scPin(tx, ty - 4) + scLabel(tx, ty - 50, '행복 아파트'), [4, 2, 2, 2]); }
+  // 1 큰길 교차로
+  { const [lx, ly] = scP(8.15, 4.85); const cars = ['#42a5f5', '#ef5350', '#ffca28', '#ab47bc', '#26a69a'].map((c, k) => scBox(3.3 + k * .75, 5.12, .55, .32, 7, c, {top: scShade(c, 1.2)})).join('');
+    spot(1, 'a', '큰길 교차로', 8.5 + 5,
+      `<g class="sc-cars">${cars}</g><rect x="${lx - 1.2}" y="${ly - 34}" width="2.4" height="34" fill="#37474f"/><rect x="${lx - 5}" y="${ly - 48}" width="10" height="20" rx="3" fill="#263238"/><circle class="sc-red" cx="${lx}" cy="${ly - 42.5}" r="3.4"/><circle class="sc-grn" cx="${lx}" cy="${ly - 33.5}" r="3.4"/>`,
+      scBubble(scP(4.6, 5)[0], scP(4.6, 5)[1] - 12, '빵빵! 꽉 막혔어', 'bad') + scPin(lx + 12, ly - 46) + scLabel(lx + 12, ly - 92, '큰길 교차로'), [3, 5, 5, 1]); }
+  // 2 전통 시장
+  { const st = [[8.25, 7.2, '#ef5350'], [9.3, 7.2, '#ffa000'], [8.25, 8.3, '#43a047'], [9.3, 8.3, '#1e88e5']].map(([x, y, c]) =>
+      scBox(x, y, .8, .7, 9, '#fff3e0', {top: '#d7a86e'}) + [0, 1, 2].map(k => { const [X, Y] = scP(x + .2 + k * .22, y + .35, 11); return `<circle cx="${X}" cy="${Y}" r="2.6" fill="${['#ff7043', '#9ccc65', '#ffca28'][k]}"/>`; }).join('') + scBox(x - .05, y - .05, .9, .8, 2.5, c, {z: 19, top: c})
+      + (() => { const a = scP(x - .05, y + .75, 19), b = scP(x + .85, y + .75, 19); return `<line x1="${a[0]}" y1="${a[1]}" x2="${a[0]}" y2="${a[1] + 10}" stroke="#795548" stroke-width="1.4"/><line x1="${b[0]}" y1="${b[1]}" x2="${b[0]}" y2="${b[1] + 10}" stroke="#795548" stroke-width="1.4"/>`; })()).join('');
+    const [px, py] = scP(10.4, 8.4, 0); const [bx, by] = scP(9.3, 7.6, 30);
+    spot(2, 'f', '전통 시장', 10.2 + 9,
+      st + scPerson(10.4, 7.6, '#ef6c00') + scPerson(10.6, 8.9, '#8e24aa'),
+      scBubble(bx, by, '현금만 돼요', 'bad') + `<g class="good sc-pay"><rect x="${px - 7}" y="${py - 40}" width="14" height="24" rx="3" fill="#263238"/><rect x="${px - 5}" y="${py - 37}" width="10" height="16" rx="1.5" fill="#69f0ae"/><text x="${px}" y="${py - 25}" font-size="9" text-anchor="middle" fill="#1b5e20" font-weight="900">✓</text><text x="${px}" y="${py - 45}" font-size="10" text-anchor="middle" fill="#1b5e20" stroke="#fff" stroke-width="3" paint-order="stroke" font-weight="900">결제 완료</text></g>`
+      + scPin(bx - 46, by + 8) + scLabel(bx - 46, by - 38, '전통 시장'), [8, 7, 3, 2.3]); }
+  // 3 강 건너 섬마을
+  { const [hx, hy] = scP(.9, 8.6, 30); const from = scP(4, 1, 66), to = scP(1, 8.4, 30);
+    spot(3, 'b', '강 건너 섬마을', 1.4 + 9.3,
+      scRoof(.4, 8.4, 1, .9, 15, '#ffccbc', '#e57373') + scPerson(1.6, 9.6, '#00897b'),
+      scBubble(hx + 46, hy + 4, '약이 필요해요!', 'bad') + scPin(hx - 14, hy - 4) + scLabel(hx - 14, hy - 50, '섬마을')
+      + `<g class="sc-drone" style="--dx:${(to[0] - from[0]).toFixed(0)}px;--dy:${(to[1] - from[1]).toFixed(0)}px"><g transform="translate(${from[0]} ${from[1]})"><rect x="-7" y="-3" width="14" height="6" rx="2.5" fill="#37474f"/><line x1="-13" y1="-4" x2="13" y2="-4" stroke="#37474f" stroke-width="1.6"/><ellipse class="sc-rot" cx="-13" cy="-5.5" rx="5" ry="1.3" fill="#90a4ae"/><ellipse class="sc-rot" cx="13" cy="-5.5" rx="5" ry="1.3" fill="#90a4ae"/><rect x="-4" y="3" width="8" height="6" fill="#fff" stroke="#e53935" stroke-width="1"/><path d="M-2 6h4M0 4v4" stroke="#e53935" stroke-width="1"/></g></g>`, [0, 7, 2, 4]); }
+  // 4 심야 버스 정류장
+  { const [sx, sy] = scP(10.9, 6.3, 22);
+    spot(4, 'e', '심야 버스 정류장', 11.8 + 6.6,
+      scBox(10.2, 6.15, 1.5, .45, 2, '#546e7a', {z: 18, top: '#78909c'}) + [10.25, 11.6].map(x => { const a = scP(x, 6.55); return `<rect x="${a[0] - 1}" y="${a[1] - 18}" width="2" height="18" fill="#546e7a"/>`; }).join('')
+      + scPerson(10.6, 6.4, '#3949ab') + scPerson(11, 6.45, '#d81b60') + (() => { const a = scP(9.9, 6.2); return `<rect x="${a[0] - 1}" y="${a[1] - 26}" width="2" height="26" fill="#546e7a"/><circle cx="${a[0]}" cy="${a[1] - 28}" r="5.5" fill="#1e88e5"/><text x="${a[0]}" y="${a[1] - 25}" font-size="7" font-weight="900" fill="#fff" text-anchor="middle">B</text>`; })(),
+      scBubble(sx, sy - 4, '막차 끊김', 'bad') + `<g class="good"><g class="sc-bus">${scBox(9.7, 5.15, 1.6, .6, 13, '#26a69a', {win: [4, 1], top: '#80cbc4'})}</g></g>` + scPin(sx + 52, sy + 4) + scLabel(sx + 52, sy - 42, '버스 정류장'), [9.5, 5, 2.5, 2]); }
+  // 5 푸른 공원
+  { const [cx, cy] = scP(5.5, 8.9);
+    const trees = [[3.5, 7.4], [4.6, 7.3], [3.4, 8.9], [3.7, 10.3], [5.1, 10.4], [6.4, 7.6]].map(([x, y]) => scTree(x, y, 1)).join('');
+    const path = `<polygon points="${scPts([scP(4.3, 7), scP(4.7, 7), scP(4.7, 11), scP(4.3, 11)])}" fill="#d7ccc8"/><polygon points="${scPts([scP(3, 8.8), scP(7, 8.8), scP(7, 9.2), scP(3, 9.2)])}" fill="#d7ccc8"/>`;
+    spot(5, 'd', '푸른 공원', 6.5 + 10.5,
+      path + trees + scBox(5.6, 9.5, .7, .25, 5, '#8d6e63') + scBox(5.3, 8.6, .35, .35, 12, '#78909c', {top: '#546e7a'}) + scPerson(4.2, 9.6, '#f4511e'),
+      `<g class="bad"><circle cx="${cx - 2}" cy="${cy - 18}" r="3.4" fill="#8d6e63"/><circle cx="${cx + 3}" cy="${cy - 19}" r="2.6" fill="#a1887f"/><rect x="${cx + 6}" y="${cy - 3}" width="5" height="3" fill="#bcaaa4"/><circle cx="${cx - 9}" cy="${cy}" r="2" fill="#a1887f"/></g>`
+      + scBubble(cx - 4, cy - 22, '넘쳐요!', 'bad') + `<g class="good"><polygon points="${scPts([scP(5.28, 8.58, 13), scP(5.67, 8.58, 13), scP(5.67, 8.97, 13), scP(5.28, 8.97, 13)])}" fill="#43a047"/><path class="sc-wave" d="M${cx + 6} ${cy - 22}a8 8 0 0 1 9 0" fill="none" stroke="#1565c0" stroke-width="1.8"/><path class="sc-wave" d="M${cx + 3} ${cy - 27}a14 14 0 0 1 15 0" fill="none" stroke="#1565c0" stroke-width="1.8"/></g>`
+      + scPin(cx - 52, cy + 2) + scLabel(cx - 52, cy - 44, '푸른 공원'), [3, 7, 4, 4]); }
 
-<g class="sc-spot" id="sc_b" data-i="3" tabindex="0" role="button" aria-label="강 건너 섬마을">
- <rect class="hit" x="2" y="150" width="86" height="106" rx="6"/>
- <ellipse cx="30" cy="228" rx="24" ry="11" fill="#c5e1a5"/>
- <rect x="22" y="212" width="17" height="13" fill="#ffccbc"/><path d="M20 213l10.5-9 10.5 9z" fill="#e57373"/><rect x="28" y="218" width="5" height="7" fill="#8d6e63"/>
- <rect x="76" y="166" width="12" height="4" fill="#90a4ae"/>
- <g class="sc-drone"><rect x="76" y="158" width="12" height="5" rx="2" fill="#37474f"/><line x1="72" y1="157" x2="92" y2="157" stroke="#37474f" stroke-width="1.4"/><ellipse class="sc-rot" cx="72" cy="155.5" rx="4" ry="1" fill="#90a4ae"/><ellipse class="sc-rot" cx="92" cy="155.5" rx="4" ry="1" fill="#90a4ae"/><rect x="79" y="163" width="6" height="5" fill="#fff" stroke="#e53935" stroke-width=".8"/></g>
- <text class="bad" x="30" y="200" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">약이 필요해요!</text>
- <g class="sc-bd" transform="translate(52 208)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
-
-<g class="sc-spot" id="sc_e" data-i="4" tabindex="0" role="button" aria-label="심야 버스 정류장">
- <rect class="hit" x="318" y="140" width="80" height="82" rx="6"/>
- <rect x="340" y="164" width="52" height="4" rx="2" fill="#546e7a"/><rect x="342" y="168" width="2.5" height="28" fill="#546e7a"/><rect x="388" y="168" width="2.5" height="28" fill="#546e7a"/>
- <rect x="326" y="160" width="10" height="9" rx="1.5" fill="#1e88e5"/><rect x="330" y="169" width="2" height="27" fill="#546e7a"/><text x="331" y="167" font-size="6" text-anchor="middle" fill="#fff" font-weight="900">B</text>
- <text x="356" y="194" font-size="11">🧑</text><text x="368" y="194" font-size="11">👩</text>
- <text class="bad" x="364" y="160" font-size="7" text-anchor="middle" fill="#c62828" font-weight="800">막차 끊김</text>
- <g class="sc-bus good"><rect x="340" y="207" width="52" height="15" rx="3.5" fill="#26a69a"/><rect x="344" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="356" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="368" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><rect x="380" y="209.5" width="9" height="6" rx="1" fill="#e0f2f1"/><circle cx="350" cy="222" r="3" fill="#263238"/><circle cx="382" cy="222" r="3" fill="#263238"/><text x="366" y="220.5" font-size="4.5" text-anchor="middle" fill="#fff" font-weight="800">자율 주행</text></g>
- <g class="sc-bd" transform="translate(392 150)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
-
-<g class="sc-spot" id="sc_d" data-i="5" tabindex="0" role="button" aria-label="푸른 공원">
- <rect class="hit" x="226" y="223" width="110" height="36" rx="6"/>
- <rect x="240" y="238" width="3" height="10" fill="#795548"/><circle cx="241.5" cy="235" r="8" fill="#43a047"/><rect x="262" y="240" width="3" height="10" fill="#795548"/><circle cx="263.5" cy="236" r="7" fill="#66bb6a"/>
- <rect x="296" y="236" width="14" height="16" rx="1.5" fill="#78909c"/>
- <g class="bad"><path d="M294 236l4-6 4 3 3-5 4 4 3-2-1 6z" fill="#8d6e63"/><circle cx="291" cy="250" r="2" fill="#a1887f"/><rect x="312" y="248" width="5" height="3" fill="#bcaaa4"/><text x="282" y="232" font-size="7" text-anchor="end" fill="#c62828" font-weight="800">넘쳐요!</text></g>
- <g class="good"><rect x="295" y="233" width="16" height="3.5" rx="1" fill="#43a047"/><circle cx="303" cy="243" r="2.4" fill="#69f0ae"/><path class="sc-wave" d="M309 229a8 8 0 0 1 8 0" fill="none" stroke="#1565c0" stroke-width="1.6"/><path class="sc-wave" d="M306 225a13 13 0 0 1 14 0" fill="none" stroke="#1565c0" stroke-width="1.6"/></g>
- <g class="sc-bd" transform="translate(326 232)"><circle r="8"/><text class="n">!</text><text class="y">✓</text></g>
-</g>
-<rect id="scHaze" width="400" height="160" fill="#8d8d8d" opacity=".45" pointer-events="none"/>
+  objs.sort((a, b) => a[0] - b[0]);
+  const fw = [[330, 40, '#ff80ab'], [420, 60, '#ffd740'], [250, 30, '#80d8ff']].map(([x, y, c]) => `<circle class="sc-fw" cx="${x}" cy="${y}" r="18" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="3 5"/>`).join('');
+  const clouds = [[90, 40], [470, 70], [200, 60]].map(([x, y]) => `<g class="sc-cloud" fill="#fff" opacity=".85"><ellipse cx="${x}" cy="${y}" rx="26" ry="9"/><ellipse cx="${x - 10}" cy="${y - 6}" rx="12" ry="9"/><ellipse cx="${x + 9}" cy="${y - 7}" rx="14" ry="10"/></g>`).join('');
+  return `<svg viewBox="0 0 568 398" role="img" aria-label="정보시 지도">
+<defs><linearGradient id="scSkyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+<rect id="scSky" width="568" height="398" fill="#b4b9bf"/><rect width="568" height="398" fill="url(#scSkyG)"/>
+<circle id="scSun" cx="520" cy="40" r="17" fill="#ffd54f"/>${clouds}<g>${fw}</g>
+${ground.join('')}
+${objs.map(o => o[1]).join('')}
+<rect id="scHaze" width="568" height="398" fill="#8d8d8d" opacity=".45" pointer-events="none"/>
+${over.join('')}
 </svg>`;
+}
+$('#scMap').innerHTML = scBuildMap();
 const scSolved = () => scOk.filter(Boolean).length;
 function scMeter(){
   const t = scSolved() / SC.length, p = Math.round((scSolved() + scGood) / (SC.length + 3) * 100);
-  $('#scBar').style.width = p + '%'; $('#scPct').textContent = p + '%';
+  $('#scBar').style.width = p + '%'; $('#scPct').textContent = p + '%'; $('#scDone').textContent = scSolved(); $('#scDay').textContent = 1 + scSolved() * 30 + scGood * 10;
   const mix = (a, b) => Math.round(a + (b - a) * t);
   $('#scSky').setAttribute('fill', `rgb(${mix(180, 129)},${mix(185, 212)},${mix(191, 250)})`);
   $('#scHaze').style.opacity = (.45 * (1 - t)).toFixed(2);
@@ -304,7 +378,7 @@ function scPick(i){ scCur = i; $$('#scMap .sc-spot').forEach(g => g.classList.to
 function scNext(){ const n = SC.findIndex((s, k) => !scOk[k]); return n; }
 function scPanel(){
   const P = $('#scPanel');
-  if (scCur < 0){ P.innerHTML = `<p class="sc-msg">👆 지도에서 <b style="color:#e53935">!</b> 표시가 있는 장소를 눌러 보세요. (남은 문제 <b>${SC.length - scSolved()}</b>곳)</p>`; return; }
+  if (scCur < 0){ P.innerHTML = `<p class="sc-msg">👆 지도에서 <b style="color:#e53935">!</b> 핀이 꽂힌 장소를 눌러 보세요. (남은 문제 <b>${SC.length - scSolved()}</b>곳)</p>`; return; }
   const s = SC[scCur];
   if (scOk[scCur]){
     const n = scNext();
@@ -312,7 +386,7 @@ function scPanel(){
     if (n >= 0) $('#scGo').onclick = () => scPick(n);
     return;
   }
-  P.innerHTML = `<div class="sc-q"><b>📍 ${s.n}</b> ${s.p}</div><p class="sc-ask">어떤 디지털 기술로 해결할까요?</p><div class="sc-tray">${TECH.map(([ic, n], k) => `<button data-k="${k}">${ic} ${n}</button>`).join('')}</div><p class="feedback" id="scFb"></p>`;
+  P.innerHTML = `<div class="sc-q"><b>📍 ${s.n}</b> ${s.p}</div><p class="sc-ask">🏗️ 어떤 디지털 기술을 설치할까요?</p><div class="sc-tray">${TECH.map(([ic, n], k) => `<button data-k="${k}"><span class="ti">${ic}</span>${n}</button>`).join('')}</div><p class="feedback" id="scFb"></p>`;
   $$('#scPanel .sc-tray button').forEach(b => b.onclick = () => scUse(+b.dataset.k, b));
 }
 function scUse(k, b){
@@ -327,8 +401,14 @@ function scUse(k, b){
     feedback($('#scFb'), false, `🤔 ${TECH[k][1]}: ${TECH[k][2]} 이 문제에 꼭 맞을까요?` + (scTry[scCur] >= 2 ? ` 💡 힌트: ${s.tip}` : ''));
     return;
   }
-  scOk[scCur] = true; $('#sc_' + s.id).classList.add('ok'); scMeter(); scPanel();
+  scOk[scCur] = true; $$(`#scMap [data-s="${s.id}"]`).forEach(g => g.classList.add('ok')); scMeter(); scPanel(); scFloat(s.id, '😊 만족도 UP!');
   if (scSolved() === SC.length) setTimeout(scGapStart, 700);
+}
+function scFloat(id, t){   // 해결한 곳 위로 떠오르는 글자
+  const b = $(`#scMap .sc-ov[data-s="${id}"] .sc-bd`); if (!b) return;
+  const m = b.getAttribute('transform').match(/translate\(([-\d.]+) ([-\d.]+)\)/), tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  tx.setAttribute('x', m[1]); tx.setAttribute('y', +m[2] - 34); tx.setAttribute('class', 'sc-float'); tx.textContent = t;
+  $('#scMap svg').appendChild(tx); setTimeout(() => tx.remove(), 1700);
 }
 function scGapStart(){
   $('#scGap').innerHTML = `<div class="sc-gap"><b>🚨 마지막 시장 임무: 정보 격차 줄이기</b>
