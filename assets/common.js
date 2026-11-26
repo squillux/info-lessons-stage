@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const boxId = (box, kind) => box.dataset.pid || (box.dataset.pid = box.id || kind + (boxId.n = (boxId.n || 0) + 1));   // 진도 신호용 상자 이름
 function renderQuiz(box, items){
   const answered = {}, qid = boxId(box, 'quiz');
-  box.innerHTML = items.map((x, i) => `<div class="q" data-q="${i}"><p>${i + 1}. ${x.q}</p>
+  box.innerHTML = items.map((x, i) => `<div class="q${x.o.length === 2 ? ' q2' : ''}" data-q="${i}"><p>${i + 1}. ${x.q}</p>
     <div class="opts">${x.o.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join('')}</div>
     <div class="explain">${x.e}</div></div>`).join('') + '<div class="score"></div>';
   box.querySelectorAll('.q').forEach(qe => {
@@ -186,9 +186,57 @@ function reportQuiz(id, results){
 
 /* 상황 카드 분류: 상황마다 보기 버튼 중 하나를 고르면 바로 채점.
    items = [{t:상황, a:정답 보기 번호, e:해설}], options = ['보기1', ...] */
+/* 보기 2개 고르기 → O/X 퀴즈 모양: 문제를 하나씩(학생마다 순서 무작위), 왼쪽·오른쪽 큰 버튼.
+   한 번 틀리면 다시 고를 기회, 또 틀리면 정답 공개. item.o = [왼쪽, 오른쪽]으로 문항별 보기 글을 바꿀 수 있음(이때 좌우도 무작위) */
+function renderOX(box, items, options, onDone){
+  const cid = boxId(box, 'choice'), miss = {}, N = items.length;
+  const order = items.map((_, i) => i).sort(() => Math.random() - .5);
+  let pos = 0, wrong = 0, lock = false;
+  const split = o => { const m = String(o).match(/^([^\s가-힣A-Za-z0-9(]{1,10})\s+(.+)$/); return m ? [m[1], m[2]] : ['', o]; };
+  box.classList.add('ox');
+  function show(){
+    const i = order[pos], it = items[i], own = it.o, sw = own && (it._sw ??= Math.random() < .5);
+    const labs = own ? (sw ? [own[1], own[0]] : own.slice()) : options.slice(), keys = sw ? [1, 0] : [0, 1];
+    wrong = 0; lock = false;
+    box.innerHTML = `<div class="ox-top"><span class="ox-n">문제 <b>${pos + 1}</b> / ${N}</span><div class="ox-bar">${order.map((k, p) => `<i class="${p < pos ? (k in miss ? 'no' : 'ok') : p === pos ? 'on' : ''}"></i>`).join('')}</div></div>
+      <div class="ox-q"><p>${it.t}</p></div>
+      <div class="ox-btns">${labs.map((o, s2) => { const [em, tx] = split(o); return `<button class="opt ox-${s2 ? 'r' : 'l'}" data-k="${keys[s2]}">${em ? `<span class="em">${em}</span>` : ''}<b>${tx}</b></button>`; }).join('')}</div>
+      <div class="explain"></div><div class="ox-nx"></div>`;
+    box.querySelectorAll('.ox-btns .opt').forEach(btn => btn.onclick = () => pick(btn, i, it, labs, keys));
+  }
+  function pick(btn, i, it, labs, keys){
+    if (lock) return;
+    const k = +btn.dataset.k, ok = k === it.a, ex = box.querySelector('.explain'), Q = box.querySelector('.ox-q');
+    box.querySelectorAll('.ox-btns .opt').forEach(b => b.classList.remove('right', 'wrong'));
+    btn.classList.add(ok ? 'right' : 'wrong');
+    if (!ok){ miss[i] = 1; wrong++; Q.classList.remove('shake'); void Q.offsetWidth; Q.classList.add('shake'); }
+    if (!ok && wrong === 1){ ex.textContent = '❌ 다시 한 번 생각해 보세요!' + (it.hint ? ' 💡 ' + it.hint : ''); ex.className = 'explain show bad'; setTimeout(() => btn.classList.remove('wrong'), 700); return; }
+    lock = true;
+    const ans = labs[keys.indexOf(it.a)];
+    if (!ok) box.querySelectorAll('.ox-btns .opt').forEach(b => { if (+b.dataset.k === it.a) b.classList.add('right', 'reveal'); });
+    box.querySelectorAll('.ox-btns .opt').forEach(b => b.disabled = true);
+    ex.textContent = ok ? '⭕ ' + (it.e || '정답!') : `📌 정답: "${split(ans)[1]}" · ${it.e || ''}`; ex.className = 'explain show ' + (ok ? 'ok' : 'bad');
+    box.querySelectorAll('.ox-bar i')[pos].className = ok && !(i in miss) ? 'ok' : 'no';
+    const last = pos === N - 1, nb = document.createElement('button'); nb.className = 'btn'; nb.textContent = last ? '🏁 결과 보기' : '다음 문제 ▶';
+    nb.onclick = () => { if (last) end(); else { pos++; show(); } }; box.querySelector('.ox-nx').appendChild(nb);
+  }
+  function end(){
+    const first = N - Object.keys(miss).length;
+    box.innerHTML = `<div class="ox-end"><div class="big">${first === N ? '🎉' : first >= N / 2 ? '👍' : '💪'}</div><b>${N}문제 중 한 번에 맞힌 문제 ${first}개</b>
+      <ul>${order.map(i => { const it = items[i], lab = it.o ? it.o[it.a] : options[it.a]; return `<li class="${i in miss ? 'no' : 'ok'}">${i in miss ? '🔁' : '⭕'} ${it.t} <span>→ ${split(lab)[1]}</span></li>`; }).join('')}</ul>
+      <button class="btn line ox-again">🔄 순서 바꿔 다시 풀기</button></div><div class="score show" style="display:none"></div>`;
+    box.querySelector('.ox-again').onclick = () => { items.forEach(it => delete it._sw); renderOX(box, items, options, onDone); };
+    const rec = infoProgress.state.choice[cid] = {total: N, missed: Object.keys(miss).map(Number)};   // 진도 신호 (저장 없음)
+    infoProgress.emit('choice', Object.assign({id: cid}, rec));
+    onDone && onDone();
+  }
+  show();
+}
+
 /* cfg.look === 'card' 이면 카드형 고르기(진행 막대·도장·흔들림). cfg.optIcons: 보기마다 붙일 아이콘, cfg.tag: 카드 머리말, cfg.title: 맨 위 제목 */
 const CX_PAL = ['#3b6cf6', '#16b8a6', '#ff7aa2', '#f59e0b', '#8b5cf6', '#ef6c3a', '#0ea5e9', '#65a30d'];
 function renderChoice(box, items, options, onDone, cfg = {}){
+  if (options.length === 2 && cfg.look !== 'list' && cfg.look !== 'card') return renderOX(box, items, options, onDone);
   const done = {}, cid = boxId(box, 'choice'), miss = {}, card = cfg.look === 'card', oi = cfg.optIcons || [];
   if (card){
     box.classList.add('cx');
