@@ -139,9 +139,9 @@ $('#tick').onclick = () => {
 
 const DRV = [['🖨️', '프린터'], ['📷', '웹캠'], ['🎧', '헤드셋'], ['🎮', '게임 패드']];
 $('#drv').innerHTML = DRV.map(([ic, n], i) => `<div data-i="${i}"><span class="ic">${ic}</span><br><b>${n}</b><br><button class="btn line">연결하기</button><p class="hint" style="margin:4px 0 0"></p></div>`).join('');
-$$('#drv div').forEach(d => d.querySelector('button').onclick = () => {
-  const p = d.querySelector('p'), n = DRV[+d.dataset.i][1]; p.textContent = '🔎 드라이버 찾는 중…';
-  setTimeout(() => { d.classList.add('ok'); p.textContent = `✅ ${n} 드라이버 연결 완료!`; d.querySelector('button').remove(); }, 700);
+$$('#drv div').forEach(d => d.querySelector('button').onclick = e => {
+  e.currentTarget.disabled = true; const p = d.querySelector('p'), n = DRV[+d.dataset.i][1]; p.textContent = '🔎 드라이버 찾는 중…';
+  setTimeout(() => { d.classList.add('ok'); p.textContent = `✅ ${n} 드라이버 연결 완료!`; d.querySelector('button')?.remove(); }, 700);
 });
 
 renderChoice($('#kind'), [

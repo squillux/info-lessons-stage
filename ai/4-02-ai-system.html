@@ -149,7 +149,7 @@ function mf2(){
   mfS = 1; mfLine(); let done = 0, wrong = 0;
   $('#mfBox').innerHTML = `<b>🏷️ 2단계 · 데이터 입력</b><p style="margin:4px 0 8px">사진마다 알맞은 <b>이름표(정답)</b>를 붙여 <b>훈련 데이터</b>를 만들어요.</p><div class="mf-cards">${MFT.map(([e, n], i) => `<div class="mf-c" data-i="${i}"><span class="em">${e}</span>${n}<div class="bt"><button data-l="새">🐦 새</button><button data-l="물고기">🐟 물고기</button></div></div>`).join('')}</div><div id="mfX"></div>`;
   $$('#mfBox .mf-c .bt button').forEach(b => b.onclick = () => {
-    const c = b.closest('.mf-c'), [, n, real] = MFT[+c.dataset.i];
+    const c = b.closest('.mf-c'); if (!c) return; const [, n, real] = MFT[+c.dataset.i];
     if (b.dataset.l !== real){ wrong++; c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); $('#mfX').innerHTML = `<p class="feedback show bad">❌ ${n}${n === '펭귄' ? '은 물에서 헤엄치지만 깃털과 날개가 있는 <b>새</b>예요.' : n === '상어' || n === '복어' ? '는 지느러미로 헤엄치는 <b>물고기</b>예요.' : '의 이름표를 다시 생각해 봐요.'} 이름표가 틀리면 모델도 틀리게 배워요!</p>`; return; }
     c.classList.add('lab-' + real); c.querySelector('.bt').innerHTML = `<span class="stamp" style="background:${real === '새' ? '#3b6cf6' : '#16b8a6'}">🏷️ ${real}</span>`; done++;
     if (done === MFT.length){ mfFirst.push(!wrong); $('#mfX').innerHTML = '<p class="feedback show ok">⭕ 훈련 데이터 8장 완성! 사진(데이터)과 이름표(정답)가 함께 있어야 학습할 수 있어요.</p><button class="btn" id="mfNx">다음 단계 ▶</button>'; $('#mfNx').onclick = mf3; mfSee(); }

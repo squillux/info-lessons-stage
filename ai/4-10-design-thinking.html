@@ -173,17 +173,17 @@ let emP, emNotes, emBad; const emFirst = [];
 const emW = ms => new Promise(r => setTimeout(r, ms));
 function emWho(){ $('#emWho').innerHTML = EMP.map((p, i) => `<button class="${i === emP ? 'on' : ''}" data-i="${i}">${p.ic} ${p.n}</button>`).join(''); $$('#emWho button').forEach(b => b.onclick = () => { emP = +b.dataset.i; emStart(); }); }
 function emStart(){
-  const P = EMP[emP]; emNotes = []; emBad = 0; emWho();
+  const P = EMP[emP]; emNotes = []; emBad = 0; emGen++; emBusy = false; emWho();
   $('#emChat').innerHTML = `<div class="em-b you"><b>${P.ic} ${P.n}</b>${P.hi}</div>`; $('#emNotes').innerHTML = ''; $('#emN').textContent = 0; $('#emDef').innerHTML = '';
   $('#emQs').innerHTML = P.qs.map(([q], k) => `<button data-k="${k}">❓ ${q}</button>`).join('');
   $$('#emQs button').forEach(b => b.onclick = () => emAsk(+b.dataset.k, b));
 }
-let emBusy = false;
+let emBusy = false, emGen = 0;
 async function emAsk(k, b){
-  if (emBusy || b.classList.contains('used')) return; emBusy = true; b.classList.add('used');
+  if (emBusy || b.classList.contains('used')) return; emBusy = true; b.classList.add('used'); const g = emGen;
   const P = EMP[emP], [q, a, note, tip] = P.qs[k], ch = $('#emChat');
-  ch.insertAdjacentHTML('beforeend', `<div class="em-b me">${q}</div>`); ch.scrollTop = ch.scrollHeight; await emW(350);
-  ch.insertAdjacentHTML('beforeend', '<div class="em-b you typing" id="emTy">입력 중…</div>'); ch.scrollTop = ch.scrollHeight; await emW(700); $('#emTy').remove();
+  ch.insertAdjacentHTML('beforeend', `<div class="em-b me">${q}</div>`); ch.scrollTop = ch.scrollHeight; await emW(350); if (g !== emGen) return;
+  ch.insertAdjacentHTML('beforeend', '<div class="em-b you typing" id="emTy">입력 중…</div>'); ch.scrollTop = ch.scrollHeight; await emW(700); if (g !== emGen) return; $('#emTy')?.remove();
   ch.insertAdjacentHTML('beforeend', `<div class="em-b you"><b>${P.ic} ${P.n}</b>${a}${tip ? `<br><span style="color:#c2185b;font-size:.78rem">💡 ${tip}</span>` : ''}</div>`); ch.scrollTop = ch.scrollHeight;
   if (note){ emNotes.push(note); $('#emNotes').insertAdjacentHTML('beforeend', `<div class="em-note">📝 ${note}</div>`); $('#emN').textContent = emNotes.length; } else emBad++;
   emBusy = false;
