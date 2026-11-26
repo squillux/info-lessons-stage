@@ -51,6 +51,8 @@
 .tt-go button{border:0;border-radius:14px;padding:10px 16px;font-weight:900;font-size:.95rem;cursor:pointer}
 .tt-go .go{background:#ffeb3b;color:#311b92;box-shadow:0 4px 0 #c6a700}
 .tt-go .alive{background:#ffffff22;color:#fff;border:2px solid #ffffff66}
+.tt-law{font-size:.76rem;opacity:.8;margin-top:6px}
+.tt-old{margin-top:8px;border-radius:12px;padding:9px 12px;background:#efebe9;color:#3e2723;border-left:5px solid #8d6e63;font-size:.86rem;line-height:1.55;animation:ttin .4s ease-out}
 .tt-res{margin-top:10px;border-radius:12px;padding:9px 12px;background:#ffffffee;color:#111;font-weight:700;line-height:1.5;animation:ttin .4s ease-out}
 @keyframes ttin{from{opacity:0;transform:translateY(6px)}}
 </style>
@@ -164,10 +166,10 @@ const TT_ART = {
   kid: '<svg class="art" viewBox="0 0 120 80"><rect x="6" y="4" width="108" height="72" rx="3" fill="#fff" stroke="#ddd"/><circle cx="96" cy="18" r="8" fill="none" stroke="#ff9800" stroke-width="3"/><path d="M96 4v4M110 18h-4M86 8l3 3" stroke="#ff9800" stroke-width="2.5"/><path d="M30 60V38l18-14 18 14v22z" fill="none" stroke="#e53935" stroke-width="3" stroke-linejoin="round"/><rect x="42" y="46" width="10" height="14" fill="none" stroke="#1e88e5" stroke-width="3"/><path d="M10 64q50-6 100 0" stroke="#43a047" stroke-width="3" fill="none"/><text x="80" y="56" font-size="8" fill="#7b1fa2" font-weight="800">하늘</text></svg>',
 };
 const TT = [
-  {art: 'music', n: '교향곡 제1번', by: '작곡가 라벨린', d: 1890, kind: '음악'},
-  {art: 'poem', n: '별 헤는 언덕', by: '시인 한별', d: 1975, kind: '시'},
-  {art: 'paint', n: '여름 들판', by: '화가 오로라', d: 1999, kind: '그림'},
-  {art: 'photo', n: '서울의 밤', by: '사진작가 민트', d: 2010, kind: '사진'},
+  {art: 'music', n: '교향곡 제1번', by: '작곡가 라벨린', d: 1890, kind: '음악', old: '라벨린이 세상을 떠날 무렵, 우리나라에 처음 적용된 저작권 법의 보호 기간은 <b>사망 후 30년</b>이었어요. 그래서 실제로는 <b>1920년 말</b>에 이미 보호가 끝났고 <b>1921년</b>부터 자유롭게 쓸 수 있었어요. 한번 끝난 보호 기간은 나중에 법이 바뀌어도 다시 생기지 않아요.'},
+  {art: 'poem', n: '별 헤는 언덕', by: '시인 한별', d: 1975, kind: '시', old: '1975년에는 보호 기간이 <b>사망 후 30년</b>이라 원래는 2005년 말까지였어요. 그런데 1987년에 <b>50년</b>, 2013년에 <b>70년</b>으로 법이 바뀔 때마다 아직 보호 중이었기 때문에 기간이 함께 늘어났어요. 그래서 실제로도 <b>2046년</b>부터예요.'},
+  {art: 'paint', n: '여름 들판', by: '화가 오로라', d: 1999, kind: '그림', old: '2013년 7월 전까지는 보호 기간이 <b>사망 후 50년</b>이었어요. 그 법이 그대로였다면 <b>2050년</b>부터 자유롭게 쓸 수 있었을 거예요. 법이 바뀔 때 아직 보호 중이어서 70년으로 늘어났어요.'},
+  {art: 'photo', n: '서울의 밤', by: '사진작가 민트', d: 2010, kind: '사진', old: '2013년 7월 전까지는 보호 기간이 <b>사망 후 50년</b>이었어요. 그 법이 그대로였다면 <b>2061년</b>부터 자유롭게 쓸 수 있었을 거예요. 법이 바뀔 때 아직 보호 중이어서 70년으로 늘어났어요.'},
   {art: 'kid', n: '우리 집', by: '친구 하늘이 (살아 있음)', d: 0, kind: '그림'},
 ];
 const NOW = 2026; let ttCur = 0, ttYear = NOW, ttBusy = false; const ttDone = TT.map(() => 0), ttTry = TT.map(() => 0);
@@ -181,7 +183,7 @@ function ttPanel(msg){
     <div class="tt-info">📇 <b>${w.by}</b> ${w.d ? `· <b>${w.d}년</b>에 세상을 떠났어요.` : '· 지금도 그림을 그리고 있어요.'}<br>🕰️ 지금은 <b>${NOW}년</b>이에요. 이 작품을 자유롭게 쓸 수 있는 <b>가장 빠른 해</b>는?
       <div class="tt-yr"><button data-v="-10">-10</button><button data-v="-1">-1</button><span class="d" id="ttD">${ttYear}</span><button data-v="1">+1</button><button data-v="10">+10</button></div>
       <input type="range" id="ttR" min="1850" max="2150" value="${ttYear}" aria-label="도착할 해">
-      <div class="tt-go"><button class="go" id="ttGo">🚀 이 해로 출발!</button><button class="alive" id="ttAlive">🙅 아직 정할 수 없어요</button></div></div></div><div id="ttRes">${msg || ''}</div>`;
+      <div class="tt-go"><button class="go" id="ttGo">🚀 이 해로 출발!</button><button class="alive" id="ttAlive">🙅 아직 정할 수 없어요</button></div><div class="tt-law">⚖️ 지금의 저작권법(사망 후 70년)을 적용해 계산해요.</div></div></div><div id="ttRes">${msg || ''}</div>`;
   const setY = y => { ttYear = Math.max(1850, Math.min(2150, y)); $('#ttD').textContent = ttYear; $('#ttR').value = ttYear; };
   $$('#ttMc .tt-yr button').forEach(b => b.onclick = () => setY(ttYear + +b.dataset.v));
   $('#ttR').oninput = () => setY(+$('#ttR').value);
@@ -203,7 +205,7 @@ async function ttGo(alive){
   const free = w.d + 71, end = w.d + 70;
   if (to === free){
     ttDone[i] = 1; ttShelf();
-    ttPanel(`<div class="tt-res">🔓 <b>${to}년 1월 1일 도착!</b> ${w.d}년 사망 → ${end}년 12월 31일까지 보호 → <b>${free}년</b>부터 누구나 허락 없이 이용할 수 있어요. ${free <= NOW ? `지금(${NOW}년)은 이미 자유롭게 쓸 수 있는 작품이에요! 🎉` : `지금(${NOW}년)은 아직 보호 중이라 저작권자에게 허락을 받아야 해요.`}</div>`);
+    ttPanel(`<div class="tt-res">🔓 <b>${to}년 1월 1일 도착!</b> ${w.d}년 사망 → ${end}년 12월 31일까지 보호 → <b>${free}년</b>부터 누구나 허락 없이 이용할 수 있어요. ${free <= NOW ? `지금(${NOW}년)은 이미 자유롭게 쓸 수 있는 작품이에요! 🎉` : `지금(${NOW}년)은 아직 보호 중이라 저작권자에게 허락을 받아야 해요.`}</div><div class="tt-old">📜 <b>실제로 옛 법을 적용하면?</b><br>${w.old}</div>`);
     $('#ttCase').classList.add('free'); ttCheck();
   } else if (to < free){
     ttPanel(`<div class="tt-res">🔒 <b>${to}년</b>에는 아직 보호 중이에요! ${to < w.d ? '작가가 아직 살아 있던 때예요.' : to === w.d ? '작가가 세상을 떠난 해예요. 저작권은 그다음 해부터 70년 동안 더 보호돼요.' : `${w.d}년에 사망했으니 ${end}년 말까지 보호돼요.`} 조금 더 미래로 가 보세요.</div>`);

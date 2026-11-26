@@ -171,7 +171,7 @@ function dyCalc(){
     ['📚 공부', n('h') >= 2 ? 2 : n('h') ? 1 : 0, Math.min(n('h') / 2, 1), n('h') >= 2 ? '숙제 완료!' : `${n('h')}시간: 2시간은 필요해요`],
     ['💪 운동', n('e') >= 1 ? 2 : 0, Math.min(n('e'), 1), n('e') ? '몸이 개운해요' : '몸을 움직이는 시간이 없어요'],
     ['👨‍👩‍👧 가족', n('f') >= 1 ? 2 : 0, Math.min(n('f'), 1), n('f') ? '가족과 이야기해요' : '가족과 보내는 시간이 없어요'],
-    ['🎉 여가(화면)', scr >= 1 && scr <= 2 ? 2 : scr === 0 || scr === 3 ? 1 : 0, scr > 2 ? 1 : scr / 2, scr > 3 ? `${scr}시간: 너무 많아요!` : scr === 3 ? '3시간: 조금 줄여 봐요' : scr ? `${scr}시간: 정한 만큼 즐겨요` : '0시간: 정한 시간만큼은 즐겨도 돼요'],
+    ['📱 화면 시간', scr <= 2 ? 2 : scr === 3 ? 1 : 0, scr <= 2 ? 1 : scr === 3 ? .6 : .2, scr > 3 ? `${scr}시간: 너무 많아요!` : scr === 3 ? '3시간: 조금 줄여 봐요' : scr ? `${scr}시간: 정한 만큼만 즐겨요` : '0시간: 화면 없이도 알차게 보내요 👍'],
     ['🌙 잠들기 전', preBed ? 0 : 2, preBed ? .2 : 1, preBed ? '잠들기 직전까지 화면을 봐요' : '잠들기 1시간 전에는 화면 끄기 ✔'],
     ['⏳ 연속 사용', maxRun >= 3 ? 0 : maxRun === 2 ? 1 : 2, maxRun >= 3 ? .2 : maxRun === 2 ? .6 : 1, maxRun >= 3 ? `화면을 ${maxRun}시간 연속으로 봐요` : maxRun === 2 ? '2시간 연속: 중간에 쉬어요' : '중간중간 잘 쉬어요'],
   ];
@@ -202,14 +202,15 @@ addEventListener('pointerup', () => dyDown = false);
 const DY_EV = [
   {at: () => dy.indexOf('h'), ic: '💬', t: '단톡방 · 새 메시지 99+', d: '"야 이거 봤어? ㅋㅋㅋㅋ"', q: '숙제하는 중에 알림이 계속 울려요. 지후는 어떻게 할까요?',
    o: [['공부할 때는 알림을 끄고, 숙제를 끝낸 뒤 확인해요.', 1, '알림을 끄면 스마트폰을 확인하고 싶은 마음이 줄어요.'], ['답장만 잠깐 하고 다시 숙제할게요.', 0, '"잠깐만"이 1시간이 됐어요! 공부 시간이 스마트폰 시간으로 바뀌었어요.', 'p']]},
-  {at: () => { let k = -1; dy.forEach((a, i) => { if (dyScreen(a)) k = i; }); return k; }, ic: '🎮', t: '게임 · 이벤트 마감 1시간 전!', d: '"한 판만 더 하면 전설 보상 획득!"', q: '정해 둔 게임 시간이 끝났어요. 지후는 어떻게 할까요?',
+  {at: () => { let k = -1; dy.forEach((a, i) => { if (dyScreen(a)) k = i; }); return k; }, alt: {at: () => Math.max(0, dy.indexOf('s') - 1), t: '게임 · 친구의 초대', d: '"지금 접속해! 딱 한 판만 같이 하자 🎮"', q: '오늘은 게임을 안 하기로 했는데 친구가 초대했어요. 지후는 어떻게 할까요?',
+   o: [['한 판만 같이 하고 바로 끌게!', 0, '한 판이 세 판이 됐어요. 잘 시간까지 게임이 이어졌어요.', 'g'], ['"오늘은 안 하기로 했어. 주말에 같이 하자!" 하고 거절해요.', 1, '스스로 정한 계획을 지키는 것도 중독을 예방하는 개인의 노력이에요.']]}, ic: '🎮', t: '게임 · 이벤트 마감 1시간 전!', d: '"한 판만 더 하면 전설 보상 획득!"', q: '정해 둔 게임 시간이 끝났어요. 지후는 어떻게 할까요?',
    o: [['한 판만 더… 이번이 진짜 마지막!', 0, '한 판이 세 판이 됐어요. 다음 시간까지 게임이 이어졌어요.', 'g'], ['미리 맞춰 둔 사용 시간 알림이 울렸으니 바로 종료해요.', 1, '사용 시간을 정하고 알림을 맞춰 지키는 것이 중독을 예방하는 개인의 노력이에요.']]},
   {at: () => dy.indexOf('s'), ic: '📺', t: '영상 앱 · 추천 영상', d: '"지금 가장 인기 있는 쇼츠 🔥"', q: '잠자리에 누웠는데 잠이 안 와요. 지후는 어떻게 할까요?',
    o: [['딱 영상 하나만 보고 잘래요.', 0, '영상이 끝없이 이어졌어요. 잠자는 시간이 줄었어요.', 'p'], ['스마트폰과 충전기는 거실에 두고 왔으니, 그냥 눈을 감아요.', 1, '잘 때 스마트폰을 침실 밖에 두면 유혹 자체가 사라져요.']]},
 ];
 function dyStart(){ if (dyPhase !== 'plan' || !dyCalc().G.every(g => g[1] === 2)) return; dyPhase = 'event'; dyEvI = 0; $$('#dyPal button').forEach(b => b.disabled = true); dyEvent(); }
 function dyEvent(){
-  const E = DY_EV[dyEvI], i = Math.max(0, E.at());
+  let E = DY_EV[dyEvI]; if (E.alt && E.at() < 0) E = {...E, ...E.alt}; const i = Math.max(0, E.at());
   $$('#dyTl .dy-c').forEach(c => c.classList.toggle('flash', +c.dataset.i === i));
   $('#dyB').textContent = `🧪 실천 테스트 ${dyEvI + 1} / ${DY_EV.length}: ${DY_H[i]}시, 유혹이 찾아왔어요!`;
   $('#dyEv').innerHTML = `<div class="dy-ev"><b>🔔 ${DY_H[i]}시 00분</b><div class="nt"><span class="ic">${E.ic}</span><div><b style="font-size:.82rem">${E.t}</b><div style="font-size:.84rem">${E.d}</div></div></div><p style="margin:4px 0 8px;font-weight:700">${E.q}</p><div class="op">${E.o.map(([t], k) => `<button data-k="${k}">${t}</button>`).join('')}</div><div class="rs" id="dyRs"></div></div>`;

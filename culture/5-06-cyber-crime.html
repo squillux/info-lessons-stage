@@ -195,6 +195,7 @@ const PG = [
    link: ['🚌', '청소년 교통비 지원금 신청', 'youth-bus-support.kr-gov.info', '정부 기관 주소처럼 꾸몄지만 진짜가 아니에요.'],
    fall: '입력한 인증번호로 내 이름의 소액 결제가 이루어져서 휴대폰 요금이 폭탄처럼 나왔어요.', do: '지원금 안내는 학교나 기관 공식 누리집에서 직접 확인해요.'},
 ];
+const PG_MISS = 100;
 const PG_SIG = ['⏰ 급하게 재촉해요', '🔗 이상한 링크·앱 설치', '💰 돈·상품권·결제 요구', '🔑 비밀번호·인증번호 요구', '🎭 가족·친구·기관 사칭', '🎁 너무 좋은 조건'];
 const PG_T = ['오전 7:42', '오전 8:15', '오전 8:31', '오후 12:20', '오후 1:05', '오후 3:10', '오후 4:02', '오후 5:27', '오후 6:40', '오후 7:15', '오후 9:03'];
 const pgSB = t => `<div class="pg-sb"><b>${t}</b><span><svg viewBox="0 0 64 16"><rect x="0" y="10" width="3" height="5" rx="1"/><rect x="5" y="7" width="3" height="8" rx="1"/><rect x="10" y="4" width="3" height="11" rx="1"/><rect x="15" y="1" width="3" height="14" rx="1"/><path d="M30 13l3-3a4 4 0 0 0-6 0zM25 8a8 8 0 0 1 11 0l-1.6 1.6a6 6 0 0 0-7.8 0zM22 5a12 12 0 0 1 17 0l-1.6 1.6a10 10 0 0 0-13.8 0z"/><rect x="44" y="2" width="17" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="46" y="4" width="11" height="7" rx="1.5"/><rect x="62" y="6" width="2" height="4" rx="1"/></svg></span></div>`;
@@ -212,7 +213,7 @@ function pgLock(){
   pgI = -1; pgScore = 0; pgHp = 3; pgCombo = 0; pgRes = []; pgFell = 0; pgHud();
   $('#pgScr').innerHTML = pgSB('9:41').replace('pg-sb"', 'pg-sb" style="background:#3b6cf6;color:#fff"') + `<div class="pg-lock"><div class="t">9:41</div><div>11월 25일 수요일</div><div style="font-size:3rem">🛡️</div><b>오늘 하루 동안 도착하는<br>메시지 ${PG.length}개를 막아 내세요!</b></div>`;
   $('#pgBtns').innerHTML = '<button class="tr" id="pgStart" style="grid-column:1/-1;background:#3b6cf6">▶ 훈련 시작</button>';
-  $('#pgOut').innerHTML = `<div class="pg-msg">💡 <b>규칙</b><ul><li>정상 메시지는 <b>👍 믿고 따르기</b>, 피싱은 <b>🚨 피싱! 신고</b>를 눌러요.</li><li>피싱을 믿거나 링크를 누르면 ❤️가 줄어요. ❤️가 모두 사라지면 내 폰이 털려요!</li><li>신고한 뒤 <b>수상한 부분</b>을 눌러 단서를 찾으면 보너스 점수!</li></ul></div>`;
+  $('#pgOut').innerHTML = `<div class="pg-msg">💡 <b>규칙</b><ul><li>정상 메시지는 <b>👍 믿고 따르기</b>, 피싱은 <b>🚨 피싱! 신고</b>를 눌러요.</li><li>피싱을 믿거나 링크를 누르면 ❤️가 줄어요. ❤️가 모두 사라지면 내 폰이 털려요!</li><li>신고한 뒤 <b>수상한 부분</b>을 눌러 단서를 찾으면 보너스 점수!</li><li>정상 메시지를 신고하면 중요한 소식을 놓친 셈이라 <b>-${PG_MISS}점</b>이에요.</li></ul></div>`;
   $('#pgStart').onclick = () => pgShow(0);
 }
 async function pgShow(i){
@@ -259,7 +260,7 @@ function pgJudge(v, viaLink){
   if (!d.ph){
     pgPhase = 'done';
     if (right){ pgCombo++; const g = 100 + (pgCombo >= 2 ? 20 * pgCombo : 0); pgScore += g; pgPop('+' + g); $('#pgOut').innerHTML = `<div class="pg-msg ok">⭕ <b>정상 메시지예요!</b> ${d.why}</div>`; }
-    else { pgCombo = 0; $('#pgOut').innerHTML = `<div class="pg-msg bad">😅 <b>정상 메시지였어요.</b> ${d.why}<br>모든 연락을 의심하면 중요한 소식을 놓칠 수 있어요. <b>링크·돈·개인 정보 요구</b>가 있는지 살펴봐요.</div>`; }
+    else { pgCombo = 0; pgScore = Math.max(0, pgScore - PG_MISS); pgPop('-' + PG_MISS, '#e53935'); $('#pgOut').innerHTML = `<div class="pg-msg bad">😅 <b>정상 메시지였어요. (-${PG_MISS}점)</b> ${d.why}<br>모든 연락을 의심하면 중요한 소식을 놓칠 수 있어요. <b>링크·돈·개인 정보 요구</b>가 있는지 살펴봐요.</div>`; }
   } else if (right){
     pgPhase = 'clue'; pgCombo++; const g = 100 + (pgCombo >= 2 ? 20 * pgCombo : 0); pgScore += g; pgPop('🚨 차단! +' + g);
     $('#pgScr').classList.add('clue');
