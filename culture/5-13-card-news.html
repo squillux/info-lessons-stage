@@ -24,6 +24,10 @@
 .th2{background:linear-gradient(135deg,#ff7aa2,#ff9e5e)}
 .checks label{display:block;padding:5px 0}
 @media print{.ed,.topics{display:none}}
+.cn-dl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.cn-one{display:flex;flex-wrap:wrap;gap:6px}
+.cn-one button{border:2px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);padding:7px 14px;font-weight:800;font-size:.88rem;cursor:pointer}
+.cn-one button:hover{border-color:var(--brand);color:var(--brand)}
 </style>
 </head>
 <body data-stage data-unit="5" data-title="카드 뉴스 기획실" data-sub="중1 Ⅴ단원 · 창의·융합 프로젝트 · 미래엔 220~221쪽">
@@ -53,10 +57,11 @@
 
     <div class="card" data-bot="세 장짜리 카드 뉴스 개요를 써 봐 🗒️">
       <h3>🗒️ 카드 뉴스 개요 작성</h3>
-      <p>1장은 눈길을 끄는 제목, 2장은 사례와 문제, 3장은 <b>개인과 사회가 할 수 있는 예방법이나 실천 방안</b>을 담아요. 오른쪽(아래)에 카드가 바로 만들어져요. (저장되지 않아요. 완성 후 캡처하거나 인쇄하세요.)</p>
+      <p>1장은 눈길을 끄는 제목, 2장은 사례와 문제, 3장은 <b>개인과 사회가 할 수 있는 예방법이나 실천 방안</b>을 담아요. 오른쪽(아래)에 카드가 바로 만들어져요. (저장되지 않아요. 완성되면 아래 버튼으로 이미지(PNG) 파일을 내려받으세요.)</p>
       <div class="ed" id="ed"></div>
       <div class="deck" id="deck" style="margin-top:12px"></div>
-      <p style="margin-top:10px"><button class="btn line" onclick="print()">🖨️ 인쇄하기</button></p>
+      <div class="cn-dl"><button class="btn" id="dlAll">🖼️ 모든 장 이미지로 저장 (3장)</button><span class="cn-one" id="dlOne"></span></div>
+      <p class="hint" id="dlMsg"></p>
     </div>
   </section>
 
@@ -99,6 +104,60 @@ const PH = [
 ];
 $('#ed').innerHTML = PH.map(([l, a, b], i) => `<fieldset><legend>${i + 1}장 · ${l}</legend><input data-i="${i}" data-k="h" placeholder="${a}"><textarea data-i="${i}" data-k="p" rows="2" placeholder="${b}"></textarea></fieldset>`).join('');
 const esc = s => s.replace(/[<>&]/g, '').replace(/\n/g, '<br>');
+function cardData(i){
+  const h = $(`#ed [data-i="${i}"][data-k="h"]`).value.trim() || PH[i][1].replace('예: ', '');
+  const p = $(`#ed [data-i="${i}"][data-k="p"]`).value.trim() || PH[i][2].replace(/^(부제: )?예: /, '');
+  return {h, p, no: `${i + 1} / 3 · ${TOPICS[topic][1]}`, em: i === 0 ? TOPICS[topic][0] : '', foot: i === 2 && $('#src').value.trim() ? '사례 출처: ' + $('#src').value.trim() : ''};
+}
+/* 카드 한 장을 1080×1080 PNG로 그리기 */
+const CN_BG = [['#3b6cf6', '#7b5cf6'], ['#16b8a6', '#3b9cf6'], ['#ff7aa2', '#ff9e5e']];
+function cnWrap(ctx, text, maxW){   // 띄어쓰기 단위로 줄바꿈, 너무 긴 낱말은 글자 단위로
+  const out = [];
+  text.split('\n').forEach(par => {
+    let line = '';
+    par.split(' ').forEach(w => {
+      const t = line ? line + ' ' + w : w;
+      if (ctx.measureText(t).width <= maxW){ line = t; return; }
+      if (line) out.push(line);
+      line = '';
+      for (const ch of w){ if (ctx.measureText(line + ch).width > maxW){ out.push(line); line = ch; } else line += ch; }
+    });
+    out.push(line);
+  });
+  return out;
+}
+async function cnCanvas(i){
+  try { await document.fonts.load('80px Jua', '가'); } catch(e){}
+  const S = 1080, P = 90, c = document.createElement('canvas'); c.width = c.height = S;
+  const x = c.getContext('2d'), d = cardData(i), g = x.createLinearGradient(0, 0, S, S);
+  g.addColorStop(0, CN_BG[i][0]); g.addColorStop(1, CN_BG[i][1]); x.fillStyle = g; x.fillRect(0, 0, S, S);
+  x.fillStyle = 'rgba(255,255,255,.08)'; x.beginPath(); x.arc(S - 120, 140, 260, 0, 7); x.fill(); x.beginPath(); x.arc(120, S - 80, 200, 0, 7); x.fill();
+  const CUTE = '"Jua","Malgun Gothic","Apple SD Gothic Neo",sans-serif', BODY = '"Pretendard","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillStyle = '#fff'; x.textBaseline = 'top';
+  x.globalAlpha = .9; x.font = `700 40px ${BODY}`; x.fillText(d.no, P, P); x.globalAlpha = 1;
+  // 아래쪽부터 쌓아 올리기: 출처 → 본문 → 제목 → 아이콘
+  let y = S - P;
+  if (d.foot){ x.font = `500 30px ${BODY}`; const L = cnWrap(x, d.foot, S - P * 2); y -= L.length * 42; x.globalAlpha = .85; L.forEach((l, k) => x.fillText(l, P, y + k * 42)); x.globalAlpha = 1; y -= 30; }
+  let bs = 46, BL; do { x.font = `500 ${bs}px ${BODY}`; BL = cnWrap(x, d.p, S - P * 2); } while (BL.length * bs * 1.5 > 380 && (bs -= 2) > 28);
+  y -= BL.length * bs * 1.5; BL.forEach((l, k) => x.fillText(l, P, y + k * bs * 1.5)); y -= 40;
+  let hs = 92, HL; do { x.font = `400 ${hs}px ${CUTE}`; HL = cnWrap(x, d.h, S - P * 2); } while (HL.length * hs * 1.3 > y - P - 90 - (d.em ? 150 : 0) && (hs -= 4) > 44);
+  y -= HL.length * hs * 1.3; HL.forEach((l, k) => x.fillText(l, P, y + k * hs * 1.3));
+  if (d.em){ x.font = `130px ${BODY}`; x.fillText(d.em, P - 6, y - 170); }
+  return c;
+}
+async function cnSave(i){
+  const c = await cnCanvas(i), a = document.createElement('a');
+  a.download = `카드뉴스_${TOPICS[topic][1].split('·')[0]}_${i + 1}장.png`.replace(/\s+/g, '');
+  a.href = c.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove();
+}
+$('#dlOne').innerHTML = PH.map((_, i) => `<button data-i="${i}">⬇️ ${i + 1}장만</button>`).join('');
+$$('#dlOne button').forEach(b => b.onclick = async () => { await cnSave(+b.dataset.i); $('#dlMsg').textContent = `✅ ${+b.dataset.i + 1}장을 이미지로 저장했어요. 다운로드 폴더를 확인하세요.`; });
+$('#dlAll').onclick = async () => {
+  $('#dlAll').disabled = true;
+  for (let i = 0; i < PH.length; i++){ await cnSave(i); await new Promise(r => setTimeout(r, 500)); }
+  $('#dlAll').disabled = false;
+  $('#dlMsg').textContent = '✅ 3장을 이미지로 저장했어요. 다운로드 폴더를 확인하세요. (브라우저가 "여러 파일 다운로드"를 물으면 허용을 눌러요.)';
+};
 function draw(){
   $('#deck').innerHTML = PH.map((_, i) => {
     const h = esc($(`#ed [data-i="${i}"][data-k="h"]`).value.trim()) || PH[i][1].replace('예: ', '');
